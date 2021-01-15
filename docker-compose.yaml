@@ -1,0 +1,10 @@
+version: '2.2'
+
+services:
+  npm:
+    image: node:alpine
+    init: true
+    volumes:
+      - ./:/scripts:rw
+    working_dir: /scripts
+    entrypoint: ["npm"]

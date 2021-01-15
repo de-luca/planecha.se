@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "strictNullChecks": true,
+        "experimentalDecorators": true,
+        "sourceMap": true,
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "target": "es5",
+        "allowJs": true,
+        "noUnusedLocals": true,
+        "lib": [
+            "esnext",
+            "dom",
+        ]
+    },
+    "include": [
+        "./**/*.ts"
+    ],
+    "exclude": [
+        "node_modules",
+    ],
+}

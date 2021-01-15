@@ -1,0 +1,9 @@
+# Dev stuff
+node_modules
+
+# OS garbage
+.DS_Store
+
+# Built stuff
+*.js
+*.js.map
