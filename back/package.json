@@ -1,0 +1,20 @@
+{
+    "name": "back",
+    "version": "0.0.0",
+    "license": "ISC",
+    "scripts": {
+        "dev": "nodemon --watch ./src/**/*ts ./src/main.ts",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+        "ws": "^7.4.2"
+    },
+    "devDependencies": {
+        "@types/express": "^4.17.11",
+        "@types/node": "^14.14.21",
+        "@types/ws": "^7.4.0",
+        "nodemon": "^2.0.7",
+        "ts-node": "^9.1.1"
+    }
+}

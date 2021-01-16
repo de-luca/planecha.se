@@ -6,21 +6,46 @@ A Planechase [Eternities Map](https://magic.wizards.com/en/articles/archive/feat
 
 **This is POC level stuff**
 
+
 ## Install & Dev
 
-*There's a docker-compose file if you are that kind of person... ( ͡° ͜ʖ ͡°)*
+### The yarn way
 
-Install dependencies:
+Install dependencies for all workspace:
 ```sh
-npm install
+yarn install
 ```
-Build sources
+
+Execute `yarn` command in a single workspace
 ```sh
-npm run build
+yarn workspace <front|back> <command> ...
 ```
-You should have a useable 'thing', open `src/index.html` in your favorite browser.
 
+Start front dev server
+```sh
+yarn workspace front dev
+```
 
+### The docker-compose way
+
+*There's a docker-compose file if you are that kind of person... ( ͡° ͜ʖ ͡°)*  
+*You might also want to use some alias like `fig` and `run`.*
+
+Install dependencies for all workspace:
+```sh
+docker-compose run yarn install
+```
+
+Execute `yarn` command in a single workspace
+```sh
+docker-compose run yarn workspace <front|back> <command> ...
+docker-compose run <front|back> <command> ...
+```
+
+Start front dev server
+```sh
+docker-compose up front
+```
 
 
 ## Credits and Attribution

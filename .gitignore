@@ -1,5 +1,6 @@
 # Dev stuff
 node_modules
+yarn-error.log
 
 # OS garbage
 .DS_Store
@@ -7,3 +8,6 @@ node_modules
 # Built stuff
 *.js
 *.js.map
+.parcel-cache
+.cache
+dist

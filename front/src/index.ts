@@ -1,3 +1,5 @@
+// import { io } from 'socket.io-client';
+
 enum State {
     ACTIVE = 'active',
     VISIBLE = 'visible',
@@ -59,7 +61,22 @@ let active: Card;
 let cards: Array<Card>;
 let planes: Array<Plane>;
 
+console.log("COUCOU");
+
 ready(async function () {
+
+    
+// // });
+
+// function open(): WebSocket {
+//     const ws = new WebSocket('ws://localhost:8999');
+//     ws.onopen = ev => console.log(ev);
+//     ws.onmessage = ev => console.log(ev.data);
+
+//     return ws;
+// }
+
+
     const res = await fetch('https://api.scryfall.com/cards/search?q=t:plane');
     planes = shuffleArray<Plane>((await res.json()).data);
 
