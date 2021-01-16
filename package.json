@@ -7,7 +7,7 @@
     "private": true,
     "workspaces": [
         "back",
-        "front"
+        "poc_front"
     ],
     "devDependencies": {
         "typescript": "^4.1.3"
