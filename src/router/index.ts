@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 import Home from '../views/Home.vue';
 import JoinGame from '../views/JoinGame.vue';
 import CreateGame from '../views/CreateGame.vue';
+import Board from '../views/Board.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -18,6 +19,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/create',
     name: 'CreateGame',
     component: CreateGame,
+  },
+
+  {
+    path: '/board',
+    name: 'Board',
+    component: Board,
   },
 ];
 
