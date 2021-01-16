@@ -6,7 +6,6 @@ yarn-error.log
 .DS_Store
 
 # Built stuff
-*.js
 *.js.map
 .parcel-cache
 .cache
