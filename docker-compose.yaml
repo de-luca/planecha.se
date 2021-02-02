@@ -4,30 +4,10 @@ services:
   yarn:
     image: node:alpine
     init: true
+    ports:
+      - 1234:1234
     volumes:
       - ./:/scripts:rw
     working_dir: /scripts
     entrypoint: ["yarn"]
-
-  back:
-    image: node:alpine
-    init: true
-    ports:
-      - 8999:8999
-    volumes:
-      - ./:/scripts:rw
-    working_dir: /scripts
-    entrypoint: ["yarn", "workspace", "back"]
-    command: ["run", "dev"]
-    
-  front:
-    image: node:alpine
-    init: true
-    ports:
-      - 1234:1234
-      - 34043:34043
-    volumes:
-      - ./:/scripts:rw
-    working_dir: /scripts
-    entrypoint: ["yarn", "workspace", "front"]
-    command: ["run", "dev"]
+    command: ["serve"]

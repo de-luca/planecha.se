@@ -11,3 +11,9 @@ export default defineComponent({
   name: 'Home',
 });
 </script>
+
+<style lang="scss" scoped>
+.home {
+  background-color: red;
+}
+</style>
