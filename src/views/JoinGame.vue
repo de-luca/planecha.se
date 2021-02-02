@@ -1,19 +1,21 @@
 <template>
-  <div class="home">
-    NOT Home
+  <div class="container">
+    JOIN GAME
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import Peer, { DataConnection } from 'peerjs';
 
 export default defineComponent({
-  name: 'NotHome',
+
+  name: 'JoinGame',
 });
 </script>
 
 <style lang="scss" scoped>
-.home {
+.container {
   background-color: blue;
 }
 </style>

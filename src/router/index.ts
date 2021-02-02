@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 import Home from '../views/Home.vue';
-import NotHome from '../views/NotHome.vue';
+import JoinGame from '../views/JoinGame.vue';
+import CreateGame from '../views/CreateGame.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -9,15 +10,18 @@ const routes: Array<RouteRecordRaw> = [
     component: Home,
   },
   {
-    path: '/nothome',
-    name: 'NotHome',
-    component: NotHome,
+    path: '/join',
+    name: 'JoinGame',
+    component: JoinGame,
+  },
+  {
+    path: '/create',
+    name: 'CreateGame',
+    component: CreateGame,
   },
 ];
 
-const router = createRouter({
+export const router = createRouter({
   history: createWebHashHistory(),
   routes,
 });
-
-export default router;
