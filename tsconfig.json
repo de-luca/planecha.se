@@ -5,7 +5,10 @@
     "strict": true,
     "jsx": "preserve",
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "lib": [
       "esnext",
       "dom",
