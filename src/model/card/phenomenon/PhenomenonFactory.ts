@@ -1,5 +1,5 @@
-import { Service } from 'typedi';
 import type { Props } from "..";
+import { Service } from 'typedi';
 import { Phenomenon } from ".";
 import * as Special from './special';
 

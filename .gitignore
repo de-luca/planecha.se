@@ -10,3 +10,4 @@ yarn-error.log
 .parcel-cache
 .cache
 dist
+src/assets/cards.json

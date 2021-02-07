@@ -1,4 +1,4 @@
-import { Service } from 'typedi';
+import { Inject, Service } from 'typedi';
 import { Card } from ".";
 import { PhenomenonFactory } from "./phenomenon";
 import { PlaneFactory } from "./plane"
@@ -35,10 +35,10 @@ export interface Props {
 
 @Service()
 export class CardFactory {
-    public constructor(
-        private planeFactory: PlaneFactory,
-        private phenomenonFactory: PhenomenonFactory,
-    ) { }
+    @Inject(() => PlaneFactory)
+    private planeFactory: PlaneFactory;
+    @Inject(() => PhenomenonFactory)
+    private phenomenonFactory: PhenomenonFactory;
 
     public build(props: Props): Card {
         if (props.typeLine === 'Phenomenon') {
