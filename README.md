@@ -2,7 +2,7 @@
 
 > Or Ravni.ca, whatever
 
-A Planechase [Eternities Map](https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19) for people playing over the internet.
+A Planechase *thingy* for people playing over the internet (or not).
 
 **This is POC level stuff**
 
@@ -11,19 +11,14 @@ A Planechase [Eternities Map](https://magic.wizards.com/en/articles/archive/feat
 
 ### The yarn way
 
-Install dependencies for all workspace:
+Install dependencies:
 ```sh
 yarn install
 ```
 
-Execute `yarn` command in a single workspace
+Start dev server:
 ```sh
-yarn workspace <front|back> <command> ...
-```
-
-Start front dev server
-```sh
-yarn workspace front dev
+yarn dev
 ```
 
 ### The docker-compose way
@@ -31,20 +26,14 @@ yarn workspace front dev
 *There's a docker-compose file if you are that kind of person... ( ͡° ͜ʖ ͡°)*  
 *You might also want to use some alias like `fig` and `run`.*
 
-Install dependencies for all workspace:
+Install dependencies:
 ```sh
 docker-compose run yarn install
 ```
 
-Execute `yarn` command in a single workspace
+Start dev server
 ```sh
-docker-compose run yarn workspace <front|back> <command> ...
-docker-compose run <front|back> <command> ...
-```
-
-Start front dev server
-```sh
-docker-compose up front
+docker-compose up [-d]
 ```
 
 
