@@ -1,7 +1,9 @@
-import { Card, Props } from "..";
+import type { Props } from '../CardFactory';
+import { Card } from '../Card';
 
 export class Phenomenon extends Card {
-    public constructor(props: Props) {
-        super(props);
-    }
+  // eslint-disable-next-line no-useless-constructor
+  public constructor(props: Props) {
+    super(props);
+  }
 }

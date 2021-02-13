@@ -1,3 +1,3 @@
-import { Phenomenon } from "..";
+import { Phenomenon } from '../Phenomenon';
 
 export class SpatialMerging extends Phenomenon { }

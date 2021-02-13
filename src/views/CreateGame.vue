@@ -3,13 +3,13 @@
     <h1 class="title">CREATE GAME</h1>
 
     <ButtonPicker
-      label="Local or online game?" 
+      label="Local or online game?"
       :options="scopeOptions"
       v-model="scope"
     />
-    
+
     <ButtonPicker
-      label="Game mode:" 
+      label="Game mode:"
       :options="modeOptions"
       v-model="mode"
     />
@@ -73,9 +73,9 @@ export default defineComponent({
   },
   methods: {
     click() {
-      console.log("COUCOU");
+      console.log('COUCOU');
     },
-  }
+  },
 });
 </script>
 

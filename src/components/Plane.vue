@@ -15,6 +15,7 @@
 //     image_uris: ImageCollection;
 // }
 import { defineComponent } from 'vue';
+
 export default defineComponent({
   name: 'Plane',
   props: {

@@ -5,9 +5,9 @@
         <div class="control">
             <template v-for="option in options" :key="option.value">
                 <input
-                    type="radio" 
-                    :id="option.label" 
-                    :value="option.value" 
+                    type="radio"
+                    :id="option.label"
+                    :value="option.value"
                     v-model="selected"
                 >
                 <label class="button" :for="option.label">{{ option.label }}</label>
@@ -28,39 +28,39 @@ export interface Option {
 }
 
 export default defineComponent({
-    props: {
-        modelValue: {
-            type: String,
-            required: true,
-        },
-        label: {
-            type: String,
-            required: true,
-        },
-        options: {
-           type: Object as PropType<Array<Option>>,
-           required: true,
-           default: () => {},
-        },
+  props: {
+    modelValue: {
+      type: String,
+      required: true,
     },
-    emits: [
-        'update:modelValue',
-    ],
-    computed: {
-        selected: {
-            get(): string {
-                return this.modelValue;
-            },
-            set(value: string) {
-                this.$emit('update:modelValue', value);
-            },
-        },
-        currentHelp(): string {
-             return this.options
-                .find((o: Option) => o.value === this.selected)
+    label: {
+      type: String,
+      required: true,
+    },
+    options: {
+      type: Object as PropType<Array<Option>>,
+      required: true,
+      default: () => { /* NOOP */ },
+    },
+  },
+  emits: [
+    'update:modelValue',
+  ],
+  computed: {
+    selected: {
+      get(): string {
+        return this.modelValue;
+      },
+      set(value: string) {
+        this.$emit('update:modelValue', value);
+      },
+    },
+    currentHelp(): string {
+      return this.options
+        .find((o: Option) => o.value === this.selected)
                 ?.help ?? '';
-        },
-    }
+    },
+  },
 });
 </script>
 

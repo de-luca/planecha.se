@@ -1,4 +1,5 @@
-import { Card, Props } from "..";
+import type { Props } from '../CardFactory';
+import { Card } from '../Card';
 
 export interface Counter {
     name: string;
@@ -12,38 +13,38 @@ export class Plane extends Card {
     private counter?: Counter;
 
     public constructor(props: Props) {
-        super(props);
+      super(props);
 
-        this.counter = props.counter ?? undefined;
+      this.counter = props.counter ?? undefined;
     }
 
     public initCounter(): void {
-        if (this.counter) {
-            this.counter.value = this.counter.start;
-        }
+      if (this.counter) {
+        this.counter.value = this.counter.start;
+      }
     }
 
-    public incCounter(): number | undefined {
-        if (!this.counter) {
-            return;
-        }
+    public incCounter(): undefined | number {
+      if (!this.counter) {
+        return undefined;
+      }
 
-        return ++this.counter.value;
+      return ++this.counter.value;
     }
 
-    public decCounter(): number | undefined {
-        if (!this.counter) {
-            return;
-        }
+    public decCounter(): undefined | number {
+      if (!this.counter) {
+        return undefined;
+      }
 
-        return this.counter.value === 0
-            ? this.counter.value
-            : --this.counter.value;
+      return this.counter.value === 0
+        ? this.counter.value
+        : --this.counter.value;
     }
 
     public leave(): void {
-        if (this.counter?.reset) {
-            this.counter.value = this.counter.start;
-        }
+      if (this.counter?.reset) {
+        this.counter.value = this.counter.start;
+      }
     }
 }

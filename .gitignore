@@ -1,13 +1,26 @@
-# Dev stuff
-node_modules
-yarn-error.log
-
-# OS garbage
 .DS_Store
+node_modules
+/dist
 
-# Built stuff
-*.js.map
-.parcel-cache
-.cache
-dist
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# stuff
 src/assets/cards.json

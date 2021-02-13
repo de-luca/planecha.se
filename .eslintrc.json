@@ -3,23 +3,35 @@
   "env": {
     "node": true
   },
+  "plugins": [
+    "jest"
+  ],
+  "extends": [
+    "plugin:vue/vue3-essential",
+    "@vue/airbnb",
+    "@vue/typescript/recommended",
+    "plugin:jest/recommended",
+    "plugin:jest/style"
+  ],
   "parserOptions": {
-    "parser": "@typescript-eslint/parser",
-    "sourceType": "module",
     "ecmaVersion": 2020
   },
-  "extends": [
-    "plugin:@typescript-eslint/recommended",
-    "plugin:vue/vue3-recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "plugin:import/typescript" 
-  ],
   "rules": {
-    "no-console": ["error"],
+    "no-plusplus": ["off"],
+    "no-restricted-syntax": ["off"],
+    "class-methods-use-this": ["off"],
+    "import/prefer-default-export": ["off"],
     "no-debugger": ["error"],
     "comma-dangle": ["error", "always-multiline"],
     "semi": ["error", "always"],
     "quotes": ["error", "single"]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**.spec.ts"],
+      "rules": {
+        "dot-notation": ["off"]
+      }
+    }
+  ]
 }

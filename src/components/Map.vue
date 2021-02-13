@@ -76,22 +76,23 @@ export default defineComponent({
   //     default: () => [],
   //   },
   // },
-  data () {
+  data() {
     return data;
   },
 
   computed: {
-    hellridingPlanes () {
-      const hellridingPlanes = [];
-      const hellridingCoord = [-1, 1];
-      for (const x of hellridingCoord) {
-        for (const y of hellridingCoord) {
-          if (!this.planes.find(plane => plane.x === x && plane.y === y)) {
-            hellridingPlanes.push({ x, y });
-          }
-        }
-      }
-      return hellridingPlanes;
+    hellridingPlanes() {
+      return true;
+      // const hellridingPlanes = [];
+      // const hellridingCoord = [-1, 1];
+      // for (const x of hellridingCoord) {
+      //   for (const y of hellridingCoord) {
+      //     if (!this.planes.find((plane) => plane.x === x && plane.y === y)) {
+      //       hellridingPlanes.push({ x, y });
+      //     }
+      //   }
+      // }
+      // return hellridingPlanes;
     },
   },
 });
