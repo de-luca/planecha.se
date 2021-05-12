@@ -36,12 +36,12 @@ describe('Map.draw', () => {
 describe('Map.revealUntil', () => {
   it('reveals a given number of requested card', () => {
     const map = new TestMap();
-    const cards = map['revealUntil'](2, Plane.Plane);
+    const cards = map['revealUntil'](2, Plane);
 
     expect(cards.cards).toHaveLength(2);
     expect(cards.revealed.length).toBeGreaterThanOrEqual(2);
     for (const card of cards.cards) {
-      expect(card).toBeInstanceOf(Plane.Plane);
+      expect(card).toBeInstanceOf(Plane);
     }
   });
 });

@@ -15,7 +15,7 @@ describe('DeckProvider.getPlaneDeck', () => {
     const planeDeck = provider.getPlaneDeck();
     expect(planeDeck).toHaveLength(78);
     for (const card of planeDeck) {
-      expect(card).toBeInstanceOf(Plane.Plane);
+      expect(card).toBeInstanceOf(Plane);
     }
   });
 });

@@ -23,7 +23,7 @@ export enum TileStatus {
 export interface Tile {
     coordinates: Coordinates;
     state: TileStatus;
-    plane: Array<Plane.Plane>;
+    plane: Array<Plane>;
 }
 
 export class EternitiesMap extends Map {
@@ -33,11 +33,11 @@ export class EternitiesMap extends Map {
 
     private static readonly center: Coordinates = { x: 0, y: 0 };
 
-    protected deck: Array<Plane.Plane>;
+    protected deck: Array<Plane>;
 
-    protected played: Array<Plane.Plane>;
+    protected played: Array<Plane>;
 
-    protected active: Array<Plane.Plane>;
+    protected active: Array<Plane>;
 
     private tiles: Array<Tile>;
 

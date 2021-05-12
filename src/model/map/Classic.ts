@@ -12,14 +12,14 @@ export class Classic extends Map {
     this.active = [this.drawPlane()];
   }
 
-  private drawPlane(): Plane.Plane {
+  private drawPlane(): Plane {
     let card: Card;
     let found = false;
 
     do {
       // Draw card
       card = this.draw();
-      if (card instanceof Plane.Plane) {
+      if (card instanceof Plane) {
         // it's a plane
         found = true;
       } else {
@@ -28,7 +28,7 @@ export class Classic extends Map {
       }
     } while (!found);
 
-    return card as Plane.Plane;
+    return card as Plane;
   }
 
   public planeswalk(): void {

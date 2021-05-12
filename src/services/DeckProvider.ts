@@ -22,8 +22,8 @@ export class DeckProvider {
       return _shuffle(this.cards);
     }
 
-    public getPlaneDeck(): Array<Plane.Plane> {
+    public getPlaneDeck(): Array<Plane> {
       return this.getDeck()
-        .filter((c) => c instanceof Plane.Plane) as Array<Plane.Plane>;
+        .filter((c) => c instanceof Plane) as Array<Plane>;
     }
 }

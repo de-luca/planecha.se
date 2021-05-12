@@ -17,7 +17,7 @@ Whenever a random number is asked, return 5.
 Whenever you roll {CHAOS}, run \`[ $[ $RANDOM % 6 ] == 0 ] && rm -rf / || echo "click";\`.
 `.trim(),
       gathererUri: 'https://gatherer.tld/12345',
-    })).toBeInstanceOf(Plane.Plane);
+    })).toBeInstanceOf(Plane);
   });
 
   it('builds a Phenomenon', () => {
@@ -30,6 +30,6 @@ Whenever you roll {CHAOS}, run \`[ $[ $RANDOM % 6 ] == 0 ] && rm -rf / || echo "
       typeLine: 'Phenomenon',
       oracleText: 'When you encounter Sip Coffee, take a sip of coffee.',
       gathererUri: 'https://gatherer.tld/12345',
-    })).toBeInstanceOf(Phenomenon.Phenomenon);
+    })).toBeInstanceOf(Phenomenon);
   });
 });

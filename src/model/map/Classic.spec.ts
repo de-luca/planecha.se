@@ -5,7 +5,7 @@ describe('Classic.drawPlane', () => {
   it('draws a plane', () => {
     const map = new Classic();
 
-    expect(map['drawPlane']()).toBeInstanceOf(Plane.Plane);
+    expect(map['drawPlane']()).toBeInstanceOf(Plane);
     expect(map['deck']).toHaveLength(84);
   });
 });

@@ -1,4 +1,4 @@
 export * from './Card';
 export * from './CardFactory';
-export * as Phenomenon from './phenomenon';
-export * as Plane from './plane';
+export * from './phenomenon';
+export * from './plane';
