@@ -4,6 +4,6 @@ import { router } from './router';
 import App from './App.vue';
 import './main.scss';
 
-createApp(App)
+createApp(App, { 'cake': 'cake' })
   .use(router)
   .mount('#app');
