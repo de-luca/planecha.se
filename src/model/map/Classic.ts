@@ -8,8 +8,8 @@ export class Classic extends Map {
     super();
 
     this.deck = Container.get(DeckProvider).getDeck();
-    this.played = [];
-    this.active = [this.drawPlane()];
+    this._played = [];
+    this._active = [this.drawPlane()];
   }
 
   private drawPlane(): Plane {
@@ -33,7 +33,9 @@ export class Classic extends Map {
 
   public planeswalk(): void {
     // Put all active cards away
-    this.played.push(...this.active);
-    this.active = [this.draw()];
+    console.log('CALLED');
+    
+    this.played.push(...this._active);
+    this._active = [this.draw()];
   }
 }

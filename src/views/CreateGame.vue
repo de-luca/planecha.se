@@ -2,11 +2,11 @@
   <div class="container">
     <h1 class="title">CREATE GAME</h1>
 
-    <ButtonPicker
+    <!-- <ButtonPicker
       label="Local or online game?"
       :options="scopeOptions"
       v-model="scope"
-    />
+    /> -->
 
     <ButtonPicker
       label="Game mode:"
@@ -23,7 +23,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { useStore, Store } from '@/store';
+import { MutationTypes } from '@/store/modules/map';
+import { Options, Vue } from 'vue-class-component';
 import ButtonPicker, { Option } from '../components/ButtonPicker.vue';
 
 enum GameScope {
@@ -36,47 +38,45 @@ enum GameMode {
   ETERNITIES = 'eternities',
 }
 
-const scopeOptions: Array<Option> = [{
-  label: 'Local',
-  value: GameScope.LOCAL,
-}, {
-  label: 'Online',
-  value: GameScope.ONLINE,
-}];
+@Options({
+  components: { ButtonPicker },
+})
+export default class CreateGame extends Vue {
+  public scopeOptions: Array<Option> = [{
+    label: 'Local',
+    value: GameScope.LOCAL,
+  }, {
+    label: 'Online',
+    value: GameScope.ONLINE,
+  }];
+  public modeOptions: Array<Option> = [{
+    label: 'Classic',
+    value: GameMode.CLASSIC,
+    help: 'Rule 901.15. Single Planar Deck Option.',
+  }, {
+    label: 'Eternities',
+    value: GameMode.ETERNITIES,
+    help: 'The <a href="https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19">Eternities Map</a> variant of Planechase.',
+  }];
+  public scope: GameScope = GameScope.LOCAL;
+  public mode: GameMode = GameMode.CLASSIC;
+  
+  public store: Store;
 
-const modeOptions: Array<Option> = [{
-  label: 'Classic',
-  value: GameMode.CLASSIC,
-  help: 'Rule 901.15. Single Planar Deck Option.',
-}, {
-  label: 'Eternities',
-  value: GameMode.ETERNITIES,
-  help: 'The <a href="https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19">Eternities Map</a> variant of Planechase.',
-}];
+  public created() {
+    this.store = useStore();
+  }
 
-export default defineComponent({
-  name: 'CreateGame',
-  components: {
-    ButtonPicker,
-  },
-  data: () => ({
-    scopeOptions,
-    modeOptions,
-    scope: GameScope.LOCAL,
-    mode: GameMode.CLASSIC,
-  }),
-  computed: {
-    isDisabled(): boolean {
-      return this.scope === GameScope.ONLINE
-        || this.mode === GameMode.ETERNITIES;
-    },
-  },
-  methods: {
-    click() {
-      console.log('COUCOU');
-    },
-  },
-});
+  public get isDisabled(): boolean {
+    return this.scope === GameScope.ONLINE
+      || this.mode === GameMode.ETERNITIES;
+  }
+
+  public click() {
+    this.store.commit(MutationTypes.INIT);
+    this.$router.push('/board');
+  }
+}
 </script>
 
 <style lang="scss" scoped>

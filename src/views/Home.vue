@@ -15,11 +15,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { Vue } from 'vue-class-component';
 
-export default defineComponent({
-  name: 'Home',
-});
+export default class Home extends Vue {}
 </script>
 
 <style lang="scss" scoped>

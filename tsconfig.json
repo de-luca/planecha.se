@@ -13,10 +13,12 @@
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "useDefineForClassFields": true,
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
       "jest",
+      "node",
       "webpack-env"
     ],
     "paths": {

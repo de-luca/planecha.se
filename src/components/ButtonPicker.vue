@@ -19,7 +19,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { mapGetters } from 'vuex';
+import { Options, Vue, prop } from 'vue-class-component';
 
 export interface Option {
     label: string;
@@ -27,41 +28,87 @@ export interface Option {
     help?: string;
 }
 
-export default defineComponent({
-  props: {
-    modelValue: {
-      type: String,
-      required: true,
-    },
-    label: {
-      type: String,
-      required: true,
-    },
-    options: {
-      type: Object as PropType<Array<Option>>,
-      required: true,
-      default: () => { /* NOOP */ },
-    },
-  },
-  emits: [
-    'update:modelValue',
-  ],
-  computed: {
-    selected: {
-      get(): string {
-        return this.modelValue;
-      },
-      set(value: string) {
-        this.$emit('update:modelValue', value);
-      },
-    },
-    currentHelp(): string {
-      return this.options
-        .find((o: Option) => o.value === this.selected)
-                ?.help ?? '';
-    },
-  },
-});
+class Props {
+  public modelValue = prop<string>({ required: true });
+  public label = prop<string>({ required: true });;
+  public options = prop<Array<Option>>({ required: true });
+}
+
+@Options({
+  emits: ['update:modelValue'],
+})
+export default class ButtonPicker extends Vue.with(Props) {
+  public get selected(): string {
+    return this.modelValue;
+  }
+  
+  public set selected(value: string) {
+    this.$emit('update:modelValue', value);
+  }
+
+  public get currentHelp(): string {
+    return this.options.find((o: Option) => o.value === this.selected)?.help ?? '';
+  }
+
+
+  public mounted() {
+    const { game } = mapGetters(['game']);
+    console.log(game);
+    // console.log('mutation');
+    // console.log('mounted', this.game.map.deck.length)
+    // this.$store.commit('GAME_INIT')
+    // console.log('mounted', this.game.map.deck.length)
+    // console.log(this.selected);
+  }
+}
+
+// export default defineComponent({
+//   props: {
+//     modelValue: {
+//       type: String,
+//       required: true,
+//     },
+//     label: {
+//       type: String,
+//       required: true,
+//     },
+//     options: {
+//       type: Object as PropType<Array<Option>>,
+//       required: true,
+//       default: () => { /* NOOP */ },
+//     },
+//   },
+//   emits: [
+//     'update:modelValue',
+//   ],
+//   computed: {
+//     selected: {
+//       get(): string {
+//         return this.modelValue;
+//       },
+//       set(value: string) {
+//         this.$emit('update:modelValue', value);
+//       },
+//     },
+//     currentHelp(): string {
+//       return this.options
+//         .find((o: Option) => o.value === this.selected)
+//                 ?.help ?? '';
+//     },
+//     ...mapGetters(['game']),
+//   },
+
+//   mounted() {
+
+//     console.log('mutation');
+//     console.log('mounted', this.game.map.deck.length)
+//     this.$store.commit('GAME_INIT')
+//     console.log('mounted', this.game.map.deck.length)
+//     console.log(this.selected);
+    
+
+//   }
+// });
 </script>
 
 <style lang="scss" scoped>

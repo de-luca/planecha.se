@@ -4,18 +4,32 @@ import { Card } from '../card';
 export abstract class Map {
     protected deck: Array<Card>;
 
-    protected played: Array<Card>;
+    protected _played: Array<Card>;
 
-    protected active: Array<Card>;
+    protected _active: Array<Card>;
 
     protected globalState?: string;
 
     protected constructor() {
       this.deck = [];
-      this.played = [];
-      this.active = [];
+      this._played = [];
+      this._active = [];
       this.globalState = undefined;
     }
+
+    public get active(): Array<Card> {
+      return this._active;
+    }
+
+    public get played(): Array<Card> {
+      return this._played;
+    }
+
+    public getDeckSize(): number {
+      return this.deck.length;
+    }
+
+    public abstract planeswalk(): void;
 
     protected draw<T extends Card>(): T {
       // Reach for the top card
@@ -25,7 +39,7 @@ export abstract class Map {
       if (!card) {
         // Shuffle the pile of card
         this.deck = _shuffle(this.played);
-        this.played = [];
+        this._played = [];
 
         return this.deck.shift() as T;
       }

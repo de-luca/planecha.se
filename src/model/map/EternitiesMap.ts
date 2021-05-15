@@ -35,9 +35,9 @@ export class EternitiesMap extends Map {
 
     protected deck: Array<Plane>;
 
-    protected played: Array<Plane>;
+    protected _played: Array<Plane>;
 
-    protected active: Array<Plane>;
+    protected _active: Array<Plane>;
 
     private tiles: Array<Tile>;
 
@@ -45,8 +45,8 @@ export class EternitiesMap extends Map {
       super();
 
       this.deck = Container.get(DeckProvider).getPlaneDeck();
-      this.played = [];
-      this.active = [this.draw()];
+      this._played = [];
+      this._active = [this.draw()];
       this.tiles = this.initializeTiles();
     }
 
@@ -54,7 +54,7 @@ export class EternitiesMap extends Map {
       const tiles: Array<Tile> = [{
         state: TileStatus.ACTIVE,
         coordinates: { ...EternitiesMap.center },
-        plane: this.active,
+        plane: this._active,
       }];
 
       for (let y = EternitiesMap.activeRange * -1; y <= EternitiesMap.activeRange; y++) {
@@ -108,7 +108,7 @@ export class EternitiesMap extends Map {
       }
 
       // Actualy change the active pointer
-      this.active = newActiveTile.plane;
+      this._active = newActiveTile.plane;
 
       // Look over the board
       for (

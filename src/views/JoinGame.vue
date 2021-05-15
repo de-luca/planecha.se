@@ -5,13 +5,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import Peer, { DataConnection } from 'peerjs';
+import { Vue } from 'vue-class-component';
 
-export default defineComponent({
-
-  name: 'JoinGame',
-});
+export default class JoinGame extends Vue {}
 </script>
 
 <style lang="scss" scoped>
