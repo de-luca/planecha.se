@@ -26,7 +26,7 @@
 import { useStore, Store } from '@/store';
 import { MutationTypes } from '@/store/modules/map';
 import { Options, Vue } from 'vue-class-component';
-import ButtonPicker, { Option } from '../components/ButtonPicker.vue';
+import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';
 
 enum GameScope {
   LOCAL = 'local',

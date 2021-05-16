@@ -30,7 +30,7 @@ export interface Option {
 
 class Props {
   public modelValue = prop<string>({ required: true });
-  public label = prop<string>({ required: true });;
+  public label = prop<string>({ required: true });
   public options = prop<Array<Option>>({ required: true });
 }
 
