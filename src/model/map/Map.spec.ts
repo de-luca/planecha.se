@@ -8,8 +8,12 @@ class TestMap extends Map {
     super();
 
     this.deck = Container.get(DeckProvider).getDeck();
-    this.played = [];
-    this.active = [];
+    this._played = [];
+    this._active = [];
+  }
+
+  public planeswalk(): void {
+    throw new Error('Method not implemented.');
   }
 }
 
@@ -25,7 +29,7 @@ describe('Map.draw', () => {
     const map = new TestMap();
     // eslint-disable-next-line prefer-destructuring
     const deck = map['deck'];
-    map['played'] = deck;
+    map['_played'] = deck;
     map['deck'] = [];
 
     expect(map['draw']()).toBeInstanceOf(Card);

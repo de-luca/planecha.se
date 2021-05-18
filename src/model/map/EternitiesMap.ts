@@ -6,14 +6,9 @@ eslint no-param-reassign: [
 */
 
 import { Container } from 'typedi';
-import { Map } from './Map';
+import { Coordinates, Map } from './Map';
 import { Plane } from '../card';
 import { DeckProvider } from '../../services/DeckProvider';
-
-export interface Coordinates {
-    x: number;
-    y: number;
-}
 
 export enum TileStatus {
     ACTIVE = 'active',

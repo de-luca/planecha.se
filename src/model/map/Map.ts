@@ -1,6 +1,11 @@
 import _shuffle from 'lodash.shuffle';
 import { Card } from '../card';
 
+export interface Coordinates {
+  x: number;
+  y: number;
+}
+
 export abstract class Map {
     protected deck: Array<Card>;
 
@@ -29,7 +34,7 @@ export abstract class Map {
       return this.deck.length;
     }
 
-    public abstract planeswalk(): void;
+    public abstract planeswalk(coordinates: Coordinates): void;
 
     protected draw<T extends Card>(): T {
       // Reach for the top card

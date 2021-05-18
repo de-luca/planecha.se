@@ -33,8 +33,6 @@ export class Classic extends Map {
 
   public planeswalk(): void {
     // Put all active cards away
-    console.log('CALLED');
-    
     this.played.push(...this._active);
     this._active = [this.draw()];
   }
