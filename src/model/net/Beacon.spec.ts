@@ -11,28 +11,6 @@ afterEach(() => {
     srv.close();
 })
 
-// test("the mock server sends messages to connected clients", async () => {
-//     const server = new WS("ws://localhost:1234");
-//     const client1 = new WebSocket("ws://localhost:1234");
-//     await server.connected;
-//     const client2 = new WebSocket("ws://localhost:1234");
-//     await server.connected;
-
-//     const messages = { client1: [] as Array<any>, client2: [] as Array<any> };
-//     client1.onmessage = (e) => {
-//         messages.client1.push(e.data);
-//     };
-//     client2.onmessage = (e) => {
-//         messages.client2.push(e.data);
-//     };
-
-//     server.send("hello everyone");
-//     expect(messages).toEqual({
-//         client1: ["hello everyone"],
-//         client2: ["hello everyone"],
-//     });
-// });
-
 describe('Beacon.constructor', () => {
     it('starts a websocket and emit ready event', async() => {
         const beacon = await new Promise<Beacon>((resolve) => {

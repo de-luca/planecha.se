@@ -16,7 +16,7 @@ interface Response<T> {
     data: T
 }
 
-interface SignalData {
+export interface SignalData {
     peerId: string;
     data: Record<string, unknown>;
 }
