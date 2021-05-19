@@ -34,7 +34,7 @@ export abstract class Map {
       return this.deck.length;
     }
 
-    public abstract planeswalk(coordinates: Coordinates): void;
+    public abstract planeswalk(coordinates?: Coordinates): void;
 
     protected draw<T extends Card>(): T {
       // Reach for the top card
