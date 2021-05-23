@@ -1,6 +1,16 @@
 <template>
   <div class="container">
-    JOIN GAME
+    <div class="field">
+      <label class="label">Room ID</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="00000000-0000-0000-0000-000000000000">
+      </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <button class="button is-fullwidth">Join</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -12,6 +22,7 @@ export default class JoinGame extends Vue {}
 
 <style lang="scss" scoped>
 .container {
-  background-color: blue;
+  width: 800px;
+  padding-top: 2rem;
 }
 </style>

@@ -2,6 +2,7 @@ import { Container } from 'typedi';
 import { Map } from './Map';
 import { DeckProvider } from '../../services/DeckProvider';
 import { Card, Plane } from '../card';
+import { MapType } from './MapInterface';
 
 export class Classic extends Map {
   public constructor() {
@@ -10,6 +11,10 @@ export class Classic extends Map {
     this.deck = Container.get(DeckProvider).getDeck();
     this._played = [];
     this._active = [this.drawPlane()];
+  }
+
+  public get type(): MapType {
+    return MapType.CLASSIC;
   }
 
   private drawPlane(): Plane {

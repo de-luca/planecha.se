@@ -13,13 +13,13 @@ export class PeerMap {
         });
     }
 
-    public addPeer(...ids: Array<string>): void {
-        for (const id of ids) {
-            const peer = new SimplePeer({ initiator: true });
-            peer.on('signal', data => this.beacon.signal(id, data));
-            this.peers.set(id, peer);
-        }
-    }
+    // public addPeer(...ids: Array<string>): void {
+    //     for (const id of ids) {
+    //         const peer = new SimplePeer({ initiator: true });
+    //         peer.on('signal', data => this.beacon.signal(id, data));
+    //         this.peers.set(id, peer);
+    //     }
+    // }
 
     private signal(data: SignalData): void {
         const peerId = data.peerId;
@@ -30,7 +30,7 @@ export class PeerMap {
             this.peers.set(peerId, peer);
         }
 
-        (this.peers.get(peerId) as Peer)
-            .signal(data.data.data as SimplePeer.SignalData);
+        // (this.peers.get(peerId) as Peer)
+        //     .signal(data.data.data as SimplePeer.SignalData);
     }
 }

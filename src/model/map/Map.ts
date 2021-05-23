@@ -1,18 +1,12 @@
 import _shuffle from 'lodash.shuffle';
+import { resolve } from 'path';
 import { Card } from '../card';
+import { Coordinates, MapInterface, MapType } from './MapInterface';
 
-export interface Coordinates {
-  x: number;
-  y: number;
-}
-
-export abstract class Map {
+export abstract class Map implements MapInterface {
     protected deck: Array<Card>;
-
     protected _played: Array<Card>;
-
     protected _active: Array<Card>;
-
     protected globalState?: string;
 
     protected constructor() {
@@ -22,12 +16,18 @@ export abstract class Map {
       this.globalState = undefined;
     }
 
+    public abstract get type(): MapType;
+
     public get active(): Array<Card> {
       return this._active;
     }
 
     public get played(): Array<Card> {
       return this._played;
+    }
+
+    public get ready(): Promise<void> {
+      return new Promise(resolve => resolve());
     }
 
     public getDeckSize(): number {

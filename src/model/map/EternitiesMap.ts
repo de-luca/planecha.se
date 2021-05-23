@@ -6,9 +6,10 @@ eslint no-param-reassign: [
 */
 
 import { Container } from 'typedi';
-import { Coordinates, Map } from './Map';
+import { Map } from './Map';
 import { Plane } from '../card';
 import { DeckProvider } from '../../services/DeckProvider';
+import { Coordinates, MapType } from './MapInterface';
 
 export enum TileStatus {
     ACTIVE = 'active',
@@ -23,17 +24,12 @@ export interface Tile {
 
 export class EternitiesMap extends Map {
     private static readonly activeRange = 1;
-
     private static readonly maxRange = 3;
-
     private static readonly center: Coordinates = { x: 0, y: 0 };
 
     protected deck: Array<Plane>;
-
     protected _played: Array<Plane>;
-
     protected _active: Array<Plane>;
-
     private tiles: Array<Tile>;
 
     public constructor() {
@@ -43,6 +39,10 @@ export class EternitiesMap extends Map {
       this._played = [];
       this._active = [this.draw()];
       this.tiles = this.initializeTiles();
+    }
+
+    public get type(): MapType {
+      return MapType.ETERNITIES;
     }
 
     private initializeTiles(): Array<Tile> {

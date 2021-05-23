@@ -11,10 +11,6 @@ class Props {
 }
 
 export default class Card extends Vue.with(Props) {
-  public created() {
-    console.log(this.card);
-  }
-
   public get imgSrc(): string {
     return `/cards/${this.card.id}.png`;
   }
