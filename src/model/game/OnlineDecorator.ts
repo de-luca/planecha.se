@@ -2,29 +2,48 @@ import { Card } from "../card";
 import { Map } from "../map";
 import { Coordinates, MapInterface, MapType } from "../map/MapInterface";
 import { Beacon } from "../net/Beacon";
+import { OnlineInterface } from "../net/OnlineInterface";
 import { PeerMap } from "../net/PeerMap";
 
-export class OnlineDecorator implements MapInterface {
+export class OnlineDecorator implements MapInterface, OnlineInterface {
     private beacon: Beacon;
     private peers: PeerMap;
-    private map: Map;
+    private map: MapInterface;
 
-    private lock: Promise<void>;
+    private readyState: Promise<void>;
 
-    public constructor(map: Map) {
+    public constructor(map: MapInterface) {
         this.map = map;
 
         this.beacon = new Beacon();
-        this.lock = new Promise<void>((resolve) => {
+        this.readyState = new Promise<void>((resolve) => {
             this.beacon.addEventListener('ready', _ => resolve());
-        }).then(_ => this.beacon.create());
+        });
+        this.peers = new PeerMap(this.beacon);   
+    }
 
-        this.beacon.addEventListener('created', ((event: CustomEvent<string>) => {
-            console.log('CREATED', event.detail);
+    public create(): Promise<string> {
+        const createPromise = new Promise<string>((resolve) => {
+            this.beacon.addEventListener('created', ((event: CustomEvent<string>) => {
+                console.log('CREATED', event.detail);
+                // store.commit('');
+                resolve(event.detail);
+            }) as EventListener);
+        });
+        
+        this.beacon.create();
+
+        return createPromise;
+    }
+
+    public join(roomId: string): void {
+        this.beacon.addEventListener('joined', ((event: CustomEvent<Array<string>>) => {
+            console.log('JOINED', event.detail);
+            this.peers.addPeer(...event.detail);
             // store.commit('');
         }) as EventListener);
 
-        this.peers = new PeerMap(this.beacon);   
+        this.beacon.join(roomId);
     }
 
     public get type(): MapType {
@@ -40,7 +59,7 @@ export class OnlineDecorator implements MapInterface {
     }
 
     public get ready(): Promise<void> {
-        return this.lock;
+        return this.readyState;
     }
     
     public getDeckSize(): number {

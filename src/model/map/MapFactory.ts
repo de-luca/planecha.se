@@ -1,5 +1,6 @@
 import { OnlineDecorator } from "../game/OnlineDecorator";
 import { Classic } from "./Classic";
+import { EmptyMap } from "./EmptyMap";
 import { EternitiesMap } from "./EternitiesMap";
 import { Map } from "./Map";
 import { MapInterface, MapType } from "./MapInterface";
@@ -33,8 +34,10 @@ export class MapFactory {
     return map;
   }
 
-  private buildMap(): Map {
+  private buildMap(): MapInterface {
     switch (this.type) {
+      case MapType.EMPTY:
+        return new EmptyMap();
       case MapType.CLASSIC:
         return new Classic();
       case MapType.ETERNITIES:

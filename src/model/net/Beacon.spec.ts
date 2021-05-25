@@ -40,12 +40,15 @@ describe('Beacon.send', () => {
             params: { roomId: '00000000-0000-0000-0000-000000000000' },
         });
 
-        beacon.signal('00000000-0000-0000-0000-000000000000', { foo: 'bar' });
+        beacon.signal(
+            '00000000-0000-0000-0000-000000000000', 
+            { type: 'offer', data: { foo: 'bar' } },
+        );
         await expect(srv).toReceiveMessage({
             method: 'signal',
             params: {
                 peerId: '00000000-0000-0000-0000-000000000000',
-                data: { foo: 'bar' },
+                data: { type: 'offer', data: { foo: 'bar' } },
             },
         });
     });

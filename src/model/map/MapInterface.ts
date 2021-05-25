@@ -6,6 +6,7 @@ export interface Coordinates {
 }
 
 export enum MapType {
+  EMPTY = 'empty',
   CLASSIC = 'classic',
   ETERNITIES = 'eternities',
 }

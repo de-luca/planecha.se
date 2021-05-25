@@ -42,3 +42,15 @@ docker-compose up [-d]
 Portions of this project are unofficial Fan Content permitted under the Wizards of the Coast Fan Content Policy.  
 The literal and graphical information presented on this site about Magic: The Gathering, including card images, the mana symbols, and Oracle text, is copyright Wizards of the Coast, LLC, a subsidiary of Hasbro, Inc.  
 This project is not produced by, endorsed by, supported by, or affiliated with Wizards of the Coast.
+
+
+
+Board:
+    navigation: Back/Close/(Save?)
+    map: slot? display the correct component depending on online or not
+        - all the shit in board right now
+    status/whatever on the bottom
+
+
+On close game: Save? => Save state to localstorage
+

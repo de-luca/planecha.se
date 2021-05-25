@@ -1,7 +1,16 @@
-import SimplePeer, { Instance as Peer } from 'simple-peer';
-import { Beacon, SignalData } from './Beacon';
+import { Beacon, SignalData, SignalPayload } from './Beacon';
+
+type Peer = { 
+    connection: RTCPeerConnection,
+    channel: RTCDataChannel,
+}
 
 export class PeerMap {
+    private static readonly channelConfig = { negotiated: true, id: 0 };
+    private static readonly RTCConfig = {
+        iceServers: [{ urls: "stun:stun.1.google.com:19302" }],
+    };
+
     private peers: Map<string, Peer>;
     private beacon: Beacon;
 
@@ -9,28 +18,82 @@ export class PeerMap {
         this.peers = new Map();
         this.beacon = beacon;
         this.beacon.addEventListener('signal', (ev) => {
-            this.signal((ev as CustomEvent<SignalData>).detail);
+            this.signal((ev as CustomEvent<SignalPayload>).detail);
         });
     }
 
-    // public addPeer(...ids: Array<string>): void {
-    //     for (const id of ids) {
-    //         const peer = new SimplePeer({ initiator: true });
-    //         peer.on('signal', data => this.beacon.signal(id, data));
-    //         this.peers.set(id, peer);
-    //     }
-    // }
+    public async addPeer(...ids: Array<string>): Promise<void> {
+        for (const id of ids) {
+            const peer = this.buildPeer(id);
 
-    private signal(data: SignalData): void {
+            const offer = await peer.connection.createOffer();
+            await peer.connection.setLocalDescription(offer);
+            this.beacon.signal(id, offer as SignalData);
+
+            this.peers.set(id, peer);
+        }
+    }
+
+    private buildPeer(id: string): Peer {
+        const connection = new RTCPeerConnection(PeerMap.RTCConfig);
+        const channel = connection.createDataChannel(id, PeerMap.channelConfig);
+
+        channel.onopen = _ => console.log('CHANNEL OPEN');
+        channel.onmessage = e => console.log(e);
+        connection.oniceconnectionstatechange = (_) => {
+            console.log('[oniceconnectionstatechange]', connection.iceConnectionState);
+        };
+        connection.onicecandidate = ({ candidate }) => {
+            if (candidate) {
+                this.beacon.signal(id, {
+                    type: 'icecandidate',
+                    candidate: candidate.toJSON() as unknown,
+                });
+            }
+        };
+
+        return { connection, channel };
+    }
+
+    private async signal(data: SignalPayload): Promise<void> {
         const peerId = data.peerId;
 
         if (!this.peers.has(peerId)) {
-            const peer = new SimplePeer();
-            peer.on('signal', data => this.beacon.signal(peerId, data));
-            this.peers.set(peerId, peer);
+            this.peers.set(peerId, this.buildPeer(peerId));
         }
 
-        // (this.peers.get(peerId) as Peer)
-        //     .signal(data.data.data as SimplePeer.SignalData);
+        await this.handleSignal(
+            (this.peers.get(data.peerId) as Peer).connection,
+            data,
+        );
     }
+
+    private async handleSignal(
+        connection: RTCPeerConnection, 
+        data: SignalPayload
+    ): Promise<void> {
+        switch (data.data.type) {
+            case 'icecandidate':
+                await connection.addIceCandidate(
+                    new RTCIceCandidate(
+                        data.data.candidate as RTCIceCandidateInit,
+                    ),
+                );
+                break;
+            case 'offer':
+                await connection.setRemoteDescription(
+                    data.data as RTCSessionDescriptionInit,
+                );
+                const answer = await connection.createAnswer();
+                await connection.setLocalDescription(answer);
+                this.beacon.signal(data.peerId, answer as SignalData);
+                break;
+            case 'answer':
+                await connection.setRemoteDescription(
+                    data.data as RTCSessionDescriptionInit,
+                );
+                break;
+        }
+    }
+    
 }

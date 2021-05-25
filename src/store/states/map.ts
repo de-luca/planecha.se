@@ -9,10 +9,11 @@ import {
 import { Card } from "@/model/card";
 import { MapInterface, MapType } from '@/model/map/MapInterface';
 import { FactoryProps, MapFactory } from '@/model/map/MapFactory';
+import { OnlineInterface } from '@/model/net/OnlineInterface';
 
 // Declare state
 export type State = {
-    map?: MapInterface;
+    map?: MapInterface | MapInterface & OnlineInterface;
     online: boolean;
 };
 
@@ -49,6 +50,7 @@ export const mutations: Mutations = {
 // Action enums
 export enum ActionTypes {
     INIT = 'INIT',
+    JOIN = 'JOIN',
 }
 
 // Actions context
@@ -64,18 +66,32 @@ export interface Actions {
     [ActionTypes.INIT](
         { commit }: AugmentedActionContext,
         payload: FactoryProps,
+    ): void,
+    [ActionTypes.JOIN](
+        { commit }: AugmentedActionContext,
+        payload: { roomId: string },
     ): void
  }
 
 // Define actions
 export const actions: ActionTree<State, undefined> & Actions = {
-    async [ActionTypes.INIT](
-        { commit }, 
-        payload: FactoryProps,
-    ) {
+    async [ActionTypes.INIT]({ commit }, payload: FactoryProps) {
         try {
             commit(MutationTypes.INIT, payload);
             await (<MapInterface>state.map).ready;
+            
+            if (payload.online) {
+                await (<OnlineInterface>state.map).create();
+            }
+        } catch (err) {
+            // some error handling logic
+        }
+    },
+    async [ActionTypes.JOIN]({ commit }, payload: { roomId: string }) {
+        try {
+            commit(MutationTypes.INIT, { type: MapType.EMPTY, online: true });
+            await (<MapInterface>state.map).ready;
+            (<OnlineInterface>state.map).join(payload.roomId);
         } catch (err) {
             // some error handling logic
         }

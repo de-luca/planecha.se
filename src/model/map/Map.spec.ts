@@ -2,6 +2,7 @@ import { Container } from 'typedi';
 import { DeckProvider } from '../../services/DeckProvider';
 import { Map } from '.';
 import { Card, Plane } from '../card';
+import { MapType } from './MapInterface';
 
 class TestMap extends Map {
   public constructor() {
@@ -10,6 +11,10 @@ class TestMap extends Map {
     this.deck = Container.get(DeckProvider).getDeck();
     this._played = [];
     this._active = [];
+  }
+
+  public get type(): MapType {
+    throw new Error('Method not implemented.');
   }
 
   public planeswalk(): void {

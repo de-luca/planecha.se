@@ -17,8 +17,13 @@ interface Response<T> {
 }
 
 export interface SignalData {
+    type: 'offer' | 'answer' | 'icecandidate';
+    [key: string]: unknown;
+}
+
+export interface SignalPayload {
     peerId: string;
-    data: Record<string, unknown>;
+    data: SignalData;
 }
 
 type Param = {} | { roomId: string } | SignalData;
@@ -41,7 +46,7 @@ export class Beacon extends EventTarget {
         this.send(Method.JOIN, { roomId });
     }
 
-    public signal(peerId: string, data: Record<string, unknown>): void {
+    public signal(peerId: string, data: SignalData): void {
         this.send(Method.SIGNAL, { peerId, data });
     }
 
