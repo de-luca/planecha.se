@@ -1,22 +1,17 @@
 import { Container } from 'typedi';
-import { DeckProvider } from '../../services/DeckProvider';
+import { DeckProvider } from '@/services/DeckProvider';
 import { Map } from '.';
 import { Card, Plane } from '../card';
 import { MapType } from './MapInterface';
+import { Props } from './Map';
 
 class TestMap extends Map {
-  public constructor() {
-    super();
-
-    this.deck = Container.get(DeckProvider).getDeck();
-    this._played = [];
-    this._active = [];
+  public constructor(props: Props) {
+    super(props);
   }
-
   public get type(): MapType {
     throw new Error('Method not implemented.');
   }
-
   public planeswalk(): void {
     throw new Error('Method not implemented.');
   }
@@ -24,14 +19,18 @@ class TestMap extends Map {
 
 describe('Map.draw', () => {
   it('draws a card', () => {
-    const map = new TestMap();
+    const map = new TestMap({
+      deck: Container.get(DeckProvider).getDeck(),
+    });
 
     expect(map['draw']()).toBeInstanceOf(Card);
     expect(map['deck']).toHaveLength(85);
   });
 
   it('reshuffle and draws a card', () => {
-    const map = new TestMap();
+    const map = new TestMap({
+      deck: Container.get(DeckProvider).getDeck(),
+    });
     // eslint-disable-next-line prefer-destructuring
     const deck = map['deck'];
     map['_played'] = deck;
@@ -44,7 +43,9 @@ describe('Map.draw', () => {
 
 describe('Map.revealUntil', () => {
   it('reveals a given number of requested card', () => {
-    const map = new TestMap();
+    const map = new TestMap({
+      deck: Container.get(DeckProvider).getDeck(),
+    });
     const cards = map['revealUntil'](2, Plane);
 
     expect(cards.cards).toHaveLength(2);
@@ -57,7 +58,9 @@ describe('Map.revealUntil', () => {
 
 describe('Map.putOnTop', () => {
   it('puts given cards on top of the deck', () => {
-    const map = new TestMap();
+    const map = new TestMap({
+      deck: Container.get(DeckProvider).getDeck(),
+    });
     // pick a card from the deck
     const card = map['deck'][1];
 
@@ -69,7 +72,9 @@ describe('Map.putOnTop', () => {
 
 describe('Map.putOnTheBottom', () => {
   it('puts given cards on the bottom of the deck', () => {
-    const map = new TestMap();
+    const map = new TestMap({
+      deck: Container.get(DeckProvider).getDeck(),
+    });
     // pick a card from the deck
     const card = map['deck'][1];
 

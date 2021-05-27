@@ -1,5 +1,5 @@
-import { DeckProvider } from "@/services/DeckProvider";
 import { Inject, Service } from "typedi";
+import { DeckProvider } from "@/services/DeckProvider";
 import { Card, Plane } from "../card";
 import { OnlineDecorator } from "./OnlineDecorator";
 import { Classic } from "./Classic";

@@ -1,9 +1,13 @@
+import Container from 'typedi';
+import { DeckProvider } from '@/services/DeckProvider';
 import { Classic } from '.';
 import { Plane } from '../card';
 
 describe('Classic.drawPlane', () => {
   it('draws a plane', () => {
-    const map = new Classic();
+    const map = new Classic({
+      deck: Container.get(DeckProvider).getDeck(),
+    });
 
     expect(map['drawPlane']()).toBeInstanceOf(Plane);
     expect(map['deck']).toHaveLength(84);
@@ -12,7 +16,9 @@ describe('Classic.drawPlane', () => {
 
 describe('Classic.planeswalk', () => {
   it('changes active card', () => {
-    const map = new Classic();
+    const map = new Classic({
+      deck: Container.get(DeckProvider).getDeck(),
+    });
     const startCard = map['active'];
     const deckSize = map['deck'].length;
     const playedSize = map['played'].length;

@@ -1,23 +1,31 @@
+import Container from 'typedi';
+import { DeckProvider } from '@/services/DeckProvider';
 import { EternitiesMap } from '.';
 
 describe('EternitiesMap.initializeTiles', () => {
   it('initializes board tiles', () => {
     // it's called in the constructor...
-    const map = new EternitiesMap();
+    const map = new EternitiesMap({
+      deck: Container.get(DeckProvider).getPlaneDeck(),
+    });
     expect(map['tiles']).toHaveLength(5);
   });
 });
 
 describe('EternitiesMap.planeswalk', () => {
   it('changes current active plane', () => {
-    const map = new EternitiesMap();
+    const map = new EternitiesMap({
+      deck: Container.get(DeckProvider).getPlaneDeck(),
+    });
     const currentActive = map['active'];
     map.planeswalk({ x: 1, y: 0 });
     expect(map['active']).not.toEqual(currentActive);
   });
 
   it('shifts the board right', () => {
-    const map = new EternitiesMap();
+    const map = new EternitiesMap({
+      deck: Container.get(DeckProvider).getPlaneDeck(),
+    });
     const tiles = map.planeswalk({ x: 1, y: 0 });
     expect(tiles).toHaveLength(8);
     expect(tiles).toEqual(
@@ -30,7 +38,9 @@ describe('EternitiesMap.planeswalk', () => {
   });
 
   it('shifts the board left', () => {
-    const map = new EternitiesMap();
+    const map = new EternitiesMap({
+      deck: Container.get(DeckProvider).getPlaneDeck(),
+    });
     const tiles = map.planeswalk({ x: -1, y: 0 });
     expect(tiles).toHaveLength(8);
     expect(tiles).toEqual(
@@ -43,7 +53,9 @@ describe('EternitiesMap.planeswalk', () => {
   });
 
   it('shifts the board up', () => {
-    const map = new EternitiesMap();
+    const map = new EternitiesMap({
+      deck: Container.get(DeckProvider).getPlaneDeck(),
+    });
     const tiles = map.planeswalk({ x: 0, y: 1 });
     expect(tiles).toHaveLength(8);
     expect(tiles).toEqual(
@@ -56,7 +68,9 @@ describe('EternitiesMap.planeswalk', () => {
   });
 
   it('shifts the board down', () => {
-    const map = new EternitiesMap();
+    const map = new EternitiesMap({
+      deck: Container.get(DeckProvider).getPlaneDeck(),
+    });
     const tiles = map.planeswalk({ x: 0, y: -1 });
     expect(tiles).toHaveLength(8);
     expect(tiles).toEqual(
@@ -69,7 +83,9 @@ describe('EternitiesMap.planeswalk', () => {
   });
 
   it('cleanup planes that are too far away', () => {
-    const map = new EternitiesMap();
+    const map = new EternitiesMap({
+      deck: Container.get(DeckProvider).getPlaneDeck(),
+    });
 
     let tiles = map.planeswalk({ x: 0, y: -1 });
     expect(tiles).toHaveLength(8);
