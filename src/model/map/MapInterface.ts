@@ -11,6 +11,13 @@ export enum MapType {
   ETERNITIES = 'eternities',
 }
 
+export interface Exported {
+  type: MapType;
+  deck: Array<string>;
+  played: Array<string>;
+  active: Array<string>;
+}
+
 export interface MapInterface {
   type: MapType;
   active: Array<Card>;
@@ -18,4 +25,5 @@ export interface MapInterface {
   ready: Promise<void>;
   getDeckSize(): number;
   planeswalk(coordinates?: Coordinates): void;
+  export(): Exported;
 }

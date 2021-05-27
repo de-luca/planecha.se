@@ -26,4 +26,10 @@ export class DeckProvider {
       return this.getDeck()
         .filter((c) => c instanceof Plane) as Array<Plane>;
     }
+
+    public getSpecificDeck<T extends Card>(cards: Array<string>): Array<T> {
+      return cards.map((id) => {
+        return this.cards.find(c => c.id === id) as T;
+      });
+    }
 }

@@ -1,4 +1,8 @@
+import Container from 'typedi';
+import { MapFactory } from '../map/MapFactory';
+import { Exported, MapInterface } from '../map/MapInterface';
 import { Beacon, SignalData, SignalPayload } from './Beacon';
+import { getHandler, Payload, Event, parse } from './Handler';
 
 type Peer = { 
     connection: RTCPeerConnection,
@@ -22,9 +26,46 @@ export class PeerMap {
         });
     }
 
-    public async addPeer(...ids: Array<string>): Promise<void> {
+    public broadcast(): void {
+        const payload: Payload<{}> = {
+            event: Event.PLANESWALK,
+            data: {},
+        };
+        this.peers.forEach(peer => peer.channel.send(JSON.stringify(payload)));
+    }
+
+    public async requestInit(): Promise<MapInterface> {
+        const p = this.peers.values().next().value as Peer;
+        const payload: Payload<{}> = {
+            event: Event.REQUEST_INIT,
+            data: {},
+        };
+
+        const initRequest = new Promise<MapInterface>((resolve) => {
+            const handler = (event: MessageEvent<string>) => {
+                const payload = parse<Exported>(event.data);
+                if (payload.event === Event.INIT) {
+                    const map = Container.get(MapFactory).restore(payload.data);
+                    p.channel.removeEventListener('message', handler);
+                    resolve(map);
+                }
+            }
+            p.channel.addEventListener('message', handler);
+        });
+
+        p.channel.send(JSON.stringify(payload));
+        return await initRequest;
+    }
+
+    public async addPeer(...ids: Array<string>): Promise<Array<void>> {
+        const channelOpen: Array<Promise<void>> = [];
+
         for (const id of ids) {
             const peer = this.buildPeer(id);
+
+            channelOpen.push(new Promise((resolve) => {
+                peer.channel.onopen = _ => resolve();
+            }));
 
             const offer = await peer.connection.createOffer();
             await peer.connection.setLocalDescription(offer);
@@ -32,14 +73,15 @@ export class PeerMap {
 
             this.peers.set(id, peer);
         }
+
+        return Promise.all(channelOpen);
     }
 
     private buildPeer(id: string): Peer {
         const connection = new RTCPeerConnection(PeerMap.RTCConfig);
         const channel = connection.createDataChannel(id, PeerMap.channelConfig);
 
-        channel.onopen = _ => console.log('CHANNEL OPEN');
-        channel.onmessage = e => console.log(e);
+        channel.onmessage = getHandler();
         connection.oniceconnectionstatechange = (_) => {
             console.log('[oniceconnectionstatechange]', connection.iceConnectionState);
         };
@@ -59,7 +101,8 @@ export class PeerMap {
         const peerId = data.peerId;
 
         if (!this.peers.has(peerId)) {
-            this.peers.set(peerId, this.buildPeer(peerId));
+            const peer = this.buildPeer(peerId);
+            this.peers.set(peerId, peer);
         }
 
         await this.handleSignal(
@@ -95,5 +138,4 @@ export class PeerMap {
                 break;
         }
     }
-    
 }

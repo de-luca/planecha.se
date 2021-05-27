@@ -1,5 +1,5 @@
 import { Card } from '../card';
-import { Coordinates, MapInterface, MapType } from './MapInterface';
+import { Coordinates, Exported, MapInterface, MapType } from './MapInterface';
 
 export class EmptyMap implements MapInterface {
   public type: MapType;
@@ -10,6 +10,9 @@ export class EmptyMap implements MapInterface {
     throw new Error('Method not implemented.');
   }
   planeswalk(coordinates?: Coordinates): void {
+    throw new Error('Method not implemented.');
+  }
+  export(): Exported {
     throw new Error('Method not implemented.');
   }
 }

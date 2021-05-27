@@ -1,21 +1,14 @@
 import type { Props } from '.';
 
 export abstract class Card {
-    protected id: string;
-
-    protected oracleId: string;
-
-    protected multiverseIds: Array<number>;
-
-    protected name: string;
-
-    protected scryfallUri: string;
-
-    protected typeLine: string;
-
-    protected oracleText: string;
-
-    protected gathererUri: string;
+    public id: string;
+    public oracleId: string;
+    public multiverseIds: Array<number>;
+    public name: string;
+    public scryfallUri: string;
+    public typeLine: string;
+    public oracleText: string;
+    public gathererUri: string;
 
     protected constructor(props: Props) {
       this.id = props.id;

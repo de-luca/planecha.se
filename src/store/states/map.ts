@@ -8,8 +8,9 @@ import {
 
 import { Card } from "@/model/card";
 import { MapInterface, MapType } from '@/model/map/MapInterface';
-import { FactoryProps, MapFactory } from '@/model/map/MapFactory';
+import { BuildProps, MapFactory } from '@/model/map/MapFactory';
 import { OnlineInterface } from '@/model/net/OnlineInterface';
+import Container from 'typedi';
 
 // Declare state
 export type State = {
@@ -32,14 +33,14 @@ export enum MutationTypes {
 
 // Mutation contracts
 export type Mutations<S = State> = {
-    [MutationTypes.INIT](state: S, payload: FactoryProps): void
+    [MutationTypes.INIT](state: S, payload: BuildProps): void
     [MutationTypes.PLANESWALK](state: S): void
 }
 
 // Define mutations
 export const mutations: Mutations = {
-    [MutationTypes.INIT](state: State, payload: FactoryProps) {
-        state.map = new MapFactory(payload).build();
+    [MutationTypes.INIT](state: State, payload: BuildProps) {
+        state.map = Container.get(MapFactory).build(payload);
         state.online = payload.online;
     },
     [MutationTypes.PLANESWALK](state: State) {
@@ -51,13 +52,14 @@ export const mutations: Mutations = {
 export enum ActionTypes {
     INIT = 'INIT',
     JOIN = 'JOIN',
+    PLANESWALK = 'PLANESWALK',
 }
 
 // Actions context
 type AugmentedActionContext = {
     commit<K extends keyof Mutations>(
         key: K,
-        payload: Parameters<Mutations[K]>[1],
+        payload?: Parameters<Mutations[K]>[1],
     ): ReturnType<Mutations[K]>
 } & Omit<ActionContext<State, undefined>, 'commit'>
 
@@ -65,17 +67,20 @@ type AugmentedActionContext = {
 export interface Actions {
     [ActionTypes.INIT](
         { commit }: AugmentedActionContext,
-        payload: FactoryProps,
+        payload: BuildProps,
     ): void,
     [ActionTypes.JOIN](
         { commit }: AugmentedActionContext,
         payload: { roomId: string },
-    ): void
+    ): void,
+    [ActionTypes.PLANESWALK](
+        { commit }: AugmentedActionContext,
+    ): void,
  }
 
 // Define actions
 export const actions: ActionTree<State, undefined> & Actions = {
-    async [ActionTypes.INIT]({ commit }, payload: FactoryProps) {
+    async [ActionTypes.INIT]({ commit }, payload: BuildProps) {
         try {
             commit(MutationTypes.INIT, payload);
             await (<MapInterface>state.map).ready;
@@ -91,15 +96,20 @@ export const actions: ActionTree<State, undefined> & Actions = {
         try {
             commit(MutationTypes.INIT, { type: MapType.EMPTY, online: true });
             await (<MapInterface>state.map).ready;
-            (<OnlineInterface>state.map).join(payload.roomId);
+            await (<OnlineInterface>state.map).join(payload.roomId);
         } catch (err) {
             // some error handling logic
         }
+    },
+    [ActionTypes.PLANESWALK]({ commit }) {
+        commit(MutationTypes.PLANESWALK);
+        (<OnlineInterface>state.map).requestPlaneswalk();
     },
 }
 
 // Getters types
 export type Getters = {
+    online(state: State): boolean;
     map(state: State): MapInterface;
     type(state: State): MapType;
     active(state: State): Array<Card>;
@@ -109,11 +119,12 @@ export type Getters = {
 
 // Getters
 export const getters: Getters = {
-    map: (state) => <MapInterface>state.map,
-    type: (state) => (<MapInterface>state.map).type,
-    active: (state) => (<MapInterface>state.map).active,
-    played: (state) => (<MapInterface>state.map).played,
-    deckSize: (state) => (<MapInterface>state.map).getDeckSize(),
+    online: state => state.online,
+    map: state => <MapInterface>state.map,
+    type: state => (<MapInterface>state.map).type,
+    active: state => (<MapInterface>state.map).active,
+    played: state => (<MapInterface>state.map).played,
+    deckSize: state => (<MapInterface>state.map).getDeckSize(),
 }
 
 // Setup store type
@@ -133,7 +144,7 @@ export type Store<S = State> = Omit<
 } & {
     dispatch<K extends keyof Actions>(
         key: K,
-        payload: Parameters<Actions[K]>[1],
+        payload?: Parameters<Actions[K]>[1],
         options?: DispatchOptions,
     ): ReturnType<Actions[K]>
 };

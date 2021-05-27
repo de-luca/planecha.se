@@ -5,10 +5,8 @@ eslint no-param-reassign: [
 ]
 */
 
-import { Container } from 'typedi';
 import { Map } from './Map';
 import { Plane } from '../card';
-import { DeckProvider } from '../../services/DeckProvider';
 import { Coordinates, MapType } from './MapInterface';
 
 export enum TileStatus {
@@ -22,6 +20,12 @@ export interface Tile {
     plane: Array<Plane>;
 }
 
+interface Props {
+  deck: Array<Plane>;
+  played?: Array<Plane>;
+  active?: Array<Plane>;
+}
+
 export class EternitiesMap extends Map {
     private static readonly activeRange = 1;
     private static readonly maxRange = 3;
@@ -32,12 +36,12 @@ export class EternitiesMap extends Map {
     protected _active: Array<Plane>;
     private tiles: Array<Tile>;
 
-    public constructor() {
-      super();
+    public constructor(props: Props) {
+      super(props);
 
-      this.deck = Container.get(DeckProvider).getPlaneDeck();
+      this.deck = props.deck;
       this._played = [];
-      this._active = [this.draw()];
+      this._active = props.active ?? [this.draw()];
       this.tiles = this.initializeTiles();
     }
 

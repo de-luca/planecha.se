@@ -29,6 +29,7 @@ export default class JoinGame extends Vue {
   
   public async join() {
     await this.store.dispatch(ActionTypes.JOIN, { roomId: this.roomId });
+    this.$router.push('/board');
   }
 }
 </script>

@@ -1,7 +1,13 @@
 import _shuffle from 'lodash.shuffle';
 import { resolve } from 'path';
 import { Card } from '../card';
-import { Coordinates, MapInterface, MapType } from './MapInterface';
+import { Coordinates, Exported, MapInterface, MapType } from './MapInterface';
+
+export interface Props {
+  deck: Array<Card>;
+  played?: Array<Card>;
+  active?: Array<Card>;
+}
 
 export abstract class Map implements MapInterface {
     protected deck: Array<Card>;
@@ -9,10 +15,10 @@ export abstract class Map implements MapInterface {
     protected _active: Array<Card>;
     protected globalState?: string;
 
-    protected constructor() {
-      this.deck = [];
-      this._played = [];
-      this._active = [];
+    protected constructor(props: Props) {
+      this.deck = props.deck;
+      this._played = props.played ?? [];
+      this._active = props.active ?? [];
       this.globalState = undefined;
     }
 
@@ -78,5 +84,23 @@ export abstract class Map implements MapInterface {
 
     protected putOnTheBottom(cards: Array<Card>): void {
       this.deck.push(..._shuffle(cards));
+    }
+
+    public export(): Exported {
+      return {
+        type: this.type,
+        deck: this.deck.reduce<Array<string>>((acc, card) => {
+          acc.push(card.id);
+          return acc;
+        }, []),
+        played: this._played.reduce<Array<string>>((acc, card) => {
+          acc.push(card.id);
+          return acc;
+        }, []),
+        active: this._active.reduce<Array<string>>((acc, card) => {
+          acc.push(card.id);
+          return acc;
+        }, []),
+      };
     }
 }

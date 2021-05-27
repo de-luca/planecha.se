@@ -10,7 +10,7 @@ export interface Counter {
 }
 
 export class Plane extends Card {
-    private counter?: Counter;
+    public counter?: Counter;
 
     public constructor(props: Props) {
       super(props);

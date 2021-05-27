@@ -39,6 +39,8 @@ export default class Board extends Vue {
         return ClassicMap;
       case MapType.ETERNITIES:
         return EternitiesMap;
+      default:
+        throw new Error('Incompatible');
     }
   }
 }
