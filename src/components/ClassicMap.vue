@@ -1,35 +1,39 @@
 <template>
-  <div class="current">
-    <template v-for="a in active" :key="a.id">
-      <Card :card="a" />
-    </template>
-  </div>
+  <div class="map">
+    <div class="active">
+      <template v-for="a in active" :key="a.id">
+        <card :card="a" />
+      </template>
+    </div>
 
-  <div class="deck">
-    <Deck :count="deckSize" />
-  </div>
+    <div class="deck">
+      <deck :count="deckSize" />
+    </div>
 
-  <!-- <div class="played">
-    <template v-for="p in played.slice().reverse()" :key="p.id">
-      <p>{{ p.name }}</p>
-    </template>
-  </div> -->
+    <!-- <div class="played">
+      <template v-for="p in played.slice().reverse()" :key="p.id">
+        <p>{{ p.name }}</p>
+      </template>
+    </div> -->
 
-  <div class="controls">
-    <Controls />
+    <div class="controls">
+      <chaos-btn />
+      <planeswalk-btn />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import Card from '@/components/board/Card.vue';
-import Controls from '@/components/board/Controls.vue';
 import Deck from '@/components/board/Deck.vue';
-import { MutationTypes, Store, useStore } from '@/store';
+import ChaosBtn from '@/components/board/ChaosBtn.vue';
+import PlaneswalkBtn from '@/components/board/PlaneswalkBtn.vue';
+import { Store, useStore } from '@/store';
 import { Card as ModelCard } from '@/model/card';
 
 @Options({
-  components: { Card, Controls, Deck },
+  components: { Card, Deck, ChaosBtn, PlaneswalkBtn },
 })
 export default class ClassicMap extends Vue {
   public store: Store;
@@ -49,12 +53,52 @@ export default class ClassicMap extends Vue {
   public get deckSize(): number {
     return this.store.getters.deckSize;
   }
-
-  public planeswalk() {
-    this.store.commit(MutationTypes.PLANESWALK);
-  }
 }
 </script>
 
 <style lang="scss" scoped>
+.map {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, auto);
+  column-gap: 3rem;
+  row-gap: .5rem;
+  grid-template-areas:
+    "active active deck    "
+    "active active controls"
+    "active active .       "
+    "active active .       "
+  ;
+}
+
+.active {
+  grid-area: active;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.deck {
+  grid-area: deck;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.controls {
+  grid-area: controls;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: .5rem;
+
+  & > button {
+    height: 10rem;
+    width: 10rem;
+  }
+}
 </style>

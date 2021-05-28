@@ -5,3 +5,8 @@
 html, body, #app {
   height: 100%;
 }
+
+svg.control {
+  overflow: visible;
+  max-height: 100%;
+}

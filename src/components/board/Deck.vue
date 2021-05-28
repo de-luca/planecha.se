@@ -1,7 +1,9 @@
 <template>
   <div class="deck-container">
     <img src="/cards/back.png">
-    <div class="count">{{ count }}</div>
+    <div class="count">
+      <strong>{{ count }}</strong> cards remaining
+    </div>
   </div>
 </template>
 
@@ -18,17 +20,13 @@ export default class Deck extends Vue.with(Props) {}
 <style lang="scss" scoped>
 .deck-container {
   position: relative;
+
+  img {
+    height: 15rem;
+  }
 }
 .count {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-
-  color: #000;
-  font-weight: bolder;
-  font-size: 5rem;
-  text-shadow: 1px 1px white;
+  text-align: center;
+  font-size: 1.5rem;
 }
 </style>

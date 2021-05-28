@@ -1,17 +1,17 @@
 <template>
   <div class="board">
-    <div>
-      <i class="fad fa-fw fa-4x fa-toilet-paper"></i>
-      <button class="button is-ghost">Close Game</button>
+    <div class="nav">
+      <span @click="thaNav">
+        <i class="fad fa-fw fa-3x fa-toilet-paper"></i>
+        <i class="fad fa-fw fa-3x fa-dumpster-fire"></i>
+      </span>
+      <button class="button is-light is-warning" @click="close">
+        <i class="fad fa-fw fa-lg fa-bomb"></i>
+        Close Game
+      </button>
     </div>
 
-    <div class="sub-container">
-      <component :is="mapComponent" />
-    </div>
-
-    <div>
-      Whatever status
-    </div>
+    <component class="map" :is="mapComponent" />
   </div>
 </template>
 
@@ -43,77 +43,63 @@ export default class Board extends Vue {
         throw new Error('Incompatible');
     }
   }
+
+  public close(): void {
+    console.log(confirm('Nuke the game?'));
+  }
+
+  public thaNav(): void {
+    console.log('Fucking dumpster fire');
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .board {
-  width: 100%;
   height: 100%;
 
-  display: grid;
-  grid-template-columns: 8rem auto;
-  gap: 25px;
-}
+  padding: 1rem;
 
-.sub-container {
-  width: 1200px;
-  padding-top: 2rem;
+  overflow: hidden;
 
   display: grid;
-  grid-template-columns: 70% auto;
-  gap: 10px;
+  grid-template-rows: 3rem 1fr;
+  gap: .5rem;
   grid-template-areas:
-    "current deck"
-    "current played"
-    "current controls"
+    "nav"
+    "map"
   ;
 }
 
-.current {
-  grid-area: current;
-}
+.nav {
+  grid-area: nav;
 
-.deck {
-  grid-area: deck;
-}
-
-.played {
-  grid-area: played;
-}
-
-.controls {
-  grid-area: controls;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  flex-direction: row;
+  justify-content: space-between;
 
-  .action {
-    display: inline-flex;
-    gap: .5rem;
-    padding-bottom: 7px;
-
-    button {
-      flex: 1 1 0px;
-      height: 6rem;
-
-      &:hover {
-        svg path {
-          filter: drop-shadow(0px 0px 1px #222);
-        }
-      }
-
-      svg path {
-        fill: gray;
-      }
-      
-      .chaos {
-        height: 3.5rem;
-      }
-      .planeswalk {
-        height: 6rem;
-      }
+  span:hover {
+    i {
+      --fa-primary-color: red;
     }
   }
+  
+  span i:first-child {
+    margin-right: 1rem;
+  }
+  
+  button {
+    height: 100%;
+  }
+}
+
+.map {
+  grid-area: map;
+  
+  margin-left: auto;
+  margin-right: auto;
+
+  max-width: 1800px;
+  height: 100%;
 }
 </style>

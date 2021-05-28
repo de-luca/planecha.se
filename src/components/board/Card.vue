@@ -18,4 +18,10 @@ export default class Card extends Vue.with(Props) {
 </script>
 
 <style lang="scss" scoped>
+img {
+  max-width: 1040px;
+  max-height: 1490px;
+  filter: drop-shadow(1px 1px 1px #585858);
+  border-radius: 38px;
+}
 </style>
