@@ -1,3 +1,4 @@
+import { Log } from '@/store/states/map';
 import { Card } from '../card';
 import { Coordinates, Exported, MapInterface, MapType } from './MapInterface';
 
@@ -13,6 +14,9 @@ export class EmptyMap implements MapInterface {
     throw new Error('Method not implemented.');
   }
   export(): Exported {
+    throw new Error('Method not implemented.');
+  }
+  getLog(): Omit<Log, 'initiator'> {
     throw new Error('Method not implemented.');
   }
 }

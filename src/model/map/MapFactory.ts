@@ -2,17 +2,17 @@ import { Inject, Service } from "typedi";
 import { DeckProvider } from "@/services/DeckProvider";
 import { Card, Plane } from "../card";
 import { OnlineDecorator } from "./OnlineDecorator";
-import { Classic } from "./Classic";
-import { EmptyMap } from "./EmptyMap";
-import { EternitiesMap } from "./EternitiesMap";
+import { Classic, EmptyMap, EternitiesMap } from ".";
 import { Exported, MapInterface, MapType } from "./MapInterface";
 
-export interface AdvancedOptions {}
+export interface AdvancedOptions {
+  name?: string;
+}
 
 export interface BuildProps {
   type: MapType,
   online: boolean,
-  advanced?: AdvancedOptions,
+  advanced: AdvancedOptions,
 }
 
 @Service()
@@ -39,7 +39,7 @@ export class MapFactory {
     }
 
     if (online) {
-      return new OnlineDecorator(map);
+      return new OnlineDecorator(map, advanced.name as string);
     }
 
     return map;

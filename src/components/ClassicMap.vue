@@ -10,11 +10,9 @@
       <deck :count="deckSize" />
     </div>
 
-    <!-- <div class="played">
-      <template v-for="p in played.slice().reverse()" :key="p.id">
-        <p>{{ p.name }}</p>
-      </template>
-    </div> -->
+    <div class="logs">
+      <logs />
+    </div>
 
     <div class="controls">
       <chaos-btn />
@@ -29,11 +27,12 @@ import Card from '@/components/board/Card.vue';
 import Deck from '@/components/board/Deck.vue';
 import ChaosBtn from '@/components/board/ChaosBtn.vue';
 import PlaneswalkBtn from '@/components/board/PlaneswalkBtn.vue';
+import Logs from '@/components/board/Logs.vue';
 import { Store, useStore } from '@/store';
 import { Card as ModelCard } from '@/model/card';
 
 @Options({
-  components: { Card, Deck, ChaosBtn, PlaneswalkBtn },
+  components: { Card, Deck, ChaosBtn, PlaneswalkBtn, Logs },
 })
 export default class ClassicMap extends Vue {
   public store: Store;
@@ -60,14 +59,14 @@ export default class ClassicMap extends Vue {
 .map {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(4, auto);
+  grid-template-rows: auto 11rem auto auto;
   column-gap: 3rem;
   row-gap: .5rem;
   grid-template-areas:
     "active active deck    "
     "active active controls"
-    "active active .       "
-    "active active .       "
+    "active active logs     "
+    "active active logs     "
   ;
 }
 
@@ -100,5 +99,10 @@ export default class ClassicMap extends Vue {
     height: 10rem;
     width: 10rem;
   }
+}
+
+.logs {
+  grid-area: logs;
+  overflow: scroll;
 }
 </style>

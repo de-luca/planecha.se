@@ -2,7 +2,7 @@ import Container from 'typedi';
 import { MapFactory } from '../map/MapFactory';
 import { Exported, MapInterface } from '../map/MapInterface';
 import { Beacon, SignalData, SignalPayload } from './Beacon';
-import { getHandler, Payload, Event, parse } from './Handler';
+import { getHandler, Payload, Event, parse, stringify } from './Handler';
 
 type Peer = { 
     connection: RTCPeerConnection,
@@ -17,10 +17,12 @@ export class PeerMap {
 
     private peers: Map<string, Peer>;
     private beacon: Beacon;
+    private name: string;
 
-    public constructor(beacon: Beacon) {
+    public constructor(beacon: Beacon, name: string) {
         this.peers = new Map();
         this.beacon = beacon;
+        this.name = name;
         this.beacon.addEventListener('signal', (ev) => {
             this.signal((ev as CustomEvent<SignalPayload>).detail);
         });
@@ -64,7 +66,10 @@ export class PeerMap {
             const peer = this.buildPeer(id);
 
             channelOpen.push(new Promise((resolve) => {
-                peer.channel.onopen = _ => resolve();
+                peer.channel.onopen = _ => {
+                    peer.channel.send(stringify(Event.HEY, { name: this.name }));
+                    resolve()
+                };
             }));
 
             const offer = await peer.connection.createOffer();
@@ -81,7 +86,7 @@ export class PeerMap {
         const connection = new RTCPeerConnection(PeerMap.RTCConfig);
         const channel = connection.createDataChannel(id, PeerMap.channelConfig);
 
-        channel.onmessage = getHandler();
+        channel.onmessage = getHandler(this.name);
         connection.oniceconnectionstatechange = (_) => {
             console.log('[oniceconnectionstatechange]', connection.iceConnectionState);
         };

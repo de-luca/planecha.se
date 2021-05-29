@@ -1,31 +1,36 @@
 <template>
   <div class="container">
     <h1 class="title">CREATE GAME</h1>
+    <h2 class="subtitle">
+      or <router-link to="/join">Join a game</router-link>
+    </h2>
 
-    <ButtonPicker
-      label="Game mode:"
-      :options="modeOptions"
-      v-model="mode"
-    />
+    <form @submit.prevent="create">
+      <ButtonPicker
+        label="Game mode:"
+        :options="modeOptions"
+        v-model="mode"
+      />
 
-    <ButtonPicker
-      label="Local or online game?"
-      :options="scopeOptions"
-      v-model="scope"
-    />
+      <ButtonPicker
+        label="Local or online game?"
+        :options="scopeOptions"
+        v-model="scope"
+      />
 
-    <div class="field" v-if="requireName">
-      <label class="label">Your player name:</label>
-      <div class="control">
-        <input class="input" type="text" placeholder="Super Cake">
+      <div class="field" v-if="requireName">
+        <label class="label">Your player name:</label>
+        <div class="control">
+          <input v-model="name" class="input" type="text" placeholder="Super Cake" required>
+        </div>
       </div>
-    </div>
 
-    <div class="field create-game">
-      <div class="control">
-        <button @click="create" class="button is-dark">Create game</button>
+      <div class="field create-game">
+        <div class="control">
+          <button class="button is-dark" type="submit">Create game</button>
+        </div>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 
@@ -60,13 +65,16 @@ export default class CreateGame extends Vue {
     value: MapType.ETERNITIES,
     help: 'The <a href="https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19">Eternities Map</a> variant of Planechase.',
   }];
+
   public scope: GameScope = GameScope.LOCAL;
   public mode: MapType = MapType.CLASSIC;
+  public name: string;
   
   private store: Store;
 
   public created() {
     this.store = useStore();
+    this.name = '';
   }
 
   public get requireName(): boolean {
@@ -77,6 +85,9 @@ export default class CreateGame extends Vue {
     await this.store.dispatch(ActionTypes.INIT, {
       type: this.mode,
       online: this.scope === GameScope.ONLINE,
+      advanced: {
+        name: this.name,
+      },
     });
 
     this.$router.push('/board');

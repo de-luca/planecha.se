@@ -1,7 +1,9 @@
 import { MutationTypes, useStore } from "@/store";
+import { LogType } from "@/store/states/map";
 
 export enum Event {
     REQUEST_INIT = 'request_init',
+    HEY = 'hey',
     INIT = 'init',
     PLANESWALK = 'planeswalk',
 }
@@ -19,8 +21,9 @@ export function stringify(event: Event, data: any = {}): string {
     return JSON.stringify({ event, data });
 }
 
-export function getHandler(): (this: RTCDataChannel, event: MessageEvent<string>) => any {
+export function getHandler(myName: string): (this: RTCDataChannel, event: MessageEvent<string>) => any {
     const store = useStore();
+
     return function(this: RTCDataChannel, event: MessageEvent<string>) {
         const payload = parse(event.data);
 
@@ -30,15 +33,24 @@ export function getHandler(): (this: RTCDataChannel, event: MessageEvent<string>
                 break;
             case Event.PLANESWALK:
                 store.commit(MutationTypes.PLANESWALK);
+                store.commit(MutationTypes.LOG, {
+                    initiator: store.getters.mates.get(this.label) as string,
+                    ...store.getters.map.getLog(),
+                });
                 break;
-            // case Event.INIT:
-            //     map = Container.get(MapFactory).restore(payload.data as Exported)
-            //     console.log(map);
-            //     break;
+            case Event.HEY:
+                if (!store.getters.mates.get(this.label)) {
+                    store.commit(MutationTypes.HEY, {
+                        id: this.label,
+                        name: (payload.data as { name: string }).name,
+                    });
+                    store.commit(MutationTypes.LOG, {
+                        initiator: store.getters.mates.get(this.label) as string,
+                        type: LogType.JOIN,
+                    });
+                    this.send(stringify(Event.HEY, { name: myName }));
+                }
+                break;
         }
-
-        // console.log(this);
-        // console.log(event.data);
-        // console.log(map.active);
     };
 }

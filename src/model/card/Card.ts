@@ -1,3 +1,4 @@
+import { Log } from '@/store/states/map';
 import type { Props } from '.';
 
 export abstract class Card {

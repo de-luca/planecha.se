@@ -1,3 +1,4 @@
+import { Log } from "@/store/states/map";
 import { Card } from "../card";
 
 export interface Coordinates {
@@ -26,4 +27,5 @@ export interface MapInterface {
   getDeckSize(): number;
   planeswalk(coordinates?: Coordinates): void;
   export(): Exported;
+  getLog(): Omit<Log, 'initiator'>;
 }

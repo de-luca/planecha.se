@@ -1,6 +1,6 @@
+import { Log, LogType } from '@/store/states/map';
 import _shuffle from 'lodash.shuffle';
-import { resolve } from 'path';
-import { Card } from '../card';
+import { Card, Phenomenon } from '../card';
 import { Coordinates, Exported, MapInterface, MapType } from './MapInterface';
 
 export interface Props {
@@ -10,97 +10,107 @@ export interface Props {
 }
 
 export abstract class Map implements MapInterface {
-    protected deck: Array<Card>;
-    protected _played: Array<Card>;
-    protected _active: Array<Card>;
-    protected globalState?: string;
+  protected deck: Array<Card>;
+  protected _played: Array<Card>;
+  protected _active: Array<Card>;
+  protected globalState?: string;
 
-    protected constructor(props: Props) {
-      this.deck = props.deck;
-      this._played = props.played ?? [];
-      this._active = props.active ?? [];
-      this.globalState = undefined;
+  protected constructor(props: Props) {
+    this.deck = props.deck;
+    this._played = props.played ?? [];
+    this._active = props.active ?? [];
+    this.globalState = undefined;
+  }
+
+  public abstract get type(): MapType;
+
+  public get active(): Array<Card> {
+    return this._active;
+  }
+
+  public get played(): Array<Card> {
+    return this._played;
+  }
+
+  public get ready(): Promise<void> {
+    return new Promise(resolve => resolve());
+  }
+
+  public getDeckSize(): number {
+    return this.deck.length;
+  }
+
+  public abstract planeswalk(coordinates?: Coordinates): void;
+
+  protected draw<T extends Card>(): T {
+    // Reach for the top card
+    const card = this.deck.shift();
+
+    // There's nothing, like the deep void in your heart
+    if (!card) {
+      // Shuffle the pile of card
+      this.deck = _shuffle(this.played);
+      this._played = [];
+
+      return this.deck.shift() as T;
     }
 
-    public abstract get type(): MapType;
+    return card as T;
+  }
 
-    public get active(): Array<Card> {
-      return this._active;
-    }
+  protected revealUntil<T extends Card>(
+    count = 1,
+    type: typeof Card = Card,
+  ): { cards: Array<T>; revealed: Array<Card> } {
+    const revealed: Array<Card> = [];
+    const cards: Array<T> = [];
+    let found = 0;
 
-    public get played(): Array<Card> {
-      return this._played;
-    }
-
-    public get ready(): Promise<void> {
-      return new Promise(resolve => resolve());
-    }
-
-    public getDeckSize(): number {
-      return this.deck.length;
-    }
-
-    public abstract planeswalk(coordinates?: Coordinates): void;
-
-    protected draw<T extends Card>(): T {
-      // Reach for the top card
-      const card = this.deck.shift();
-
-      // There's nothing, like the deep void in your heart
-      if (!card) {
-        // Shuffle the pile of card
-        this.deck = _shuffle(this.played);
-        this._played = [];
-
-        return this.deck.shift() as T;
+    do {
+      const card = this.draw();
+      if (card instanceof type) {
+        found++;
+        cards.push(card as T);
       }
+      revealed.push(card);
+    } while (found < count);
 
-      return card as T;
-    }
+    return { cards, revealed };
+  }
 
-    protected revealUntil<T extends Card>(
-      count = 1,
-      type: typeof Card = Card,
-    ): { cards: Array<T>; revealed: Array<Card> } {
-      const revealed: Array<Card> = [];
-      const cards: Array<T> = [];
-      let found = 0;
+  protected putOnTop(cards: Array<Card>): void {
+    this.deck.unshift(...cards);
+  }
 
-      do {
-        const card = this.draw();
-        if (card instanceof type) {
-          found++;
-          cards.push(card as T);
-        }
-        revealed.push(card);
-      } while (found < count);
+  protected putOnTheBottom(cards: Array<Card>): void {
+    this.deck.push(..._shuffle(cards));
+  }
 
-      return { cards, revealed };
-    }
+  public export(): Exported {
+    return {
+      type: this.type,
+      deck: this.deck.reduce<Array<string>>((acc, card) => {
+        acc.push(card.id);
+        return acc;
+      }, []),
+      played: this._played.reduce<Array<string>>((acc, card) => {
+        acc.push(card.id);
+        return acc;
+      }, []),
+      active: this._active.reduce<Array<string>>((acc, card) => {
+        acc.push(card.id);
+        return acc;
+      }, []),
+    };
+  }
 
-    protected putOnTop(cards: Array<Card>): void {
-      this.deck.unshift(...cards);
-    }
-
-    protected putOnTheBottom(cards: Array<Card>): void {
-      this.deck.push(..._shuffle(cards));
-    }
-
-    public export(): Exported {
-      return {
-        type: this.type,
-        deck: this.deck.reduce<Array<string>>((acc, card) => {
-          acc.push(card.id);
-          return acc;
-        }, []),
-        played: this._played.reduce<Array<string>>((acc, card) => {
-          acc.push(card.id);
-          return acc;
-        }, []),
-        active: this._active.reduce<Array<string>>((acc, card) => {
-          acc.push(card.id);
-          return acc;
-        }, []),
-      };
-    }
+  public getLog(): Omit<Log, 'initiator'> {
+    return {
+      type: this._active[0] instanceof Phenomenon
+        ? LogType.ENCOUNTER
+        : LogType.PLANESWALK,
+      outcome: this._active.map(c => c.name),
+    };
+  }
+    
 }

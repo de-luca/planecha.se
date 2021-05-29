@@ -3,6 +3,7 @@ import { Coordinates, Exported, MapInterface, MapType } from "./MapInterface";
 import { Beacon } from "../net/Beacon";
 import { OnlineInterface } from "../net/OnlineInterface";
 import { PeerMap } from "../net/PeerMap";
+import { Log } from "@/store/states/map";
 
 export class OnlineDecorator implements MapInterface, OnlineInterface {
     private beacon: Beacon;
@@ -11,14 +12,14 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
 
     private readyState: Promise<void>;
 
-    public constructor(map: MapInterface) {
+    public constructor(map: MapInterface, name: string) {
         this.map = map;
 
         this.beacon = new Beacon();
         this.readyState = new Promise<void>((resolve) => {
             this.beacon.addEventListener('ready', _ => resolve());
         });
-        this.peers = new PeerMap(this.beacon);   
+        this.peers = new PeerMap(this.beacon, name);   
     }
 
     public get type(): MapType {
@@ -47,6 +48,10 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
 
     public export(): Exported {
         return this.map.export();
+    }
+
+    public getLog(): Omit<Log, "initiator"> {
+        return this.map.getLog();
     }
 
     public create(): Promise<string> {
