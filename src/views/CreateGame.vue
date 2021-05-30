@@ -63,7 +63,7 @@ export default class CreateGame extends Vue {
   }, {
     label: 'Eternities',
     value: MapType.ETERNITIES,
-    help: 'The <a href="https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19">Eternities Map</a> variant of Planechase.',
+    help: 'The <a target="_blank" rel="noopener noreferrer" href="https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19">Eternities Map</a> variant of Planechase.',
   }];
 
   public scope: GameScope = GameScope.LOCAL;

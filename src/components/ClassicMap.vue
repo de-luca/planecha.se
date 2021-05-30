@@ -6,10 +6,6 @@
       </template>
     </div>
 
-    <div class="deck">
-      <deck :count="deckSize" />
-    </div>
-
     <div class="logs">
       <logs />
     </div>
@@ -59,12 +55,12 @@ export default class ClassicMap extends Vue {
 .map {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto 11rem auto auto;
+  grid-template-rows: 11rem auto auto auto;
   column-gap: 3rem;
   row-gap: .5rem;
   grid-template-areas:
-    "active active deck    "
-    "active active controls"
+    "active active controls "
+    "active active .        "
     "active active logs     "
     "active active logs     "
   ;
@@ -78,14 +74,7 @@ export default class ClassicMap extends Vue {
   justify-content: center;
   align-items: center;
 }
-.deck {
-  grid-area: deck;
-  
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
+
 .controls {
   grid-area: controls;
 

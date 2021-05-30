@@ -6,7 +6,7 @@ import {
     ActionTree,
 } from 'vuex'
 
-import { Card } from "@/model/card";
+import { Card, Plane } from "@/model/card";
 import { MapInterface, MapType } from '@/model/map/MapInterface';
 import { BuildProps, MapFactory } from '@/model/map/MapFactory';
 import { OnlineInterface } from '@/model/net/OnlineInterface';
@@ -47,6 +47,8 @@ export enum MutationTypes {
     HEY = 'HEY',
     INIT = 'INIT',
     PLANESWALK = 'PLANESWALK',
+    INC_COUNTERS = 'INC_COUNTERS',
+    DEC_COUNTERS = 'DEC_COUNTERS',
 }
 
 // Mutation contracts
@@ -55,6 +57,8 @@ export type Mutations<S = State> = {
     [MutationTypes.HEY](state: S, payload: { id: string, name: string }): void
     [MutationTypes.INIT](state: S, payload: BuildProps): void
     [MutationTypes.PLANESWALK](state: S): void
+    [MutationTypes.INC_COUNTERS](state: S, payload: string): void
+    [MutationTypes.DEC_COUNTERS](state: S, payload: string): void
 }
 
 // Define mutations
@@ -71,6 +75,18 @@ export const mutations: Mutations = {
     },
     [MutationTypes.PLANESWALK](state: State) {
         (<MapInterface>state.map).planeswalk();
+    },
+    [MutationTypes.INC_COUNTERS](state: State, payload: string) {
+        (<Plane>
+            (<MapInterface>state.map).active
+                .find(c => c.id === payload)
+        ).incCounter();
+    },
+    [MutationTypes.DEC_COUNTERS](state: State, payload: string) {
+        (<Plane>
+            (<MapInterface>state.map).active
+                .find(c => c.id === payload)
+        ).decCounter();
     },
 };
 

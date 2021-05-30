@@ -3,12 +3,12 @@ import { Card } from './Card';
 import { PhenomenonFactory } from './phenomenon';
 import { PlaneFactory } from './plane';
 
-interface CounterProps {
-    name: string;
-    value: number;
-    start: number;
-    max: number | null;
-    reset: boolean;
+export interface Counter {
+  name: string;
+  value: number;
+  start: number;
+  max: number | null;
+  reset: boolean;
 }
 
 export interface Props {
@@ -20,7 +20,7 @@ export interface Props {
     typeLine: string;
     oracleText: string;
     gathererUri: string;
-    counter?: CounterProps;
+    counter?: Counter;
 }
 
 @Service()

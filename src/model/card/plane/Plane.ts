@@ -1,14 +1,7 @@
-import type { Props } from '../CardFactory';
+import type { Counter, Props } from '../CardFactory';
 import { Card } from '../Card';
-import { Log, LogType } from '@/store/states/map';
 
-export interface Counter {
-  name: string;
-  value: number;
-  start: number;
-  max: number | null;
-  reset: boolean;
-}
+
 
 export class Plane extends Card {
   public counter?: Counter;
