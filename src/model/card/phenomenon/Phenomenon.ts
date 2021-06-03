@@ -6,4 +6,8 @@ export class Phenomenon extends Card {
   public constructor(props: Props) {
     super(props);
   }
+
+  public type(): string {
+    return 'phenomenon';
+  }
 }

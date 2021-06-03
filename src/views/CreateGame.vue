@@ -25,6 +25,15 @@
         </div>
       </div>
 
+      <div class="field">
+        <a @click.prevent="toggleAdvanced">
+          <i class="fad fa-fw" :class="{'fa-caret-right': !showAdvanced, 'fa-caret-down': showAdvanced}"></i>
+          Customize deck list
+        </a>
+      </div>
+
+      <card-picker v-if="showAdvanced" v-model="cards" />
+
       <div class="field create-game">
         <div class="control">
           <button class="button is-dark" type="submit">Create game</button>
@@ -35,10 +44,12 @@
 </template>
 
 <script lang="ts">
-import { useStore, Store, ActionTypes } from '@/store';
 import { Options, Vue } from 'vue-class-component';
-import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';
+import { useStore, Store, ActionTypes } from '@/store';
 import { MapType } from '@/model/map/MapInterface';
+import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';
+import CardPicker from '@/components/CardPicker.vue';
+
 
 enum GameScope {
   LOCAL = 'local',
@@ -46,7 +57,7 @@ enum GameScope {
 }
 
 @Options({
-  components: { ButtonPicker },
+  components: { ButtonPicker, CardPicker },
 })
 export default class CreateGame extends Vue {
   public scopeOptions: Array<Option> = [{
@@ -66,19 +77,24 @@ export default class CreateGame extends Vue {
     help: 'The <a target="_blank" rel="noopener noreferrer" href="https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19">Eternities Map</a> variant of Planechase.',
   }];
 
-  public scope: GameScope = GameScope.LOCAL;
-  public mode: MapType = MapType.CLASSIC;
-  public name: string;
+  private scope: GameScope = GameScope.LOCAL;
+  private mode: MapType = MapType.CLASSIC;
+  private name: string = '';
+  private cards: Set<string> = new Set();
+  private showAdvanced: boolean = false;
   
   private store: Store;
 
   public created() {
     this.store = useStore();
-    this.name = '';
   }
 
   public get requireName(): boolean {
     return this.scope === GameScope.ONLINE;
+  }
+
+  public toggleAdvanced(event: any): void {
+    this.showAdvanced = !this.showAdvanced;
   }
 
   public async create() {
@@ -87,6 +103,7 @@ export default class CreateGame extends Vue {
       online: this.scope === GameScope.ONLINE,
       advanced: {
         name: this.name,
+        cards: this.cards.size !== 0 ? this.cards : undefined,
       },
     });
 

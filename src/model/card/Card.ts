@@ -21,4 +21,6 @@ export abstract class Card {
       this.oracleText = props.oracleText;
       this.gathererUri = props.gathererUri;
     }
+
+    public abstract type(): string;
 }

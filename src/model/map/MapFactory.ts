@@ -7,6 +7,7 @@ import { Exported, MapInterface, MapType } from "./MapInterface";
 
 export interface AdvancedOptions {
   name?: string;
+  cards?: Set<string>;
 }
 
 export interface BuildProps {
@@ -29,7 +30,9 @@ export class MapFactory {
         break;
       case MapType.CLASSIC:
         map = new Classic({
-          deck: this.deckProvider.getDeck(),
+          deck: advanced.cards 
+            ? this.deckProvider.getSpecificDeck(advanced.cards)
+            : this.deckProvider.getDeck(),
         });
         break;
       case MapType.ETERNITIES:
@@ -51,16 +54,16 @@ export class MapFactory {
     switch (payload.type) {
       case MapType.CLASSIC:
         map = new Classic({
-          deck: this.deckProvider.getSpecificDeck<Card>(payload.deck),
-          active: this.deckProvider.getSpecificDeck<Card>(payload.active),
-          played: this.deckProvider.getSpecificDeck<Card>(payload.played),
+          deck: this.deckProvider.getOrderedDeck<Card>(payload.deck),
+          active: this.deckProvider.getOrderedDeck<Card>(payload.active),
+          played: this.deckProvider.getOrderedDeck<Card>(payload.played),
         });
         break;
       case MapType.ETERNITIES:
         map = new EternitiesMap({
-          deck: this.deckProvider.getSpecificDeck<Plane>(payload.deck),
-          active: this.deckProvider.getSpecificDeck<Plane>(payload.active),
-          played: this.deckProvider.getSpecificDeck<Plane>(payload.played),
+          deck: this.deckProvider.getOrderedDeck<Plane>(payload.deck),
+          active: this.deckProvider.getOrderedDeck<Plane>(payload.active),
+          played: this.deckProvider.getOrderedDeck<Plane>(payload.played),
         });
         break;
       default:

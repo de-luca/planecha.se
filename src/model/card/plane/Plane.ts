@@ -12,6 +12,10 @@ export class Plane extends Card {
     this.counter = props.counter ?? undefined;
   }
 
+  public type(): string {
+    return 'plane';
+  }
+
   public initCounter(): void {
     if (this.counter) {
       this.counter.value = this.counter.start;

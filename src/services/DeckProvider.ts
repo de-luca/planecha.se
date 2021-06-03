@@ -18,6 +18,10 @@ export class DeckProvider {
       this.cards = (cards as Array<Props>).map((c) => factory.build(c));
     }
 
+    public getAllCards(): Array<Card> {
+      return this.cards;
+    }
+
     public getDeck(): Array<Card> {
       return _shuffle(this.cards);
     }
@@ -27,7 +31,11 @@ export class DeckProvider {
         .filter((c) => c instanceof Plane) as Array<Plane>;
     }
 
-    public getSpecificDeck<T extends Card>(cards: Array<string>): Array<T> {
+    public getSpecificDeck(cards: Set<string>): Array<Card> {
+      return _shuffle(this.getOrderedDeck<Card>([...cards]));
+    }
+
+    public getOrderedDeck<T extends Card>(cards: Array<string>): Array<T> {
       return cards.map((id) => {
         return this.cards.find(c => c.id === id) as T;
       });
