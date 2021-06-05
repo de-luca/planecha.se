@@ -32,6 +32,9 @@ export abstract class Map implements MapInterface {
     return this.deck.length;
   }
 
+  public chaos(): void {
+    this.active.forEach(c => c.chaos());
+  }
   public abstract planeswalk(coordinates?: Coordinates): void;
 
   protected draw<T extends Card>(): T {

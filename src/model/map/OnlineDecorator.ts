@@ -21,6 +21,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
         });
         this.peers = new PeerMap(this.beacon, name);   
     }
+    
 
     public get type(): MapType {
         return this.map.type;
@@ -40,6 +41,10 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     
     public getDeckSize(): number {
         return this.map.getDeckSize();
+    }
+
+    public chaos(): void {
+        return this.map.chaos();
     }
     
     public planeswalk(coordinates?: Coordinates): void {

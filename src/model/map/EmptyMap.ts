@@ -10,6 +10,9 @@ export class EmptyMap implements MapInterface {
   getDeckSize(): number {
     throw new Error('Method not implemented.');
   }
+  chaos(): void {
+    throw new Error('Method not implemented.');
+  }
   planeswalk(coordinates?: Coordinates): void {
     throw new Error('Method not implemented.');
   }

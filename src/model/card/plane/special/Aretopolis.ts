@@ -6,6 +6,10 @@ import { CardEvent } from '../../CardEvent';
 export class Aretopolis extends Plane {
     declare public counter: Counter;
 
+    public chaos(): void {
+        this.incCounter();
+    }
+
     public incCounter(): undefined | number {
         super.incCounter();
         this.checkMaxCounters();

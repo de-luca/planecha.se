@@ -14,6 +14,7 @@ import Container from 'typedi';
 
 export enum LogType {
     JOIN = 'joined',
+    CHAOS = 'rolled chaos',
     PLANESWALK = 'planeswalked to',
     ENCOUNTER = 'encountered',
 }
@@ -47,6 +48,7 @@ export enum MutationTypes {
     HEY = 'HEY',
     INIT = 'INIT',
     PLANESWALK = 'PLANESWALK',
+    CHAOS = 'CHAOS',
     INC_COUNTERS = 'INC_COUNTERS',
     DEC_COUNTERS = 'DEC_COUNTERS',
 }
@@ -56,6 +58,7 @@ export type Mutations<S = State> = {
     [MutationTypes.LOG](state: S, payload: Log): void
     [MutationTypes.HEY](state: S, payload: { id: string, name: string }): void
     [MutationTypes.INIT](state: S, payload: BuildProps): void
+    [MutationTypes.CHAOS](state: S): void
     [MutationTypes.PLANESWALK](state: S): void
     [MutationTypes.INC_COUNTERS](state: S, payload: string): void
     [MutationTypes.DEC_COUNTERS](state: S, payload: string): void
@@ -72,6 +75,9 @@ export const mutations: Mutations = {
     [MutationTypes.INIT](state: State, payload: BuildProps) {
         state.map = Container.get(MapFactory).build(payload);
         state.online = payload.online;
+    },
+    [MutationTypes.CHAOS](state: State) {
+        (<MapInterface>state.map).chaos();
     },
     [MutationTypes.PLANESWALK](state: State) {
         (<MapInterface>state.map).planeswalk();
@@ -94,6 +100,7 @@ export const mutations: Mutations = {
 export enum ActionTypes {
     INIT = 'INIT',
     JOIN = 'JOIN',
+    CHAOS = 'CHAOS',
     PLANESWALK = 'PLANESWALK',
 }
 
@@ -114,6 +121,9 @@ export interface Actions {
     [ActionTypes.JOIN](
         { commit }: AugmentedActionContext,
         payload: { roomId: string, name: string },
+    ): void,
+    [ActionTypes.CHAOS](
+        { commit }: AugmentedActionContext,
     ): void,
     [ActionTypes.PLANESWALK](
         { commit }: AugmentedActionContext,
@@ -146,6 +156,13 @@ export const actions: ActionTree<State, undefined> & Actions = {
         } catch (err) {
             // some error handling logic
         }
+    },
+    [ActionTypes.CHAOS]({ commit }) {
+        commit(MutationTypes.CHAOS);
+        commit(MutationTypes.LOG, {
+            initiator: 'You',
+            type: LogType.CHAOS,
+        });
     },
     [ActionTypes.PLANESWALK]({ commit }) {
         commit(MutationTypes.PLANESWALK);

@@ -38,6 +38,10 @@ export class Plane extends Card {
       : --this.counter.value;
   }
 
+  public chaos(): void {
+    return;
+  }
+
   public enter(): void {
     return;
   }

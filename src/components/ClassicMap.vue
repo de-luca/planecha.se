@@ -26,15 +26,19 @@ import PlaneswalkBtn from '@/components/board/PlaneswalkBtn.vue';
 import Logs from '@/components/board/Logs.vue';
 import { Store, useStore } from '@/store';
 import { Card as ModelCard } from '@/model/card';
+import { eventBus } from '@/services/EventBus';
+import { CardEvent } from '@/model/card/CardEvent';
 
 @Options({
   components: { Card, Deck, ChaosBtn, PlaneswalkBtn, Logs },
 })
 export default class ClassicMap extends Vue {
-  public store: Store;
+  private statuses: Array<string> = [];
+  private store: Store;
 
   public created() {
     this.store = useStore();
+    eventBus.on(CardEvent.ARETOPOLIS, () => this.statuses.push('REACHED 10 counters, GOTTA PLANESWALK'));
   }
 
   public get active(): Array<ModelCard> {
@@ -55,13 +59,12 @@ export default class ClassicMap extends Vue {
 .map {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 11rem auto auto auto;
+  grid-template-rows: 11rem auto 40rem;
   column-gap: 3rem;
   row-gap: .5rem;
   grid-template-areas:
     "active active controls "
     "active active .        "
-    "active active logs     "
     "active active logs     "
   ;
 }

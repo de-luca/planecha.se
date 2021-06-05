@@ -5,6 +5,10 @@ export class Phenomenon extends Card {
     return 'phenomenon';
   }
 
+  public chaos(): void {
+    return;
+  }
+
   public enter(): void {
     return;
   }

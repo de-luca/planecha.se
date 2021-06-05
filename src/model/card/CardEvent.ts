@@ -1,4 +1,5 @@
 export enum CardEvent {
     ARETOPOLIS = 'ARETOPOLIS',
-    
+    POOL_OF_BECOMING = 'POOL_OF_BECOMING',
+    STAIRS_TO_INFINITY = 'STAIRS_TO_INFINITY',
 }

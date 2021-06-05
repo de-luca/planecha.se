@@ -24,6 +24,7 @@ export abstract class Card implements CardInterface {
 
     public abstract get type(): string;
     
+    public abstract chaos(): void;
     public abstract enter(): void;
     public abstract leave(): void;
 }

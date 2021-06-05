@@ -11,7 +11,7 @@ import { ActionTypes, MutationTypes, Store, useStore } from '@/store';
 import { Vue } from 'vue-class-component';
 
 export default class Controls extends Vue {
-  public store: Store;
+  private store: Store;
 
   public created() {
     this.store = useStore();

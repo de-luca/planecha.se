@@ -68,7 +68,7 @@ export default class CardPicker extends Vue.with(Props) {
 
   public get filtered(): Array<Card> {
     return this.cards
-      .filter(c => this.group === Group.ALL || c.type() === this.group)
+      .filter(c => this.group === Group.ALL || c.type === this.group)
       .filter(c => c.name.toLowerCase().includes(this.search));
   }
 

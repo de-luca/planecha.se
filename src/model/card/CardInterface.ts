@@ -10,6 +10,7 @@ export interface CardInterface {
 
     type: string;
 
+    chaos(): void;
     enter(): void;
     leave(): void;
 }
