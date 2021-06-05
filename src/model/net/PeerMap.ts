@@ -28,12 +28,8 @@ export class PeerMap {
         });
     }
 
-    public broadcast(): void {
-        const payload: Payload<{}> = {
-            event: Event.PLANESWALK,
-            data: {},
-        };
-        this.peers.forEach(peer => peer.channel.send(JSON.stringify(payload)));
+    public broadcast(event: Event, data: any = {}): void {
+        this.peers.forEach(peer => peer.channel.send(stringify(event, data)));
     }
 
     public async requestInit(): Promise<MapInterface> {

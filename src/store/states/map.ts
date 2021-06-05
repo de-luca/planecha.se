@@ -160,6 +160,8 @@ export const actions: ActionTree<State, undefined> & Actions = {
             initiator: 'You',
             type: LogType.CHAOS,
         });
+
+        (<OnlineInterface>state.map).requestChaos();
     },
     [ActionTypes.PLANESWALK]({ commit }) {
         commit(MutationTypes.PLANESWALK);

@@ -4,6 +4,7 @@ import { Beacon } from "../net/Beacon";
 import { OnlineInterface } from "../net/OnlineInterface";
 import { PeerMap } from "../net/PeerMap";
 import { Log } from "@/store/states/map";
+import { Event } from "../net/Handler";
 
 export class OnlineDecorator implements MapInterface, OnlineInterface {
     private beacon: Beacon;
@@ -85,7 +86,11 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
         this.map = await this.peers.requestInit();
     }
 
+    public requestChaos(): void {
+        this.peers.broadcast(Event.CHAOS);
+    }
+
     public requestPlaneswalk(coordinates?: Coordinates): void {
-        this.peers.broadcast();
+        this.peers.broadcast(Event.PLANESWALK);
     }
 }

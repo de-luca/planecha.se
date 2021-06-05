@@ -5,6 +5,7 @@ export enum Event {
     REQUEST_INIT = 'request_init',
     HEY = 'hey',
     INIT = 'init',
+    CHAOS = 'chaos',
     PLANESWALK = 'planeswalk',
 }
 
@@ -31,6 +32,15 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
             case Event.REQUEST_INIT:
                 this.send(stringify(Event.INIT, store.getters.map.export()));
                 break;
+
+            case Event.CHAOS:
+                store.commit(MutationTypes.CHAOS);
+                store.commit(MutationTypes.LOG, {
+                    initiator: store.getters.mates.get(this.label) as string,
+                    type: LogType.CHAOS,
+                });
+                break;
+
             case Event.PLANESWALK:
                 store.commit(MutationTypes.PLANESWALK);
                 store.commit(MutationTypes.LOG, {
@@ -38,6 +48,7 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
                     ...store.getters.map.getLog(),
                 });
                 break;
+
             case Event.HEY:
                 if (!store.getters.mates.get(this.label)) {
                     store.commit(MutationTypes.HEY, {

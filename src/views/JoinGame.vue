@@ -5,7 +5,7 @@
       or <router-link to="/create">Create a game</router-link>
     </h2>
 
-    <form @submit="join">
+    <form @submit.prevent="join">
       <div class="field">
         <label class="label">Room ID:</label>
         <div class="control">
