@@ -24,6 +24,7 @@ export interface MapInterface {
   active: Array<Card>;
   played: Array<Card>;
   ready: Promise<void>;
+
   getDeckSize(): number;
   planeswalk(coordinates?: Coordinates): void;
   export(): Exported;

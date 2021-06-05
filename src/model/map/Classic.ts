@@ -6,7 +6,7 @@ export class Classic extends Map {
   public constructor(props: Props) {
     super(props);
 
-    this._active = props.active ?? [this.drawPlane()];
+    this.active = props.active ?? [this.drawPlane()];
   }
 
   public get type(): MapType {
@@ -33,8 +33,9 @@ export class Classic extends Map {
   }
 
   public planeswalk(): void {
-    // Put all active cards away
-    this.played.push(...this._active);
-    this._active = [this.draw()];
+    this.active.forEach(c => c.leave());
+    this.played.push(...this.active);
+    this.active = [this.draw()];
+    this.active.forEach(c => c.enter());
   }
 }

@@ -33,7 +33,7 @@ describe('Map.draw', () => {
     });
     // eslint-disable-next-line prefer-destructuring
     const deck = map['deck'];
-    map['_played'] = deck;
+    map['played'] = deck;
     map['deck'] = [];
 
     expect(map['draw']()).toBeInstanceOf(Card);

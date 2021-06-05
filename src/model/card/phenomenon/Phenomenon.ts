@@ -1,13 +1,15 @@
-import type { Props } from '../CardFactory';
 import { Card } from '../Card';
 
 export class Phenomenon extends Card {
-  // eslint-disable-next-line no-useless-constructor
-  public constructor(props: Props) {
-    super(props);
+  public get type(): string {
+    return 'phenomenon';
   }
 
-  public type(): string {
-    return 'phenomenon';
+  public enter(): void {
+    return;
+  }
+
+  public leave(): void {
+    return;
   }
 }

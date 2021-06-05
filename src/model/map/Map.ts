@@ -10,27 +10,19 @@ export interface Props {
 }
 
 export abstract class Map implements MapInterface {
-  protected deck: Array<Card>;
-  protected _played: Array<Card>;
-  protected _active: Array<Card>;
-  protected globalState?: string;
+  public deck: Array<Card>;
+  public played: Array<Card>;
+  public active: Array<Card>;
+  public globalState?: string;
 
-  protected constructor(props: Props) {
+  public constructor(props: Props) {
     this.deck = props.deck;
-    this._played = props.played ?? [];
-    this._active = props.active ?? [];
+    this.played = props.played ?? [];
+    this.active = props.active ?? [];
     this.globalState = undefined;
   }
 
   public abstract get type(): MapType;
-
-  public get active(): Array<Card> {
-    return this._active;
-  }
-
-  public get played(): Array<Card> {
-    return this._played;
-  }
 
   public get ready(): Promise<void> {
     return new Promise(resolve => resolve());
@@ -50,7 +42,7 @@ export abstract class Map implements MapInterface {
     if (!card) {
       // Shuffle the pile of card
       this.deck = _shuffle(this.played);
-      this._played = [];
+      this.played = [];
 
       return this.deck.shift() as T;
     }
@@ -93,11 +85,11 @@ export abstract class Map implements MapInterface {
         acc.push(card.id);
         return acc;
       }, []),
-      played: this._played.reduce<Array<string>>((acc, card) => {
+      played: this.played.reduce<Array<string>>((acc, card) => {
         acc.push(card.id);
         return acc;
       }, []),
-      active: this._active.reduce<Array<string>>((acc, card) => {
+      active: this.active.reduce<Array<string>>((acc, card) => {
         acc.push(card.id);
         return acc;
       }, []),
@@ -106,11 +98,10 @@ export abstract class Map implements MapInterface {
 
   public getLog(): Omit<Log, 'initiator'> {
     return {
-      type: this._active[0] instanceof Phenomenon
+      type: this.active[0] instanceof Phenomenon
         ? LogType.ENCOUNTER
         : LogType.PLANESWALK,
-      outcome: this._active.map(c => c.name),
+      outcome: this.active.map(c => c.name),
     };
   }
-    
 }

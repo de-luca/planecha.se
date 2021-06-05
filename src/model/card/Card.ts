@@ -1,7 +1,7 @@
-import { Log } from '@/store/states/map';
 import type { Props } from '.';
+import { CardInterface } from './CardInterface';
 
-export abstract class Card {
+export abstract class Card implements CardInterface {
     public id: string;
     public oracleId: string;
     public multiverseIds: Array<number>;
@@ -11,7 +11,7 @@ export abstract class Card {
     public oracleText: string;
     public gathererUri: string;
 
-    protected constructor(props: Props) {
+    public constructor(props: Props) {
       this.id = props.id;
       this.oracleId = props.oracleId;
       this.multiverseIds = props.multiverseIds;
@@ -22,5 +22,8 @@ export abstract class Card {
       this.gathererUri = props.gathererUri;
     }
 
-    public abstract type(): string;
+    public abstract get type(): string;
+    
+    public abstract enter(): void;
+    public abstract leave(): void;
 }

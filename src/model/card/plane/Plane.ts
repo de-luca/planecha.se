@@ -1,8 +1,6 @@
 import type { Counter, Props } from '../CardFactory';
 import { Card } from '../Card';
 
-
-
 export class Plane extends Card {
   public counter?: Counter;
 
@@ -12,7 +10,7 @@ export class Plane extends Card {
     this.counter = props.counter ?? undefined;
   }
 
-  public type(): string {
+  public get type(): string {
     return 'plane';
   }
 
@@ -38,6 +36,10 @@ export class Plane extends Card {
     return this.counter.value === 0
       ? this.counter.value
       : --this.counter.value;
+  }
+
+  public enter(): void {
+    return;
   }
 
   public leave(): void {
