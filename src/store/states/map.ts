@@ -6,7 +6,7 @@ import {
     ActionTree,
 } from 'vuex'
 
-import { Card, Plane } from "@/model/card";
+import { Card, Counter, Plane } from "@/model/card";
 import { MapInterface, MapType } from '@/model/map/MapInterface';
 import { BuildProps, MapFactory } from '@/model/map/MapFactory';
 import { OnlineInterface } from '@/model/net/OnlineInterface';
@@ -17,6 +17,7 @@ export enum LogType {
     CHAOS = 'rolled chaos',
     PLANESWALK = 'planeswalked to',
     ENCOUNTER = 'encountered',
+    COUNTERS = '',
 }
 
 export type Log = {
@@ -47,10 +48,9 @@ export enum MutationTypes {
     LOG = 'LOG',
     HEY = 'HEY',
     INIT = 'INIT',
-    PLANESWALK = 'PLANESWALK',
     CHAOS = 'CHAOS',
-    INC_COUNTERS = 'INC_COUNTERS',
-    DEC_COUNTERS = 'DEC_COUNTERS',
+    PLANESWALK = 'PLANESWALK',
+    COUNTERS = 'COUNTERS',
 }
 
 // Mutation contracts
@@ -60,8 +60,7 @@ export type Mutations<S = State> = {
     [MutationTypes.INIT](state: S, payload: BuildProps): void
     [MutationTypes.CHAOS](state: S): void
     [MutationTypes.PLANESWALK](state: S): void
-    [MutationTypes.INC_COUNTERS](state: S, payload: string): void
-    [MutationTypes.DEC_COUNTERS](state: S, payload: string): void
+    [MutationTypes.COUNTERS](state: S, payload: { id: string, change: number }): void
 }
 
 // Define mutations
@@ -82,17 +81,10 @@ export const mutations: Mutations = {
     [MutationTypes.PLANESWALK](state: State) {
         (<MapInterface>state.map).planeswalk();
     },
-    [MutationTypes.INC_COUNTERS](state: State, payload: string) {
-        (<Plane>
-            (<MapInterface>state.map).active
-                .find(c => c.id === payload)
-        ).incCounter();
-    },
-    [MutationTypes.DEC_COUNTERS](state: State, payload: string) {
-        (<Plane>
-            (<MapInterface>state.map).active
-                .find(c => c.id === payload)
-        ).decCounter();
+    [MutationTypes.COUNTERS](state: State, payload: { id: string, change: number }) {
+        (<Plane>(<MapInterface>state.map).active
+            .find(c => c.id === payload.id))
+            .updateCounter(payload.change);
     },
 };
 
@@ -102,6 +94,7 @@ export enum ActionTypes {
     JOIN = 'JOIN',
     CHAOS = 'CHAOS',
     PLANESWALK = 'PLANESWALK',
+    COUNTERS = 'COUNTERS',
 }
 
 // Actions context
@@ -128,6 +121,10 @@ export interface Actions {
     [ActionTypes.PLANESWALK](
         { commit }: AugmentedActionContext,
     ): void,
+    [ActionTypes.COUNTERS](
+        { commit }: AugmentedActionContext,
+        payload: { id: string, change: number }
+    ): void,
  }
 
 // Define actions
@@ -136,7 +133,7 @@ export const actions: ActionTree<State, undefined> & Actions = {
         try {
             commit(MutationTypes.INIT, payload);
             await (<MapInterface>state.map).ready;
-            
+
             if (payload.online) {
                 await (<OnlineInterface>state.map).create();
             }
@@ -171,6 +168,21 @@ export const actions: ActionTree<State, undefined> & Actions = {
             ...(<MapInterface>state.map).getLog(),
         });
         (<OnlineInterface>state.map).requestPlaneswalk();
+    },
+    [ActionTypes.COUNTERS]({ commit }, payload: { id: string, change: number }) {
+        commit(MutationTypes.COUNTERS, payload);
+
+        const counter = (<Plane>(<MapInterface>state.map).active
+            .find(c => c.id === payload.id)).counter as Counter;
+
+        commit(MutationTypes.LOG, {
+            initiator: 'You',
+            type: LogType.COUNTERS,
+            outcome: [
+                (payload.change > 0 ? 'added' : 'removed') +
+                ` ${Math.abs(payload.change)} ${counter.name} counter (${counter.value})`,
+            ],
+        });
     },
 }
 

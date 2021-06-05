@@ -20,22 +20,14 @@ export class Plane extends Card {
     }
   }
 
-  public incCounter(): undefined | number {
+  public updateCounter(change: number): undefined | number {
     if (!this.counter) {
       return undefined;
     }
 
-    return ++this.counter.value;
-  }
+    this.counter.value = this.counter.value + change;
 
-  public decCounter(): undefined | number {
-    if (!this.counter) {
-      return undefined;
-    }
-
-    return this.counter.value === 0
-      ? this.counter.value
-      : --this.counter.value;
+    return this.counter.value;
   }
 
   public chaos(): void {

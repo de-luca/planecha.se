@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-for="l in logs" :key="l">
+    <template v-for="l in logs.slice().reverse()" :key="l">
       <p>{{ l }}</p>
     </template>
   </div>

@@ -2,9 +2,9 @@
   <div class="card-container">
 
     <div v-if="hasCounters" class="counters buttons has-addons">
-      <button @click="dec" class="button is-light is-rounded"><i class="fad fa-fw fa-minus"></i></button>
+      <button @click="update(-1)" class="button is-light is-rounded"><i class="fad fa-fw fa-minus"></i></button>
       <div class="button is-light">{{ card.counter.value }}</div>
-      <button @click="inc" class="button is-light is-rounded"><i class="fad fa-fw fa-plus"></i></button>
+      <button @click="update(1)" class="button is-light is-rounded"><i class="fad fa-fw fa-plus"></i></button>
     </div>
 
     <img :class="{ phenomenon: isPhenomenon }" :src="imgSrc">
@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { Card as ModelCard, Phenomenon, Plane } from '@/model/card';
-import { MutationTypes, Store, useStore } from '@/store';
+import { ActionTypes, MutationTypes, Store, useStore } from '@/store';
 import { Vue, prop } from 'vue-class-component';
 
 class Props {
@@ -43,12 +43,12 @@ export default class Card extends Vue.with(Props) {
     return this.card instanceof Phenomenon;
   }
 
-  public inc() {
-    this.store.commit(MutationTypes.INC_COUNTERS, this.card.id);
-  }
-
-  public dec() {
-    this.store.commit(MutationTypes.DEC_COUNTERS, this.card.id);
+  public update(change: number) {
+    const payload = { id: this.card.id, change };
+    this.store.getters.online
+      ? this.store.dispatch(ActionTypes.COUNTERS, payload)
+      : this.store.commit(MutationTypes.COUNTERS, payload)
+    ;
   }
 }
 </script>

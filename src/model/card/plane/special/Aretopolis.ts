@@ -7,19 +7,12 @@ export class Aretopolis extends Plane {
     declare public counter: Counter;
 
     public chaos(): void {
-        this.incCounter();
+        this.updateCounter(1);
     }
 
-    public incCounter(): undefined | number {
-        super.incCounter();
+    public updateCounter(change: number): undefined | number {
+        super.updateCounter(change);
         this.checkMaxCounters();
-
-        return this.counter?.value;
-    }
-
-    public decCounter(): undefined | number {
-        super.decCounter();
-        this.checkMaxCounters()
 
         return this.counter?.value;
     }
