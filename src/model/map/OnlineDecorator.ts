@@ -52,12 +52,20 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
         return this.map.planeswalk(coordinates);
     }
 
+    public updateCounter(id: string, change: number): void {
+        return this.map.updateCounter(id, change);
+    }
+
     public export(): Exported {
         return this.map.export();
     }
 
-    public getLog(): Omit<Log, "initiator"> {
-        return this.map.getLog();
+    public getPlaneswalkLog(): Omit<Log, "initiator"> {
+        return this.map.getPlaneswalkLog();
+    }
+
+    public getCounterLog(id: string, change: number): Omit<Log, 'initiator'> {
+        return this.map.getCounterLog(id, change);
     }
 
     public create(): Promise<string> {
@@ -92,5 +100,9 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
 
     public requestPlaneswalk(coordinates?: Coordinates): void {
         this.peers.broadcast(Event.PLANESWALK);
+    }
+
+    public requestCounterUpdate({ id, change }: { id: string, change: number }): void {
+        this.peers.broadcast(Event.COUNTERS, { id, change });
     }
 }

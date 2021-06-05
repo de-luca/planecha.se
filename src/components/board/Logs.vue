@@ -15,7 +15,7 @@ export default class Logs extends Vue {
 
   public get logs(): Array<string> {
     return this.store.getters.logs.map((l) => {
-      return `${l.initiator} ${l.type} ${(l.outcome ?? []).join(' & ')}`;
+      return `${l.initiator ?? 'You'} ${l.type} ${(l.outcome ?? []).join(' & ')}`;
     });
   }
 

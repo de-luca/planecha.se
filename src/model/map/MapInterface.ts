@@ -26,8 +26,13 @@ export interface MapInterface {
   ready: Promise<void>;
 
   getDeckSize(): number;
+
   chaos(): void;
   planeswalk(coordinates?: Coordinates): void;
+  updateCounter(id: string, change: number): void;
+
   export(): Exported;
-  getLog(): Omit<Log, 'initiator'>;
+  
+  getPlaneswalkLog(): Omit<Log, 'initiator'>;
+  getCounterLog(id: string, change: number): Omit<Log, 'initiator'>;
 }

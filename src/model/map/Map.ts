@@ -1,6 +1,6 @@
 import { Log, LogType } from '@/store/states/map';
 import _shuffle from 'lodash.shuffle';
-import { Card, Phenomenon } from '../card';
+import { Card, Counter, Phenomenon, Plane } from '../card';
 import { Coordinates, Exported, MapInterface, MapType } from './MapInterface';
 
 export interface Props {
@@ -35,7 +35,12 @@ export abstract class Map implements MapInterface {
   public chaos(): void {
     this.active.forEach(c => c.chaos());
   }
+
   public abstract planeswalk(coordinates?: Coordinates): void;
+
+  public updateCounter(id: string, change: number): void {
+    (this.active.find(c => c.id === id) as Plane).updateCounter(change);
+  }
 
   protected draw<T extends Card>(): T {
     // Reach for the top card
@@ -99,12 +104,24 @@ export abstract class Map implements MapInterface {
     };
   }
 
-  public getLog(): Omit<Log, 'initiator'> {
+  public getPlaneswalkLog(): Omit<Log, 'initiator'> {
     return {
       type: this.active[0] instanceof Phenomenon
         ? LogType.ENCOUNTER
         : LogType.PLANESWALK,
       outcome: this.active.map(c => c.name),
+    };
+  }
+
+  public getCounterLog(id: string, change: number): Omit<Log, 'initiator'> {
+    const counter = (this.active.find(c => c.id === id) as Plane).counter as Counter;
+    
+    return {
+      type: LogType.COUNTERS,
+      outcome: [
+        (change > 0 ? 'added' : 'removed') +
+        ` ${Math.abs(change)} ${counter.name} counter (${counter.value})`,
+      ],
     };
   }
 }

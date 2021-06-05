@@ -6,7 +6,7 @@ import {
     ActionTree,
 } from 'vuex'
 
-import { Card, Counter, Plane } from "@/model/card";
+import { Card } from "@/model/card";
 import { MapInterface, MapType } from '@/model/map/MapInterface';
 import { BuildProps, MapFactory } from '@/model/map/MapFactory';
 import { OnlineInterface } from '@/model/net/OnlineInterface';
@@ -21,7 +21,7 @@ export enum LogType {
 }
 
 export type Log = {
-    initiator: string;
+    initiator?: string;
     type: LogType;
     outcome?: Array<string>;
 }
@@ -82,9 +82,7 @@ export const mutations: Mutations = {
         (<MapInterface>state.map).planeswalk();
     },
     [MutationTypes.COUNTERS](state: State, payload: { id: string, change: number }) {
-        (<Plane>(<MapInterface>state.map).active
-            .find(c => c.id === payload.id))
-            .updateCounter(payload.change);
+        (<MapInterface>state.map).updateCounter(payload.id, payload.change);
     },
 };
 
@@ -156,35 +154,18 @@ export const actions: ActionTree<State, undefined> & Actions = {
     },
     [ActionTypes.CHAOS]({ commit }) {
         commit(MutationTypes.CHAOS);
-        commit(MutationTypes.LOG, {
-            initiator: 'You',
-            type: LogType.CHAOS,
-        });
-
+        commit(MutationTypes.LOG, { type: LogType.CHAOS });
         (<OnlineInterface>state.map).requestChaos();
     },
     [ActionTypes.PLANESWALK]({ commit }) {
         commit(MutationTypes.PLANESWALK);
-        commit(MutationTypes.LOG, {
-            initiator: 'You',
-            ...(<MapInterface>state.map).getLog(),
-        });
+        commit(MutationTypes.LOG, { ...(<MapInterface>state.map).getPlaneswalkLog() });
         (<OnlineInterface>state.map).requestPlaneswalk();
     },
     [ActionTypes.COUNTERS]({ commit }, payload: { id: string, change: number }) {
         commit(MutationTypes.COUNTERS, payload);
-
-        const counter = (<Plane>(<MapInterface>state.map).active
-            .find(c => c.id === payload.id)).counter as Counter;
-
-        commit(MutationTypes.LOG, {
-            initiator: 'You',
-            type: LogType.COUNTERS,
-            outcome: [
-                (payload.change > 0 ? 'added' : 'removed') +
-                ` ${Math.abs(payload.change)} ${counter.name} counter (${counter.value})`,
-            ],
-        });
+        commit(MutationTypes.LOG, { ...(<MapInterface>state.map).getCounterLog(payload.id, payload.change) });
+        (<OnlineInterface>state.map).requestCounterUpdate(payload);
     },
 }
 

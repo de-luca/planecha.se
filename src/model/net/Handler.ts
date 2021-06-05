@@ -7,6 +7,7 @@ export enum Event {
     INIT = 'init',
     CHAOS = 'chaos',
     PLANESWALK = 'planeswalk',
+    COUNTERS = 'counters',
 }
 
 export type Payload<T> = {
@@ -45,7 +46,16 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
                 store.commit(MutationTypes.PLANESWALK);
                 store.commit(MutationTypes.LOG, {
                     initiator: store.getters.mates.get(this.label) as string,
-                    ...store.getters.map.getLog(),
+                    ...store.getters.map.getPlaneswalkLog(),
+                });
+                break;
+
+            case Event.COUNTERS:
+                const data = payload.data as { id: string, change: number };
+                store.commit(MutationTypes.COUNTERS, data);                
+                store.commit(MutationTypes.LOG, {
+                    initiator: store.getters.mates.get(this.label) as string,
+                    ...store.getters.map.getCounterLog(data.id, data.change),
                 });
                 break;
 

@@ -16,10 +16,16 @@ export class EmptyMap implements MapInterface {
   planeswalk(coordinates?: Coordinates): void {
     throw new Error('Method not implemented.');
   }
+  updateCounter(id: string, change: number): void {
+    throw new Error('Method not implemented.');
+  }
   export(): Exported {
     throw new Error('Method not implemented.');
   }
-  getLog(): Omit<Log, 'initiator'> {
+  getPlaneswalkLog(): Omit<Log, 'initiator'> {
+    throw new Error('Method not implemented.');
+  }
+  getCounterLog(id: string, change: number): Omit<Log, 'initiator'> {
     throw new Error('Method not implemented.');
   }
 }
