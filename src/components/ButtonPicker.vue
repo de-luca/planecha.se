@@ -10,7 +10,7 @@
           :value="option.value"
           v-model="selected"
         >
-        <label class="button" :for="option.label">{{ option.label }}</label>
+        <label class="button" :for="option.label" v-html="option.label"></label>
       </template>
     </div>
 
@@ -21,16 +21,16 @@
 <script lang="ts">
 import { Options, Vue, prop } from 'vue-class-component';
 
-export interface Option {
-  label: string;
-  value: string;
+export interface Option<T> {
+  label?: string;
+  value: T;
   help?: string;
 }
 
 class Props {
   public modelValue = prop<string>({ required: true });
-  public label = prop<string>({ required: true });
-  public options = prop<Array<Option>>({ required: true });
+  public label = prop<string>({ required: false });
+  public options = prop<Array<Option<string>>>({ required: true });
 }
 
 @Options({
@@ -46,7 +46,7 @@ export default class ButtonPicker extends Vue.with(Props) {
   }
 
   public get currentHelp(): string {
-    return this.options.find((o: Option) => o.value === this.selected)?.help ?? '';
+    return this.options.find((o: Option<string>) => o.value === this.selected)?.help ?? '';
   }
 }
 </script>

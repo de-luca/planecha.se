@@ -4,6 +4,7 @@ import { Plane } from '../Plane';
 
 export class StairsToInfinity extends Plane {
     public chaos(): void {
+        console.log('ICI');
         eventBus.emit(CardEvent.STAIRS_TO_INFINITY);
     }
 }

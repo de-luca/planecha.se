@@ -7,7 +7,7 @@ import {
 } from 'vuex'
 
 import { Card } from "@/model/card";
-import { MapInterface, MapType } from '@/model/map/MapInterface';
+import { MapInterface, MapType, Revealed } from '@/model/map/MapInterface';
 import { BuildProps, MapFactory } from '@/model/map/MapFactory';
 import { OnlineInterface } from '@/model/net/OnlineInterface';
 import Container from 'typedi';
@@ -51,6 +51,8 @@ export enum MutationTypes {
     CHAOS = 'CHAOS',
     PLANESWALK = 'PLANESWALK',
     COUNTERS = 'COUNTERS',
+    REVEAL = 'REVEAL',
+    RESOLVE_REVEAL = 'RESOLVE_REVEAL',
 }
 
 // Mutation contracts
@@ -61,6 +63,8 @@ export type Mutations<S = State> = {
     [MutationTypes.CHAOS](state: S): void
     [MutationTypes.PLANESWALK](state: S): void
     [MutationTypes.COUNTERS](state: S, payload: { id: string, change: number }): void
+    [MutationTypes.REVEAL](state: S, payload: { count: number, type?: typeof Card }): void
+    [MutationTypes.RESOLVE_REVEAL](state: S, payload: { top: Array<Card>, bottom: Array<Card> }): void
 }
 
 // Define mutations
@@ -83,6 +87,12 @@ export const mutations: Mutations = {
     },
     [MutationTypes.COUNTERS](state: State, payload: { id: string, change: number }) {
         (<MapInterface>state.map).updateCounter(payload.id, payload.change);
+    },
+    [MutationTypes.REVEAL](state: State, payload: { count: number, type?: typeof Card }) {
+        (<MapInterface>state.map).revealUntil(payload.count, payload.type);
+    },
+    [MutationTypes.RESOLVE_REVEAL](state: State, payload: { top: Array<Card>, bottom: Array<Card> }) {
+        (<MapInterface>state.map).resolveReveal(payload.top, payload.bottom);
     },
 };
 
@@ -108,11 +118,11 @@ export interface Actions {
     [ActionTypes.INIT](
         { commit }: AugmentedActionContext,
         payload: BuildProps,
-    ): void,
+    ): Promise<void>,
     [ActionTypes.JOIN](
         { commit }: AugmentedActionContext,
         payload: { roomId: string, name: string },
-    ): void,
+    ): Promise<void>,
     [ActionTypes.CHAOS](
         { commit }: AugmentedActionContext,
     ): void,
@@ -178,6 +188,7 @@ export type Getters = {
     type(state: State): MapType;
     active(state: State): Array<Card>;
     played(state: State): Array<Card>;
+    revealed(state: State): Revealed | undefined;
     deckSize(state: State): number;
 }
 
@@ -190,6 +201,7 @@ export const getters: Getters = {
     type: state => (<MapInterface>state.map).type,
     active: state => (<MapInterface>state.map).active,
     played: state => (<MapInterface>state.map).played,
+    revealed: state => (<MapInterface>state.map).revealed,
     deckSize: state => (<MapInterface>state.map).getDeckSize(),
 }
 

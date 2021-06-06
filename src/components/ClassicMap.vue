@@ -14,6 +14,12 @@
       <chaos-btn />
       <planeswalk-btn />
     </div>
+
+    <reveal-drawer
+      v-if="revealed"
+      :revealed="revealed"
+      @done="resolve" 
+    />
   </div>
 </template>
 
@@ -24,21 +30,26 @@ import Deck from '@/components/board/Deck.vue';
 import ChaosBtn from '@/components/board/ChaosBtn.vue';
 import PlaneswalkBtn from '@/components/board/PlaneswalkBtn.vue';
 import Logs from '@/components/board/Logs.vue';
-import { Store, useStore } from '@/store';
+import RevealDrawer, { PickedLeft } from '@/components/board/RevealDrawer.vue';
+import { MutationTypes, Store, useStore } from '@/store';
 import { Card as ModelCard } from '@/model/card';
 import { eventBus } from '@/services/EventBus';
 import { CardEvent } from '@/model/card/CardEvent';
+import { Revealed } from '@/model/map/MapInterface';
 
 @Options({
-  components: { Card, Deck, ChaosBtn, PlaneswalkBtn, Logs },
+  components: { Card, Deck, ChaosBtn, PlaneswalkBtn, Logs, RevealDrawer },
 })
 export default class ClassicMap extends Vue {
-  private statuses: Array<string> = [];
   private store: Store;
 
   public created() {
     this.store = useStore();
-    eventBus.on(CardEvent.ARETOPOLIS, () => this.statuses.push('REACHED 10 counters, GOTTA PLANESWALK'));
+
+    eventBus.on(CardEvent.ARETOPOLIS, () => console.log('10 counters, planeswalk'));
+    eventBus.on(CardEvent.STAIRS_TO_INFINITY, () => {
+      this.store.commit(MutationTypes.REVEAL, { count: 1 });
+    });
   }
 
   public get active(): Array<ModelCard> {
@@ -48,9 +59,20 @@ export default class ClassicMap extends Vue {
   public get played(): Array<ModelCard> {
     return this.store.getters.played;
   }
+
+  public get revealed(): Revealed | undefined {
+    return this.store.getters.revealed;
+  }
   
   public get deckSize(): number {
     return this.store.getters.deckSize;
+  }
+  
+  public resolve(choices: PickedLeft): void {
+    this.store.commit(MutationTypes.RESOLVE_REVEAL, {
+      top: choices.picked,
+      bottom: choices.left,
+    });
   }
 }
 </script>

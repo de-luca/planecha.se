@@ -60,14 +60,14 @@ enum GameScope {
   components: { ButtonPicker, CardPicker },
 })
 export default class CreateGame extends Vue {
-  public scopeOptions: Array<Option> = [{
+  public scopeOptions: Array<Option<string>> = [{
     label: 'Local',
     value: GameScope.LOCAL,
   }, {
     label: 'Online',
     value: GameScope.ONLINE,
   }];
-  public modeOptions: Array<Option> = [{
+  public modeOptions: Array<Option<string>> = [{
     label: 'Classic',
     value: MapType.CLASSIC,
     help: 'Rule 901.15. Single Planar Deck Option.',

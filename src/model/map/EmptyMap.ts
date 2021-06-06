@@ -1,11 +1,12 @@
 import { Log } from '@/store/states/map';
 import { Card } from '../card';
-import { Coordinates, Exported, MapInterface, MapType } from './MapInterface';
+import { Coordinates, Exported, MapInterface, MapType, Revealed } from './MapInterface';
 
 export class EmptyMap implements MapInterface {
   public type: MapType;
   public active: Card[];
   public played: Card[];
+  public revealed?: Revealed;
   public ready: Promise<void>;
   getDeckSize(): number {
     throw new Error('Method not implemented.');
@@ -17,6 +18,21 @@ export class EmptyMap implements MapInterface {
     throw new Error('Method not implemented.');
   }
   updateCounter(id: string, change: number): void {
+    throw new Error('Method not implemented.');
+  }
+  revealUntil(count: number, type?: typeof Card): void {
+    throw new Error('Method not implemented.');
+  }
+  resolveReveal(top: Card[], bottom: Card[]): void {
+    throw new Error('Method not implemented.');
+  }
+  putOnTop(cards: Card[]): void {
+    throw new Error('Method not implemented.');
+  }
+  putOnTheBottom(cards: Card[]): void {
+    throw new Error('Method not implemented.');
+  }
+  clearRevealed(): void {
     throw new Error('Method not implemented.');
   }
   export(): Exported {

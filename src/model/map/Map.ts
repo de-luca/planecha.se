@@ -1,7 +1,7 @@
 import { Log, LogType } from '@/store/states/map';
 import _shuffle from 'lodash.shuffle';
 import { Card, Counter, Phenomenon, Plane } from '../card';
-import { Coordinates, Exported, MapInterface, MapType } from './MapInterface';
+import { Coordinates, Exported, MapInterface, MapType, Revealed } from './MapInterface';
 
 export interface Props {
   deck: Array<Card>;
@@ -13,15 +13,17 @@ export abstract class Map implements MapInterface {
   public deck: Array<Card>;
   public played: Array<Card>;
   public active: Array<Card>;
+  public revealed?: Revealed;
   public globalState?: string;
 
   public constructor(props: Props) {
     this.deck = props.deck;
     this.played = props.played ?? [];
     this.active = props.active ?? [];
+    this.revealed = undefined;
     this.globalState = undefined;
   }
-
+  
   public abstract get type(): MapType;
 
   public get ready(): Promise<void> {
@@ -58,32 +60,39 @@ export abstract class Map implements MapInterface {
     return card as T;
   }
 
-  protected revealUntil<T extends Card>(
-    count = 1,
-    type: typeof Card = Card,
-  ): { cards: Array<T>; revealed: Array<Card> } {
+  public revealUntil(count = 1, type: typeof Card = Card): void {
     const revealed: Array<Card> = [];
-    const cards: Array<T> = [];
+    const cards: Array<Card> = [];
     let found = 0;
 
     do {
       const card = this.draw();
       if (card instanceof type) {
         found++;
-        cards.push(card as T);
+        cards.push(card);
       }
       revealed.push(card);
     } while (found < count);
 
-    return { cards, revealed };
+    this.revealed = { cards, revealed };
   }
 
-  protected putOnTop(cards: Array<Card>): void {
+  public resolveReveal(top: Card[], bottom: Card[]): void {
+    this.putOnTop(top);
+    this.putOnTheBottom(bottom);
+    this.clearRevealed();
+  }
+
+  public putOnTop(cards: Array<Card>): void {
     this.deck.unshift(...cards);
   }
 
-  protected putOnTheBottom(cards: Array<Card>): void {
+  public putOnTheBottom(cards: Array<Card>): void {
     this.deck.push(..._shuffle(cards));
+  }
+
+  public clearRevealed(): void {
+    this.revealed = undefined;
   }
 
   public export(): Exported {
@@ -115,7 +124,7 @@ export abstract class Map implements MapInterface {
 
   public getCounterLog(id: string, change: number): Omit<Log, 'initiator'> {
     const counter = (this.active.find(c => c.id === id) as Plane).counter as Counter;
-    
+
     return {
       type: LogType.COUNTERS,
       outcome: [

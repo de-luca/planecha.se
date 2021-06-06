@@ -19,13 +19,26 @@ export interface Exported {
   active: Array<string>;
 }
 
+export interface Revealed { 
+  cards: Array<Card>; 
+  revealed: Array<Card>;
+}
+
 export interface MapInterface {
   type: MapType;
   active: Array<Card>;
   played: Array<Card>;
+  revealed?: Revealed;
   ready: Promise<void>;
 
   getDeckSize(): number;
+
+  revealUntil(count: number, type?: typeof Card): void;
+  resolveReveal(top: Array<Card>, bottom: Array<Card>): void;
+  
+  putOnTop(cards: Array<Card>): void;
+  putOnTheBottom(cards: Array<Card>): void;
+  clearRevealed(): void;
 
   chaos(): void;
   planeswalk(coordinates?: Coordinates): void;

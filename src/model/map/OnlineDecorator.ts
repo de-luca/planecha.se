@@ -1,5 +1,5 @@
 import { Card } from "../card";
-import { Coordinates, Exported, MapInterface, MapType } from "./MapInterface";
+import { Coordinates, Exported, MapInterface, MapType, Revealed } from "./MapInterface";
 import { Beacon } from "../net/Beacon";
 import { OnlineInterface } from "../net/OnlineInterface";
 import { PeerMap } from "../net/PeerMap";
@@ -22,7 +22,6 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
         });
         this.peers = new PeerMap(this.beacon, name);   
     }
-    
 
     public get type(): MapType {
         return this.map.type;
@@ -34,6 +33,10 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     
     public get played(): Array<Card> {
         return this.map.played;
+    }
+
+    public get revealed(): Revealed | undefined {
+        return this.map.revealed;
     }
 
     public get ready(): Promise<void> {
@@ -54,6 +57,26 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
 
     public updateCounter(id: string, change: number): void {
         return this.map.updateCounter(id, change);
+    }
+
+    public revealUntil(count: number, type: typeof Card = Card): void {
+        return this.map.revealUntil(count, type);
+    }
+
+    public resolveReveal(top: Card[], bottom: Card[]): void {
+        return this.map.resolveReveal(top, bottom);
+    }
+
+    public putOnTop(cards: Card[]): void {
+        return this.map.putOnTop(cards);
+    }
+
+    public putOnTheBottom(cards: Card[]): void {
+        return this.map.putOnTheBottom(cards);
+    }
+
+    public clearRevealed(): void {
+        return this.map.clearRevealed();
     }
 
     public export(): Exported {

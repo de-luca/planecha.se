@@ -1,0 +1,121 @@
+<template>
+  <div class="over">
+    <div class="revealed">
+      <template v-for="c in revealed.cards" :key="c.id">
+        <div class="card-wrapper">
+          <img :src="buildImgSrc(c)">
+          <button-picker v-model="picked[c.id]" :options="modeOptions" />
+        </div>
+      </template>
+    </div>
+    <button 
+      class="button is-dark is-medium" 
+      @click="confirm"
+      :disabled="!allSet"
+    >
+      Confirm choice
+    </button>
+  </div>
+</template>
+
+<script lang="ts">
+import { Options, prop, Vue } from 'vue-class-component';
+import { Card } from '@/model/card';
+import { Revealed } from '@/model/map/MapInterface';
+import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';
+
+export type PickedLeft = {
+  picked: Array<Card>;
+  left: Array<Card>;
+}
+
+class Props {
+  public revealed = prop<Revealed>({ required: true });
+}
+
+@Options({
+  emits: ['done'],
+  components: { ButtonPicker },
+})
+export default class RevealDrawer extends Vue.with(Props) {
+  public modeOptions: Array<Option<boolean>> = [{
+    label: '<i class="fad fa-fw fa-bring-forward"></i> Keep on top',
+    value: true,
+  }, {
+    label: '<i class="fad fa-fw fa-send-backward"></i> Move to bottom',
+    value: false,
+  }];
+  
+  private picked: Record<string, boolean> = {};
+  
+  public get allSet(): boolean {
+    return this.revealed.cards.every((c) => {
+      return this.picked[c.id] !== undefined;
+    });
+  }
+
+  public buildImgSrc(card: Card): string {
+    return `/cards/${card.id}.png`;
+  }
+
+  public confirm(): void {
+    const result: PickedLeft = { picked: [], left: [] };
+    this.revealed.cards.forEach((c) => {
+      if (this.picked[c.id]) {
+        result.picked.push(c);
+      }
+    });
+    this.revealed.revealed.forEach((c) => {
+      if (!this.picked[c.id]) {
+        result.left.push(c);
+      }
+    });
+
+    this.$emit('done', result);
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.over {
+  background-color: #ffffffb5;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+}
+
+.revealed {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+
+  width: 100%;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+
+  .card-wrapper {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: .5rem;
+
+    img {
+      height: 25rem;
+    }
+  }
+}
+</style>

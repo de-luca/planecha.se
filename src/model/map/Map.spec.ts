@@ -42,7 +42,7 @@ describe('Map.draw', () => {
 });
 
 describe('Map.revealUntil', () => {
-  it('reveals a given number of requested card', () => {
+  it('reveals a given number of requested Plane', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
     });
@@ -52,6 +52,19 @@ describe('Map.revealUntil', () => {
     expect(cards.revealed.length).toBeGreaterThanOrEqual(2);
     for (const card of cards.cards) {
       expect(card).toBeInstanceOf(Plane);
+    }
+  });
+
+  it('reveals a given number of requested Card', () => {
+    const map = new TestMap({
+      deck: Container.get(DeckProvider).getDeck(),
+    });
+    const cards = map['revealUntil'](2);
+
+    expect(cards.cards).toHaveLength(2);
+    expect(cards.revealed.length).toBeGreaterThanOrEqual(2);
+    for (const card of cards.cards) {
+      expect(card).toBeInstanceOf(Card);
     }
   });
 });
