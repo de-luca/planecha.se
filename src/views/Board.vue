@@ -2,11 +2,9 @@
   <div class="board">
     <div class="nav">
       <span @click="thaNav">
-        <i class="fad fa-fw fa-3x fa-toilet-paper"></i>
-        <i class="fad fa-fw fa-3x fa-dumpster-fire"></i>
+        The super logo here
       </span>
       <button class="button is-light is-warning" @click="close">
-        <i class="fad fa-fw fa-lg fa-bomb"></i>
         Close Game
       </button>
     </div>

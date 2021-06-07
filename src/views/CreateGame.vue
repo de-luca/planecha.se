@@ -26,10 +26,7 @@
       </div>
 
       <div class="field">
-        <a @click.prevent="toggleAdvanced">
-          <i class="fad fa-fw" :class="{'fa-caret-right': !showAdvanced, 'fa-caret-down': showAdvanced}"></i>
-          Customize deck list
-        </a>
+        <a @click.prevent="toggleAdvanced">Customize deck list</a>
       </div>
 
       <card-picker v-if="showAdvanced" v-model="cards" />

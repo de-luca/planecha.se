@@ -3,10 +3,10 @@
     <div class="panel-block">
       <a @click="all" class="button">All</a>
       <a @click="none" class="button">None</a>
-      <p class="control has-icons-left">
+      <p class="control has-icons-right">
         <input @keypress.enter.prevent class="input" type="text" placeholder="Search" v-model="search">
-        <span class="icon is-left">
-          <i class="fad fa-search"></i>
+        <span class="icon is-right">
+          <button @click.prevent="clearSearch" class="delete"></button>
         </span>
       </p>
     </div>
@@ -74,6 +74,10 @@ export default class CardPicker extends Vue.with(Props) {
 
   public setGroup(group: Group): void {
     this.group = group;
+  }
+
+  public clearSearch(): void {
+    this.search = '';
   }
 
   public all(): void {

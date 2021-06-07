@@ -39,10 +39,10 @@ class Props {
 })
 export default class RevealDrawer extends Vue.with(Props) {
   public modeOptions: Array<Option<boolean>> = [{
-    label: '<i class="fad fa-fw fa-bring-forward"></i> Keep on top',
+    label: 'Keep on top',
     value: true,
   }, {
-    label: '<i class="fad fa-fw fa-send-backward"></i> Move to bottom',
+    label: 'Move to bottom',
     value: false,
   }];
   

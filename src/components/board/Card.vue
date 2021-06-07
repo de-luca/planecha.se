@@ -2,9 +2,9 @@
   <div class="card-container">
 
     <div v-if="hasCounters" class="counters buttons has-addons">
-      <button @click="update(-1)" class="button is-light is-rounded"><i class="fad fa-fw fa-minus"></i></button>
+      <button @click="update(-1)" class="button is-light is-rounded">-</button>
       <div class="button is-light">{{ card.counter.value }}</div>
-      <button @click="update(1)" class="button is-light is-rounded"><i class="fad fa-fw fa-plus"></i></button>
+      <button @click="update(1)" class="button is-light is-rounded">+</button>
     </div>
 
     <img :class="{ phenomenon: isPhenomenon }" :src="imgSrc">
