@@ -1,19 +1,20 @@
 <template>
   <div class="over">
+    <h1 class="title" v-if="title" v-html="title"></h1>
     <div class="revealed">
       <template v-for="c in revealed.cards" :key="c.id">
         <div class="card-wrapper">
           <img :src="buildImgSrc(c)">
-          <button-picker v-model="picked[c.id]" :options="modeOptions" />
+          <button-picker v-if="!justShow" v-model="picked[c.id]" :options="modeOptions" />
         </div>
       </template>
     </div>
     <button 
       class="button is-dark is-medium" 
       @click="confirm"
-      :disabled="!allSet"
+      :disabled="!justShow && !allSet"
     >
-      Confirm choice
+      {{ justShow ? 'Okay' : 'Confirm choice' }}
     </button>
   </div>
 </template>
@@ -31,6 +32,8 @@ export type PickedLeft = {
 
 class Props {
   public revealed = prop<Revealed>({ required: true });
+  public justShow = prop<boolean>({ required: false, default: false });
+  public title = prop<string>({ required: false });
 }
 
 @Options({
@@ -105,8 +108,6 @@ export default class RevealDrawer extends Vue.with(Props) {
   padding-bottom: 1rem;
 
   .card-wrapper {
-    height: 100%;
-
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -114,7 +115,7 @@ export default class RevealDrawer extends Vue.with(Props) {
     gap: .5rem;
 
     img {
-      height: 25rem;
+      height: 20rem;
     }
   }
 }

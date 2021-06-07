@@ -3,14 +3,14 @@
     <label class="label">{{ label }}</label>
 
     <div class="control">
-      <template v-for="option in options" :key="option.value">
+      <template v-for="(option, index) in options" :key="option.value">
         <input
           type="radio"
-          :id="option.label"
+          :id="id + index"
           :value="option.value"
           v-model="selected"
         >
-        <label class="button" :for="option.label" v-html="option.label"></label>
+        <label class="button" :for="id + index" v-html="option.label"></label>
       </template>
     </div>
 
@@ -37,6 +37,12 @@ class Props {
   emits: ['update:modelValue'],
 })
 export default class ButtonPicker extends Vue.with(Props) {
+  private id: string = '';
+
+  public created(): void {
+    this.id = Math.random().toString(36).substring(2, 15);
+  }
+
   public get selected(): string {
     return this.modelValue;
   }

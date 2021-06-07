@@ -18,6 +18,8 @@
     <reveal-drawer
       v-if="revealed"
       :revealed="revealed"
+      :just-show="justShowRevealed"
+      :title="revealDrawerTitle"
       @done="resolve" 
     />
   </div>
@@ -25,6 +27,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import _shuffle from 'lodash.shuffle';
 import Card from '@/components/board/Card.vue';
 import Deck from '@/components/board/Deck.vue';
 import ChaosBtn from '@/components/board/ChaosBtn.vue';
@@ -37,18 +40,30 @@ import { eventBus } from '@/services/EventBus';
 import { CardEvent } from '@/model/card/CardEvent';
 import { Revealed } from '@/model/map/MapInterface';
 
+
 @Options({
   components: { Card, Deck, ChaosBtn, PlaneswalkBtn, Logs, RevealDrawer },
 })
 export default class ClassicMap extends Vue {
   private store: Store;
+  private justShowRevealed: boolean = false;
+  private revealDrawerTitle?: string = undefined;
 
   public created() {
     this.store = useStore();
 
     eventBus.on(CardEvent.ARETOPOLIS, () => console.log('10 counters, planeswalk'));
     eventBus.on(CardEvent.STAIRS_TO_INFINITY, () => {
+      this.justShowRevealed = false;
+      this.revealDrawerTitle = 'Keep on top or move to bottom of planar deck?';
+
       this.store.commit(MutationTypes.REVEAL, { count: 1 });
+    });
+    eventBus.on(CardEvent.POOL_OF_BECOMING, () => {
+      this.justShowRevealed = true;
+      this.revealDrawerTitle = 'These cards <img src="/svg/chaos.svg" style="height: 1.5rem"> will trigger';
+      
+      this.store.commit(MutationTypes.REVEAL, { count: 3 });
     });
   }
 
@@ -71,7 +86,7 @@ export default class ClassicMap extends Vue {
   public resolve(choices: PickedLeft): void {
     this.store.commit(MutationTypes.RESOLVE_REVEAL, {
       top: choices.picked,
-      bottom: choices.left,
+      bottom: _shuffle(choices.left),
     });
   }
 }
