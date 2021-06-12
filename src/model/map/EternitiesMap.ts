@@ -151,4 +151,8 @@ export class EternitiesMap extends Map {
 
     return this.tiles;
   }
+
+  public customPlaneswalk(planes: Plane[], coordinates?: Coordinates): void {
+    throw new Error('Method not implemented.');
+  }
 }

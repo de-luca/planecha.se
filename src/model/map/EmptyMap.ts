@@ -1,5 +1,5 @@
 import { Log } from '@/store/states/map';
-import { Card } from '../card';
+import { Card, Plane } from '../card';
 import { Coordinates, Exported, MapInterface, MapType, Revealed } from './MapInterface';
 
 export class EmptyMap implements MapInterface {
@@ -15,6 +15,9 @@ export class EmptyMap implements MapInterface {
     throw new Error('Method not implemented.');
   }
   planeswalk(coordinates?: Coordinates): void {
+    throw new Error('Method not implemented.');
+  }
+  customPlaneswalk(planes: Plane[], coordinates?: Coordinates): void {
     throw new Error('Method not implemented.');
   }
   updateCounter(id: string, change: number): void {

@@ -39,6 +39,7 @@ export abstract class Map implements MapInterface {
   }
 
   public abstract planeswalk(coordinates?: Coordinates): void;
+  public abstract customPlaneswalk(planes: Array<Plane>, coordinates?: Coordinates): void;
 
   public updateCounter(id: string, change: number): void {
     (this.active.find(c => c.id === id) as Plane).updateCounter(change);
@@ -61,20 +62,21 @@ export abstract class Map implements MapInterface {
   }
 
   public revealUntil(count = 1, type: typeof Card = Card): void {
-    const revealed: Array<Card> = [];
-    const cards: Array<Card> = [];
+    const relevant: Array<Card> = [];
+    const others: Array<Card> = [];
     let found = 0;
 
     do {
       const card = this.draw();
       if (card instanceof type) {
         found++;
-        cards.push(card);
+        relevant.push(card);
+      } else {
+        others.push(card);
       }
-      revealed.push(card);
     } while (found < count);
 
-    this.revealed = { cards, revealed };
+    this.revealed = { relevant, others };
   }
 
   public resolveReveal(top: Card[], bottom: Card[]): void {

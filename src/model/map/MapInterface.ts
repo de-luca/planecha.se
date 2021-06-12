@@ -1,5 +1,5 @@
 import { Log } from "@/store/states/map";
-import { Card } from "../card";
+import { Card, Plane } from "../card";
 
 export interface Coordinates {
   x: number;
@@ -20,8 +20,8 @@ export interface Exported {
 }
 
 export interface Revealed { 
-  cards: Array<Card>; 
-  revealed: Array<Card>;
+  relevant: Array<Card>; 
+  others: Array<Card>;
 }
 
 export interface MapInterface {
@@ -42,6 +42,7 @@ export interface MapInterface {
 
   chaos(): void;
   planeswalk(coordinates?: Coordinates): void;
+  customPlaneswalk(planes: Array<Plane>, coordinates?: Coordinates): void;
   updateCounter(id: string, change: number): void;
 
   export(): Exported;

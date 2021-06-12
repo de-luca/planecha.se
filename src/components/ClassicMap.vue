@@ -15,55 +15,86 @@
       <planeswalk-btn />
     </div>
 
-    <reveal-drawer
-      v-if="revealed"
+    <component 
+      v-if="revealerConfig && revealed"
+      :is="revealerConfig.component"
       :revealed="revealed"
-      :just-show="justShowRevealed"
-      :title="revealDrawerTitle"
-      @done="resolve" 
+      :config="revealerConfig.config"
+      @done="revealerConfig.resolver"
     />
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import { Component } from '@vue/runtime-core';
 import _shuffle from 'lodash.shuffle';
 import Card from '@/components/board/Card.vue';
 import Deck from '@/components/board/Deck.vue';
 import ChaosBtn from '@/components/board/ChaosBtn.vue';
 import PlaneswalkBtn from '@/components/board/PlaneswalkBtn.vue';
 import Logs from '@/components/board/Logs.vue';
-import RevealDrawer, { PickedLeft } from '@/components/board/RevealDrawer.vue';
 import { MutationTypes, Store, useStore } from '@/store';
-import { Card as ModelCard } from '@/model/card';
+import { Card as ModelCard, Plane } from '@/model/card';
 import { eventBus } from '@/services/EventBus';
 import { CardEvent } from '@/model/card/CardEvent';
 import { Revealed } from '@/model/map/MapInterface';
+import { PickedLeft, Config } from './board/reveal/BaseReveal';
+
+import Pick from '@/components/board/reveal/Pick.vue';
+import Scry from '@/components/board/reveal/Scry.vue';
+import Show from '@/components/board/reveal/Show.vue';
+
+
+type RevealerConfig = {
+  config: Config;
+  component: Component;
+  resolver: (choices: PickedLeft) => void;
+}
 
 
 @Options({
-  components: { Card, Deck, ChaosBtn, PlaneswalkBtn, Logs, RevealDrawer },
+  components: {
+    Card, Deck, ChaosBtn, PlaneswalkBtn, Logs,
+    Pick, Scry, Show,
+  },
 })
 export default class ClassicMap extends Vue {
   private store: Store;
-  private justShowRevealed: boolean = false;
-  private revealDrawerTitle?: string = undefined;
+  private revealerConfig: RevealerConfig | null = null;
 
   public created() {
     this.store = useStore();
 
     eventBus.on(CardEvent.ARETOPOLIS, () => console.log('10 counters, planeswalk'));
     eventBus.on(CardEvent.STAIRS_TO_INFINITY, () => {
-      this.justShowRevealed = false;
-      this.revealDrawerTitle = 'Keep on top or move to bottom of planar deck?';
+      this.revealerConfig = {
+        component: Scry,
+        resolver: this.putBack,
+        config: { sendShownTo: 'bottom' }
+      };
 
       this.store.commit(MutationTypes.REVEAL, { count: 1 });
     });
+    
     eventBus.on(CardEvent.POOL_OF_BECOMING, () => {
-      this.justShowRevealed = true;
-      this.revealDrawerTitle = 'These cards <img src="/svg/chaos.svg" style="height: 1.5rem"> will trigger';
-      
+      this.revealerConfig = {
+        component: Show,
+        resolver: this.putBack,
+        config: { sendShownTo: 'bottom' }
+      };
+
       this.store.commit(MutationTypes.REVEAL, { count: 3 });
+    });
+
+    eventBus.on(CardEvent.INTERPLANAR_TUNNEL, () => {
+      this.revealerConfig = {
+        component: Pick,
+        resolver: this.customPlaneswalk,
+        config: { sendShownTo: 'bottom' }
+      };
+
+      this.store.commit(MutationTypes.REVEAL, { count: 5, type: Plane });
     });
   }
 
@@ -82,13 +113,26 @@ export default class ClassicMap extends Vue {
   public get deckSize(): number {
     return this.store.getters.deckSize;
   }
+
+  public customPlaneswalk(choices: PickedLeft): void {
+    this.store.commit(MutationTypes.CUSTOM_PLANESWALK, {
+      planes: choices.picked as Array<Plane>,
+    });
+
+    this.store.commit(MutationTypes.RESOLVE_REVEAL, {
+      top: [],
+      bottom: _shuffle(choices.left),
+    });
+  }
   
-  public resolve(choices: PickedLeft): void {
+  public putBack(choices: PickedLeft): void {
     this.store.commit(MutationTypes.RESOLVE_REVEAL, {
       top: choices.picked,
       bottom: _shuffle(choices.left),
     });
   }
+
+
 }
 </script>
 

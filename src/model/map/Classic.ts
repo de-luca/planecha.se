@@ -38,4 +38,11 @@ export class Classic extends Map {
     this.active = [this.draw()];
     this.active.forEach(c => c.enter());
   }
+  
+  public customPlaneswalk(planes: Array<Plane>): void {
+    this.active.forEach(c => c.leave());
+    this.played.push(...this.active);
+    this.active = planes;
+    this.active.forEach(c => c.enter());
+  }
 }

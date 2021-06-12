@@ -6,7 +6,7 @@ import {
     ActionTree,
 } from 'vuex'
 
-import { Card } from "@/model/card";
+import { Card, Plane } from "@/model/card";
 import { MapInterface, MapType, Revealed } from '@/model/map/MapInterface';
 import { BuildProps, MapFactory } from '@/model/map/MapFactory';
 import { OnlineInterface } from '@/model/net/OnlineInterface';
@@ -50,6 +50,7 @@ export enum MutationTypes {
     INIT = 'INIT',
     CHAOS = 'CHAOS',
     PLANESWALK = 'PLANESWALK',
+    CUSTOM_PLANESWALK = 'CUSTOM_PLANESWALK',
     COUNTERS = 'COUNTERS',
     REVEAL = 'REVEAL',
     RESOLVE_REVEAL = 'RESOLVE_REVEAL',
@@ -62,6 +63,7 @@ export type Mutations<S = State> = {
     [MutationTypes.INIT](state: S, payload: BuildProps): void
     [MutationTypes.CHAOS](state: S): void
     [MutationTypes.PLANESWALK](state: S): void
+    [MutationTypes.CUSTOM_PLANESWALK](state: S, payload: { planes: Array<Plane> }): void
     [MutationTypes.COUNTERS](state: S, payload: { id: string, change: number }): void
     [MutationTypes.REVEAL](state: S, payload: { count: number, type?: typeof Card }): void
     [MutationTypes.RESOLVE_REVEAL](state: S, payload: { top: Array<Card>, bottom: Array<Card> }): void
@@ -84,6 +86,9 @@ export const mutations: Mutations = {
     },
     [MutationTypes.PLANESWALK](state: State) {
         (<MapInterface>state.map).planeswalk();
+    },
+    [MutationTypes.CUSTOM_PLANESWALK](state: State, payload: { planes: Array<Plane> }) {
+        (<MapInterface>state.map).customPlaneswalk(payload.planes);
     },
     [MutationTypes.COUNTERS](state: State, payload: { id: string, change: number }) {
         (<MapInterface>state.map).updateCounter(payload.id, payload.change);
