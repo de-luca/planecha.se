@@ -32,13 +32,22 @@ export default class Show extends Vue.with(BaseReveal) {
     const left = this.revealed.others + this.config.sendShownTo === 'top' 
       ? [] 
       : this.revealed.relevant;
-      
+
     this.$emit('done', { picked, left });
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@keyframes scale-center {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.5);
+  }
+}
+
 .over {
   background-color: #ffffffb5;
   position: absolute;
@@ -57,25 +66,51 @@ export default class Show extends Vue.with(BaseReveal) {
 .revealed {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: center;
   flex-wrap: wrap;
   align-items: center;
   gap: .5rem;
 
-  width: 100%;
+  height: 50%;
   padding-top: 1rem;
   padding-bottom: 1rem;
 
   .card-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    gap: .5rem;
+    position: absolute; 
+    transform-origin: center 2500px;
+    
+    &:hover {
+      z-index: 2;
+    }
 
     img {
       height: 20rem;
+
+      &:hover {
+        animation: scale-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+      }
+    }
+
+
+
+    &:first-child { 
+      transform: rotate(5deg) translate(10rem, 0);  
+    }
+    &:last-child { 
+      transform: rotate(-5deg) translate(-10rem, 0);
     }
   }
+
+  // .card-wrapper {
+  //   z-index: 2;
+
+  //   img {
+  //     height: 25rem;
+      
+  //     &:hover {
+  //       animation: scale-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  //     }
+  //   }
+  // } 
 }
 </style>
