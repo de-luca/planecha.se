@@ -28,7 +28,12 @@ export default class Show extends Vue.with(BaseReveal) {
   }
 
   public confirm(): void {
-    this.$emit('done', { picked: [], left: this.revealed.relevant });
+    const picked = this.config.sendShownTo === 'top' ? this.revealed.relevant : [];
+    const left = this.revealed.others + this.config.sendShownTo === 'top' 
+      ? [] 
+      : this.revealed.relevant;
+      
+    this.$emit('done', { picked, left });
   }
 }
 </script>

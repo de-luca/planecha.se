@@ -99,5 +99,6 @@ export default class Board extends Vue {
 
   max-width: 1800px;
   height: 100%;
+  width: 100%;
 }
 </style>

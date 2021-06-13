@@ -1,3 +1,5 @@
+import { eventBus } from '@/services/EventBus';
+import { CardEvent } from '../..';
 import { Phenomenon } from '../Phenomenon';
 
 /**
@@ -8,4 +10,8 @@ import { Phenomenon } from '../Phenomenon';
  * Put all other cards revealed this way on the 
  * bottom of your planar deck in any order.
  */
-export class SpatialMerging extends Phenomenon { }
+export class SpatialMerging extends Phenomenon {
+    public enter(): void {
+        eventBus.emit(CardEvent.SPACIAL_MERGING);
+    }
+}

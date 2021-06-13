@@ -1,9 +1,11 @@
 <template>
   <div class="map">
     <div class="active">
-      <template v-for="a in active" :key="a.id">
-        <card :card="a" />
-      </template>
+      <div :class="{ double: active.length > 1 }">
+        <template v-for="a in active" :key="a.id">
+          <card :card="a" />
+        </template>
+      </div>
     </div>
 
     <div class="logs">
@@ -76,7 +78,7 @@ export default class ClassicMap extends Vue {
 
       this.store.commit(MutationTypes.REVEAL, { count: 1 });
     });
-    
+
     eventBus.on(CardEvent.POOL_OF_BECOMING, () => {
       this.revealerConfig = {
         component: Show,
@@ -95,6 +97,16 @@ export default class ClassicMap extends Vue {
       };
 
       this.store.commit(MutationTypes.REVEAL, { count: 5, type: Plane });
+    });
+
+    eventBus.on(CardEvent.SPACIAL_MERGING, () => {
+      this.revealerConfig = {
+        component: Show,
+        resolver: this.customPlaneswalk,
+        config: { sendShownTo: 'top' }
+      };
+
+      this.store.commit(MutationTypes.REVEAL, { count: 2, type: Plane });
     });
   }
 
@@ -157,6 +169,27 @@ export default class ClassicMap extends Vue {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  .double {
+    height: 100%;
+    position: relative;
+
+    .card-container {
+      width: 75%;
+
+      &:hover {
+        z-index: 2;
+      }
+      &:not(:hover) {
+        z-index: 1;
+      }
+      &:last-child {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
 }
 
 .controls {
