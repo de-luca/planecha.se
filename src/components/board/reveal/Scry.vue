@@ -2,11 +2,25 @@
   <div class="over">
     <h1 class="title" v-if="title" v-html="title"></h1>
     <div class="revealed">
-      <template v-for="c in revealed.relevant" :key="c.id">
+      <template v-for="(c, index) in revealed.relevant" :key="c.id">
         <div class="card-wrapper">
           <img :src="buildImgSrc(c)">
-          <label>TOP<input type="radio" v-model="picked[c.id]" :value="true"></label>
-          <label>BOTTOM<input type="radio" v-model="picked[c.id]" :value="false"></label>
+          <div class="control">
+            <input
+              type="radio"
+              :id="id + index + 'top'"
+              :value="true"
+              v-model="picked[c.id]"
+            >
+            <label class="button" :for="id + index + 'top'">Keep on top</label>
+            <input
+              type="radio"
+              :id="id + index + 'bottom'"
+              :value="false"
+              v-model="picked[c.id]"
+            >
+            <label class="button" :for="id + index + 'bottom'">Put at the bottom</label>
+          </div>
         </div>
       </template>
     </div>
@@ -30,6 +44,11 @@ import { Card } from '@/model/card';
 })
 export default class Scry extends Vue.with(BaseReveal) {
   private picked: Record<string, boolean> = {};
+  private id: string = '';
+
+  public created(): void {
+    this.id = Math.random().toString(36).substring(2, 15);
+  }
 
   public get allSet(): boolean {
     return this.revealed.relevant.every(c => this.picked[c.id] !== undefined);
@@ -53,6 +72,25 @@ export default class Scry extends Vue.with(BaseReveal) {
 </script>
 
 <style lang="scss" scoped>
+.control {
+  display: inline-flex;
+  gap: 1rem;
+
+  label {
+    width: 250px;
+  }
+}
+
+
+input[type="radio"] {
+  display: none;
+
+  &:checked+label {
+    border-color: #4a4a4a;
+    color: #363636;
+  }
+}
+
 .over {
   background-color: #ffffffb5;
   position: absolute;
@@ -88,7 +126,7 @@ export default class Scry extends Vue.with(BaseReveal) {
     gap: .5rem;
 
     img {
-      height: 20rem;
+      height: 30rem;
     }
   }
 }
