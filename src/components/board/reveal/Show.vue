@@ -23,15 +23,18 @@
       </template>
     </div>
 
-    <div class="others" v-if="activeTab === 'others'">
+    <div class="others" v-if="activeTab === 'others' && revealed.others.length > 0">
       <template v-for="(c, index) in revealed.others" :key="c.id">
-         <div 
+        <div 
           class="card-wrapper" 
           :style="{ transform: cardAngle(index, revealed.others.length) }"
         >
           <img :src="buildImgSrc(c)">
         </div>
       </template>
+    </div>
+    <div class="others" v-if="activeTab === 'others' && revealed.others.length === 0">
+      <em>Such Empty!</em>
     </div>
     
     <button
@@ -53,7 +56,7 @@ import { Card } from '@/model/card';
   emits: ['done'],
 })
 export default class Show extends Vue.with(BaseReveal) {
-  private static readonly fanAngle = 20;
+  private static readonly fanAngle = 5;
 
   private activeTab: string = 'relevant';
 
@@ -62,8 +65,7 @@ export default class Show extends Vue.with(BaseReveal) {
   }
 
   public cardAngle(i: number, total: number): string {
-    const angle = (Show.fanAngle * -1) / 2 + Show.fanAngle / total * i;
-    console.log(angle.toFixed(2));
+    const angle = (Show.fanAngle * i) - ((Show.fanAngle * (total - 1)) / 2);
 
     return `rotate(${angle.toFixed(2)}deg)`;
   }

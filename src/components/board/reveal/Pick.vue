@@ -1,20 +1,42 @@
 <template>
   <div class="over">
-    <div class="subtitle">Non Plane card revealed</div>
-    <div class="others">
-      <template v-for="c in revealed.others" :key="c.id">
-        <img :src="buildImgSrc(c)">
+    <h1 class="title" v-if="title" v-html="title"></h1>
+    <div v-if="revealed.others.length > 0" class="tabs is-centered is-medium">
+      <ul>
+        <li :class="{ 'is-active': activeTab === 'relevant' }">
+          <a @click="activeTab = 'relevant'">Relevant cards</a>
+        </li>
+        <li :class="{ 'is-active': activeTab === 'others' }">
+          <a @click="activeTab = 'others'">Others</a>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="relevant" v-if="activeTab === 'relevant'">
+      <template v-for="(c, index) in revealed.relevant" :key="c.id">
+        <div 
+          class="card-wrapper" 
+          :style="{ transform: cardAngle(index, revealed.relevant.length) }"
+        >
+          <label>
+            <input type="radio" :value="c" v-model="selected">
+            <img :src="buildImgSrc(c)">
+          </label>
+        </div>
       </template>
     </div>
-    <div class="title">Choose plane to Planeswalk to</div>
-    <div class="relevant">
-      <template v-for="c in revealed.relevant" :key="c.id">
-        <label>
+
+    <div class="others" v-if="activeTab === 'others'">
+      <template v-for="(c, index) in revealed.others" :key="c.id">
+        <div 
+          class="card-wrapper" 
+          :style="{ transform: cardAngle(index, revealed.others.length) }"
+        >
           <img :src="buildImgSrc(c)">
-          <input type="radio" :value="c" v-model="selected">
-        </label>
+        </div>
       </template>
     </div>
+
     <button 
       class="button is-dark is-medium" 
       @click="confirm"
@@ -32,11 +54,20 @@ import { Card } from '@/model/card';
 @Options({
   emits: ['done'],
 })
-export default class Scry extends Vue.with(BaseReveal) {
+export default class Pick extends Vue.with(BaseReveal) {
+  private static readonly fanAngle = 5;
+
   private selected: Card | null = null;
+  private activeTab: string = 'relevant';
 
   public buildImgSrc(card: Card): string {
     return `/cards/${card.id}.png`;
+  }
+
+  public cardAngle(i: number, total: number): string {
+    const angle = (Pick.fanAngle * i) - ((Pick.fanAngle * (total - 1)) / 2);
+
+    return `rotate(${angle.toFixed(2)}deg)`;
   }
 
   public confirm(): void {
@@ -88,27 +119,37 @@ export default class Scry extends Vue.with(BaseReveal) {
   align-items: center;
   gap: .5rem;
 
-  width: 100%;
-  padding-bottom: .5rem;
+  height: 50%;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 
-  z-index: 2;
+  .card-wrapper {
+    position: absolute; 
+    transform-origin: center 2500px;
+    
+    &:hover {
+      z-index: 2;
+    }
+
+    img {
+      height: 20rem;
+
+      &:hover {
+        animation: scale-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+      }
+    }
+  }
 }
-
-.relevant {
-  flex-wrap: wrap;
-}
-
 
 .others img {
-  height: 10rem;
   filter: grayscale(1);
 }
 
-.relevant img {
-  height: 15rem;
+input[type="radio"] {
+  display: none;
 
-  &:hover {
-    // animation: scale-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  &:checked+img {
+    filter: drop-shadow(5px 5px 5px red) drop-shadow(-5px -5px 5px red);
   }
 }
 </style>
