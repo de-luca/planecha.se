@@ -1,14 +1,44 @@
 <template>
   <div class="over">
     <h1 class="title" v-if="title" v-html="title"></h1>
-    <div class="revealed">
-      <template v-for="c in revealed.relevant" :key="c.id">
-        <div class="card-wrapper">
+    <div class="tabs is-centered is-medium">
+      <ul>
+        <li :class="{ 'is-active': activeTab === 'relevant' }">
+          <a @click="activeTab = 'relevant'">Relevant cards</a>
+        </li>
+        <li :class="{ 'is-active': activeTab === 'others' }">
+          <a @click="activeTab = 'others'">Others</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="relevant" v-if="activeTab === 'relevant'">
+      <template v-for="(c, index) in revealed.relevant" :key="c.id">        
+        <div 
+          class="card-wrapper" 
+          :style="{ transform: cardAngle(index, revealed.relevant.length) }"
+        >
           <img :src="buildImgSrc(c)">
         </div>
       </template>
     </div>
-    <button class="button is-dark is-medium" @click="confirm">
+
+    <div class="others" v-if="activeTab === 'others'">
+      <template v-for="(c, index) in revealed.others" :key="c.id">
+         <div 
+          class="card-wrapper" 
+          :style="{ transform: cardAngle(index, revealed.others.length) }"
+        >
+          <img :src="buildImgSrc(c)">
+        </div>
+      </template>
+    </div>
+    
+    <button
+      class="button is-dark is-medium" 
+      :disabled="activeTab === 'others'" 
+      @click="confirm"
+    >
       Okay
     </button>
   </div>
@@ -23,8 +53,19 @@ import { Card } from '@/model/card';
   emits: ['done'],
 })
 export default class Show extends Vue.with(BaseReveal) {
+  private static readonly fanAngle = 20;
+
+  private activeTab: string = 'relevant';
+
   public buildImgSrc(card: Card): string {
     return `/cards/${card.id}.png`;
+  }
+
+  public cardAngle(i: number, total: number): string {
+    const angle = (Show.fanAngle * -1) / 2 + Show.fanAngle / total * i;
+    console.log(angle.toFixed(2));
+
+    return `rotate(${angle.toFixed(2)}deg)`;
   }
 
   public confirm(): void {
@@ -63,7 +104,11 @@ export default class Show extends Vue.with(BaseReveal) {
   gap: .5rem;
 }
 
-.revealed {
+.tabs {
+  margin-bottom: 0;
+}
+
+.relevant, .others {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -90,27 +135,10 @@ export default class Show extends Vue.with(BaseReveal) {
         animation: scale-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
       }
     }
-
-
-
-    &:first-child { 
-      transform: rotate(5deg) translate(10rem, 0);  
-    }
-    &:last-child { 
-      transform: rotate(-5deg) translate(-10rem, 0);
-    }
   }
+}
 
-  // .card-wrapper {
-  //   z-index: 2;
-
-  //   img {
-  //     height: 25rem;
-      
-  //     &:hover {
-  //       animation: scale-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-  //     }
-  //   }
-  // } 
+.others img {
+  filter: grayscale(1);
 }
 </style>
