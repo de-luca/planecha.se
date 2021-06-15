@@ -11,8 +11,7 @@ import { Plane } from '../Plane';
  * You may put it on the bottom of your planar deck.
  */
 export class StairsToInfinity extends Plane {
-    public chaos(): void {
-        console.log('ICI');
-        eventBus.emit(CardEvent.STAIRS_TO_INFINITY);
+    public chaos(passive: boolean = false): void {
+        eventBus.emit(CardEvent.STAIRS_TO_INFINITY, { passive });
     }
 }

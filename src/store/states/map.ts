@@ -58,15 +58,15 @@ export enum MutationTypes {
 
 // Mutation contracts
 export type Mutations<S = State> = {
-    [MutationTypes.LOG](state: S, payload: Log): void
-    [MutationTypes.HEY](state: S, payload: { id: string, name: string }): void
-    [MutationTypes.INIT](state: S, payload: BuildProps): void
-    [MutationTypes.CHAOS](state: S): void
-    [MutationTypes.PLANESWALK](state: S): void
-    [MutationTypes.CUSTOM_PLANESWALK](state: S, payload: { planes: Array<Plane> }): void
-    [MutationTypes.COUNTERS](state: S, payload: { id: string, change: number }): void
-    [MutationTypes.REVEAL](state: S, payload: { count: number, type?: typeof Card }): void
-    [MutationTypes.RESOLVE_REVEAL](state: S, payload: { top: Array<Card>, bottom: Array<Card> }): void
+    [MutationTypes.LOG](state: S, payload: Log): void,
+    [MutationTypes.HEY](state: S, payload: { id: string, name: string }): void,
+    [MutationTypes.INIT](state: S, payload: BuildProps): void,
+    [MutationTypes.CHAOS](state: S, payload: { passive?: boolean }): void,
+    [MutationTypes.PLANESWALK](state: S, payload: { passive?: boolean }): void,
+    [MutationTypes.CUSTOM_PLANESWALK](state: S, payload: { planes: Array<Plane>, passive?: boolean }): void,
+    [MutationTypes.COUNTERS](state: S, payload: { id: string, change: number }): void,
+    [MutationTypes.REVEAL](state: S, payload: { count: number, type?: typeof Card }): void,
+    [MutationTypes.RESOLVE_REVEAL](state: S, payload: { top: Array<Card>, bottom: Array<Card> }): void,
 }
 
 // Define mutations
@@ -81,14 +81,14 @@ export const mutations: Mutations = {
         state.map = Container.get(MapFactory).build(payload);
         state.online = payload.online;
     },
-    [MutationTypes.CHAOS](state: State) {
-        (<MapInterface>state.map).chaos();
+    [MutationTypes.CHAOS](state: State, payload: { passive?: boolean } = {}) {
+        (<MapInterface>state.map).chaos(payload.passive);
     },
-    [MutationTypes.PLANESWALK](state: State) {
-        (<MapInterface>state.map).planeswalk();
+    [MutationTypes.PLANESWALK](state: State, payload: { passive?: boolean } = {}) {
+        (<MapInterface>state.map).planeswalk(undefined, payload.passive);
     },
-    [MutationTypes.CUSTOM_PLANESWALK](state: State, payload: { planes: Array<Plane> }) {
-        (<MapInterface>state.map).customPlaneswalk(payload.planes);
+    [MutationTypes.CUSTOM_PLANESWALK](state: State, payload: { planes: Array<Plane>, passive?: boolean }) {
+        (<MapInterface>state.map).customPlaneswalk(payload.planes, undefined, payload.passive);
     },
     [MutationTypes.COUNTERS](state: State, payload: { id: string, change: number }) {
         (<MapInterface>state.map).updateCounter(payload.id, payload.change);
@@ -107,7 +107,9 @@ export enum ActionTypes {
     JOIN = 'JOIN',
     CHAOS = 'CHAOS',
     PLANESWALK = 'PLANESWALK',
+    CUSTOM_PLANESWALK = 'CUSTOM_PLANESWALK',
     COUNTERS = 'COUNTERS',
+    RESOLVE_REVEAL = 'RESOLVE_REVEAL',
 }
 
 // Actions context
@@ -134,9 +136,17 @@ export interface Actions {
     [ActionTypes.PLANESWALK](
         { commit }: AugmentedActionContext,
     ): void,
+    [ActionTypes.CUSTOM_PLANESWALK](
+        { commit }: AugmentedActionContext,
+        payload: { planes: Array<Plane> },
+    ): void,
     [ActionTypes.COUNTERS](
         { commit }: AugmentedActionContext,
-        payload: { id: string, change: number }
+        payload: { id: string, change: number },
+    ): void,
+    [ActionTypes.RESOLVE_REVEAL](
+        { commit }: AugmentedActionContext,
+        payload: { top: Array<Card>, bottom: Array<Card> },
     ): void,
  }
 
@@ -177,10 +187,24 @@ export const actions: ActionTree<State, undefined> & Actions = {
         commit(MutationTypes.LOG, { ...(<MapInterface>state.map).getPlaneswalkLog() });
         (<OnlineInterface>state.map).requestPlaneswalk();
     },
+    [ActionTypes.CUSTOM_PLANESWALK]({ commit }, payload: { planes: Array<Plane> }) {
+        commit(MutationTypes.CUSTOM_PLANESWALK, payload);
+        commit(MutationTypes.LOG, { ...(<MapInterface>state.map).getPlaneswalkLog() });
+        (<OnlineInterface>state.map).requestCustomPlaneswalk({
+            planes: payload.planes.map(c => c.id),
+        });
+    },
     [ActionTypes.COUNTERS]({ commit }, payload: { id: string, change: number }) {
         commit(MutationTypes.COUNTERS, payload);
         commit(MutationTypes.LOG, { ...(<MapInterface>state.map).getCounterLog(payload.id, payload.change) });
         (<OnlineInterface>state.map).requestCounterUpdate(payload);
+    },
+    [ActionTypes.RESOLVE_REVEAL]({ commit }, payload: { top: Array<Card>, bottom: Array<Card> },) {
+        commit(MutationTypes.RESOLVE_REVEAL, payload);
+        (<OnlineInterface>state.map).requestRevealResolution({
+            top: payload.top.map(c => c.id),
+            bottom: payload.bottom.map(c => c.id),
+        });
     },
 }
 

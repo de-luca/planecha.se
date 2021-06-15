@@ -6,3 +6,7 @@ export enum CardEvent {
     INTERPLANAR_TUNNEL = 'INTERPLANAR_TUNNEL',
     SPACIAL_MERGING = 'SPACIAL_MERGING',
 }
+
+export interface CardEventPayload {
+    passive: boolean;
+}

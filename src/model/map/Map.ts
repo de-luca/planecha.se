@@ -34,12 +34,16 @@ export abstract class Map implements MapInterface {
     return this.deck.length;
   }
 
-  public chaos(): void {
-    this.active.forEach(c => c.chaos());
+  public chaos(passive: boolean = false): void {
+    this.active.forEach(c => c.chaos(passive));
   }
 
-  public abstract planeswalk(coordinates?: Coordinates): void;
-  public abstract customPlaneswalk(planes: Array<Plane>, coordinates?: Coordinates): void;
+  public abstract planeswalk(coordinates?: Coordinates, passive?: boolean): void;
+  public abstract customPlaneswalk(
+    planes: Array<Plane>, 
+    coordinates?: Coordinates,
+    passive?: boolean, 
+  ): void;
 
   public updateCounter(id: string, change: number): void {
     (this.active.find(c => c.id === id) as Plane).updateCounter(change);

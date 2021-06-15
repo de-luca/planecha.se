@@ -11,7 +11,8 @@ import { Plane } from '../Plane';
  * Then put the revealed cards on the bottom of your planar deck in any order.
  */
 export class PoolOfBecoming extends Plane {
-    public chaos(): void {
-        eventBus.emit(CardEvent.POOL_OF_BECOMING);
+    public chaos(passive: boolean = false): void {
+        console.log(passive);
+        eventBus.emit(CardEvent.POOL_OF_BECOMING, { passive });
     }
 }

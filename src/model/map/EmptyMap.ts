@@ -1,6 +1,6 @@
 import { Log } from '@/store/states/map';
-import { Card, Plane } from '../card';
-import { Coordinates, Exported, MapInterface, MapType, Revealed } from './MapInterface';
+import { Card } from '../card';
+import { Exported, MapInterface, MapType, Revealed } from './MapInterface';
 
 export class EmptyMap implements MapInterface {
   public type: MapType;
@@ -14,25 +14,25 @@ export class EmptyMap implements MapInterface {
   chaos(): void {
     throw new Error('Method not implemented.');
   }
-  planeswalk(coordinates?: Coordinates): void {
+  planeswalk(): void {
     throw new Error('Method not implemented.');
   }
-  customPlaneswalk(planes: Plane[], coordinates?: Coordinates): void {
+  customPlaneswalk(): void {
     throw new Error('Method not implemented.');
   }
-  updateCounter(id: string, change: number): void {
+  updateCounter(): void {
     throw new Error('Method not implemented.');
   }
-  revealUntil(count: number, type?: typeof Card): void {
+  revealUntil(): void {
     throw new Error('Method not implemented.');
   }
-  resolveReveal(top: Card[], bottom: Card[]): void {
+  resolveReveal(): void {
     throw new Error('Method not implemented.');
   }
-  putOnTop(cards: Card[]): void {
+  putOnTop(): void {
     throw new Error('Method not implemented.');
   }
-  putOnTheBottom(cards: Card[]): void {
+  putOnTheBottom(): void {
     throw new Error('Method not implemented.');
   }
   clearRevealed(): void {
@@ -44,7 +44,7 @@ export class EmptyMap implements MapInterface {
   getPlaneswalkLog(): Omit<Log, 'initiator'> {
     throw new Error('Method not implemented.');
   }
-  getCounterLog(id: string, change: number): Omit<Log, 'initiator'> {
+  getCounterLog(): Omit<Log, 'initiator'> {
     throw new Error('Method not implemented.');
   }
 }

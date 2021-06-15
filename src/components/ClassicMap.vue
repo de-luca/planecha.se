@@ -30,16 +30,17 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { Component } from '@vue/runtime-core';
+import { Handler } from 'mitt';
 import _shuffle from 'lodash.shuffle';
 import Card from '@/components/board/Card.vue';
 import Deck from '@/components/board/Deck.vue';
 import ChaosBtn from '@/components/board/ChaosBtn.vue';
 import PlaneswalkBtn from '@/components/board/PlaneswalkBtn.vue';
 import Logs from '@/components/board/Logs.vue';
-import { MutationTypes, Store, useStore } from '@/store';
+import { ActionTypes, MutationTypes, Store, useStore } from '@/store';
 import { Card as ModelCard, Plane } from '@/model/card';
 import { eventBus } from '@/services/EventBus';
-import { CardEvent } from '@/model/card/CardEvent';
+import { CardEvent, CardEventPayload } from '@/model/card/CardEvent';
 import { Revealed } from '@/model/map/MapInterface';
 import { PickedLeft, Config } from './board/reveal/BaseReveal';
 
@@ -47,6 +48,8 @@ import Pick from '@/components/board/reveal/Pick.vue';
 import Scry from '@/components/board/reveal/Scry.vue';
 import Show from '@/components/board/reveal/Show.vue';
 
+
+type EventHandler = Handler<CardEventPayload>;
 
 type RevealerConfig = {
   config: Config;
@@ -68,46 +71,58 @@ export default class ClassicMap extends Vue {
   public created() {
     this.store = useStore();
 
-    eventBus.on(CardEvent.ARETOPOLIS, () => console.log('10 counters, planeswalk'));
-    eventBus.on(CardEvent.STAIRS_TO_INFINITY, () => {
+    eventBus.on(CardEvent.STAIRS_TO_INFINITY, ((payload): void => {
       this.revealerConfig = {
         component: Scry,
         resolver: this.putBack,
-        config: { sendShownTo: 'bottom' }
+        config: {
+          passive: (payload as CardEventPayload).passive,
+          sendShownTo: 'bottom',
+        },
       };
 
       this.store.commit(MutationTypes.REVEAL, { count: 1 });
-    });
+    }) as EventHandler);
 
-    eventBus.on(CardEvent.POOL_OF_BECOMING, () => {
+    eventBus.on(CardEvent.POOL_OF_BECOMING, ((payload): void => {
+      console.log(payload);
       this.revealerConfig = {
         component: Show,
         resolver: this.putBack,
-        config: { sendShownTo: 'bottom' }
+        config: {
+          passive: (payload as CardEventPayload).passive,
+          sendShownTo: 'bottom',
+        },
       };
 
       this.store.commit(MutationTypes.REVEAL, { count: 3 });
-    });
+    }) as EventHandler);
 
-    eventBus.on(CardEvent.INTERPLANAR_TUNNEL, () => {
+    eventBus.on(CardEvent.INTERPLANAR_TUNNEL, ((payload): void => {
       this.revealerConfig = {
         component: Pick,
         resolver: this.customPlaneswalk,
-        config: { sendShownTo: 'bottom' }
+        config: {
+          passive: (payload as CardEventPayload).passive,
+          sendShownTo: 'bottom'
+        }
       };
 
       this.store.commit(MutationTypes.REVEAL, { count: 5, type: Plane });
-    });
+    }) as EventHandler);
 
-    eventBus.on(CardEvent.SPACIAL_MERGING, () => {
+    eventBus.on(CardEvent.SPACIAL_MERGING, ((payload): void => {
       this.revealerConfig = {
         component: Show,
         resolver: this.customPlaneswalk,
-        config: { sendShownTo: 'top' }
+        config: {
+          passive: (payload as CardEventPayload).passive,
+          sendShownTo: 'top'
+        }
       };
 
       this.store.commit(MutationTypes.REVEAL, { count: 2, type: Plane });
-    });
+    }) as EventHandler);
   }
 
   public get active(): Array<ModelCard> {
@@ -127,24 +142,29 @@ export default class ClassicMap extends Vue {
   }
 
   public customPlaneswalk(choices: PickedLeft): void {
-    this.store.commit(MutationTypes.CUSTOM_PLANESWALK, {
-      planes: choices.picked as Array<Plane>,
-    });
+    this.store.getters.online
+      ? this.store.dispatch(ActionTypes.CUSTOM_PLANESWALK, {
+          planes: choices.picked as Array<Plane>,
+        })
+      : this.store.commit(MutationTypes.CUSTOM_PLANESWALK, {
+          planes: choices.picked as Array<Plane>,
+        });
+    ;
 
-    this.store.commit(MutationTypes.RESOLVE_REVEAL, {
-      top: [],
-      bottom: _shuffle(choices.left),
-    });
+    this.putBack({ picked: [], left: choices.left });
   }
   
   public putBack(choices: PickedLeft): void {
-    this.store.commit(MutationTypes.RESOLVE_REVEAL, {
+    const payload = {
       top: choices.picked,
       bottom: _shuffle(choices.left),
-    });
+    };
+
+    this.store.getters.online
+      ? this.store.dispatch(ActionTypes.RESOLVE_REVEAL, payload)
+      : this.store.commit(MutationTypes.RESOLVE_REVEAL, payload) 
+    ;
   }
-
-
 }
 </script>
 

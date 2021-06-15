@@ -11,7 +11,7 @@ import { Phenomenon } from '../Phenomenon';
  * in a random order.
  */
 export class InterplanarTunnel extends Phenomenon {
-    public enter(): void {
-        eventBus.emit(CardEvent.INTERPLANAR_TUNNEL);
+    public enter(passive: boolean = false): void {
+        eventBus.emit(CardEvent.INTERPLANAR_TUNNEL, { passive });
     }
 }

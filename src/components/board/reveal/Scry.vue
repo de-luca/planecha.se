@@ -8,6 +8,7 @@
           <div class="control">
             <input
               type="radio"
+              :disabled="config.passive"
               :id="id + index + 'top'"
               :value="true"
               v-model="picked[c.id]"
@@ -15,6 +16,7 @@
             <label class="button" :for="id + index + 'top'">Keep on top</label>
             <input
               type="radio"
+              :disabled="config.passive"
               :id="id + index + 'bottom'"
               :value="false"
               v-model="picked[c.id]"
@@ -27,7 +29,7 @@
     <button 
       class="button is-dark is-medium" 
       @click="confirm"
-      :disabled="!allSet"
+      :disabled="config.passive || !allSet"
     >
       Confirm choice
     </button>

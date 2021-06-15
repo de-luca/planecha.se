@@ -8,6 +8,7 @@ export type PickedLeft = {
 }
 
 export type Config = {
+    passive: boolean;
     sendShownTo: 'top' | 'bottom';
     title?: string;
 }

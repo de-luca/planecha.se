@@ -1,3 +1,4 @@
+import { Card } from "../card";
 import { Coordinates } from "../map/MapInterface";
 
 export interface OnlineInterface {
@@ -5,5 +6,7 @@ export interface OnlineInterface {
     join(roomId: string): void;
     requestChaos(): void;
     requestPlaneswalk(coordinates?: Coordinates): void;
-    requestCounterUpdate({ id, change }: { id: string, change: number }): void;
+    requestCustomPlaneswalk(payload: { planes: Array<string> }): void;
+    requestCounterUpdate(payload: { id: string, change: number }): void;
+    requestRevealResolution(payload: { top: Array<string>, bottom: Array<string> }): void;
 }

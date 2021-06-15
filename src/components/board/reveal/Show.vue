@@ -39,7 +39,7 @@
     
     <button
       class="button is-dark is-medium" 
-      :disabled="activeTab === 'others'" 
+      :disabled="config.passive || activeTab === 'others'" 
       @click="confirm"
     >
       Okay

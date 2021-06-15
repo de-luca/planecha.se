@@ -1,5 +1,6 @@
 import { MutationTypes, useStore } from "@/store";
 import { LogType } from "@/store/states/map";
+import { Card, Plane } from "../card";
 
 export enum Event {
     REQUEST_INIT = 'request_init',
@@ -7,7 +8,9 @@ export enum Event {
     INIT = 'init',
     CHAOS = 'chaos',
     PLANESWALK = 'planeswalk',
+    CUSTOM_PLANESWALK = 'custom_planeswalk',
     COUNTERS = 'counters',
+    RESOLVE_REVEAL = 'resolve_reveal',
 }
 
 export type Payload<T> = {
@@ -35,7 +38,7 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
                 break;
 
             case Event.CHAOS:
-                store.commit(MutationTypes.CHAOS);
+                store.commit(MutationTypes.CHAOS, { passive: true });
                 store.commit(MutationTypes.LOG, {
                     initiator: store.getters.mates.get(this.label) as string,
                     type: LogType.CHAOS,
@@ -43,14 +46,28 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
                 break;
 
             case Event.PLANESWALK:
-                store.commit(MutationTypes.PLANESWALK);
+                store.commit(MutationTypes.PLANESWALK, { passive: true });
                 store.commit(MutationTypes.LOG, {
                     initiator: store.getters.mates.get(this.label) as string,
                     ...store.getters.map.getPlaneswalkLog(),
                 });
                 break;
 
-            case Event.COUNTERS:
+            case Event.CUSTOM_PLANESWALK: {
+                const data = payload.data as { planes: Array<string> };
+                const allCards = Array<Card>().concat(
+                    store.getters.revealed?.relevant ?? [],
+                    store.getters.revealed?.others ?? [],
+                );
+
+                store.commit(MutationTypes.CUSTOM_PLANESWALK, {
+                    planes: data.planes.map((id) => allCards.find(c => c.id === id) as Plane),
+                    passive: true,
+                });
+                break;
+            }
+
+            case Event.COUNTERS: {
                 const data = payload.data as { id: string, change: number };
                 store.commit(MutationTypes.COUNTERS, data);                
                 store.commit(MutationTypes.LOG, {
@@ -58,6 +75,21 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
                     ...store.getters.map.getCounterLog(data.id, data.change),
                 });
                 break;
+            }
+
+            case Event.RESOLVE_REVEAL: {
+                const data = payload.data as { top: Array<string>, bottom: Array<string> };
+                const allCards = Array<Card>().concat(
+                    store.getters.revealed?.relevant ?? [],
+                    store.getters.revealed?.others ?? [],
+                );
+
+                store.commit(MutationTypes.RESOLVE_REVEAL, {
+                    top: data.top.map((id) => allCards.find(c => c.id === id) as Card),
+                    bottom: data.bottom.map((id) => allCards.find(c => c.id === id) as Card),
+                });
+                break;
+            }
 
             case Event.HEY:
                 if (!store.getters.mates.get(this.label)) {

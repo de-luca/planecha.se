@@ -19,7 +19,7 @@
           :style="{ transform: cardAngle(index, revealed.relevant.length) }"
         >
           <label>
-            <input type="radio" :value="c" v-model="selected">
+            <input type="radio" :value="c" :disabled="config.passive" v-model="selected">
             <img :src="buildImgSrc(c)">
           </label>
         </div>
@@ -40,6 +40,7 @@
     <button 
       class="button is-dark is-medium" 
       @click="confirm"
+      :disabled="config.passive"
     >
       Confirm choice
     </button>

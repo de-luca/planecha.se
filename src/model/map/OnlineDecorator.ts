@@ -1,4 +1,4 @@
-import { Card } from "../card";
+import { Card, Plane } from "../card";
 import { Coordinates, Exported, MapInterface, MapType, Revealed } from "./MapInterface";
 import { Beacon } from "../net/Beacon";
 import { OnlineInterface } from "../net/OnlineInterface";
@@ -47,12 +47,20 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
         return this.map.getDeckSize();
     }
 
-    public chaos(): void {
-        return this.map.chaos();
+    public chaos(passive: boolean = false): void {
+        return this.map.chaos(passive);
     }
     
-    public planeswalk(coordinates?: Coordinates): void {
-        return this.map.planeswalk(coordinates);
+    public planeswalk(coordinates?: Coordinates, passive: boolean = false): void {
+        return this.map.planeswalk(coordinates, passive);
+    }
+
+    public customPlaneswalk(
+        planes: Array<Plane>,
+        coordinates?: Coordinates,
+        passive: boolean = false,
+    ): void {
+        return this.map.customPlaneswalk(planes, coordinates, passive);
     }
 
     public updateCounter(id: string, change: number): void {
@@ -125,7 +133,15 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
         this.peers.broadcast(Event.PLANESWALK);
     }
 
-    public requestCounterUpdate({ id, change }: { id: string, change: number }): void {
-        this.peers.broadcast(Event.COUNTERS, { id, change });
+    public requestCustomPlaneswalk(payload: { planes: Array<string> }): void {
+        this.peers.broadcast(Event.CUSTOM_PLANESWALK, payload)
+    }
+
+    public requestCounterUpdate(payload: { id: string, change: number }): void {
+        this.peers.broadcast(Event.COUNTERS, payload);
+    }
+
+    public requestRevealResolution(payload: { top: string[], bottom: string[], }): void {
+        this.peers.broadcast(Event.RESOLVE_REVEAL, payload);
     }
 }
