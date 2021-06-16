@@ -142,14 +142,9 @@ export default class ClassicMap extends Vue {
   }
 
   public customPlaneswalk(choices: PickedLeft): void {
-    this.store.getters.online
-      ? this.store.dispatch(ActionTypes.CUSTOM_PLANESWALK, {
-          planes: choices.picked as Array<Plane>,
-        })
-      : this.store.commit(MutationTypes.CUSTOM_PLANESWALK, {
-          planes: choices.picked as Array<Plane>,
-        });
-    ;
+    this.store.dispatch(ActionTypes.CUSTOM_PLANESWALK, {
+      planes: choices.picked as Array<Plane>,
+    });
 
     this.putBack({ picked: [], left: choices.left });
   }
@@ -160,10 +155,7 @@ export default class ClassicMap extends Vue {
       bottom: _shuffle(choices.left),
     };
 
-    this.store.getters.online
-      ? this.store.dispatch(ActionTypes.RESOLVE_REVEAL, payload)
-      : this.store.commit(MutationTypes.RESOLVE_REVEAL, payload) 
-    ;
+    this.store.dispatch(ActionTypes.RESOLVE_REVEAL, payload);
   }
 }
 </script>

@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { ActionTypes, MutationTypes, Store, useStore } from '@/store';
+import { ActionTypes, Store, useStore } from '@/store';
 import { Vue } from 'vue-class-component';
 
 export default class Controls extends Vue {
@@ -18,10 +18,7 @@ export default class Controls extends Vue {
   }
 
   public chaos() {
-    this.store.getters.online
-      ? this.store.dispatch(ActionTypes.CHAOS)
-      : this.store.commit(MutationTypes.CHAOS) 
-    ;
+    this.store.dispatch(ActionTypes.CHAOS);
   }
 }
 </script>

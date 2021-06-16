@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { Card as ModelCard, Phenomenon, Plane } from '@/model/card';
-import { ActionTypes, MutationTypes, Store, useStore } from '@/store';
+import { ActionTypes, Store, useStore } from '@/store';
 import { Vue, prop } from 'vue-class-component';
 
 class Props {
@@ -44,10 +44,7 @@ export default class Card extends Vue.with(Props) {
   }
 
   public update(change: number) {
-    const payload = { id: this.card.id, change };
-    this.store.getters.online
-      ? this.store.dispatch(ActionTypes.COUNTERS, payload)
-      : this.store.commit(MutationTypes.COUNTERS, payload)
+    this.store.dispatch(ActionTypes.COUNTERS, { id: this.card.id, change });
     ;
   }
 }

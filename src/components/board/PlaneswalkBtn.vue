@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { ActionTypes, MutationTypes, Store, useStore } from '@/store';
+import { ActionTypes, Store, useStore } from '@/store';
 import { Vue } from 'vue-class-component';
 
 export default class Controls extends Vue {
@@ -18,10 +18,7 @@ export default class Controls extends Vue {
   }
 
   public planeswalk() {
-    this.store.getters.online
-      ? this.store.dispatch(ActionTypes.PLANESWALK)
-      : this.store.commit(MutationTypes.PLANESWALK) 
-    ;
+    this.store.dispatch(ActionTypes.PLANESWALK);
   }
 }
 </script>

@@ -29,10 +29,12 @@ export type Log = {
 // Declare state
 export type State = {
     map?: MapInterface | MapInterface & OnlineInterface;
-    shuffled: boolean;
+    
     online: boolean;
     logs: Array<Log>;
     mates: Map<string, string>;
+
+    shuffled: boolean;
 };
 
 // Init state
@@ -186,42 +188,51 @@ export const actions: ActionTree<State, undefined> & Actions = {
     },
     [ActionTypes.CHAOS]({ commit }) {
         commit(MutationTypes.CHAOS);
-        commit(MutationTypes.LOG, { type: LogType.CHAOS });
-        (<OnlineInterface>state.map).requestChaos();
+
+        if (state.online) {
+            (state.map as OnlineInterface).requestChaos();
+        }
     },
     [ActionTypes.PLANESWALK]({ commit }) {
         commit(MutationTypes.PLANESWALK);
-        commit(MutationTypes.LOG, { ...(<MapInterface>state.map).getPlaneswalkLog() });
 
-        if (state.shuffled) {
-            const exported = (<MapInterface>state.map).export();
-            (<OnlineInterface>state.map).requestShuffling({
-                active: exported.active,
-                deck: exported.deck,
-            });
-            state.shuffled = false;
-        } else {
-            (<OnlineInterface>state.map).requestPlaneswalk();
+        if (state.online) {
+            if (state.shuffled) {
+                const exported = (<MapInterface>state.map).export();
+                (state.map as OnlineInterface).requestShuffling({
+                    active: exported.active,
+                    deck: exported.deck,
+                });
+                state.shuffled = false;
+            } else {
+                (state.map as OnlineInterface).requestPlaneswalk();
+            }
         }
     },
     [ActionTypes.CUSTOM_PLANESWALK]({ commit }, payload: { planes: Array<Plane> }) {
         commit(MutationTypes.CUSTOM_PLANESWALK, payload);
-        commit(MutationTypes.LOG, { ...(<MapInterface>state.map).getPlaneswalkLog() });
-        (<OnlineInterface>state.map).requestCustomPlaneswalk({
-            planes: payload.planes.map(c => c.id),
-        });
+
+        if (state.online) {
+            (state.map as OnlineInterface).requestCustomPlaneswalk({
+                planes: payload.planes.map(c => c.id),
+            });
+        }
     },
     [ActionTypes.COUNTERS]({ commit }, payload: { id: string, change: number }) {
         commit(MutationTypes.COUNTERS, payload);
-        commit(MutationTypes.LOG, { ...(<MapInterface>state.map).getCounterLog(payload.id, payload.change) });
-        (<OnlineInterface>state.map).requestCounterUpdate(payload);
+        
+        if (state.online) {
+            (state.map as OnlineInterface).requestCounterUpdate(payload);
+        }
     },
-    [ActionTypes.RESOLVE_REVEAL]({ commit }, payload: { top: Array<Card>, bottom: Array<Card> },) {
+    [ActionTypes.RESOLVE_REVEAL]({ commit }, payload: { top: Array<Card>, bottom: Array<Card> }) {
         commit(MutationTypes.RESOLVE_REVEAL, payload);
-        (<OnlineInterface>state.map).requestRevealResolution({
-            top: payload.top.map(c => c.id),
-            bottom: payload.bottom.map(c => c.id),
-        });
+        if (state.online) {
+            (state.map as OnlineInterface).requestRevealResolution({
+                top: payload.top.map(c => c.id),
+                bottom: payload.bottom.map(c => c.id),
+            });
+        }
     },
 }
 
