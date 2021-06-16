@@ -41,7 +41,7 @@ export class EternitiesMap extends Map {
 
     this.deck = props.deck;
     this.played = [];
-    this.active = props.active ?? [this.draw()];
+    this.active = props.active ?? [this.draw<Plane>().card];
     this.tiles = this.initializeTiles();
   }
 
@@ -65,7 +65,7 @@ export class EternitiesMap extends Map {
           tiles.push({
             coordinates: { x, y },
             state: TileStatus.VISIBLE,
-            plane: [this.draw()],
+            plane: [this.draw<Plane>().card],
           });
         }
       }
@@ -74,7 +74,8 @@ export class EternitiesMap extends Map {
     return tiles;
   }
 
-  public planeswalk(coordinates: Coordinates, passive: boolean = false): Array<Tile> {
+  public planeswalk(coordinates: Coordinates, passive: boolean = false): boolean {
+    let shuffled = false;
     const xOffset = coordinates.x;
     const yOffset = coordinates.y;
 
@@ -94,13 +95,16 @@ export class EternitiesMap extends Map {
     } else {
       // It does not exist (HellRiding)
       // Draw a card and put it in place
+      const drawn = this.draw<Plane>();
+      shuffled = drawn.shuffled;
+      
       newActiveTile = {
         coordinates: {
           x: xOffset,
           y: yOffset,
         },
         state: TileStatus.ACTIVE,
-        plane: [this.draw()],
+        plane: [drawn.card],
       };
 
       this.tiles.push(newActiveTile);
@@ -128,10 +132,13 @@ export class EternitiesMap extends Map {
           const tile = this.tiles.find((t) => t.coordinates.x === x && t.coordinates.y === y);
           if (!tile) {
             // NO?!! Then draw and place a plane
+            const drawn = this.draw<Plane>();
+            shuffled = drawn.shuffled;
+
             this.tiles.push({
               coordinates: { x, y },
               state: TileStatus.VISIBLE,
-              plane: [this.draw()],
+              plane: [drawn.card],
             });
           }
         }
@@ -149,7 +156,7 @@ export class EternitiesMap extends Map {
       Math.abs(t.coordinates.x) + Math.abs(t.coordinates.y) <= EternitiesMap.maxRange
     ));
 
-    return this.tiles;
+    return shuffled;
   }
 
   public customPlaneswalk(

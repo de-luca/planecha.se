@@ -6,20 +6,21 @@ export class Classic extends Map {
   public constructor(props: Props) {
     super(props);
 
-    this.active = props.active ?? [this.drawPlane()];
+    this.active = props.active ?? [this.drawPlane().card];
   }
 
   public get type(): MapType {
     return MapType.CLASSIC;
   }
 
-  private drawPlane(): Plane {
+  private drawPlane(): { card: Plane, shuffled: boolean } {
     let card: Card;
+    let shuffled: boolean;
     let found = false;
 
     do {
       // Draw card
-      card = this.draw();
+      ({ card, shuffled } = this.draw());
       if (card instanceof Plane) {
         // it's a plane
         found = true;
@@ -29,14 +30,18 @@ export class Classic extends Map {
       }
     } while (!found);
 
-    return card as Plane;
+    return { card: card as Plane, shuffled };
   }
 
-  public planeswalk(_coordinates?: Coordinates, passive: boolean = false): void {
+  public planeswalk(_coordinates?: Coordinates, passive: boolean = false): boolean {
     this.active.forEach(c => c.leave());
     this.played.push(...this.active);
-    this.active = [this.draw()];
+    
+    const { card, shuffled } = this.draw();
+    this.active = [card];
     this.active.forEach(c => c.enter(passive));
+    
+    return shuffled;
   }
   
   public customPlaneswalk(

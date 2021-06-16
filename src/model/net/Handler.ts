@@ -11,6 +11,7 @@ export enum Event {
     CUSTOM_PLANESWALK = 'custom_planeswalk',
     COUNTERS = 'counters',
     RESOLVE_REVEAL = 'resolve_reveal',
+    SHUFFLE = 'shuffle',
 }
 
 export type Payload<T> = {
@@ -35,6 +36,13 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
         switch (payload.event) {
             case Event.REQUEST_INIT:
                 this.send(stringify(Event.INIT, store.getters.map.export()));
+                break;
+
+            case Event.SHUFFLE:
+                store.commit(
+                    MutationTypes.SHUFFLE, 
+                    payload.data as { active: Array<string>, deck: Array<string> },
+                );
                 break;
 
             case Event.CHAOS:

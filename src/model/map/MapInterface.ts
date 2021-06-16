@@ -17,6 +17,7 @@ export interface Exported {
   deck: Array<string>;
   played: Array<string>;
   active: Array<string>;
+  revealed?: { relevant: Array<string>, others: Array<string> };
 }
 
 export interface Revealed { 
@@ -33,7 +34,7 @@ export interface MapInterface {
 
   getDeckSize(): number;
 
-  revealUntil(count: number, type?: typeof Card): void;
+  revealUntil(count: number, type?: typeof Card): boolean;
   resolveReveal(top: Array<Card>, bottom: Array<Card>): void;
   
   putOnTop(cards: Array<Card>): void;
@@ -41,7 +42,7 @@ export interface MapInterface {
   clearRevealed(): void;
 
   chaos(passive?: boolean): void;
-  planeswalk(coordinates?: Coordinates, passive?: boolean): void;
+  planeswalk(coordinates?: Coordinates, passive?: boolean): boolean;
   customPlaneswalk(
     planes: Array<Plane>, 
     coordinates?: Coordinates, 
@@ -50,6 +51,7 @@ export interface MapInterface {
   updateCounter(id: string, change: number): void;
 
   export(): Exported;
+  applyShuffle(state: Exported): void;
   
   getPlaneswalkLog(): Omit<Log, 'initiator'>;
   getCounterLog(id: string, change: number): Omit<Log, 'initiator'>;

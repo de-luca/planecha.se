@@ -51,7 +51,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
         return this.map.chaos(passive);
     }
     
-    public planeswalk(coordinates?: Coordinates, passive: boolean = false): void {
+    public planeswalk(coordinates?: Coordinates, passive: boolean = false): boolean {
         return this.map.planeswalk(coordinates, passive);
     }
 
@@ -67,7 +67,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
         return this.map.updateCounter(id, change);
     }
 
-    public revealUntil(count: number, type: typeof Card = Card): void {
+    public revealUntil(count: number, type: typeof Card = Card): boolean {
         return this.map.revealUntil(count, type);
     }
 
@@ -89,6 +89,10 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
 
     public export(): Exported {
         return this.map.export();
+    }
+
+    public applyShuffle(state: Exported): void {
+        return this.map.applyShuffle(state);
     }
 
     public getPlaneswalkLog(): Omit<Log, "initiator"> {
@@ -141,7 +145,13 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
         this.peers.broadcast(Event.COUNTERS, payload);
     }
 
-    public requestRevealResolution(payload: { top: string[], bottom: string[], }): void {
+    public requestRevealResolution(
+        payload: { top: Array<string>, bottom: Array<string> },
+    ): void {
         this.peers.broadcast(Event.RESOLVE_REVEAL, payload);
+    }
+
+    public requestShuffling(payload: Exported): void {
+        this.peers.broadcast(Event.SHUFFLE, payload);
     }
 }

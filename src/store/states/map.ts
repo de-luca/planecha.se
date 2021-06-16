@@ -7,7 +7,7 @@ import {
 } from 'vuex'
 
 import { Card, Plane } from "@/model/card";
-import { MapInterface, MapType, Revealed } from '@/model/map/MapInterface';
+import { Exported, MapInterface, MapType, Revealed } from '@/model/map/MapInterface';
 import { BuildProps, MapFactory } from '@/model/map/MapFactory';
 import { OnlineInterface } from '@/model/net/OnlineInterface';
 import Container from 'typedi';
@@ -29,6 +29,7 @@ export type Log = {
 // Declare state
 export type State = {
     map?: MapInterface | MapInterface & OnlineInterface;
+    shuffled: boolean;
     online: boolean;
     logs: Array<Log>;
     mates: Map<string, string>;
@@ -37,6 +38,7 @@ export type State = {
 // Init state
 export const state: State = {
     map: undefined,
+    shuffled: false,
     online: false,
     logs: [],
     mates: new Map(),
@@ -48,6 +50,7 @@ export enum MutationTypes {
     LOG = 'LOG',
     HEY = 'HEY',
     INIT = 'INIT',
+    SHUFFLE = 'SHUFFLE',
     CHAOS = 'CHAOS',
     PLANESWALK = 'PLANESWALK',
     CUSTOM_PLANESWALK = 'CUSTOM_PLANESWALK',
@@ -61,6 +64,7 @@ export type Mutations<S = State> = {
     [MutationTypes.LOG](state: S, payload: Log): void,
     [MutationTypes.HEY](state: S, payload: { id: string, name: string }): void,
     [MutationTypes.INIT](state: S, payload: BuildProps): void,
+    [MutationTypes.SHUFFLE](state: S, payload: { active: Array<string>, deck: Array<string> }): void,
     [MutationTypes.CHAOS](state: S, payload: { passive?: boolean }): void,
     [MutationTypes.PLANESWALK](state: S, payload: { passive?: boolean }): void,
     [MutationTypes.CUSTOM_PLANESWALK](state: S, payload: { planes: Array<Plane>, passive?: boolean }): void,
@@ -81,11 +85,14 @@ export const mutations: Mutations = {
         state.map = Container.get(MapFactory).build(payload);
         state.online = payload.online;
     },
+    [MutationTypes.SHUFFLE](state: State, payload: Exported) {
+        (<MapInterface>state.map).applyShuffle(payload);
+    },
     [MutationTypes.CHAOS](state: State, payload: { passive?: boolean } = {}) {
         (<MapInterface>state.map).chaos(payload.passive);
     },
     [MutationTypes.PLANESWALK](state: State, payload: { passive?: boolean } = {}) {
-        (<MapInterface>state.map).planeswalk(undefined, payload.passive);
+        state.shuffled = (<MapInterface>state.map).planeswalk(undefined, payload.passive);
     },
     [MutationTypes.CUSTOM_PLANESWALK](state: State, payload: { planes: Array<Plane>, passive?: boolean }) {
         (<MapInterface>state.map).customPlaneswalk(payload.planes, undefined, payload.passive);
@@ -94,7 +101,7 @@ export const mutations: Mutations = {
         (<MapInterface>state.map).updateCounter(payload.id, payload.change);
     },
     [MutationTypes.REVEAL](state: State, payload: { count: number, type?: typeof Card }) {
-        (<MapInterface>state.map).revealUntil(payload.count, payload.type);
+        state.shuffled = (<MapInterface>state.map).revealUntil(payload.count, payload.type);
     },
     [MutationTypes.RESOLVE_REVEAL](state: State, payload: { top: Array<Card>, bottom: Array<Card> }) {
         (<MapInterface>state.map).resolveReveal(payload.top, payload.bottom);
@@ -185,7 +192,17 @@ export const actions: ActionTree<State, undefined> & Actions = {
     [ActionTypes.PLANESWALK]({ commit }) {
         commit(MutationTypes.PLANESWALK);
         commit(MutationTypes.LOG, { ...(<MapInterface>state.map).getPlaneswalkLog() });
-        (<OnlineInterface>state.map).requestPlaneswalk();
+
+        if (state.shuffled) {
+            const exported = (<MapInterface>state.map).export();
+            (<OnlineInterface>state.map).requestShuffling({
+                active: exported.active,
+                deck: exported.deck,
+            });
+            state.shuffled = false;
+        } else {
+            (<OnlineInterface>state.map).requestPlaneswalk();
+        }
     },
     [ActionTypes.CUSTOM_PLANESWALK]({ commit }, payload: { planes: Array<Plane> }) {
         commit(MutationTypes.CUSTOM_PLANESWALK, payload);

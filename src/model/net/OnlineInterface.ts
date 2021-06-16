@@ -9,4 +9,5 @@ export interface OnlineInterface {
     requestCustomPlaneswalk(payload: { planes: Array<string> }): void;
     requestCounterUpdate(payload: { id: string, change: number }): void;
     requestRevealResolution(payload: { top: Array<string>, bottom: Array<string> }): void;
+    requestShuffling(payload: { active: Array<string>, deck: Array<string> }): void;
 }

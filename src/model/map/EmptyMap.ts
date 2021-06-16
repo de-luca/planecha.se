@@ -11,10 +11,10 @@ export class EmptyMap implements MapInterface {
   getDeckSize(): number {
     throw new Error('Method not implemented.');
   }
-  chaos(): void {
+  chaos(): boolean {
     throw new Error('Method not implemented.');
   }
-  planeswalk(): void {
+  planeswalk(): boolean {
     throw new Error('Method not implemented.');
   }
   customPlaneswalk(): void {
@@ -23,7 +23,7 @@ export class EmptyMap implements MapInterface {
   updateCounter(): void {
     throw new Error('Method not implemented.');
   }
-  revealUntil(): void {
+  revealUntil(): boolean {
     throw new Error('Method not implemented.');
   }
   resolveReveal(): void {
@@ -39,6 +39,9 @@ export class EmptyMap implements MapInterface {
     throw new Error('Method not implemented.');
   }
   export(): Exported {
+    throw new Error('Method not implemented.');
+  }
+  applyShuffle(): void {
     throw new Error('Method not implemented.');
   }
   getPlaneswalkLog(): Omit<Log, 'initiator'> {

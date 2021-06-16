@@ -1,5 +1,7 @@
+import { DeckProvider } from '@/services/DeckProvider';
 import { Log, LogType } from '@/store/states/map';
 import _shuffle from 'lodash.shuffle';
+import Container from 'typedi';
 import { Card, Counter, Phenomenon, Plane } from '../card';
 import { Coordinates, Exported, MapInterface, MapType, Revealed } from './MapInterface';
 
@@ -38,7 +40,7 @@ export abstract class Map implements MapInterface {
     this.active.forEach(c => c.chaos(passive));
   }
 
-  public abstract planeswalk(coordinates?: Coordinates, passive?: boolean): void;
+  public abstract planeswalk(coordinates?: Coordinates, passive?: boolean): boolean;
   public abstract customPlaneswalk(
     planes: Array<Plane>, 
     coordinates?: Coordinates,
@@ -49,38 +51,49 @@ export abstract class Map implements MapInterface {
     (this.active.find(c => c.id === id) as Plane).updateCounter(change);
   }
 
-  protected draw<T extends Card>(): T {
+  protected draw<T extends Card>(): { card: T, shuffled: boolean } {
     // Reach for the top card
     const card = this.deck.shift();
 
     // There's nothing, like the deep void in your heart
     if (!card) {
-      // Shuffle the pile of card
-      this.deck = _shuffle(this.played);
-      this.played = [];
+      this.shuffleDeck();
 
-      return this.deck.shift() as T;
+      return {
+        card: this.deck.shift() as T,
+        shuffled: true,
+      };
     }
 
-    return card as T;
+    return { card: card as T, shuffled: false };
   }
 
-  public revealUntil(count = 1, type: typeof Card = Card): void {
+  protected shuffleDeck(): void {
+    this.deck = _shuffle(this.played);
+    this.played = [];
+  }
+
+  public revealUntil(count = 1, type: typeof Card = Card): boolean {
     const relevant: Array<Card> = [];
     const others: Array<Card> = [];
+    let shuffled = false;
     let found = 0;
 
     do {
-      const card = this.draw();
-      if (card instanceof type) {
+      const drawn = this.draw();
+      shuffled = drawn.shuffled;
+
+      if (drawn.card instanceof type) {
         found++;
-        relevant.push(card);
+        relevant.push(drawn.card);
       } else {
-        others.push(card);
+        others.push(drawn.card);
       }
     } while (found < count);
 
     this.revealed = { relevant, others };
+
+    return shuffled;
   }
 
   public resolveReveal(top: Card[], bottom: Card[]): void {
@@ -104,19 +117,28 @@ export abstract class Map implements MapInterface {
   public export(): Exported {
     return {
       type: this.type,
-      deck: this.deck.reduce<Array<string>>((acc, card) => {
-        acc.push(card.id);
-        return acc;
-      }, []),
-      played: this.played.reduce<Array<string>>((acc, card) => {
-        acc.push(card.id);
-        return acc;
-      }, []),
-      active: this.active.reduce<Array<string>>((acc, card) => {
-        acc.push(card.id);
-        return acc;
-      }, []),
+      deck: this.deck.map(c => c.id),
+      played: this.played.map(c => c.id),
+      active: this.active.map(c => c.id),
+      revealed: this.revealed === undefined
+        ? undefined
+        : {
+          relevant: this.revealed.relevant.map(c => c.id),
+          others: this.revealed.others.map(c => c.id),
+        },
     };
+  }
+
+  public applyShuffle(state: Exported): void {
+    this.played = [];
+    this.deck = Container.get(DeckProvider).getOrderedDeck(state.deck);
+    this.active = Container.get(DeckProvider).getOrderedDeck(state.active);
+    this.revealed = state.revealed === undefined
+      ? undefined
+      : {
+        relevant: Container.get(DeckProvider).getOrderedDeck(state.revealed.relevant),
+        others: Container.get(DeckProvider).getOrderedDeck(state.revealed.others),
+      };
   }
 
   public getPlaneswalkLog(): Omit<Log, 'initiator'> {
