@@ -145,13 +145,17 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
         this.peers.broadcast(Event.COUNTERS, payload);
     }
 
+    public requestReveal(payload: { count: number, type?: string }): void {
+        this.peers.broadcast(Event.REVEAL, payload);
+    }
+
     public requestRevealResolution(
         payload: { top: Array<string>, bottom: Array<string> },
     ): void {
         this.peers.broadcast(Event.RESOLVE_REVEAL, payload);
     }
 
-    public requestShuffling(payload: Exported): void {
-        this.peers.broadcast(Event.SHUFFLE, payload);
+    public requestShuffling(): void {
+        this.peers.broadcast(Event.SHUFFLE, this.map.export());
     }
 }

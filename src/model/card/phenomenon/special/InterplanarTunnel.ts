@@ -12,6 +12,7 @@ import { Phenomenon } from '../Phenomenon';
  */
 export class InterplanarTunnel extends Phenomenon {
     public enter(passive: boolean = false): void {
+        console.log('INTERPLANAR', passive);
         eventBus.emit(CardEvent.INTERPLANAR_TUNNEL, { passive });
     }
 }

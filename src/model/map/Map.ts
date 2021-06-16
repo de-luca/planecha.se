@@ -69,6 +69,7 @@ export abstract class Map implements MapInterface {
   }
 
   protected shuffleDeck(): void {
+    console.log('SHUFFLED');
     this.deck = _shuffle(this.played);
     this.played = [];
   }
@@ -107,7 +108,7 @@ export abstract class Map implements MapInterface {
   }
 
   public putOnTheBottom(cards: Array<Card>): void {
-    this.deck.push(..._shuffle(cards));
+    this.deck.push(...cards);
   }
 
   public clearRevealed(): void {

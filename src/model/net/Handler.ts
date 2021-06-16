@@ -1,6 +1,6 @@
 import { MutationTypes, useStore } from "@/store";
 import { LogType } from "@/store/states/map";
-import { Card, Plane } from "../card";
+import { Card, Phenomenon, Plane } from "../card";
 
 export enum Event {
     REQUEST_INIT = 'request_init',
@@ -10,6 +10,7 @@ export enum Event {
     PLANESWALK = 'planeswalk',
     CUSTOM_PLANESWALK = 'custom_planeswalk',
     COUNTERS = 'counters',
+    REVEAL = 'reveal',
     RESOLVE_REVEAL = 'resolve_reveal',
     SHUFFLE = 'shuffle',
 }
@@ -18,6 +19,12 @@ export type Payload<T> = {
     event: Event,
     data: T,
 }
+
+const cardTypeMap: Record<string, typeof Card> = {
+    'Card': Card,
+    'Plane': Plane,
+    'Phenomenon': Phenomenon,
+};
 
 export function parse<T>(payload: string): Payload<T> {
     return JSON.parse(payload) as Payload<T>;
@@ -54,6 +61,7 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
                 break;
 
             case Event.PLANESWALK:
+                console.log('PLANESWALK');
                 store.commit(MutationTypes.PLANESWALK, { passive: true });
                 store.commit(MutationTypes.LOG, {
                     initiator: store.getters.mates.get(this.label) as string,
@@ -81,6 +89,15 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
                 store.commit(MutationTypes.LOG, {
                     initiator: store.getters.mates.get(this.label) as string,
                     ...store.getters.map.getCounterLog(data.id, data.change),
+                });
+                break;
+            }
+
+            case Event.REVEAL: {
+                const data = payload.data as { count: number, type?: string };
+                store.commit(MutationTypes.REVEAL, {
+                    count: data.count,
+                    type: data.type ? cardTypeMap[data.type] : undefined,
                 });
                 break;
             }

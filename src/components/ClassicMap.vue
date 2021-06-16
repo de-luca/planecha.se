@@ -47,6 +47,7 @@ import { PickedLeft, Config } from './board/reveal/BaseReveal';
 import Pick from '@/components/board/reveal/Pick.vue';
 import Scry from '@/components/board/reveal/Scry.vue';
 import Show from '@/components/board/reveal/Show.vue';
+import { PassThrough } from 'stream';
 
 
 type EventHandler = Handler<CardEventPayload>;
@@ -72,56 +73,70 @@ export default class ClassicMap extends Vue {
     this.store = useStore();
 
     eventBus.on(CardEvent.STAIRS_TO_INFINITY, ((payload): void => {
+      const passive = (payload as CardEventPayload).passive;
       this.revealerConfig = {
         component: Scry,
         resolver: this.putBack,
         config: {
-          passive: (payload as CardEventPayload).passive,
+          passive,
           sendShownTo: 'bottom',
         },
       };
 
-      this.store.commit(MutationTypes.REVEAL, { count: 1 });
+      if (!passive) {
+        this.store.dispatch(ActionTypes.REVEAL, { count: 1 });
+      }
     }) as EventHandler);
 
     eventBus.on(CardEvent.POOL_OF_BECOMING, ((payload): void => {
-      console.log(payload);
+      const passive = (payload as CardEventPayload).passive;
       this.revealerConfig = {
         component: Show,
         resolver: this.putBack,
         config: {
-          passive: (payload as CardEventPayload).passive,
+          passive: passive,
           sendShownTo: 'bottom',
         },
       };
 
-      this.store.commit(MutationTypes.REVEAL, { count: 3 });
+      console.log('DID NOT REVEAL');
+      if (!passive) {
+        this.store.dispatch(ActionTypes.REVEAL, { count: 3 });
+      }
     }) as EventHandler);
 
     eventBus.on(CardEvent.INTERPLANAR_TUNNEL, ((payload): void => {
+      const passive = (payload as CardEventPayload).passive;
       this.revealerConfig = {
         component: Pick,
         resolver: this.customPlaneswalk,
         config: {
-          passive: (payload as CardEventPayload).passive,
+          passive,
           sendShownTo: 'bottom'
         }
       };
 
-      this.store.commit(MutationTypes.REVEAL, { count: 5, type: Plane });
+      console.log('DID NOT REVEAL');
+      if (!passive) {
+        this.store.dispatch(ActionTypes.REVEAL, { count: 5, type: Plane });
+      }
     }) as EventHandler);
 
     eventBus.on(CardEvent.SPACIAL_MERGING, ((payload): void => {
+      const passive = (payload as CardEventPayload).passive;
       this.revealerConfig = {
         component: Show,
         resolver: this.customPlaneswalk,
         config: {
-          passive: (payload as CardEventPayload).passive,
+          passive,
           sendShownTo: 'top'
         }
       };
 
-      this.store.commit(MutationTypes.REVEAL, { count: 2, type: Plane });
+      console.log('DID NOT REVEAL');
+      if (!passive) {
+        this.store.dispatch(ActionTypes.REVEAL, { count: 2, type: Plane });
+      }
     }) as EventHandler);
   }
 

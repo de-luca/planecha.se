@@ -12,6 +12,7 @@ import { Phenomenon } from '../Phenomenon';
  */
 export class SpatialMerging extends Phenomenon {
     public enter(passive: boolean = false): void {
+        console.log('INTERPLANAR', passive);
         eventBus.emit(CardEvent.SPACIAL_MERGING, { passive });
     }
 }
