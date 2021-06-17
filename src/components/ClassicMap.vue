@@ -13,7 +13,7 @@
     </div>
 
     <div class="controls">
-      <chaos-btn />
+      <chaos-btn v-if="canChaos" />
       <planeswalk-btn />
     </div>
 
@@ -154,6 +154,10 @@ export default class ClassicMap extends Vue {
   
   public get deckSize(): number {
     return this.store.getters.deckSize;
+  }
+
+  public get canChaos(): boolean {
+    return this.store.getters.active[0].type === 'plane';
   }
 
   public customPlaneswalk(choices: PickedLeft): void {
