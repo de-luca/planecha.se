@@ -12,26 +12,14 @@ import { BuildProps, MapFactory } from '@/model/map/MapFactory';
 import { OnlineInterface } from '@/model/net/OnlineInterface';
 import Container from 'typedi';
 
-export enum LogType {
-    JOIN = 'joined',
-    CHAOS = 'rolled chaos',
-    PLANESWALK = 'planeswalked to',
-    ENCOUNTER = 'encountered',
-    COUNTERS = '',
-}
 
-export type Log = {
-    initiator?: string;
-    type: LogType;
-    outcome?: Array<string>;
-}
 
 // Declare state
 export type State = {
     map?: MapInterface | MapInterface & OnlineInterface;
-    
+    feed: Array<string>;
+
     online: boolean;
-    logs: Array<Log>;
     mates: Map<string, string>;
 
     shuffled: boolean;
@@ -40,10 +28,10 @@ export type State = {
 // Init state
 export const state: State = {
     map: undefined,
-    shuffled: false,
+    feed: [],
     online: false,
-    logs: [],
     mates: new Map(),
+    shuffled: false,
 };
 
 
@@ -250,8 +238,8 @@ export const actions: ActionTree<State, undefined> & Actions = {
 
 // Getters types
 export type Getters = {
+    feed(state: State): Array<string>;
     online(state: State): boolean;
-    logs(state: State): Array<Log>;
     mates(state: State): Map<string, string>;
     map(state: State): MapInterface;
     type(state: State): MapType;
@@ -263,8 +251,8 @@ export type Getters = {
 
 // Getters
 export const getters: Getters = {
+    feed: state => state.feed,
     online: state => state.online,
-    logs: state => state.logs,
     mates: state => state.mates,
     map: state => <MapInterface>state.map,
     type: state => (<MapInterface>state.map).type,

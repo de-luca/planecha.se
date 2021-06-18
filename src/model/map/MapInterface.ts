@@ -1,4 +1,3 @@
-import { Log } from "@/store/states/map";
 import { Card, Plane } from "../card";
 
 export interface Coordinates {
@@ -51,8 +50,5 @@ export interface MapInterface {
   updateCounter(id: string, change: number): void;
 
   export(): Exported;
-  applyShuffle(state: Exported): void;
-  
-  getPlaneswalkLog(): Omit<Log, 'initiator'>;
-  getCounterLog(id: string, change: number): Omit<Log, 'initiator'>;
+  applyShuffle(state: Exported): void; 
 }

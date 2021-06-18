@@ -3,7 +3,6 @@ import { Coordinates, Exported, MapInterface, MapType, Revealed } from "./MapInt
 import { Beacon } from "../net/Beacon";
 import { OnlineInterface } from "../net/OnlineInterface";
 import { PeerMap } from "../net/PeerMap";
-import { Log } from "@/store/states/map";
 import { Event } from "../net/Handler";
 
 export class OnlineDecorator implements MapInterface, OnlineInterface {
@@ -93,14 +92,6 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
 
     public applyShuffle(state: Exported): void {
         return this.map.applyShuffle(state);
-    }
-
-    public getPlaneswalkLog(): Omit<Log, "initiator"> {
-        return this.map.getPlaneswalkLog();
-    }
-
-    public getCounterLog(id: string, change: number): Omit<Log, 'initiator'> {
-        return this.map.getCounterLog(id, change);
     }
 
     public create(): Promise<string> {

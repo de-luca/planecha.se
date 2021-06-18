@@ -1,4 +1,5 @@
 import { createLogger, createStore } from 'vuex';
+import { createFeeder } from './plugins/feeder';
 import {
     state,
     mutations,
@@ -6,6 +7,7 @@ import {
     actions,
     Store,
 } from '@/store/states/map';
+
 
 // Lazyness Re-exports
 export {
@@ -17,7 +19,7 @@ export type {
     Store
 } from '@/store/states/map';
 
-const plugins = [ /*createNet()*/ ];
+const plugins = [ createFeeder() ];
 if (process.env.NODE_ENV !== 'production') {
     plugins.push(createLogger());
 }

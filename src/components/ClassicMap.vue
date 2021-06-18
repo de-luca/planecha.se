@@ -8,8 +8,8 @@
       </div>
     </div>
 
-    <div class="logs">
-      <logs />
+    <div class="feed">
+      <feed />
     </div>
 
 
@@ -36,7 +36,7 @@ import _shuffle from 'lodash.shuffle';
 import Card from '@/components/board/Card.vue';
 import ChaosBtn from '@/components/board/ChaosBtn.vue';
 import PlaneswalkBtn from '@/components/board/PlaneswalkBtn.vue';
-import Logs from '@/components/board/Logs.vue';
+import Feed from '@/components/board/Feed.vue';
 import { ActionTypes, Store, useStore } from '@/store';
 import { Card as ModelCard, Plane } from '@/model/card';
 import { eventBus, Event, CardEventPayload } from '@/services/EventBus';
@@ -61,7 +61,7 @@ type Revealer = {
 
 @Options({
   components: {
-    Card, Logs,
+    Card, Feed,
     ChaosBtn, PlaneswalkBtn,
     Pick, Scry, Show,
   },
@@ -137,6 +137,7 @@ export default class ClassicMap extends Vue {
   }
 
   public customPlaneswalk(choices: PickedLeft): void {
+    console.log(choices);
     this.store.dispatch(ActionTypes.CUSTOM_PLANESWALK, {
       planes: choices.picked as Array<Plane>,
     });
@@ -214,7 +215,7 @@ export default class ClassicMap extends Vue {
   }
 }
 
-.logs {
+.feed {
   grid-area: logs;
   overflow: scroll;
 }

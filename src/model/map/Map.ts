@@ -1,6 +1,5 @@
 import { DeckProvider } from '@/services/DeckProvider';
 import { eventBus, Event } from '@/services/EventBus';
-import { Log, LogType } from '@/store/states/map';
 import _shuffle from 'lodash.shuffle';
 import Container from 'typedi';
 import { Card, Counter, Phenomenon, Plane } from '../card';
@@ -142,26 +141,5 @@ export abstract class Map implements MapInterface {
         relevant: Container.get(DeckProvider).getOrderedDeck(state.revealed.relevant),
         others: Container.get(DeckProvider).getOrderedDeck(state.revealed.others),
       };
-  }
-
-  public getPlaneswalkLog(): Omit<Log, 'initiator'> {
-    return {
-      type: this.active[0] instanceof Phenomenon
-        ? LogType.ENCOUNTER
-        : LogType.PLANESWALK,
-      outcome: this.active.map(c => c.name),
-    };
-  }
-
-  public getCounterLog(id: string, change: number): Omit<Log, 'initiator'> {
-    const counter = (this.active.find(c => c.id === id) as Plane).counter as Counter;
-
-    return {
-      type: LogType.COUNTERS,
-      outcome: [
-        (change > 0 ? 'added' : 'removed') +
-        ` ${Math.abs(change)} ${counter.name} counter (${counter.value})`,
-      ],
-    };
   }
 }
