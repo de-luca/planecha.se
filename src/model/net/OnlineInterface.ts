@@ -2,6 +2,9 @@ import { Card } from "../card";
 import { Coordinates } from "../map/MapInterface";
 
 export interface OnlineInterface {
+    roomId: string;
+    yourName: string;
+
     create(): Promise<string>;
     join(roomId: string): void;
 

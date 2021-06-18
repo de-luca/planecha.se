@@ -4,6 +4,9 @@
       <span @click="thaNav">
         The super logo here
       </span>
+
+      <online-controls v-if="online"/>
+
       <button class="button is-light is-warning" @click="close">
         Close Game
       </button>
@@ -18,11 +21,12 @@ import { Options, Vue } from 'vue-class-component';
 import { Store, useStore } from '@/store';
 import ClassicMap from '@/components/ClassicMap.vue';
 import EternitiesMap from '@/components/EternitiesMap.vue';
+import OnlineControls from '@/components/OnlineControls.vue';
 import { Component } from '@vue/runtime-core';
 import { MapType } from '@/model/map/MapInterface';
 
 @Options({
-  components: { ClassicMap, EternitiesMap },
+  components: { ClassicMap, EternitiesMap, OnlineControls },
 })
 export default class Board extends Vue {
   public store: Store;
@@ -40,6 +44,10 @@ export default class Board extends Vue {
       default:
         throw new Error('Incompatible');
     }
+  }
+
+  public get online(): boolean {
+    return this.store.getters.online;
   }
 
   public close(): void {
@@ -62,7 +70,7 @@ export default class Board extends Vue {
 
   display: grid;
   grid-template-rows: 3rem 1fr;
-  gap: .5rem;
+  gap: 1.5rem;
   grid-template-areas:
     "nav"
     "map"
@@ -75,15 +83,10 @@ export default class Board extends Vue {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  gap: .5rem;
 
-  span:hover {
-    i {
-      --fa-primary-color: red;
-    }
-  }
-  
-  span i:first-child {
-    margin-right: 1rem;
+  span:first-child {
+    flex-grow: 1;
   }
   
   button {

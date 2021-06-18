@@ -87,7 +87,6 @@ export const mutations: Mutations = {
         (<MapInterface>state.map).chaos(payload.passive);
     },
     [MutationTypes.PLANESWALK](state: State, payload: PlaneswalkPayload = {}) {
-        console.log(payload);
         state.shuffled = (<MapInterface>state.map).planeswalk(undefined, payload.passive);
     },
     [MutationTypes.CUSTOM_PLANESWALK](state: State, payload: CustomPlaneswalkPayload) {
@@ -249,6 +248,8 @@ export const actions: ActionTree<State, State> & Actions = {
 export type Getters = {
     feed(state: State): Array<string>;
     online(state: State): boolean;
+    yourName(state: State): string;
+    roomId(state: State): string;
     mates(state: State): Map<string, string>;
     map(state: State): MapInterface;
     type(state: State): MapType;
@@ -262,13 +263,15 @@ export type Getters = {
 export const getters: Getters = {
     feed: state => state.feed,
     online: state => state.online,
+    yourName: state => (state.map as OnlineInterface).yourName,
+    roomId: state => (state.map as OnlineInterface).roomId,
     mates: state => state.mates,
-    map: state => <MapInterface>state.map,
-    type: state => (<MapInterface>state.map).type,
-    active: state => (<MapInterface>state.map).active,
-    played: state => (<MapInterface>state.map).played,
-    revealed: state => (<MapInterface>state.map).revealed,
-    deckSize: state => (<MapInterface>state.map).getDeckSize(),
+    map: state => (state.map as MapInterface),
+    type: state => (state.map as MapInterface).type,
+    active: state => (state.map as MapInterface).active,
+    played: state => (state.map as MapInterface).played,
+    revealed: state => (state.map as MapInterface).revealed,
+    deckSize: state => (state.map as MapInterface).getDeckSize(),
 }
 
 // Setup store type

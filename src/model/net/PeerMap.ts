@@ -17,7 +17,7 @@ export class PeerMap {
 
     private peers: Map<string, Peer>;
     private beacon: Beacon;
-    private name: string;
+    public name: string;
 
     public constructor(beacon: Beacon, name: string) {
         this.peers = new Map();

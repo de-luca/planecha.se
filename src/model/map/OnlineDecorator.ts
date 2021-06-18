@@ -12,6 +12,8 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
 
     private readyState: Promise<void>;
 
+    public roomId: string;
+
     public constructor(map: MapInterface, name: string) {
         this.map = map;
 
@@ -20,6 +22,10 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
             this.beacon.addEventListener('ready', _ => resolve());
         });
         this.peers = new PeerMap(this.beacon, name);   
+    }
+
+    public get yourName(): string {
+        return this.peers.name;
     }
 
     public get type(): MapType {
@@ -98,7 +104,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
         const createPromise = new Promise<string>((resolve) => {
             this.beacon.addEventListener('created', ((event: CustomEvent<string>) => {
                 console.log('CREATED', event.detail);
-                // store.commit('');
+                this.roomId = event.detail;
                 resolve(event.detail);
             }) as EventListener);
         });
@@ -112,6 +118,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
         const peers = new Promise<Array<string>>((resolve) => {
             this.beacon.addEventListener('joined', ((event: CustomEvent<Array<string>>) => {
                 console.log('JOINED', event.detail);
+                this.roomId = roomId;
                 resolve(event.detail);
             }) as EventListener)
         });
