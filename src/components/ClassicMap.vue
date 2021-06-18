@@ -12,11 +12,14 @@
       <logs />
     </div>
 
+
     <div class="controls">
       <chaos-btn v-if="canChaos" />
-      <planeswalk-btn v-if="!revealer || revealer.passive" />
-      <resolve-btn v-if="revealer && !revealer.passive" :resolver="revealer.seeder"  />
+      <planeswalk-btn :resolver="revealer?.seeder" :disabled="revealer && revealer.passive" />
     </div>
+
+    <div>{{ revealer && revealer.passive }}</div>
+
 
     <component 
       v-if="revealer && revealed"
@@ -37,12 +40,10 @@ import Card from '@/components/board/Card.vue';
 import Deck from '@/components/board/Deck.vue';
 import ChaosBtn from '@/components/board/ChaosBtn.vue';
 import PlaneswalkBtn from '@/components/board/PlaneswalkBtn.vue';
-import ResolveBtn from '@/components/board/ResolveBtn.vue';
 import Logs from '@/components/board/Logs.vue';
 import { ActionTypes, Store, useStore } from '@/store';
 import { Card as ModelCard, Plane } from '@/model/card';
-import { eventBus } from '@/services/EventBus';
-import { CardEvent, CardEventPayload } from '@/model/card/CardEvent';
+import { eventBus, Event, CardEventPayload } from '@/services/EventBus';
 import { Revealed } from '@/model/map/MapInterface';
 import { PickedLeft, Config } from './board/reveal/BaseReveal';
 
@@ -66,7 +67,7 @@ type Revealer = {
 @Options({
   components: {
     Card, Deck, Logs,
-    ChaosBtn, PlaneswalkBtn, ResolveBtn,
+    ChaosBtn, PlaneswalkBtn,
     Pick, Scry, Show,
   },
 })
@@ -77,7 +78,9 @@ export default class ClassicMap extends Vue {
   public created() {
     this.store = useStore();
 
-    eventBus.on(CardEvent.STAIRS_TO_INFINITY, ((payload): void => {
+    eventBus.on(Event.RESOLVED_REVEAL, () => this.revealer = null);
+
+    eventBus.on(Event.STAIRS_TO_INFINITY, ((payload): void => {
       const passive = (payload as CardEventPayload).passive;
       this.revealer = {
         passive,
@@ -95,7 +98,7 @@ export default class ClassicMap extends Vue {
       }
     }) as EventHandler);
 
-    eventBus.on(CardEvent.POOL_OF_BECOMING, ((payload): void => {
+    eventBus.on(Event.POOL_OF_BECOMING, ((payload): void => {
       const passive = (payload as CardEventPayload).passive;
       this.revealer = {
         passive,
@@ -113,7 +116,7 @@ export default class ClassicMap extends Vue {
       }
     }) as EventHandler);
 
-    eventBus.on(CardEvent.INTERPLANAR_TUNNEL, ((payload): void => {
+    eventBus.on(Event.INTERPLANAR_TUNNEL, ((payload): void => {
       const passive = (payload as CardEventPayload).passive;
       this.revealer = {
         passive,
@@ -127,7 +130,7 @@ export default class ClassicMap extends Vue {
       };
     }) as EventHandler);
 
-    eventBus.on(CardEvent.SPACIAL_MERGING, ((payload): void => {
+    eventBus.on(Event.SPACIAL_MERGING, ((payload): void => {
       const passive = (payload as CardEventPayload).passive;
       this.revealer = {
         passive,
@@ -177,8 +180,6 @@ export default class ClassicMap extends Vue {
     };
 
     this.store.dispatch(ActionTypes.RESOLVE_REVEAL, payload);
-    
-    this.revealer = null;
   }
 }
 </script>

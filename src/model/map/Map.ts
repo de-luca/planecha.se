@@ -1,4 +1,5 @@
 import { DeckProvider } from '@/services/DeckProvider';
+import { eventBus, Event } from '@/services/EventBus';
 import { Log, LogType } from '@/store/states/map';
 import _shuffle from 'lodash.shuffle';
 import Container from 'typedi';
@@ -101,6 +102,7 @@ export abstract class Map implements MapInterface {
     this.putOnTop(top);
     this.putOnTheBottom(bottom);
     this.clearRevealed();
+    eventBus.emit(Event.RESOLVED_REVEAL);
   }
 
   public putOnTop(cards: Array<Card>): void {

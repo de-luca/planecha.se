@@ -1,7 +1,6 @@
-import { eventBus } from '@/services/EventBus';
+import { eventBus, Event } from '@/services/EventBus';
 import { Counter } from '../../CardFactory';
 import { Plane } from '../Plane';
-import { CardEvent } from '../../CardEvent';
 
 /**
  * When you planeswalk to Aretopolis or at the beginning of your upkeep, 
@@ -29,7 +28,7 @@ export class Aretopolis extends Plane {
 
     private checkMaxCounters(): void {
         if (this.counter.value >= (this.counter.max as number)) {
-            eventBus.emit(CardEvent.ARETOPOLIS);
+            eventBus.emit(Event.ARETOPOLIS);
         }
     }
 }

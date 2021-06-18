@@ -1,5 +1,4 @@
-import { eventBus } from '@/services/EventBus';
-import { CardEvent } from '../..';
+import { eventBus, Event } from '@/services/EventBus';
 import { Phenomenon } from '../Phenomenon';
 
 /**
@@ -12,7 +11,6 @@ import { Phenomenon } from '../Phenomenon';
  */
 export class SpatialMerging extends Phenomenon {
     public enter(passive: boolean = false): void {
-        console.log('INTERPLANAR', passive);
-        eventBus.emit(CardEvent.SPACIAL_MERGING, { passive });
+        eventBus.emit(Event.SPACIAL_MERGING, { passive });
     }
 }

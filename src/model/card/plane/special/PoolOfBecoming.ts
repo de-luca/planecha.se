@@ -1,5 +1,4 @@
-import { eventBus } from '@/services/EventBus';
-import { CardEvent } from '../..';
+import { eventBus, Event } from '@/services/EventBus';
 import { Plane } from '../Plane';
 
 /**
@@ -13,6 +12,6 @@ import { Plane } from '../Plane';
 export class PoolOfBecoming extends Plane {
     public chaos(passive: boolean = false): void {
         console.log(passive);
-        eventBus.emit(CardEvent.POOL_OF_BECOMING, { passive });
+        eventBus.emit(Event.POOL_OF_BECOMING, { passive });
     }
 }

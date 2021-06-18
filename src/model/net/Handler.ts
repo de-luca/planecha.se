@@ -61,7 +61,6 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
                 break;
 
             case Event.PLANESWALK:
-                console.log('PLANESWALK');
                 store.commit(MutationTypes.PLANESWALK, { passive: true });
                 store.commit(MutationTypes.LOG, {
                     initiator: store.getters.mates.get(this.label) as string,

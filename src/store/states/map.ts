@@ -90,7 +90,6 @@ export const mutations: Mutations = {
     },
 
     [MutationTypes.SHUFFLE](state: State, payload: Exported) {
-        console.log('SHUFFLED (MUTATION)');
         (<MapInterface>state.map).applyShuffle(payload);
     },
 
@@ -98,7 +97,6 @@ export const mutations: Mutations = {
         (<MapInterface>state.map).chaos(payload.passive);
     },
     [MutationTypes.PLANESWALK](state: State, payload: { passive?: boolean } = {}) {
-        console.log(state.map);
         state.shuffled = (<MapInterface>state.map).planeswalk(undefined, payload.passive);
     },
     [MutationTypes.CUSTOM_PLANESWALK](state: State, payload: { planes: Array<Plane>, passive?: boolean }) {
@@ -112,10 +110,7 @@ export const mutations: Mutations = {
         state.shuffled = (<MapInterface>state.map).revealUntil(payload.count, payload.type);
     },
     [MutationTypes.RESOLVE_REVEAL](state: State, payload: { top: Array<Card>, bottom: Array<Card> }) {
-        console.log(payload.bottom);
         (<MapInterface>state.map).resolveReveal(payload.top, payload.bottom);
-        //@ts-ignore
-        console.log(state.map);
     },
 };
 
@@ -209,13 +204,11 @@ export const actions: ActionTree<State, undefined> & Actions = {
     },
     [ActionTypes.PLANESWALK]({ commit }) {
         commit(MutationTypes.PLANESWALK);
-
         if (state.online) {
             if (state.shuffled) {
                 (state.map as OnlineInterface).requestShuffling();
                 state.shuffled = false;
             } else {
-                console.log('REQUESTED PLANESWALK');
                 (state.map as OnlineInterface).requestPlaneswalk();
             }
         }
@@ -238,14 +231,11 @@ export const actions: ActionTree<State, undefined> & Actions = {
     },
     [ActionTypes.REVEAL]({ commit }, payload: { count: number, type?: typeof Card }) {
         commit(MutationTypes.REVEAL, payload);
-
         if (state.online) {
             if (state.shuffled) {
-                console.log('REQUEST SHUFFLE');
                 (state.map as OnlineInterface).requestShuffling();
                 state.shuffled = false;
             } else {
-                console.log('REQUESTING REVEAL');
                 (state.map as OnlineInterface).requestReveal({
                     count: payload.count,
                     type: payload.type?.name,
@@ -254,13 +244,7 @@ export const actions: ActionTree<State, undefined> & Actions = {
         }
     },
     [ActionTypes.RESOLVE_REVEAL]({ commit }, payload: { top: Array<Card>, bottom: Array<Card> }) {
-        console.log(payload.bottom);
-        
         commit(MutationTypes.RESOLVE_REVEAL, payload);
-
-        //@ts-ignore
-        console.log(state.map);
-
         if (state.online) {
             (state.map as OnlineInterface).requestRevealResolution({
                 top: payload.top.map(c => c.id),
