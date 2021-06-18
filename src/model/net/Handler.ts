@@ -1,5 +1,4 @@
 import { MutationTypes, useStore } from "@/store";
-import { LogType } from "@/store/states/map";
 import { Card, Phenomenon, Plane } from "../card";
 
 export enum Event {
@@ -54,18 +53,10 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
 
             case Event.CHAOS:
                 store.commit(MutationTypes.CHAOS, { passive: true });
-                store.commit(MutationTypes.LOG, {
-                    initiator: store.getters.mates.get(this.label) as string,
-                    type: LogType.CHAOS,
-                });
                 break;
 
             case Event.PLANESWALK:
                 store.commit(MutationTypes.PLANESWALK, { passive: true });
-                store.commit(MutationTypes.LOG, {
-                    initiator: store.getters.mates.get(this.label) as string,
-                    ...store.getters.map.getPlaneswalkLog(),
-                });
                 break;
 
             case Event.CUSTOM_PLANESWALK: {
@@ -83,12 +74,10 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
             }
 
             case Event.COUNTERS: {
-                const data = payload.data as { id: string, change: number };
-                store.commit(MutationTypes.COUNTERS, data);                
-                store.commit(MutationTypes.LOG, {
-                    initiator: store.getters.mates.get(this.label) as string,
-                    ...store.getters.map.getCounterLog(data.id, data.change),
-                });
+                store.commit(
+                    MutationTypes.COUNTERS, 
+                    payload.data as { id: string, change: number },
+                );
                 break;
             }
 
@@ -120,10 +109,6 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
                     store.commit(MutationTypes.HEY, {
                         id: this.label,
                         name: (payload.data as { name: string }).name,
-                    });
-                    store.commit(MutationTypes.LOG, {
-                        initiator: store.getters.mates.get(this.label) as string,
-                        type: LogType.JOIN,
                     });
                     this.send(stringify(Event.HEY, { name: myName }));
                 }

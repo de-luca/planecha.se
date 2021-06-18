@@ -18,9 +18,6 @@
       <planeswalk-btn :resolver="revealer?.seeder" :disabled="revealer && revealer.passive" />
     </div>
 
-    <div>{{ revealer && revealer.passive }}</div>
-
-
     <component 
       v-if="revealer && revealed"
       :is="revealer.component"
@@ -37,7 +34,6 @@ import { Component } from '@vue/runtime-core';
 import { Handler } from 'mitt';
 import _shuffle from 'lodash.shuffle';
 import Card from '@/components/board/Card.vue';
-import Deck from '@/components/board/Deck.vue';
 import ChaosBtn from '@/components/board/ChaosBtn.vue';
 import PlaneswalkBtn from '@/components/board/PlaneswalkBtn.vue';
 import Logs from '@/components/board/Logs.vue';
@@ -50,7 +46,6 @@ import { PickedLeft, Config } from './board/reveal/BaseReveal';
 import Pick from '@/components/board/reveal/Pick.vue';
 import Scry from '@/components/board/reveal/Scry.vue';
 import Show from '@/components/board/reveal/Show.vue';
-
 
 
 type EventHandler = Handler<CardEventPayload>;
@@ -66,7 +61,7 @@ type Revealer = {
 
 @Options({
   components: {
-    Card, Deck, Logs,
+    Card, Logs,
     ChaosBtn, PlaneswalkBtn,
     Pick, Scry, Show,
   },
@@ -79,7 +74,6 @@ export default class ClassicMap extends Vue {
     this.store = useStore();
 
     eventBus.on(Event.RESOLVED_REVEAL, () => this.revealer = null);
-
     eventBus.on(Event.STAIRS_TO_INFINITY, ((payload): void => {
       const passive = (payload as CardEventPayload).passive;
       this.revealer = {
@@ -87,17 +81,13 @@ export default class ClassicMap extends Vue {
         component: Scry,
         seeder: () => {},
         resolver: this.putBack,
-        config: {
-          passive,
-          sendShownTo: 'bottom',
-        },
+        config: { passive, sendShownTo: 'bottom' },
       };
 
       if (!passive) {
         this.store.dispatch(ActionTypes.REVEAL, { count: 1 })
       }
     }) as EventHandler);
-
     eventBus.on(Event.POOL_OF_BECOMING, ((payload): void => {
       const passive = (payload as CardEventPayload).passive;
       this.revealer = {
@@ -105,17 +95,13 @@ export default class ClassicMap extends Vue {
         component: Show,
         seeder: () => {},
         resolver: this.putBack,
-        config: {
-          passive: passive,
-          sendShownTo: 'bottom',
-        },
+        config: { passive, sendShownTo: 'bottom' },
       };
 
       if (!passive) {
         this.store.dispatch(ActionTypes.REVEAL, { count: 3 });
       }
     }) as EventHandler);
-
     eventBus.on(Event.INTERPLANAR_TUNNEL, ((payload): void => {
       const passive = (payload as CardEventPayload).passive;
       this.revealer = {
@@ -123,13 +109,9 @@ export default class ClassicMap extends Vue {
         component: Pick,
         seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 5, type: Plane }),
         resolver: this.customPlaneswalk,
-        config: {
-          passive,
-          sendShownTo: 'bottom'
-        }
+        config: { passive, sendShownTo: 'bottom' }
       };
     }) as EventHandler);
-
     eventBus.on(Event.SPACIAL_MERGING, ((payload): void => {
       const passive = (payload as CardEventPayload).passive;
       this.revealer = {
@@ -137,10 +119,7 @@ export default class ClassicMap extends Vue {
         component: Show,
         seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 2, type: Plane }),
         resolver: this.customPlaneswalk,
-        config: {
-          passive,
-          sendShownTo: 'top'
-        }
+        config: { passive, sendShownTo: 'top' }
       };
     }) as EventHandler);
   }
@@ -149,18 +128,10 @@ export default class ClassicMap extends Vue {
     return this.store.getters.active;
   }
   
-  public get played(): Array<ModelCard> {
-    return this.store.getters.played;
-  }
-
   public get revealed(): Revealed | undefined {
     return this.store.getters.revealed;
   }
   
-  public get deckSize(): number {
-    return this.store.getters.deckSize;
-  }
-
   public get canChaos(): boolean {
     return this.store.getters.active[0].type === 'plane';
   }

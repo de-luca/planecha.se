@@ -11,7 +11,6 @@ import { Exported, MapInterface, MapType, Revealed } from '@/model/map/MapInterf
 import { BuildProps, MapFactory } from '@/model/map/MapFactory';
 import { OnlineInterface } from '@/model/net/OnlineInterface';
 import Container from 'typedi';
-import { Console } from 'console';
 
 export enum LogType {
     JOIN = 'joined',
@@ -50,7 +49,6 @@ export const state: State = {
 
 // mutations enums
 export enum MutationTypes {
-    LOG = 'LOG',
     HEY = 'HEY',
     INIT = 'INIT',
     SHUFFLE = 'SHUFFLE',
@@ -64,7 +62,6 @@ export enum MutationTypes {
 
 // Mutation contracts
 export type Mutations<S = State> = {
-    [MutationTypes.LOG](state: S, payload: Log): void,
     [MutationTypes.HEY](state: S, payload: { id: string, name: string }): void,
     [MutationTypes.INIT](state: S, payload: BuildProps): void,
     [MutationTypes.SHUFFLE](state: S, payload: { active: Array<string>, deck: Array<string> }): void,
@@ -78,9 +75,6 @@ export type Mutations<S = State> = {
 
 // Define mutations
 export const mutations: Mutations = {
-    [MutationTypes.LOG](state: State, payload: Log) {
-        state.logs.push(payload);
-    },
     [MutationTypes.HEY](state: State, payload: { id: string, name: string }) {
         state.mates.set(payload.id, payload.name);
     },
