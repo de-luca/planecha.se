@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Home,
   },
   {
-    path: '/join',
+    path: '/join/:roomId?',
     name: 'JoinGame',
     component: JoinGame,
   },

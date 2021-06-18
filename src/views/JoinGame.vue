@@ -53,7 +53,7 @@ export default class JoinGame extends Vue {
 
   public created() {
     this.store = useStore();
-    this.roomId = '';
+    this.roomId = this.$route.params.roomId as string ?? '';
     this.name = '';
   }
   

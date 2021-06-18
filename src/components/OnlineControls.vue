@@ -18,15 +18,14 @@
             <label class="label">Invite players</label>
             <div class="field has-addons">
               <div class="control is-expanded">
-                <input class="input" type="text" :value="roomId" readonly>
+                <input class="input" type="text" :value="roomUrl" readonly>
               </div>
               <div class="control">
                 <a @click="copy" class="button">Copy</a>
               </div>
             </div>
-
             <p class="help">Give this thing to people!</p>
-          </div> 
+          </div>
         </div>
 
         <hr class="dropdown-divider">
@@ -62,8 +61,8 @@ export default class OnlineControls extends Vue {
     return this.store.getters.yourName;
   }
 
-  public get roomId(): string {
-    return this.store.getters.roomId;
+  public get roomUrl(): string {
+    return 'localhost:8080/#/join/' + this.store.getters.roomId;
   }
 
   public get mates(): Map<string, string> {
@@ -72,7 +71,7 @@ export default class OnlineControls extends Vue {
 
   public async copy(): Promise<void> {
     try {
-      await navigator.clipboard.writeText(this.roomId);
+      await navigator.clipboard.writeText(this.roomUrl);
     } catch (err) {
       console.error(err);
     }
