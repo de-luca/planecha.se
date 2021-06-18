@@ -10,7 +10,7 @@
 import { ActionTypes, Store, useStore } from '@/store';
 import { Vue } from 'vue-class-component';
 
-export default class Controls extends Vue {
+export default class ChaosBtn extends Vue {
   private store: Store;
 
   public created() {
