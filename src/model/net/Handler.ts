@@ -1,5 +1,6 @@
 import { MutationTypes, useStore } from "@/store";
 import { Card, Phenomenon, Plane } from "../card";
+import { Exported } from "../map/MapInterface";
 
 export enum Event {
     REQUEST_INIT = 'request_init',
@@ -45,18 +46,15 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
                 break;
 
             case Event.SHUFFLE:
-                store.commit(
-                    MutationTypes.SHUFFLE, 
-                    payload.data as { active: Array<string>, deck: Array<string> },
-                );
+                store.commit(MutationTypes.SHUFFLE, payload.data as Exported);
                 break;
 
             case Event.CHAOS:
-                store.commit(MutationTypes.CHAOS, { passive: true });
+                store.commit(MutationTypes.CHAOS, { passive: true, mateId: this.label });
                 break;
 
             case Event.PLANESWALK:
-                store.commit(MutationTypes.PLANESWALK, { passive: true });
+                store.commit(MutationTypes.PLANESWALK, { passive: true, mateId: this.label });
                 break;
 
             case Event.CUSTOM_PLANESWALK: {
@@ -69,15 +67,16 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
                 store.commit(MutationTypes.CUSTOM_PLANESWALK, {
                     planes: data.planes.map((id) => allCards.find(c => c.id === id) as Plane),
                     passive: true,
+                    mateId: this.label,
                 });
                 break;
             }
 
             case Event.COUNTERS: {
-                store.commit(
-                    MutationTypes.COUNTERS, 
-                    payload.data as { id: string, change: number },
-                );
+                store.commit(MutationTypes.COUNTERS, {
+                    ...payload.data as { id: string, change: number },
+                    mateId: this.label
+                });
                 break;
             }
 
@@ -100,6 +99,7 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
                 store.commit(MutationTypes.RESOLVE_REVEAL, {
                     top: data.top.map((id) => allCards.find(c => c.id === id) as Card),
                     bottom: data.bottom.map((id) => allCards.find(c => c.id === id) as Card),
+                    mateId: this.label
                 });
                 break;
             }

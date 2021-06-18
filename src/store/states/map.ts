@@ -13,7 +13,6 @@ import { OnlineInterface } from '@/model/net/OnlineInterface';
 import Container from 'typedi';
 
 
-
 // Declare state
 export type State = {
     map?: MapInterface | MapInterface & OnlineInterface;
@@ -35,6 +34,17 @@ export const state: State = {
 };
 
 
+export type Idable = { mateId?: string };
+export type Passiveable = { passive?: boolean };
+
+export type HeyPayload = { id: string, name: string };
+export type RevealPayload = { count: number, type?: typeof Card };
+export type ChaosPayload = Idable & Passiveable;
+export type PlaneswalkPayload = Idable & Passiveable;
+export type CustomPlaneswalkPayload = PlaneswalkPayload & { planes: Array<Plane> };
+export type CounterPayload = Idable & { id: string, change: number };
+export type ResolveRevealPayload = Idable & { top: Array<Card>, bottom: Array<Card> };
+
 // mutations enums
 export enum MutationTypes {
     HEY = 'HEY',
@@ -50,48 +60,47 @@ export enum MutationTypes {
 
 // Mutation contracts
 export type Mutations<S = State> = {
-    [MutationTypes.HEY](state: S, payload: { id: string, name: string }): void,
+    [MutationTypes.HEY](state: S, payload: HeyPayload): void,
     [MutationTypes.INIT](state: S, payload: BuildProps): void,
-    [MutationTypes.SHUFFLE](state: S, payload: { active: Array<string>, deck: Array<string> }): void,
-    [MutationTypes.CHAOS](state: S, payload: { passive?: boolean }): void,
-    [MutationTypes.PLANESWALK](state: S, payload: { passive?: boolean }): void,
-    [MutationTypes.CUSTOM_PLANESWALK](state: S, payload: { planes: Array<Plane>, passive?: boolean }): void,
-    [MutationTypes.COUNTERS](state: S, payload: { id: string, change: number }): void,
-    [MutationTypes.REVEAL](state: S, payload: { count: number, type?: typeof Card }): void,
-    [MutationTypes.RESOLVE_REVEAL](state: S, payload: { top: Array<Card>, bottom: Array<Card> }): void,
+    [MutationTypes.SHUFFLE](state: S, payload: Exported): void,
+    [MutationTypes.CHAOS](state: S, payload: ChaosPayload): void,
+    [MutationTypes.PLANESWALK](state: S, payload: PlaneswalkPayload): void,
+    [MutationTypes.CUSTOM_PLANESWALK](state: S, payload: CustomPlaneswalkPayload): void,
+    [MutationTypes.COUNTERS](state: S, payload: CounterPayload): void,
+    [MutationTypes.REVEAL](state: S, payload: RevealPayload): void,
+    [MutationTypes.RESOLVE_REVEAL](state: S, payload: ResolveRevealPayload): void,
 }
 
 // Define mutations
 export const mutations: Mutations = {
-    [MutationTypes.HEY](state: State, payload: { id: string, name: string }) {
+    [MutationTypes.HEY](state: State, payload: HeyPayload) {
         state.mates.set(payload.id, payload.name);
     },
     [MutationTypes.INIT](state: State, payload: BuildProps) {
         state.map = Container.get(MapFactory).build(payload);
         state.online = payload.online;
     },
-
     [MutationTypes.SHUFFLE](state: State, payload: Exported) {
         (<MapInterface>state.map).applyShuffle(payload);
     },
-
-    [MutationTypes.CHAOS](state: State, payload: { passive?: boolean } = {}) {
+    [MutationTypes.CHAOS](state: State, payload: ChaosPayload = {}) {
         (<MapInterface>state.map).chaos(payload.passive);
     },
-    [MutationTypes.PLANESWALK](state: State, payload: { passive?: boolean } = {}) {
+    [MutationTypes.PLANESWALK](state: State, payload: PlaneswalkPayload = {}) {
+        console.log(payload);
         state.shuffled = (<MapInterface>state.map).planeswalk(undefined, payload.passive);
     },
-    [MutationTypes.CUSTOM_PLANESWALK](state: State, payload: { planes: Array<Plane>, passive?: boolean }) {
+    [MutationTypes.CUSTOM_PLANESWALK](state: State, payload: CustomPlaneswalkPayload) {
         (<MapInterface>state.map).customPlaneswalk(payload.planes, undefined, payload.passive);
     },
-    [MutationTypes.COUNTERS](state: State, payload: { id: string, change: number }) {
+    [MutationTypes.COUNTERS](state: State, payload: CounterPayload) {
         (<MapInterface>state.map).updateCounter(payload.id, payload.change);
     },
 
-    [MutationTypes.REVEAL](state: State, payload: { count: number, type?: typeof Card }) {
+    [MutationTypes.REVEAL](state: State, payload: RevealPayload) {
         state.shuffled = (<MapInterface>state.map).revealUntil(payload.count, payload.type);
     },
-    [MutationTypes.RESOLVE_REVEAL](state: State, payload: { top: Array<Card>, bottom: Array<Card> }) {
+    [MutationTypes.RESOLVE_REVEAL](state: State, payload: ResolveRevealPayload) {
         (<MapInterface>state.map).resolveReveal(payload.top, payload.bottom);
     },
 };
