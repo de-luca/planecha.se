@@ -123,7 +123,7 @@ type AugmentedActionContext = {
         key: K,
         payload?: Parameters<Mutations[K]>[1],
     ): ReturnType<Mutations[K]>
-} & Omit<ActionContext<State, undefined>, 'commit'>
+} & Omit<ActionContext<State, State>, 'commit'>
 
 // Actions contracts
 export interface Actions {
@@ -160,7 +160,7 @@ export interface Actions {
  }
 
 // Define actions
-export const actions: ActionTree<State, undefined> & Actions = {
+export const actions: ActionTree<State, State> & Actions = {
     async [ActionTypes.INIT]({ commit }, payload: BuildProps) {
         try {
             commit(MutationTypes.INIT, payload);
