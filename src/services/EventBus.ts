@@ -14,6 +14,9 @@ export enum EventType {
 
     // ONLINE EVENTS
     BYE = 'BYE',
+
+    // NOTIF EVENTS
+    NOTIF = 'NOTIF',
 }
 
 export interface CardEventPayload {
@@ -25,6 +28,11 @@ export interface ByeEventPayload {
     mateId: string;
 }
 
+export interface NotifEventPayload {
+    text: string;
+    className: string;
+}
+
 type Emits<EventType, T> = {
     on(type: EventType, handler: (arg: T) => void): void;
     off(type: EventType, handler: (arg: T) => void): void;
@@ -33,6 +41,7 @@ type Emits<EventType, T> = {
 
 type Emitter = Emits<EventType.RESOLVED_REVEAL, undefined> 
     & Emits<EventType.BYE, ByeEventPayload>
+    & Emits<EventType.NOTIF, NotifEventPayload>
     & Emits<EventType, CardEventPayload>;
 
 export const eventBus: Emitter = mitt();

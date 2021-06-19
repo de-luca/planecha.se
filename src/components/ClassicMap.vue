@@ -12,7 +12,6 @@
       <feed />
     </div>
 
-
     <div class="controls">
       <chaos-btn v-if="canChaos" />
       <planeswalk-btn :resolver="revealer?.seeder" :disabled="revealer && revealer.passive" />
@@ -31,7 +30,6 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { Component } from '@vue/runtime-core';
-import { Handler } from 'mitt';
 import _shuffle from 'lodash.shuffle';
 import Card from '@/components/board/Card.vue';
 import ChaosBtn from '@/components/board/ChaosBtn.vue';

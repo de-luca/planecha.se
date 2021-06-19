@@ -19,7 +19,6 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { Handler } from 'mitt';
 import { MutationTypes, Store, useStore } from '@/store';
 import ClassicMap from '@/components/ClassicMap.vue';
 import EternitiesMap from '@/components/EternitiesMap.vue';
@@ -43,6 +42,11 @@ export default class Board extends Vue {
     this.store = useStore();
 
     eventBus.on(EventType.BYE, (payload) => {
+      eventBus.emit(EventType.NOTIF, {
+        text: `<b>${this.store.getters.mates.get(payload.mateId)}</b> has left the game`,
+        className: 'is-warning',
+      });
+
       this.store.commit(MutationTypes.BYE, { id: payload.mateId });
     });
   }
