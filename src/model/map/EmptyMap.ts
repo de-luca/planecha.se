@@ -1,4 +1,3 @@
-import { Log } from '@/store/states/map';
 import { Card } from '../card';
 import { Exported, MapInterface, MapType, Revealed } from './MapInterface';
 
@@ -42,12 +41,6 @@ export class EmptyMap implements MapInterface {
     throw new Error('Method not implemented.');
   }
   applyShuffle(): void {
-    throw new Error('Method not implemented.');
-  }
-  getPlaneswalkLog(): Omit<Log, 'initiator'> {
-    throw new Error('Method not implemented.');
-  }
-  getCounterLog(): Omit<Log, 'initiator'> {
     throw new Error('Method not implemented.');
   }
 }

@@ -75,13 +75,13 @@ function handler(store: Store): (mutation: MutationPayload, state: State) => Pro
         const payload = mutation.payload as ResolveRevealPayload;
         if (payload.top.length > 0 ) {
           store.state.feed.push(
-            `${name(payload?.mateId)} putted on top ` +
+            `<b>${name(payload?.mateId)}</b> putted on top ` +
             `<b>${payload.top.map(c => c.name).join('</b>, <b>')}</b>`,
           );
         }
         if (payload.bottom.length > 0) {
           store.state.feed.push(
-            `${name(payload?.mateId)} putted at the bottom ` +
+            `<b>${name(payload?.mateId)}</b> putted at the bottom ` +
             `<b>${payload.bottom.map(c => c.name).join('</b>, <b>')}</b>`,
           );
         }

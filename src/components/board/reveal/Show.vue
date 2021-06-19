@@ -4,10 +4,10 @@
     <div class="tabs is-centered is-medium">
       <ul>
         <li :class="{ 'is-active': activeTab === 'relevant' }">
-          <a @click="activeTab = 'relevant'">Relevant cards</a>
+          <a @click="activeTab = 'relevant'">Relevant Cards ({{ revealed.relevant.length }})</a>
         </li>
         <li :class="{ 'is-active': activeTab === 'others' }">
-          <a @click="activeTab = 'others'">Others</a>
+          <a @click="activeTab = 'others'">Others ({{ revealed.others.length }})</a>
         </li>
       </ul>
     </div>
@@ -38,12 +38,13 @@
     </div>
     
     <button
+      v-if="!config.passive"
       class="button is-dark is-medium" 
-      :disabled="config.passive || activeTab === 'others'" 
       @click="confirm"
     >
       Okay
     </button>
+    <p class="subtitle" v-if="config.passive"><b>{{ config.mateName }}</b> is chosing.</p>
   </div>
 </template>
 

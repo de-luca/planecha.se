@@ -3,9 +3,9 @@ import mitt, { Handler } from 'mitt';
 export enum EventType {
     // CARDS EVENTS
     ARETOPOLIS = 'ARETOPOLIS',
+    CHAOTIC_AETHER = 'CHAOTIC_AETHER',
     POOL_OF_BECOMING = 'POOL_OF_BECOMING',
     STAIRS_TO_INFINITY = 'STAIRS_TO_INFINITY',
-    CHAOTIC_AETHER = 'CHAOTIC_AETHER',
     INTERPLANAR_TUNNEL = 'INTERPLANAR_TUNNEL',
     SPACIAL_MERGING = 'SPACIAL_MERGING',
 
@@ -18,6 +18,7 @@ export enum EventType {
 
 export interface CardEventPayload {
     passive: boolean;
+    mateId?: string;
 }
 
 export interface ByeEventPayload {
@@ -30,9 +31,8 @@ type Emits<EventType, T> = {
     emit(type: EventType, arg?: T): void;
 };
 
-type Emitter = 
-    Emits<EventType.RESOLVED_REVEAL, undefined> 
+type Emitter = Emits<EventType.RESOLVED_REVEAL, undefined> 
     & Emits<EventType.BYE, ByeEventPayload>
-    & Emits<EventType, CardEventPayload>
+    & Emits<EventType, CardEventPayload>;
 
 export const eventBus: Emitter = mitt();

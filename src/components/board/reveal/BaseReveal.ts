@@ -11,6 +11,7 @@ export type Config = {
     passive: boolean;
     sendShownTo: 'top' | 'bottom';
     title?: string;
+    mateName?: string;
 }
 
 export class BaseReveal {

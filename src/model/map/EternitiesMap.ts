@@ -74,7 +74,11 @@ export class EternitiesMap extends Map {
     return tiles;
   }
 
-  public planeswalk(coordinates: Coordinates, passive: boolean = false): boolean {
+  public planeswalk(
+    coordinates: Coordinates, 
+    passive: boolean = false,
+    mateId?: string,
+  ): boolean {
     let shuffled = false;
     const xOffset = coordinates.x;
     const yOffset = coordinates.y;
@@ -159,11 +163,7 @@ export class EternitiesMap extends Map {
     return shuffled;
   }
 
-  public customPlaneswalk(
-    planes: Array<Plane>,
-    coordinates?: Coordinates, 
-    passive: boolean = false,
-  ): void {
+  public customPlaneswalk(planes: Array<Plane>, coordinates?: Coordinates): void {
     throw new Error('Method not implemented.');
   }
 }

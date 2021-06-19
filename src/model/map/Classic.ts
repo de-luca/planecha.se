@@ -33,25 +33,25 @@ export class Classic extends Map {
     return { card: card as Plane, shuffled };
   }
 
-  public planeswalk(_coordinates?: Coordinates, passive: boolean = false): boolean {
+  public planeswalk(
+    _coordinates?: Coordinates, 
+    passive: boolean = false,
+    mateId?: string,
+  ): boolean {
     this.active.forEach(c => c.leave());
     this.played.push(...this.active);
     
     const { card, shuffled } = this.draw();
     this.active = [card];
-    this.active.forEach(c => c.enter(passive));
+    this.active.forEach(c => c.enter(passive, mateId));
     
     return shuffled;
   }
   
-  public customPlaneswalk(
-    planes: Array<Plane>,
-    _coordinates?: Coordinates,
-    passive: boolean = false,
-  ): void {
+  public customPlaneswalk(planes: Array<Plane>, _coordinates?: Coordinates): void {
     this.active.forEach(c => c.leave());
     this.played.push(...this.active);
     this.active = planes;
-    this.active.forEach(c => c.enter(passive));
+    this.active.forEach(c => c.enter());
   }
 }

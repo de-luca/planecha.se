@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <div class="feed">
+    <div class="box feed">
       <feed />
     </div>
 
@@ -73,13 +73,16 @@ export default class ClassicMap extends Vue {
 
     eventBus.on(EventType.RESOLVED_REVEAL, () => this.revealer = null);
     eventBus.on(EventType.STAIRS_TO_INFINITY, (payload): void => {
-      const passive = payload.passive;
       this.revealer = {
         passive: payload.passive,
         component: Scry,
         seeder: () => {},
         resolver: this.putBack,
-        config: { passive: payload.passive, sendShownTo: 'bottom' },
+        config: { 
+          sendShownTo: 'bottom',
+          passive: payload.passive,
+          mateName: payload.mateId ? this.store.getters.mates.get(payload.mateId) : undefined,
+        },
       };
 
       if (!payload.passive) {
@@ -92,7 +95,11 @@ export default class ClassicMap extends Vue {
         component: Show,
         seeder: () => {},
         resolver: this.putBack,
-        config: { passive: payload.passive, sendShownTo: 'bottom' },
+        config: { 
+          sendShownTo: 'bottom',
+          passive: payload.passive,
+          mateName: payload.mateId ? this.store.getters.mates.get(payload.mateId) : undefined,
+        },
       };
 
       if (!payload.passive) {
@@ -105,7 +112,11 @@ export default class ClassicMap extends Vue {
         component: Pick,
         seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 5, type: Plane }),
         resolver: this.customPlaneswalk,
-        config: { passive: payload.passive, sendShownTo: 'bottom' }
+        config: { 
+          sendShownTo: 'bottom',
+          passive: payload.passive,
+          mateName: payload.mateId ? this.store.getters.mates.get(payload.mateId) : undefined,
+        },
       };
     });
     eventBus.on(EventType.SPACIAL_MERGING, (payload): void => {
@@ -114,7 +125,11 @@ export default class ClassicMap extends Vue {
         component: Show,
         seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 2, type: Plane }),
         resolver: this.customPlaneswalk,
-        config: { passive: payload.passive, sendShownTo: 'top' }
+        config: { 
+          sendShownTo: 'top',
+          passive: payload.passive,
+          mateName: payload.mateId ? this.store.getters.mates.get(payload.mateId) : undefined,
+        },
       };
     });
   }

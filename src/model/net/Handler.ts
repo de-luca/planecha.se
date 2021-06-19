@@ -3,16 +3,16 @@ import { Card, Phenomenon, Plane } from "../card";
 import { Exported } from "../map/MapInterface";
 
 export enum Event {
-    REQUEST_INIT = 'request_init',
-    HEY = 'hey',
-    INIT = 'init',
-    CHAOS = 'chaos',
-    PLANESWALK = 'planeswalk',
-    CUSTOM_PLANESWALK = 'custom_planeswalk',
-    COUNTERS = 'counters',
-    REVEAL = 'reveal',
-    RESOLVE_REVEAL = 'resolve_reveal',
-    SHUFFLE = 'shuffle',
+    REQUEST_INIT = 'REQUEST_INIT',
+    HEY = 'HEY',
+    INIT = 'INIT',
+    CHAOS = 'CHAOS',
+    PLANESWALK = 'PLANESWALK',
+    CUSTOM_PLANESWALK = 'CUSTOM_PLANESWALK',
+    COUNTERS = 'COUNTERS',
+    REVEAL = 'REVEAL',
+    RESOLVE_REVEAL = 'RESOLVE_REVEAL',
+    SHUFFLE = 'SHUFFLE',
 }
 
 export type Payload<T> = {
@@ -66,8 +66,6 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
 
                 store.commit(MutationTypes.CUSTOM_PLANESWALK, {
                     planes: data.planes.map((id) => allCards.find(c => c.id === id) as Plane),
-                    passive: true,
-                    mateId: this.label,
                 });
                 break;
             }
@@ -75,7 +73,7 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
             case Event.COUNTERS: {
                 store.commit(MutationTypes.COUNTERS, {
                     ...payload.data as { id: string, change: number },
-                    mateId: this.label
+                    mateId: this.label,
                 });
                 break;
             }
@@ -99,7 +97,7 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
                 store.commit(MutationTypes.RESOLVE_REVEAL, {
                     top: data.top.map((id) => allCards.find(c => c.id === id) as Card),
                     bottom: data.bottom.map((id) => allCards.find(c => c.id === id) as Card),
-                    mateId: this.label
+                    mateId: this.label,
                 });
                 break;
             }

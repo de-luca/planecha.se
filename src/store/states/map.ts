@@ -90,13 +90,13 @@ export const mutations: Mutations = {
         (<MapInterface>state.map).applyShuffle(payload);
     },
     [MutationTypes.CHAOS](state: State, payload: ChaosPayload = {}) {
-        (<MapInterface>state.map).chaos(payload.passive);
+        (<MapInterface>state.map).chaos(payload.passive, payload.mateId);
     },
     [MutationTypes.PLANESWALK](state: State, payload: PlaneswalkPayload = {}) {
-        state.shuffled = (<MapInterface>state.map).planeswalk(undefined, payload.passive);
+        state.shuffled = (<MapInterface>state.map).planeswalk(undefined, payload.passive, payload.mateId);
     },
     [MutationTypes.CUSTOM_PLANESWALK](state: State, payload: CustomPlaneswalkPayload) {
-        (<MapInterface>state.map).customPlaneswalk(payload.planes, undefined, payload.passive);
+        (<MapInterface>state.map).customPlaneswalk(payload.planes);
     },
     [MutationTypes.COUNTERS](state: State, payload: CounterPayload) {
         (<MapInterface>state.map).updateCounter(payload.id, payload.change);

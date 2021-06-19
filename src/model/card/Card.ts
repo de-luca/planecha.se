@@ -2,29 +2,29 @@ import type { Props } from '.';
 import { CardInterface } from './CardInterface';
 
 export abstract class Card implements CardInterface {
-    public id: string;
-    public oracleId: string;
-    public multiverseIds: Array<number>;
-    public name: string;
-    public scryfallUri: string;
-    public typeLine: string;
-    public oracleText: string;
-    public gathererUri: string;
+  public id: string;
+  public oracleId: string;
+  public multiverseIds: Array<number>;
+  public name: string;
+  public scryfallUri: string;
+  public typeLine: string;
+  public oracleText: string;
+  public gathererUri: string;
 
-    public constructor(props: Props) {
-      this.id = props.id;
-      this.oracleId = props.oracleId;
-      this.multiverseIds = props.multiverseIds;
-      this.name = props.name;
-      this.scryfallUri = props.scryfallUri;
-      this.typeLine = props.typeLine;
-      this.oracleText = props.oracleText;
-      this.gathererUri = props.gathererUri;
-    }
+  public constructor(props: Props) {
+    this.id = props.id;
+    this.oracleId = props.oracleId;
+    this.multiverseIds = props.multiverseIds;
+    this.name = props.name;
+    this.scryfallUri = props.scryfallUri;
+    this.typeLine = props.typeLine;
+    this.oracleText = props.oracleText;
+    this.gathererUri = props.gathererUri;
+  }
 
-    public abstract get type(): string;
+  public abstract get type(): string;
     
-    public abstract chaos(passive?: boolean): void;
-    public abstract enter(passive?: boolean): void;
-    public abstract leave(): void;
+  public abstract chaos(passive?: boolean, mateId?: string): void;
+  public abstract enter(passive?: boolean, mateId?: string): void;
+  public abstract leave(): void;
 }

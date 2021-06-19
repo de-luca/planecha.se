@@ -5,7 +5,7 @@
       <template v-for="(c, index) in revealed.relevant" :key="c.id">
         <div class="card-wrapper">
           <img :src="buildImgSrc(c)">
-          <div class="control">
+          <div class="control" v-if="!config.passive">
             <input
               type="radio"
               :disabled="config.passive"
@@ -26,13 +26,16 @@
         </div>
       </template>
     </div>
-    <button 
+
+    <button
+      v-if="!config.passive"
       class="button is-dark is-medium" 
       @click="confirm"
-      :disabled="config.passive || !allSet"
+      :disabled="!allSet"
     >
       Confirm choice
     </button>
+    <p class="subtitle" v-if="config.passive"><b>{{ config.mateName }}</b> is chosing.</p>
   </div>
 </template>
 

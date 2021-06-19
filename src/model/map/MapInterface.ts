@@ -40,12 +40,11 @@ export interface MapInterface {
   putOnTheBottom(cards: Array<Card>): void;
   clearRevealed(): void;
 
-  chaos(passive?: boolean): void;
-  planeswalk(coordinates?: Coordinates, passive?: boolean): boolean;
+  chaos(passive?: boolean, mateId?: string): void;
+  planeswalk(coordinates?: Coordinates, passive?: boolean, mateId?: string): boolean;
   customPlaneswalk(
     planes: Array<Plane>, 
     coordinates?: Coordinates, 
-    passive?: boolean,
   ): void;
   updateCounter(id: string, change: number): void;
 

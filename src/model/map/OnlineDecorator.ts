@@ -52,20 +52,20 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
         return this.map.getDeckSize();
     }
 
-    public chaos(passive: boolean = false): void {
-        return this.map.chaos(passive);
+    public chaos(passive: boolean = false, mateId?: string): void {
+        return this.map.chaos(passive, mateId);
     }
     
-    public planeswalk(coordinates?: Coordinates, passive: boolean = false): boolean {
-        return this.map.planeswalk(coordinates, passive);
+    public planeswalk(
+        coordinates?: Coordinates, 
+        passive: boolean = false,
+        mateId?: string,
+    ): boolean {
+        return this.map.planeswalk(coordinates, passive, mateId);
     }
 
-    public customPlaneswalk(
-        planes: Array<Plane>,
-        coordinates?: Coordinates,
-        passive: boolean = false,
-    ): void {
-        return this.map.customPlaneswalk(planes, coordinates, passive);
+    public customPlaneswalk(planes: Array<Plane>, coordinates?: Coordinates): void {
+        return this.map.customPlaneswalk(planes, coordinates);
     }
 
     public updateCounter(id: string, change: number): void {
