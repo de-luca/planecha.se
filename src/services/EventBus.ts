@@ -11,10 +11,17 @@ export enum Event {
 
     // GENERIC EVENTS
     RESOLVED_REVEAL = 'RESOLVED_REVEAL',
+
+    // ONLINE EVENTS
+    BYE = 'BYE',
 }
 
 export interface CardEventPayload {
     passive: boolean;
+}
+
+export interface ByeEventPayload {
+    mateId: string;
 }
 
 export const eventBus = mitt();

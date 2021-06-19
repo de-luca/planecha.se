@@ -38,6 +38,7 @@ export type Idable = { mateId?: string };
 export type Passiveable = { passive?: boolean };
 
 export type HeyPayload = { id: string, name: string };
+export type ByePayload = { id: string };
 export type RevealPayload = { count: number, type?: typeof Card };
 export type ChaosPayload = Idable & Passiveable;
 export type PlaneswalkPayload = Idable & Passiveable;
@@ -48,6 +49,7 @@ export type ResolveRevealPayload = Idable & { top: Array<Card>, bottom: Array<Ca
 // mutations enums
 export enum MutationTypes {
     HEY = 'HEY',
+    BYE = 'BYE',
     INIT = 'INIT',
     SHUFFLE = 'SHUFFLE',
     CHAOS = 'CHAOS',
@@ -61,6 +63,7 @@ export enum MutationTypes {
 // Mutation contracts
 export type Mutations<S = State> = {
     [MutationTypes.HEY](state: S, payload: HeyPayload): void,
+    [MutationTypes.BYE](state: S, payload: ByePayload): void,
     [MutationTypes.INIT](state: S, payload: BuildProps): void,
     [MutationTypes.SHUFFLE](state: S, payload: Exported): void,
     [MutationTypes.CHAOS](state: S, payload: ChaosPayload): void,
@@ -75,6 +78,9 @@ export type Mutations<S = State> = {
 export const mutations: Mutations = {
     [MutationTypes.HEY](state: State, payload: HeyPayload) {
         state.mates.set(payload.id, payload.name);
+    },
+    [MutationTypes.BYE](state: State, payload: ByePayload) {
+        state.mates.delete(payload.id);
     },
     [MutationTypes.INIT](state: State, payload: BuildProps) {
         state.map = Container.get(MapFactory).build(payload);

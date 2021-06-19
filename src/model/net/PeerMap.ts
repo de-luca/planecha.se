@@ -1,4 +1,5 @@
 import Container from 'typedi';
+import { eventBus, Event as BusEvent } from '@/services/EventBus';
 import { MapFactory } from '../map/MapFactory';
 import { Exported, MapInterface } from '../map/MapInterface';
 import { Beacon, SignalData, SignalPayload } from './Beacon';
@@ -17,12 +18,12 @@ export class PeerMap {
 
     private peers: Map<string, Peer>;
     private beacon: Beacon;
-    public name: string;
+    public yourName: string;
 
-    public constructor(beacon: Beacon, name: string) {
+    public constructor(beacon: Beacon, yourName: string) {
         this.peers = new Map();
         this.beacon = beacon;
-        this.name = name;
+        this.yourName = yourName;
         this.beacon.addEventListener('signal', (ev) => {
             this.signal((ev as CustomEvent<SignalPayload>).detail);
         });
@@ -63,7 +64,7 @@ export class PeerMap {
 
             channelOpen.push(new Promise((resolve) => {
                 peer.channel.onopen = _ => {
-                    peer.channel.send(stringify(Event.HEY, { name: this.name }));
+                    peer.channel.send(stringify(Event.HEY, { name: this.yourName }));
                     resolve()
                 };
             }));
@@ -82,8 +83,12 @@ export class PeerMap {
         const connection = new RTCPeerConnection(PeerMap.RTCConfig);
         const channel = connection.createDataChannel(id, PeerMap.channelConfig);
 
-        channel.onmessage = getHandler(this.name);
+        channel.onmessage = getHandler(this.yourName);
         connection.oniceconnectionstatechange = (_) => {
+            if (connection.iceConnectionState === 'disconnected') {
+                this.peers.delete(id);
+                eventBus.emit(BusEvent.BYE, { mateId: id });
+            }
             console.log('[oniceconnectionstatechange]', connection.iceConnectionState);
         };
         connection.onicecandidate = ({ candidate }) => {

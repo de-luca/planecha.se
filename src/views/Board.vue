@@ -13,26 +13,39 @@
     </div>
 
     <component class="map" :is="mapComponent" />
+    <notif-center />
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { Store, useStore } from '@/store';
+import { Handler } from 'mitt';
+import { MutationTypes, Store, useStore } from '@/store';
 import ClassicMap from '@/components/ClassicMap.vue';
 import EternitiesMap from '@/components/EternitiesMap.vue';
 import OnlineControls from '@/components/OnlineControls.vue';
+import NotifCenter from '@/components/NotifCenter.vue';
 import { Component } from '@vue/runtime-core';
 import { MapType } from '@/model/map/MapInterface';
+import { eventBus, Event, ByeEventPayload } from '@/services/EventBus';
+
+type EventHandler = Handler<ByeEventPayload>;
 
 @Options({
-  components: { ClassicMap, EternitiesMap, OnlineControls },
+  components: { 
+    ClassicMap, EternitiesMap,
+    OnlineControls, NotifCenter,
+  },
 })
 export default class Board extends Vue {
   public store: Store;
 
   public created() {
     this.store = useStore();
+    
+    eventBus.on(Event.BYE, ((payload: ByeEventPayload) => {
+      this.store.commit(MutationTypes.BYE, { id: payload.mateId });
+    }) as EventHandler);
   }
 
   public get mapComponent(): Component {
@@ -103,5 +116,12 @@ export default class Board extends Vue {
   max-width: 1800px;
   height: 100%;
   width: 100%;
+}
+
+.notif-center {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  width: 30rem;
 }
 </style>

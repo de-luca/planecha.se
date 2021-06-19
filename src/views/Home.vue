@@ -3,10 +3,10 @@
     <div class="cta">
       <h1 class="title">Mirrod.in</h1>
       <div class="btn-grp">
-        <router-link class="button" to="/join">
+        <router-link class="button is-light" to="/join">
           Join game
         </router-link>
-        <router-link class="button" to="/create">
+        <router-link class="button is-dark" to="/create">
           Create game
         </router-link>
       </div>

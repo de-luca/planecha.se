@@ -68,6 +68,7 @@ export default class JoinGame extends Vue {
 .container {
   width: 800px;
   padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .field.join-game button {

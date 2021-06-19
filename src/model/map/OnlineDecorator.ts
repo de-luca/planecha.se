@@ -25,7 +25,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     }
 
     public get yourName(): string {
-        return this.peers.name;
+        return this.peers.yourName;
     }
 
     public get type(): MapType {
