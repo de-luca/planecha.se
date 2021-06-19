@@ -1,4 +1,4 @@
-import { eventBus, Event } from '@/services/EventBus';
+import { eventBus, EventType } from '@/services/EventBus';
 import { Counter } from '../../CardFactory';
 import { Plane } from '../Plane';
 
@@ -28,7 +28,7 @@ export class Aretopolis extends Plane {
 
     private checkMaxCounters(): void {
         if (this.counter.value >= (this.counter.max as number)) {
-            eventBus.emit(Event.ARETOPOLIS);
+            eventBus.emit(EventType.ARETOPOLIS);
         }
     }
 }

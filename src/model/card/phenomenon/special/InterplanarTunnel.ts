@@ -1,4 +1,4 @@
-import { eventBus, Event } from '@/services/EventBus';
+import { eventBus, EventType } from '@/services/EventBus';
 import { Phenomenon } from '../Phenomenon';
 
 /**
@@ -11,6 +11,6 @@ import { Phenomenon } from '../Phenomenon';
  */
 export class InterplanarTunnel extends Phenomenon {
     public enter(passive: boolean = false): void {
-        eventBus.emit(Event.INTERPLANAR_TUNNEL, { passive });
+        eventBus.emit(EventType.INTERPLANAR_TUNNEL, { passive });
     }
 }

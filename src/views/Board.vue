@@ -27,9 +27,8 @@ import OnlineControls from '@/components/OnlineControls.vue';
 import NotifCenter from '@/components/NotifCenter.vue';
 import { Component } from '@vue/runtime-core';
 import { MapType } from '@/model/map/MapInterface';
-import { eventBus, Event, ByeEventPayload } from '@/services/EventBus';
+import { eventBus, EventType } from '@/services/EventBus';
 
-type EventHandler = Handler<ByeEventPayload>;
 
 @Options({
   components: { 
@@ -42,10 +41,10 @@ export default class Board extends Vue {
 
   public created() {
     this.store = useStore();
-    
-    eventBus.on(Event.BYE, ((payload: ByeEventPayload) => {
+
+    eventBus.on(EventType.BYE, (payload) => {
       this.store.commit(MutationTypes.BYE, { id: payload.mateId });
-    }) as EventHandler);
+    });
   }
 
   public get mapComponent(): Component {

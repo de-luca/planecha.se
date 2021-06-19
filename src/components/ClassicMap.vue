@@ -39,7 +39,7 @@ import PlaneswalkBtn from '@/components/board/PlaneswalkBtn.vue';
 import Feed from '@/components/board/Feed.vue';
 import { ActionTypes, Store, useStore } from '@/store';
 import { Card as ModelCard, Plane } from '@/model/card';
-import { eventBus, Event, CardEventPayload } from '@/services/EventBus';
+import { eventBus, EventType } from '@/services/EventBus';
 import { Revealed } from '@/model/map/MapInterface';
 import { PickedLeft, Config } from './board/reveal/BaseReveal';
 
@@ -47,8 +47,6 @@ import Pick from '@/components/board/reveal/Pick.vue';
 import Scry from '@/components/board/reveal/Scry.vue';
 import Show from '@/components/board/reveal/Show.vue';
 
-
-type EventHandler = Handler<CardEventPayload>;
 
 type Revealer = {
   passive: boolean;
@@ -73,55 +71,52 @@ export default class ClassicMap extends Vue {
   public created() {
     this.store = useStore();
 
-    eventBus.on(Event.RESOLVED_REVEAL, () => this.revealer = null);
-    eventBus.on(Event.STAIRS_TO_INFINITY, ((payload): void => {
-      const passive = (payload as CardEventPayload).passive;
+    eventBus.on(EventType.RESOLVED_REVEAL, () => this.revealer = null);
+    eventBus.on(EventType.STAIRS_TO_INFINITY, (payload): void => {
+      const passive = payload.passive;
       this.revealer = {
-        passive,
+        passive: payload.passive,
         component: Scry,
         seeder: () => {},
         resolver: this.putBack,
-        config: { passive, sendShownTo: 'bottom' },
+        config: { passive: payload.passive, sendShownTo: 'bottom' },
       };
 
-      if (!passive) {
+      if (!payload.passive) {
         this.store.dispatch(ActionTypes.REVEAL, { count: 1 })
       }
-    }) as EventHandler);
-    eventBus.on(Event.POOL_OF_BECOMING, ((payload): void => {
-      const passive = (payload as CardEventPayload).passive;
+    });
+    eventBus.on(EventType.POOL_OF_BECOMING, (payload): void => {
       this.revealer = {
-        passive,
+        passive: payload.passive,
         component: Show,
         seeder: () => {},
         resolver: this.putBack,
-        config: { passive, sendShownTo: 'bottom' },
+        config: { passive: payload.passive, sendShownTo: 'bottom' },
       };
 
-      if (!passive) {
+      if (!payload.passive) {
         this.store.dispatch(ActionTypes.REVEAL, { count: 3 });
       }
-    }) as EventHandler);
-    eventBus.on(Event.INTERPLANAR_TUNNEL, ((payload): void => {
-      const passive = (payload as CardEventPayload).passive;
+    });
+    eventBus.on(EventType.INTERPLANAR_TUNNEL, (payload): void => {
       this.revealer = {
-        passive,
+        passive: payload.passive,
         component: Pick,
         seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 5, type: Plane }),
         resolver: this.customPlaneswalk,
-        config: { passive, sendShownTo: 'bottom' }
+        config: { passive: payload.passive, sendShownTo: 'bottom' }
       };
-    }) as EventHandler);
-    eventBus.on(Event.SPACIAL_MERGING, ((payload): void => {
-      const passive = (payload as CardEventPayload).passive;
+    });
+    eventBus.on(EventType.SPACIAL_MERGING, (payload): void => {
       this.revealer = {
-        passive,
+        passive: payload.passive,
         component: Show,
         seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 2, type: Plane }),
         resolver: this.customPlaneswalk,
-        config: { passive, sendShownTo: 'top' }
+        config: { passive: payload.passive, sendShownTo: 'top' }
       };
-    }) as EventHandler);
+    });
   }
 
   public get active(): Array<ModelCard> {

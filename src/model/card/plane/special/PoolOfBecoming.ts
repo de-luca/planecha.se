@@ -1,4 +1,4 @@
-import { eventBus, Event } from '@/services/EventBus';
+import { eventBus, EventType } from '@/services/EventBus';
 import { Plane } from '../Plane';
 
 /**
@@ -12,6 +12,6 @@ import { Plane } from '../Plane';
 export class PoolOfBecoming extends Plane {
     public chaos(passive: boolean = false): void {
         console.log(passive);
-        eventBus.emit(Event.POOL_OF_BECOMING, { passive });
+        eventBus.emit(EventType.POOL_OF_BECOMING, { passive });
     }
 }

@@ -11,11 +11,9 @@
 
 <script lang="ts">
 import { Vue } from 'vue-class-component';
-import { eventBus, Event, ByeEventPayload } from '@/services/EventBus';
+import { eventBus, EventType } from '@/services/EventBus';
 import { Handler } from 'mitt';
 import { useStore, Store } from '@/store';
-
-type EventHandler = Handler<ByeEventPayload>;
 
 interface Notif {
   id: number;
@@ -30,7 +28,7 @@ export default class NotifCenter extends Vue {
 
   public created(): void {
     this.store = useStore()
-    eventBus.on(Event.BYE, ((payload: ByeEventPayload) => {
+    eventBus.on(EventType.BYE, (payload) => {
       const id = this.index++;
       const mateName = this.store.getters.mates.get(payload.mateId);
 
@@ -41,7 +39,7 @@ export default class NotifCenter extends Vue {
       });
 
       setTimeout(() => this.notifs.delete(id), 10000);
-    }) as EventHandler);
+    });
   }
 
   public dismiss(id: number): void {

@@ -1,4 +1,4 @@
-import { eventBus, Event } from '@/services/EventBus';
+import { eventBus, EventType } from '@/services/EventBus';
 import { Plane } from '../Plane';
 
 /**
@@ -11,6 +11,6 @@ import { Plane } from '../Plane';
  */
 export class StairsToInfinity extends Plane {
     public chaos(passive: boolean = false): void {
-        eventBus.emit(Event.STAIRS_TO_INFINITY, { passive });
+        eventBus.emit(EventType.STAIRS_TO_INFINITY, { passive });
     }
 }
