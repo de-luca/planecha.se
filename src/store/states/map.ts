@@ -48,6 +48,7 @@ export type ResolveRevealPayload = Idable & { top: Array<Card>, bottom: Array<Ca
 
 // mutations enums
 export enum MutationTypes {
+    LEAVE = 'LEAVE',
     HEY = 'HEY',
     BYE = 'BYE',
     INIT = 'INIT',
@@ -62,6 +63,7 @@ export enum MutationTypes {
 
 // Mutation contracts
 export type Mutations<S = State> = {
+    [MutationTypes.LEAVE](state: S): void,
     [MutationTypes.HEY](state: S, payload: HeyPayload): void,
     [MutationTypes.BYE](state: S, payload: ByePayload): void,
     [MutationTypes.INIT](state: S, payload: BuildProps): void,
@@ -76,6 +78,17 @@ export type Mutations<S = State> = {
 
 // Define mutations
 export const mutations: Mutations = {
+    [MutationTypes.LEAVE](state: State) {
+        if (state.online) {
+            (state.map as OnlineInterface).leave();
+        }
+        
+        state.map = undefined;
+        state.feed = [];
+        state.online = false;
+        state.mates = new Map();
+        state.shuffled = false;
+    },
     [MutationTypes.HEY](state: State, payload: HeyPayload) {
         state.mates.set(payload.id, payload.name);
     },

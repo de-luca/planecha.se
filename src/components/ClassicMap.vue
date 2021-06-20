@@ -31,19 +31,19 @@
 import { Options, Vue } from 'vue-class-component';
 import { Component } from '@vue/runtime-core';
 import _shuffle from 'lodash.shuffle';
-import Card from '@/components/board/Card.vue';
-import ChaosBtn from '@/components/board/ChaosBtn.vue';
-import PlaneswalkBtn from '@/components/board/PlaneswalkBtn.vue';
-import Feed from '@/components/board/Feed.vue';
 import { ActionTypes, Store, useStore } from '@/store';
 import { Card as ModelCard, Plane } from '@/model/card';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Revealed } from '@/model/map/MapInterface';
-import { PickedLeft, Config } from './board/reveal/BaseReveal';
+import Card from '@/components/map/Card.vue';
+import ChaosBtn from '@/components/map/ChaosBtn.vue';
+import PlaneswalkBtn from '@/components/map/PlaneswalkBtn.vue';
+import Feed from '@/components/map/Feed.vue';
+import { PickedLeft, Config } from '@/components/map/reveal/BaseReveal';
 
-import Pick from '@/components/board/reveal/Pick.vue';
-import Scry from '@/components/board/reveal/Scry.vue';
-import Show from '@/components/board/reveal/Show.vue';
+import Pick from '@/components/map/reveal/Pick.vue';
+import Scry from '@/components/map/reveal/Scry.vue';
+import Show from '@/components/map/reveal/Show.vue';
 
 
 type Revealer = {

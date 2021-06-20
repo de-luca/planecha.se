@@ -35,7 +35,13 @@
 
       <div class="field join-game">
         <div class="control">
-          <button class="button is-dark" type="submit">Join game</button>
+          <button 
+            class="button is-dark" 
+            :class="{ 'is-loading': joining }" 
+            type="submit"
+          >
+            Join game
+          </button>
         </div>
       </div>
     </form>
@@ -50,6 +56,7 @@ export default class JoinGame extends Vue {
   private store: Store;
   private roomId: string;
   private name: string;
+  private joining: boolean = false;
 
   public created() {
     this.store = useStore();
@@ -58,7 +65,10 @@ export default class JoinGame extends Vue {
   }
   
   public async join() {
+    this.joining = true;
     await this.store.dispatch(ActionTypes.JOIN, { roomId: this.roomId, name: this.name });
+    this.joining = false;
+
     this.$router.push('/board');
   }
 }

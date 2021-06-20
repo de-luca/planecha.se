@@ -127,6 +127,10 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
         this.map = await this.peers.requestInit();
     }
 
+    public leave(): void {
+        this.peers.close();
+    }
+
     public requestChaos(): void {
         this.peers.broadcast(Event.CHAOS);
     }

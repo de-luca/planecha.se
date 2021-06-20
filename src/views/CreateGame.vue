@@ -33,7 +33,13 @@
 
       <div class="field create-game">
         <div class="control">
-          <button class="button is-dark" type="submit">Create game</button>
+          <button 
+            class="button is-dark" 
+            :class="{ 'is-loading': creating }" 
+            type="submit"
+          >
+            Create game
+          </button>
         </div>
       </div>
     </form>
@@ -79,6 +85,7 @@ export default class CreateGame extends Vue {
   private name: string = '';
   private cards: Set<string> = new Set();
   private showAdvanced: boolean = false;
+  private creating: boolean = false;
   
   private store: Store;
 
@@ -95,6 +102,7 @@ export default class CreateGame extends Vue {
   }
 
   public async create() {
+    this.creating = true;
     await this.store.dispatch(ActionTypes.INIT, {
       type: this.mode,
       online: this.scope === GameScope.ONLINE,
@@ -103,6 +111,7 @@ export default class CreateGame extends Vue {
         cards: this.cards.size !== 0 ? this.cards : undefined,
       },
     });
+    this.creating = false;
 
     this.$router.push('/board');
   }

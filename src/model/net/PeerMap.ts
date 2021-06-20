@@ -33,6 +33,13 @@ export class PeerMap {
         this.peers.forEach(peer => peer.channel.send(stringify(event, data)));
     }
 
+    public close(): void {
+        this.peers.forEach((peer) => {
+            peer.channel.close();
+            peer.connection.close();
+        });
+    }
+
     public async requestInit(): Promise<MapInterface> {
         const p = this.peers.values().next().value as Peer;
         const payload: Payload<{}> = {

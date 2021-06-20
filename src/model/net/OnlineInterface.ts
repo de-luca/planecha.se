@@ -7,6 +7,7 @@ export interface OnlineInterface {
 
     create(): Promise<string>;
     join(roomId: string): void;
+    leave(): void;
 
     requestChaos(): void;
     requestPlaneswalk(coordinates?: Coordinates): void;

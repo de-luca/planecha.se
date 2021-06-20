@@ -4,15 +4,12 @@
       <span @click="thaNav">
         The super logo here
       </span>
-
       <online-controls v-if="online"/>
-
-      <button class="button is-light is-warning" @click="close">
-        Close Game
-      </button>
+      <close-game />
     </div>
 
     <component class="map" :is="mapComponent" />
+
     <notif-center />
   </div>
 </template>
@@ -22,8 +19,9 @@ import { Options, Vue } from 'vue-class-component';
 import { MutationTypes, Store, useStore } from '@/store';
 import ClassicMap from '@/components/ClassicMap.vue';
 import EternitiesMap from '@/components/EternitiesMap.vue';
-import OnlineControls from '@/components/OnlineControls.vue';
-import NotifCenter from '@/components/NotifCenter.vue';
+import OnlineControls from '@/components/board/OnlineControls.vue';
+import NotifCenter from '@/components/board/NotifCenter.vue';
+import CloseGame from '@/components/board/CloseGame.vue';
 import { Component } from '@vue/runtime-core';
 import { MapType } from '@/model/map/MapInterface';
 import { eventBus, EventType } from '@/services/EventBus';
@@ -32,7 +30,7 @@ import { eventBus, EventType } from '@/services/EventBus';
 @Options({
   components: { 
     ClassicMap, EternitiesMap,
-    OnlineControls, NotifCenter,
+    OnlineControls, NotifCenter, CloseGame,
   },
 })
 export default class Board extends Vue {
@@ -64,10 +62,6 @@ export default class Board extends Vue {
 
   public get online(): boolean {
     return this.store.getters.online;
-  }
-
-  public close(): void {
-    console.log(confirm('Nuke the game?'));
   }
 
   public thaNav(): void {
