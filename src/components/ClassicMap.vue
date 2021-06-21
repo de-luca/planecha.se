@@ -84,7 +84,7 @@ export default class ClassicMap extends Vue {
       };
 
       if (!payload.passive) {
-        this.store.dispatch(ActionTypes.REVEAL, { count: 1 })
+        this.store.dispatch(ActionTypes.REVEAL, { count: 1 });
       }
     });
     eventBus.on(EventType.POOL_OF_BECOMING, (payload): void => {

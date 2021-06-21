@@ -1,10 +1,10 @@
-import { MutationPayload } from "vuex";
-import { Plane } from "@/model/card";
+import { MutationPayload } from 'vuex';
+import { Plane } from '@/model/card';
 import { 
   MutationTypes, 
   State, 
   Store,
-} from "..";
+} from '..';
 import { 
   Idable, 
   ByePayload,
@@ -13,7 +13,7 @@ import {
   PlaneswalkPayload, 
   CounterPayload, 
   ResolveRevealPayload,
-} from "../states/map";
+} from '../states/map';
 
 function nameExtractor(store: Store): (id?: string) => string {
   return function(id?: string): string {
@@ -22,7 +22,7 @@ function nameExtractor(store: Store): (id?: string) => string {
     }
 
     return 'You';
-  }
+  };
 }
 
 function handler(store: Store): (mutation: MutationPayload, state: State) => Promise<void> {
@@ -32,7 +32,7 @@ function handler(store: Store): (mutation: MutationPayload, state: State) => Pro
     switch (mutation.type) {
       case MutationTypes.INIT: {
         if ((state.map?.active?.length ?? 0) > 0) {
-          store.state.feed.push(`<b>You</b> created new game <b>Classic</b>`);
+          store.state.feed.push('<b>You</b> created new game <b>Classic</b>');
           store.state.feed.push(`Game starts on <b>${state.map?.active[0].name}</b>`);
         }
         break;

@@ -1,6 +1,6 @@
-import { MutationTypes, useStore } from "@/store";
-import { Card, Phenomenon, Plane } from "../card";
-import { Exported } from "../map/MapInterface";
+import { MutationTypes, useStore } from '@/store';
+import { Card, Phenomenon, Plane } from '../card';
+import { Exported } from '../map/MapInterface';
 
 export enum Event {
     REQUEST_INIT = 'REQUEST_INIT',

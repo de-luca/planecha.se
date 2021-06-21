@@ -69,7 +69,7 @@ export default class Scry extends Vue.with(BaseReveal) {
     result.left.push(...this.revealed.others);
     this.revealed.relevant
       .forEach(c => (this.picked[c.id] ? result.picked : result.left)
-      .push(c))
+      .push(c));
     
     this.$emit('done', result);
   }

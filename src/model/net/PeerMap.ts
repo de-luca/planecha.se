@@ -13,7 +13,7 @@ type Peer = {
 export class PeerMap {
     private static readonly channelConfig = { negotiated: true, id: 0 };
     private static readonly RTCConfig = {
-        iceServers: [{ urls: "stun:stun.1.google.com:19302" }],
+        iceServers: [{ urls: 'stun:stun.1.google.com:19302' }],
     };
 
     private peers: Map<string, Peer>;
@@ -55,7 +55,7 @@ export class PeerMap {
                     p.channel.removeEventListener('message', handler);
                     resolve(map);
                 }
-            }
+            };
             p.channel.addEventListener('message', handler);
         });
 
@@ -72,7 +72,7 @@ export class PeerMap {
             channelOpen.push(new Promise((resolve) => {
                 peer.channel.onopen = _ => {
                     peer.channel.send(stringify(Event.HEY, { name: this.yourName }));
-                    resolve()
+                    resolve();
                 };
             }));
 
@@ -126,7 +126,7 @@ export class PeerMap {
 
     private async handleSignal(
         connection: RTCPeerConnection, 
-        data: SignalPayload
+        data: SignalPayload,
     ): Promise<void> {
         switch (data.data.type) {
             case 'icecandidate':

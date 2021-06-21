@@ -4,9 +4,9 @@ import {
     CommitOptions,
     DispatchOptions,
     ActionTree,
-} from 'vuex'
+} from 'vuex';
 
-import { Card, Plane } from "@/model/card";
+import { Card, Plane } from '@/model/card';
 import { Exported, MapInterface, MapType, Revealed } from '@/model/map/MapInterface';
 import { BuildProps, MapFactory } from '@/model/map/MapFactory';
 import { OnlineInterface } from '@/model/net/OnlineInterface';
@@ -261,7 +261,7 @@ export const actions: ActionTree<State, State> & Actions = {
             });
         }
     },
-}
+};
 
 // Getters types
 export type Getters = {
@@ -291,7 +291,7 @@ export const getters: Getters = {
     played: state => (state.map as MapInterface).played,
     revealed: state => (state.map as MapInterface).revealed,
     deckSize: state => (state.map as MapInterface).getDeckSize(),
-}
+};
 
 // Setup store type
 export type Store<S = State> = Omit<

@@ -1,5 +1,5 @@
-import { Card } from "../card";
-import { Coordinates } from "../map/MapInterface";
+import { Card } from '../card';
+import { Coordinates } from '../map/MapInterface';
 
 export interface OnlineInterface {
     roomId: string;

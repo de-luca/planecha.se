@@ -1,9 +1,9 @@
-import { Card, Plane } from "../card";
-import { Coordinates, Exported, MapInterface, MapType, Revealed } from "./MapInterface";
-import { Beacon } from "../net/Beacon";
-import { OnlineInterface } from "../net/OnlineInterface";
-import { PeerMap } from "../net/PeerMap";
-import { Event } from "../net/Handler";
+import { Card, Plane } from '../card';
+import { Coordinates, Exported, MapInterface, MapType, Revealed } from './MapInterface';
+import { Beacon } from '../net/Beacon';
+import { OnlineInterface } from '../net/OnlineInterface';
+import { PeerMap } from '../net/PeerMap';
+import { Event } from '../net/Handler';
 
 export class OnlineDecorator implements MapInterface, OnlineInterface {
     private beacon: Beacon;
@@ -120,7 +120,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
                 console.log('JOINED', event.detail);
                 this.roomId = roomId;
                 resolve(event.detail);
-            }) as EventListener)
+            }) as EventListener);
         });
         this.beacon.join(roomId);
         await this.peers.addPeer(...await peers);
@@ -140,7 +140,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     }
 
     public requestCustomPlaneswalk(payload: { planes: Array<string> }): void {
-        this.peers.broadcast(Event.CUSTOM_PLANESWALK, payload)
+        this.peers.broadcast(Event.CUSTOM_PLANESWALK, payload);
     }
 
     public requestCounterUpdate(payload: { id: string, change: number }): void {

@@ -1,15 +1,15 @@
 import { Beacon } from './Beacon';
-import WS from "jest-websocket-mock";
+import WS from 'jest-websocket-mock';
 
 let srv: WS;
 
 beforeEach(() => {
-    srv = new WS("ws://localhost:3030", { jsonProtocol: true });
+    srv = new WS('ws://localhost:3030', { jsonProtocol: true });
 });
 
 afterEach(() => {
     srv.close();
-})
+});
 
 describe('Beacon.constructor', () => {
     it('starts a websocket and emit ready event', async() => {

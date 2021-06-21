@@ -16,7 +16,7 @@ export {
 } from '@/store/states/map';
 export type {
     State,
-    Store
+    Store,
 } from '@/store/states/map';
 
 const plugins = [ createFeeder() ];
@@ -33,7 +33,7 @@ export const store = createStore({
 });
 
 export function useStore(): Store {
-    return store as Store
+    return store as Store;
 }
 
 export default store;

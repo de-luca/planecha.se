@@ -31,7 +31,7 @@ const routes: Array<RouteRecordRaw> = [
         return '/create';
       }
       return true;
-    }
+    },
   },
 ];
 

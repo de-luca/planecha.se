@@ -1,4 +1,4 @@
-import { Card, Plane } from "../card";
+import { Card, Plane } from '../card';
 
 export interface Coordinates {
   x: number;

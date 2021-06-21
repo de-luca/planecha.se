@@ -1,9 +1,9 @@
-import { Inject, Service } from "typedi";
-import { DeckProvider } from "@/services/DeckProvider";
-import { Card, Plane } from "../card";
-import { OnlineDecorator } from "./OnlineDecorator";
-import { Classic, EmptyMap, EternitiesMap } from ".";
-import { Exported, MapInterface, MapType } from "./MapInterface";
+import { Inject, Service } from 'typedi';
+import { DeckProvider } from '@/services/DeckProvider';
+import { Card, Plane } from '../card';
+import { OnlineDecorator } from './OnlineDecorator';
+import { Classic, EmptyMap, EternitiesMap } from '.';
+import { Exported, MapInterface, MapType } from './MapInterface';
 
 export interface AdvancedOptions {
   name?: string;
@@ -67,7 +67,7 @@ export class MapFactory {
         });
         break;
       default:
-        throw new Error("Incompatible");
+        throw new Error('Incompatible');
     }
 
     return map;
