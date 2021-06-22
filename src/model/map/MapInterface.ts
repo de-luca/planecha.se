@@ -5,6 +5,17 @@ export interface Coordinates {
   y: number;
 }
 
+export enum TileStatus {
+  ACTIVE = 'active',
+  VISIBLE = 'visible',
+}
+
+export interface Tile {
+  coordinates: Coordinates;
+  state: TileStatus;
+  plane: Array<Plane>;
+}
+
 export enum MapType {
   EMPTY = 'empty',
   CLASSIC = 'classic',
@@ -19,8 +30,8 @@ export interface Exported {
   revealed?: { relevant: Array<string>, others: Array<string> };
 }
 
-export interface Revealed { 
-  relevant: Array<Card>; 
+export interface Revealed {
+  relevant: Array<Card>;
   others: Array<Card>;
 }
 
@@ -30,12 +41,13 @@ export interface MapInterface {
   played: Array<Card>;
   revealed?: Revealed;
   ready: Promise<void>;
+  tiles: Array<Tile>;
 
   getDeckSize(): number;
 
   revealUntil(count: number, type?: typeof Card): boolean;
   resolveReveal(top: Array<Card>, bottom: Array<Card>): void;
-  
+
   putOnTop(cards: Array<Card>): void;
   putOnTheBottom(cards: Array<Card>): void;
   clearRevealed(): void;
@@ -43,11 +55,11 @@ export interface MapInterface {
   chaos(passive?: boolean, mateId?: string): void;
   planeswalk(coordinates?: Coordinates, passive?: boolean, mateId?: string): boolean;
   customPlaneswalk(
-    planes: Array<Plane>, 
-    coordinates?: Coordinates, 
+    planes: Array<Plane>,
+    coordinates?: Coordinates,
   ): void;
   updateCounter(id: string, change: number): void;
 
   export(): Exported;
-  applyShuffle(state: Exported): void; 
+  applyShuffle(state: Exported): void;
 }

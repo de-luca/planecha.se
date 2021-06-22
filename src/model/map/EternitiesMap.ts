@@ -7,18 +7,7 @@ eslint no-param-reassign: [
 
 import { Map } from './Map';
 import { Plane } from '../card';
-import { Coordinates, MapType } from './MapInterface';
-
-export enum TileStatus {
-    ACTIVE = 'active',
-    VISIBLE = 'visible',
-}
-
-export interface Tile {
-    coordinates: Coordinates;
-    state: TileStatus;
-    plane: Array<Plane>;
-}
+import { Coordinates, MapType, Tile, TileStatus } from './MapInterface';
 
 interface Props {
   deck: Array<Plane>;
@@ -34,7 +23,7 @@ export class EternitiesMap extends Map {
   public deck: Array<Plane>;
   public played: Array<Plane>;
   public active: Array<Plane>;
-  private tiles: Array<Tile>;
+  public tiles: Array<Tile>;
 
   public constructor(props: Props) {
     super(props);
@@ -75,7 +64,7 @@ export class EternitiesMap extends Map {
   }
 
   public planeswalk(
-    coordinates: Coordinates, 
+    coordinates: Coordinates,
     passive: boolean = false,
     mateId?: string,
   ): boolean {
@@ -101,7 +90,7 @@ export class EternitiesMap extends Map {
       // Draw a card and put it in place
       const drawn = this.draw<Plane>();
       shuffled = drawn.shuffled;
-      
+
       newActiveTile = {
         coordinates: {
           x: xOffset,

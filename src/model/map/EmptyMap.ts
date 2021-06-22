@@ -1,5 +1,5 @@
 import { Card } from '../card';
-import { Exported, MapInterface, MapType, Revealed } from './MapInterface';
+import { Exported, MapInterface, MapType, Revealed, Tile } from './MapInterface';
 
 export class EmptyMap implements MapInterface {
   public type: MapType;
@@ -7,6 +7,7 @@ export class EmptyMap implements MapInterface {
   public played: Card[];
   public revealed?: Revealed;
   public ready: Promise<void>;
+  public tiles: Tile[];
   getDeckSize(): number {
     throw new Error('Method not implemented.');
   }

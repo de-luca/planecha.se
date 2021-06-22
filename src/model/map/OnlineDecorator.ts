@@ -1,5 +1,5 @@
 import { Card, Plane } from '../card';
-import { Coordinates, Exported, MapInterface, MapType, Revealed } from './MapInterface';
+import { Coordinates, Exported, MapInterface, MapType, Revealed, Tile } from './MapInterface';
 import { Beacon } from '../net/Beacon';
 import { OnlineInterface } from '../net/OnlineInterface';
 import { PeerMap } from '../net/PeerMap';
@@ -21,7 +21,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
         this.readyState = new Promise<void>((resolve) => {
             this.beacon.addEventListener('ready', _ => resolve());
         });
-        this.peers = new PeerMap(this.beacon, name);   
+        this.peers = new PeerMap(this.beacon, name);
     }
 
     public get yourName(): string {
@@ -35,7 +35,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     public get active(): Array<Card> {
         return this.map.active;
     }
-    
+
     public get played(): Array<Card> {
         return this.map.played;
     }
@@ -47,7 +47,11 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     public get ready(): Promise<void> {
         return this.readyState;
     }
-    
+
+    public get tiles(): Array<Tile> {
+      return this.map.tiles;
+    }
+
     public getDeckSize(): number {
         return this.map.getDeckSize();
     }
@@ -55,9 +59,9 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     public chaos(passive: boolean = false, mateId?: string): void {
         return this.map.chaos(passive, mateId);
     }
-    
+
     public planeswalk(
-        coordinates?: Coordinates, 
+        coordinates?: Coordinates,
         passive: boolean = false,
         mateId?: string,
     ): boolean {

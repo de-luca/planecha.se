@@ -3,7 +3,7 @@ import { eventBus, EventType } from '@/services/EventBus';
 import _shuffle from 'lodash.shuffle';
 import Container from 'typedi';
 import { Card, Counter, Phenomenon, Plane } from '../card';
-import { Coordinates, Exported, MapInterface, MapType, Revealed } from './MapInterface';
+import { Coordinates, Exported, MapInterface, MapType, Revealed, Tile } from './MapInterface';
 
 export interface Props {
   deck: Array<Card>;
@@ -18,6 +18,8 @@ export abstract class Map implements MapInterface {
   public revealed?: Revealed;
   public globalState?: string;
 
+  public tiles: Array<Tile> = [];
+
   public constructor(props: Props) {
     this.deck = props.deck;
     this.played = props.played ?? [];
@@ -25,7 +27,7 @@ export abstract class Map implements MapInterface {
     this.revealed = undefined;
     this.globalState = undefined;
   }
-  
+
   public abstract get type(): MapType;
 
   public get ready(): Promise<void> {
@@ -41,8 +43,8 @@ export abstract class Map implements MapInterface {
   }
 
   public abstract planeswalk(
-    coordinates?: Coordinates, 
-    passive?: boolean, 
+    coordinates?: Coordinates,
+    passive?: boolean,
     mateId?: string,
   ): boolean;
   public abstract customPlaneswalk(planes: Array<Plane>, coordinates?: Coordinates): void;

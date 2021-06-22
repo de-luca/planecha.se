@@ -57,7 +57,6 @@ export default class Card extends Vue.with(Props) {
 
 img {
   filter: drop-shadow(1px 1px 1px #585858);
-  border-radius: 38px;
 
   &.phenomenon {
     filter: drop-shadow(5px 5px 5px red) drop-shadow(-5px -5px 5px red);
