@@ -144,6 +144,10 @@ export class EternitiesMap extends Map {
       t.coordinates.y += yOffset * -1;
     });
 
+    this.tiles
+      .filter(t => Math.abs(t.coordinates.x) + Math.abs(t.coordinates.y) > EternitiesMap.maxRange)
+      .forEach(t => this.played.push(...t.plane));
+
     // Remove all the plan that are too far
     this.tiles = this.tiles.filter((t) => (
       Math.abs(t.coordinates.x) + Math.abs(t.coordinates.y) <= EternitiesMap.maxRange
