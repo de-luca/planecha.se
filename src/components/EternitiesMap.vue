@@ -18,8 +18,8 @@
 import { Options, Vue } from 'vue-class-component';
 import { Store, useStore } from '@/store';
 import { Tile as TileModel } from '@/model/map/MapInterface';
-import Tile from '@/components/map/Tile.vue';
-import ChaosBtn from '@/components/map/ChaosBtn.vue';
+import ChaosBtn from '@/components/ChaosBtn.vue';
+import Tile from '@/components/eternities/Tile.vue';
 
 @Options({
   components: { Tile, ChaosBtn },

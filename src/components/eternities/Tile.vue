@@ -36,7 +36,7 @@
 import { ActionTypes, Store, useStore } from '@/store';
 import { Options, prop, Vue } from 'vue-class-component';
 import { Tile as TileModel } from '@/model/map/MapInterface';
-import Card from '@/components/map/Card.vue';
+import Card from '@/components/classic/Card.vue';
 
 enum State {
   PLANESWALKABLE = 'planeswalkable',

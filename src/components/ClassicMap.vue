@@ -17,7 +17,7 @@
       <planeswalk-btn :resolver="revealer?.seeder" :disabled="revealer && revealer.passive" />
     </div>
 
-    <component 
+    <component
       v-if="revealer && revealed"
       :is="revealer.component"
       :revealed="revealed"
@@ -35,15 +35,14 @@ import { ActionTypes, Store, useStore } from '@/store';
 import { Card as ModelCard, Plane } from '@/model/card';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Revealed } from '@/model/map/MapInterface';
-import Card from '@/components/map/Card.vue';
-import ChaosBtn from '@/components/map/ChaosBtn.vue';
-import PlaneswalkBtn from '@/components/map/PlaneswalkBtn.vue';
-import Feed from '@/components/map/Feed.vue';
-import { PickedLeft, Config } from '@/components/map/reveal/BaseReveal';
-
-import Pick from '@/components/map/reveal/Pick.vue';
-import Scry from '@/components/map/reveal/Scry.vue';
-import Show from '@/components/map/reveal/Show.vue';
+import { PickedLeft, Config } from '@/components/reveal/BaseReveal';
+import ChaosBtn from '@/components/ChaosBtn.vue';
+import PlaneswalkBtn from '@/components/PlaneswalkBtn.vue';
+import Card from '@/components/classic/Card.vue';
+import Feed from '@/components/classic/Feed.vue';
+import Pick from '@/components/reveal/Pick.vue';
+import Scry from '@/components/reveal/Scry.vue';
+import Show from '@/components/reveal/Show.vue';
 
 
 type Revealer = {
@@ -76,7 +75,7 @@ export default class ClassicMap extends Vue {
         component: Scry,
         seeder: () => {},
         resolver: this.putBack,
-        config: { 
+        config: {
           sendShownTo: 'bottom',
           passive: payload.passive,
           mateName: payload.mateId ? this.store.getters.mates.get(payload.mateId) : undefined,
@@ -93,7 +92,7 @@ export default class ClassicMap extends Vue {
         component: Show,
         seeder: () => {},
         resolver: this.putBack,
-        config: { 
+        config: {
           sendShownTo: 'bottom',
           passive: payload.passive,
           mateName: payload.mateId ? this.store.getters.mates.get(payload.mateId) : undefined,
@@ -110,7 +109,7 @@ export default class ClassicMap extends Vue {
         component: Pick,
         seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 5, type: Plane }),
         resolver: this.customPlaneswalk,
-        config: { 
+        config: {
           sendShownTo: 'bottom',
           passive: payload.passive,
           mateName: payload.mateId ? this.store.getters.mates.get(payload.mateId) : undefined,
@@ -123,7 +122,7 @@ export default class ClassicMap extends Vue {
         component: Show,
         seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 2, type: Plane }),
         resolver: this.customPlaneswalk,
-        config: { 
+        config: {
           sendShownTo: 'top',
           passive: payload.passive,
           mateName: payload.mateId ? this.store.getters.mates.get(payload.mateId) : undefined,
@@ -135,11 +134,11 @@ export default class ClassicMap extends Vue {
   public get active(): Array<ModelCard> {
     return this.store.getters.active;
   }
-  
+
   public get revealed(): Revealed | undefined {
     return this.store.getters.revealed;
   }
-  
+
   public get canChaos(): boolean {
     return this.store.getters.active[0].type === 'plane';
   }
@@ -152,7 +151,7 @@ export default class ClassicMap extends Vue {
 
     this.putBack({ picked: [], left: choices.left });
   }
-  
+
   public putBack(choices: PickedLeft): void {
     const payload = {
       top: choices.picked,

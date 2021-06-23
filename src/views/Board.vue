@@ -28,7 +28,7 @@ import { eventBus, EventType } from '@/services/EventBus';
 
 
 @Options({
-  components: { 
+  components: {
     ClassicMap, EternitiesMap,
     OnlineControls, NotifCenter, CloseGame,
   },
@@ -98,7 +98,7 @@ export default class Board extends Vue {
   span:first-child {
     flex-grow: 1;
   }
-  
+
   button {
     height: 100%;
   }
@@ -106,7 +106,7 @@ export default class Board extends Vue {
 
 .map {
   grid-area: map;
-  
+
   margin-left: auto;
   margin-right: auto;
 
