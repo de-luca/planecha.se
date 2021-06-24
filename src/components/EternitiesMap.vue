@@ -11,27 +11,91 @@
     </template>
 
     <chaos-btn class="chaos" />
+
+    <component
+      v-if="revealer && revealed"
+      :is="revealer.component"
+      :revealed="revealed"
+      :config="revealer.config"
+      @done="revealer.resolver"
+    />
   </div>
 </template>
 
 <script lang="ts">
+import _shuffle from 'lodash.shuffle';
+import { Component } from 'vue';
 import { Options, Vue } from 'vue-class-component';
-import { Store, useStore } from '@/store';
-import { Tile as TileModel } from '@/model/map/MapInterface';
+import { ActionTypes, Store, useStore } from '@/store';
+import { Revealed, Tile as TileModel } from '@/model/map/MapInterface';
+import { eventBus, EventType } from '@/services/EventBus';
+import { Config, PickedLeft } from './reveal/BaseReveal';
 import ChaosBtn from '@/components/ChaosBtn.vue';
 import Tile from '@/components/eternities/Tile.vue';
+import Scry from '@/components/reveal/Scry.vue';
+import Show from '@/components/reveal/Show.vue';
+
+type Revealer = {
+  passive: boolean;
+  component: Component;
+  seeder: () => void;
+  resolver: (choices: PickedLeft) => void;
+  config: Config;
+}
 
 @Options({
-  components: { Tile, ChaosBtn },
+  components: {
+    Tile, ChaosBtn,
+    Scry, Show,
+  },
 })
 export default class EternitiesMap extends Vue {
   private readonly off = 4;
   private store: Store;
+  private revealer: Revealer | null = null;
 
   public created(): void {
     this.store = useStore();
 
-    console.log(this.store.getters.tiles);
+    eventBus.on(EventType.RESOLVED_REVEAL, () => this.revealer = null);
+    eventBus.on(EventType.STAIRS_TO_INFINITY, (payload): void => {
+      this.revealer = {
+        passive: payload.passive,
+        component: Scry,
+        seeder: () => {},
+        resolver: this.putBack,
+        config: {
+          sendShownTo: 'bottom',
+          passive: payload.passive,
+          mateName: payload.mateId ? this.store.getters.mates.get(payload.mateId) : undefined,
+        },
+      };
+
+      if (!payload.passive) {
+        this.store.dispatch(ActionTypes.REVEAL, { count: 1 });
+      }
+    });
+    eventBus.on(EventType.POOL_OF_BECOMING, (payload): void => {
+      this.revealer = {
+        passive: payload.passive,
+        component: Show,
+        seeder: () => {},
+        resolver: this.putBack,
+        config: {
+          sendShownTo: 'bottom',
+          passive: payload.passive,
+          mateName: payload.mateId ? this.store.getters.mates.get(payload.mateId) : undefined,
+        },
+      };
+
+      if (!payload.passive) {
+        this.store.dispatch(ActionTypes.REVEAL, { count: 3 });
+      }
+    });
+  }
+
+  public get revealed(): Revealed | undefined {
+    return this.store.getters.revealed;
   }
 
   public unreachable(x: number, y: number): boolean {
@@ -43,6 +107,15 @@ export default class EternitiesMap extends Vue {
       return tile.coordinates.x === x - this.off
         && tile.coordinates.y === y - this.off;
     });
+  }
+
+  public putBack(choices: PickedLeft): void {
+    const payload = {
+      top: choices.picked,
+      bottom: _shuffle(choices.left),
+    };
+
+    this.store.dispatch(ActionTypes.RESOLVE_REVEAL, payload);
   }
 }
 </script>

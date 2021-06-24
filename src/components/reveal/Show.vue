@@ -1,50 +1,53 @@
 <template>
-  <div class="over">
-    <h1 class="title" v-if="title" v-html="title"></h1>
-    <div class="tabs is-centered is-medium">
-      <ul>
-        <li :class="{ 'is-active': activeTab === 'relevant' }">
-          <a @click="activeTab = 'relevant'">Relevant Cards ({{ revealed.relevant.length }})</a>
-        </li>
-        <li :class="{ 'is-active': activeTab === 'others' }">
-          <a @click="activeTab = 'others'">Others ({{ revealed.others.length }})</a>
-        </li>
-      </ul>
-    </div>
+  <div class="modal" style="display: block">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <h1 class="title" v-if="title" v-html="title"></h1>
+      <div class="tabs is-centered is-medium">
+        <ul>
+          <li :class="{ 'is-active': activeTab === 'relevant' }">
+            <a @click="activeTab = 'relevant'">Relevant Cards ({{ revealed.relevant.length }})</a>
+          </li>
+          <li :class="{ 'is-active': activeTab === 'others' }">
+            <a @click="activeTab = 'others'">Others ({{ revealed.others.length }})</a>
+          </li>
+        </ul>
+      </div>
 
-    <div class="relevant" v-if="activeTab === 'relevant'">
-      <template v-for="(c, index) in revealed.relevant" :key="c.id">        
-        <div 
-          class="card-wrapper" 
-          :style="{ transform: cardAngle(index, revealed.relevant.length) }"
-        >
-          <img :src="buildImgSrc(c)">
-        </div>
-      </template>
-    </div>
+      <div class="relevant" v-if="activeTab === 'relevant'">
+        <template v-for="(c, index) in revealed.relevant" :key="c.id">
+          <div
+            class="card-wrapper"
+            :style="{ transform: cardAngle(index, revealed.relevant.length) }"
+          >
+            <img :src="buildImgSrc(c)">
+          </div>
+        </template>
+      </div>
 
-    <div class="others" v-if="activeTab === 'others' && revealed.others.length > 0">
-      <template v-for="(c, index) in revealed.others" :key="c.id">
-        <div 
-          class="card-wrapper" 
-          :style="{ transform: cardAngle(index, revealed.others.length) }"
-        >
-          <img :src="buildImgSrc(c)">
-        </div>
-      </template>
+      <div class="others" v-if="activeTab === 'others' && revealed.others.length > 0">
+        <template v-for="(c, index) in revealed.others" :key="c.id">
+          <div
+            class="card-wrapper"
+            :style="{ transform: cardAngle(index, revealed.others.length) }"
+          >
+            <img :src="buildImgSrc(c)">
+          </div>
+        </template>
+      </div>
+      <div class="others" v-if="activeTab === 'others' && revealed.others.length === 0">
+        <em>Such Empty!</em>
+      </div>
+
+      <button
+        v-if="!config.passive"
+        class="button is-dark is-medium"
+        @click="confirm"
+      >
+        Okay
+      </button>
+      <p class="subtitle" v-if="config.passive"><b>{{ config.mateName }}</b> is chosing.</p>
     </div>
-    <div class="others" v-if="activeTab === 'others' && revealed.others.length === 0">
-      <em>Such Empty!</em>
-    </div>
-    
-    <button
-      v-if="!config.passive"
-      class="button is-dark is-medium" 
-      @click="confirm"
-    >
-      Okay
-    </button>
-    <p class="subtitle" v-if="config.passive"><b>{{ config.mateName }}</b> is chosing.</p>
   </div>
 </template>
 
@@ -74,8 +77,8 @@ export default class Show extends Vue.with(BaseReveal) {
   public confirm(): void {
     const picked = this.config.sendShownTo === 'top' ? this.revealed.relevant : [];
     const left = this.revealed.others.concat(
-      this.config.sendShownTo === 'top' 
-        ? [] 
+      this.config.sendShownTo === 'top'
+        ? []
         : this.revealed.relevant,
     );
 
@@ -94,8 +97,7 @@ export default class Show extends Vue.with(BaseReveal) {
   }
 }
 
-.over {
-  background-color: #ffffffb5;
+.modal-content {
   position: absolute;
   height: 100%;
   width: 100%;
@@ -126,9 +128,9 @@ export default class Show extends Vue.with(BaseReveal) {
   padding-bottom: 1rem;
 
   .card-wrapper {
-    position: absolute; 
+    position: absolute;
     transform-origin: center 2500px;
-    
+
     &:hover {
       z-index: 2;
     }

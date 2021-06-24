@@ -1,41 +1,66 @@
 <template>
-  <div class="over">
-    <h1 class="title" v-if="title" v-html="title"></h1>
-    <div class="revealed">
-      <template v-for="(c, index) in revealed.relevant" :key="c.id">
-        <div class="card-wrapper">
-          <img :src="buildImgSrc(c)">
-          <div class="control" v-if="!config.passive">
-            <input
-              type="radio"
-              :disabled="config.passive"
-              :id="id + index + 'top'"
-              :value="true"
-              v-model="picked[c.id]"
-            >
-            <label class="button" :for="id + index + 'top'">Keep on top</label>
-            <input
-              type="radio"
-              :disabled="config.passive"
-              :id="id + index + 'bottom'"
-              :value="false"
-              v-model="picked[c.id]"
-            >
-            <label class="button" :for="id + index + 'bottom'">Put at the bottom</label>
-          </div>
-        </div>
-      </template>
-    </div>
+  <div class="modal" style="display: block">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <h1 class="title" v-if="title" v-html="title"></h1>
+      <div class="revealed">
+        <template v-for="(c, index) in revealed.relevant" :key="c.id">
+          <div class="card-wrapper">
 
-    <button
-      v-if="!config.passive"
-      class="button is-dark is-medium" 
-      @click="confirm"
-      :disabled="!allSet"
-    >
-      Confirm choice
-    </button>
-    <p class="subtitle" v-if="config.passive"><b>{{ config.mateName }}</b> is chosing.</p>
+            <img :src="buildImgSrc(c)">
+
+            <div class="control" v-if="!config.passive">
+              <input
+                type="radio"
+                :disabled="config.passive"
+                :id="id + index + 'top'"
+                :value="true"
+                v-model="picked[c.id]"
+              >
+              <label
+                class="button"
+                :class="{
+                  'is-focused is-dark': picked[c.id] === true,
+                  'is-light': !picked[c.id],
+                }"
+                :for="id + index + 'top'"
+              >
+                Keep on top
+              </label>
+
+              <input
+                type="radio"
+                :disabled="config.passive"
+                :id="id + index + 'bottom'"
+                :value="false"
+                v-model="picked[c.id]"
+              >
+              <label
+                class="button"
+                :class="{
+                  'is-focused is-dark': picked[c.id] === false,
+                  'is-light': picked[c.id],
+                }"
+                :for="id + index + 'bottom'"
+              >
+                Put at the bottom
+              </label>
+            </div>
+
+          </div>
+        </template>
+      </div>
+
+      <button
+        v-if="!config.passive"
+        class="button is-dark is-medium"
+        @click="confirm"
+        :disabled="!allSet"
+      >
+        Confirm choice
+      </button>
+      <p class="subtitle" v-if="config.passive"><b>{{ config.mateName }}</b> is chosing.</p>
+    </div>
   </div>
 </template>
 
@@ -65,12 +90,12 @@ export default class Scry extends Vue.with(BaseReveal) {
 
   public confirm(): void {
     const result: PickedLeft = { picked: [], left: [] };
-    
+
     result.left.push(...this.revealed.others);
     this.revealed.relevant
       .forEach(c => (this.picked[c.id] ? result.picked : result.left)
       .push(c));
-    
+
     this.$emit('done', result);
   }
 }
@@ -90,14 +115,9 @@ export default class Scry extends Vue.with(BaseReveal) {
 input[type="radio"] {
   display: none;
 
-  &:checked+label {
-    border-color: #4a4a4a;
-    color: #363636;
-  }
 }
 
-.over {
-  background-color: #ffffffb5;
+.modal-content {
   position: absolute;
   height: 100%;
   width: 100%;
