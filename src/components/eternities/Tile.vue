@@ -14,7 +14,7 @@
       :class="state"
       :title="state === 'current' ? 'You are here ;)' : ''"
     >
-      <card :card="tile.plane[0]" />
+      <card :card="tile.plane[0]" :current="state === 'current'" />
     </div>
 
     <div
@@ -36,7 +36,7 @@
 import { ActionTypes, Store, useStore } from '@/store';
 import { Options, prop, Vue } from 'vue-class-component';
 import { Tile as TileModel } from '@/model/map/MapInterface';
-import Card from '@/components/classic/Card.vue';
+import Card from '@/components/eternities/Card.vue';
 
 enum State {
   PLANESWALKABLE = 'planeswalkable',
@@ -147,7 +147,7 @@ export default class Tile extends Vue.with(Props) {
   align-items: center;
 
   svg {
-    max-height: 10rem;
+    max-height: 7rem;
 
     path {
       fill: darkgrey;
