@@ -10,15 +10,38 @@
     </div>
 
     <div
-      v-else-if="tile"
+      v-if="tile && state === 'hidden'"
       :class="state"
-      :title="state === 'current' ? 'You are here ;)' : ''"
+    >
+      <img v-if="hidden" src="/cards/back.png">
+    </div>
+
+    <div
+      v-if="tile && state === 'preparation'"
+      :class="state"
+      @click="start"
+      title="Start game"
     >
       <card :card="tile.plane[0]" :current="state === 'current'" />
     </div>
 
     <div
-      v-else-if="!tile && state === 'hellrideable'"
+      v-if="tile && state === 'current'"
+      :class="state"
+      title="You are here ;)"
+    >
+      <card :card="tile.plane[0]" :current="state === 'current'" />
+    </div>
+
+    <div
+      v-if="tile && state === 'unreachable'"
+      :class="state"
+    >
+      <card :card="tile.plane[0]" :current="state === 'current'" />
+    </div>
+
+    <div
+      v-if="!tile && state === 'hellrideable'"
       :class="state"
       @click="planeswalk"
       title="Hellride"
@@ -27,8 +50,6 @@
         <path d='M0 50.247l.156-1.969h-.061l.061-.032 2.059-26.239s1.026 18.147 4.085 23.392c1.313-.519 2.647-.984 4.002-1.403 3.306-8.657 4.467-34.379 4.467-34.379s.772 23.434 3.681 32.529c1.595-.239 3.218-.407 4.872-.51 3.007-11.188 3.824-41.636 3.824-41.636s.991 30.521 3.953 41.673c1.576.114 3.127.292 4.653.528 2.873-9.06 4.024-32.597 4.024-32.597s.931 25.864 3.941 34.449c1.319.409 2.617.871 3.89 1.376 3.338-5.179 4.513-23.388 4.513-23.388l1.592 26.224.067.034h-.063l.118 1.947s-26.689 8.691-26.689 49.485c0-40.601-27.146-49.485-27.146-49.485' fill='#000'/>
       </svg>
     </div>
-
-    <div v-else></div>
   </div>
 </template>
 
@@ -43,15 +64,19 @@ enum State {
   HELLRIDEABLE = 'hellrideable',
   CURRENT = 'current',
   UNREACHABLE = 'unreachable',
+  HIDDEN = 'hidden',
+  PREPARATION = 'preparation',
 }
 
 class Props {
   public tile = prop<TileModel>({ required: false });
   public x = prop<number>({ required: true });
   public y = prop<number>({ required: true });
+  public hidden = prop<boolean>({ required: true });
 }
 
 @Options({
+  emits: [ 'start' ],
   components: { Card },
 })
 export default class Tile extends Vue.with(Props) {
@@ -64,17 +89,17 @@ export default class Tile extends Vue.with(Props) {
   public get state(): State {
     if (this.tile) {
       if (Math.abs(this.x) + Math.abs(this.y) === 0) {
-        return State.CURRENT;
+        return this.hidden ? State.PREPARATION : State.CURRENT;
       }
 
       if (Math.abs(this.x) + Math.abs(this.y) === 1) {
-        return State.PLANESWALKABLE;
+        return this.hidden ? State.HIDDEN : State.PLANESWALKABLE;
       }
     }
 
     if (
-      !this.tile &&
-      Math.abs(this.x) + Math.abs(this.y) === 2
+      !this.tile
+      && Math.abs(this.x) + Math.abs(this.y) === 2
       && Math.abs(this.x) === 1
       && Math.abs(this.y) === 1
     ) {
@@ -89,6 +114,10 @@ export default class Tile extends Vue.with(Props) {
       coordinates: { x: this.x, y: this.y },
     });
   }
+
+  public start(): void {
+    this.$emit('start');
+  }
 }
 </script>
 
@@ -102,9 +131,11 @@ export default class Tile extends Vue.with(Props) {
   }
 }
 
+.preparation:hover {
+  cursor: pointer;
+}
 
-.current {
-  // transform: scale(2);
+.current, .preparation {
   z-index: 2;
   filter: drop-shadow(5px 5px 5px red)
           drop-shadow(-5px -5px 5px red);

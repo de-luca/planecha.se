@@ -7,6 +7,8 @@
         :tile="getTile(x, y)"
         :x="x - off"
         :y="y - off"
+        :hidden="!ready"
+        @start="start"
       />
     </template>
 
@@ -51,6 +53,7 @@ type Revealer = {
 })
 export default class EternitiesMap extends Vue {
   private readonly off = 4;
+  private ready: boolean = false;
   private store: Store;
   private revealer: Revealer | null = null;
 
@@ -116,6 +119,10 @@ export default class EternitiesMap extends Vue {
     };
 
     this.store.dispatch(ActionTypes.RESOLVE_REVEAL, payload);
+  }
+
+  public start(): void {
+    this.ready = true;
   }
 }
 </script>
