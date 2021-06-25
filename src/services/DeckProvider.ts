@@ -22,6 +22,10 @@ export class DeckProvider {
       return this.cards;
     }
 
+    public getCard<T extends Card>(id: string): T {
+      return this.cards.find(c => c.id === id) as T;
+    }
+
     public getDeck(): Array<Card> {
       return _shuffle(this.cards);
     }
@@ -36,8 +40,6 @@ export class DeckProvider {
     }
 
     public getOrderedDeck<T extends Card>(cards: Array<string>): Array<T> {
-      return cards.map((id) => {
-        return this.cards.find(c => c.id === id) as T;
-      });
+      return cards.map(id => this.getCard<T>(id));
     }
 }

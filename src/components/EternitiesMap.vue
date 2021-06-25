@@ -53,7 +53,7 @@ type Revealer = {
 })
 export default class EternitiesMap extends Vue {
   private readonly off = 4;
-  private ready: boolean = false;
+  private ready: boolean = true;
   private store: Store;
   private revealer: Revealer | null = null;
 

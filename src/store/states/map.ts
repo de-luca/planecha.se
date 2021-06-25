@@ -222,7 +222,7 @@ export const actions: ActionTree<State, State> & Actions = {
         (state.map as OnlineInterface).requestShuffling();
         state.shuffled = false;
       } else {
-        (state.map as OnlineInterface).requestPlaneswalk();
+        (state.map as OnlineInterface).requestPlaneswalk(payload.coordinates);
       }
     }
   },

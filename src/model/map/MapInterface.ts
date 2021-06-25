@@ -16,6 +16,12 @@ export interface Tile {
   plane: Array<Plane>;
 }
 
+export interface ExportedTile {
+  coordinates: Coordinates;
+  state: TileStatus;
+  plane: Array<string>;
+}
+
 export enum MapType {
   EMPTY = 'empty',
   CLASSIC = 'classic',
@@ -28,6 +34,7 @@ export interface Exported {
   played: Array<string>;
   active: Array<string>;
   revealed?: { relevant: Array<string>, others: Array<string> };
+  tiles?: Array<ExportedTile>;
 }
 
 export interface Revealed {

@@ -7,12 +7,14 @@ eslint no-param-reassign: [
 
 import { Map } from './Map';
 import { Plane } from '../card';
-import { Coordinates, MapType, Tile, TileStatus } from './MapInterface';
+import { Coordinates, Exported, MapType, Revealed, Tile, TileStatus } from './MapInterface';
 
 interface Props {
   deck: Array<Plane>;
   played?: Array<Plane>;
   active?: Array<Plane>;
+  revealed?: Revealed;
+  tiles?: Array<Tile>;
 }
 
 export class EternitiesMap extends Map {
@@ -31,7 +33,7 @@ export class EternitiesMap extends Map {
     this.deck = props.deck;
     this.played = [];
     this.active = props.active ?? [this.draw<Plane>().card];
-    this.tiles = this.initializeTiles();
+    this.tiles = props.tiles ?? this.initializeTiles();
   }
 
   public get type(): MapType {
@@ -158,5 +160,25 @@ export class EternitiesMap extends Map {
 
   public customPlaneswalk(planes: Array<Plane>, coordinates?: Coordinates): void {
     throw new Error('Method not implemented.');
+  }
+
+  public export(): Exported {
+    return {
+      type: this.type,
+      deck: this.deck.map(c => c.id),
+      played: this.played.map(c => c.id),
+      active: this.active.map(c => c.id),
+      revealed: this.revealed === undefined
+        ? undefined
+        : {
+          relevant: this.revealed.relevant.map(c => c.id),
+          others: this.revealed.others.map(c => c.id),
+        },
+      tiles: this.tiles.map(t => ({
+        coordinates: t.coordinates,
+        state: t.state,
+        plane: t.plane.map(p => p.id),
+      })),
+    };
   }
 }

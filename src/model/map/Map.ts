@@ -9,6 +9,7 @@ export interface Props {
   deck: Array<Card>;
   played?: Array<Card>;
   active?: Array<Card>;
+  revealed?: Revealed;
 }
 
 export abstract class Map implements MapInterface {
@@ -16,7 +17,6 @@ export abstract class Map implements MapInterface {
   public played: Array<Card>;
   public active: Array<Card>;
   public revealed?: Revealed;
-  public globalState?: string;
 
   public tiles: Array<Tile> = [];
 
@@ -24,8 +24,7 @@ export abstract class Map implements MapInterface {
     this.deck = props.deck;
     this.played = props.played ?? [];
     this.active = props.active ?? [];
-    this.revealed = undefined;
-    this.globalState = undefined;
+    this.revealed = props.revealed;
   }
 
   public abstract get type(): MapType;

@@ -23,14 +23,14 @@ export class MapFactory {
 
   public build({ type, online, advanced }: BuildProps): MapInterface {
     let map: MapInterface;
-    
+
     switch (type) {
       case MapType.EMPTY:
         map = new EmptyMap();
         break;
       case MapType.CLASSIC:
         map = new Classic({
-          deck: advanced.cards 
+          deck: advanced.cards
             ? this.deckProvider.getSpecificDeck(advanced.cards)
             : this.deckProvider.getDeck(),
         });
@@ -57,6 +57,12 @@ export class MapFactory {
           deck: this.deckProvider.getOrderedDeck<Card>(payload.deck),
           active: this.deckProvider.getOrderedDeck<Card>(payload.active),
           played: this.deckProvider.getOrderedDeck<Card>(payload.played),
+          revealed: payload.revealed
+            ? {
+              relevant: this.deckProvider.getOrderedDeck<Card>(payload.revealed.relevant),
+              others: this.deckProvider.getOrderedDeck<Card>(payload.revealed.others),
+            }
+            : undefined,
         });
         break;
       case MapType.ETERNITIES:
@@ -64,6 +70,17 @@ export class MapFactory {
           deck: this.deckProvider.getOrderedDeck<Plane>(payload.deck),
           active: this.deckProvider.getOrderedDeck<Plane>(payload.active),
           played: this.deckProvider.getOrderedDeck<Plane>(payload.played),
+          revealed: payload.revealed
+            ? {
+              relevant: this.deckProvider.getOrderedDeck<Card>(payload.revealed.relevant),
+              others: this.deckProvider.getOrderedDeck<Card>(payload.revealed.others),
+            }
+            : undefined,
+          tiles: payload.tiles?.map(t => ({
+            coordinates: t.coordinates,
+            state: t.state,
+            plane: this.deckProvider.getOrderedDeck(t.plane),
+          })),
         });
         break;
       default:

@@ -140,7 +140,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     }
 
     public requestPlaneswalk(coordinates?: Coordinates): void {
-        this.peers.broadcast(Event.PLANESWALK);
+        this.peers.broadcast(Event.PLANESWALK, { coordinates });
     }
 
     public requestCustomPlaneswalk(payload: { planes: Array<string> }): void {
