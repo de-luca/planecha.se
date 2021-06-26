@@ -7,7 +7,7 @@
         :tile="getTile(x, y)"
         :x="x - off"
         :y="y - off"
-        :hidden="!ready"
+        :hidden="!hasStarted"
         @start="start"
       />
     </template>
@@ -53,7 +53,6 @@ type Revealer = {
 })
 export default class EternitiesMap extends Vue {
   private readonly off = 4;
-  private ready: boolean = true;
   private store: Store;
   private revealer: Revealer | null = null;
 
@@ -101,6 +100,10 @@ export default class EternitiesMap extends Vue {
     return this.store.getters.revealed;
   }
 
+  public get hasStarted(): boolean {
+    return this.store.getters.map.hasStarted;
+  }
+
   public unreachable(x: number, y: number): boolean {
     return Math.abs(x - this.off) + Math.abs(y - this.off) > 3;
   }
@@ -122,7 +125,7 @@ export default class EternitiesMap extends Vue {
   }
 
   public start(): void {
-    this.ready = true;
+    this.store.dispatch(ActionTypes.START_ETERNITIES);
   }
 }
 </script>

@@ -6,162 +6,173 @@ import { PeerMap } from '../net/PeerMap';
 import { Event } from '../net/Handler';
 
 export class OnlineDecorator implements MapInterface, OnlineInterface {
-    private beacon: Beacon;
-    private peers: PeerMap;
-    private map: MapInterface;
+  private beacon: Beacon;
+  private peers: PeerMap;
+  private map: MapInterface;
 
-    private readyState: Promise<void>;
+  private readyState: Promise<void>;
 
-    public roomId: string;
+  public roomId: string;
 
-    public constructor(map: MapInterface, name: string) {
-        this.map = map;
+  public constructor(map: MapInterface, name: string) {
+    this.map = map;
 
-        this.beacon = new Beacon();
-        this.readyState = new Promise<void>((resolve) => {
-            this.beacon.addEventListener('ready', _ => resolve());
-        });
-        this.peers = new PeerMap(this.beacon, name);
-    }
+    this.beacon = new Beacon();
+    this.readyState = new Promise<void>((resolve) => {
+        this.beacon.addEventListener('ready', _ => resolve());
+    });
+    this.peers = new PeerMap(this.beacon, name);
+  }
 
-    public get yourName(): string {
-        return this.peers.yourName;
-    }
+  public get yourName(): string {
+    return this.peers.yourName;
+  }
 
-    public get type(): MapType {
-        return this.map.type;
-    }
+  public get type(): MapType {
+    return this.map.type;
+  }
 
-    public get active(): Array<Card> {
-        return this.map.active;
-    }
+  public get active(): Array<Card> {
+    return this.map.active;
+  }
 
-    public get played(): Array<Card> {
-        return this.map.played;
-    }
+  public get played(): Array<Card> {
+    return this.map.played;
+  }
 
-    public get revealed(): Revealed | undefined {
-        return this.map.revealed;
-    }
+  public get revealed(): Revealed | undefined {
+    return this.map.revealed;
+  }
 
-    public get ready(): Promise<void> {
-        return this.readyState;
-    }
+  public get ready(): Promise<void> {
+    return this.readyState;
+  }
 
-    public get tiles(): Array<Tile> {
-      return this.map.tiles;
-    }
+  public get tiles(): Array<Tile> {
+    return this.map.tiles;
+  }
 
-    public getDeckSize(): number {
-        return this.map.getDeckSize();
-    }
+  public get hasStarted(): boolean {
+    return this.map.hasStarted;
+  }
+  public set hasStarted(hasStarted: boolean) {
+    this.map.hasStarted = hasStarted;
+  }
 
-    public chaos(passive: boolean = false, mateId?: string): void {
-        return this.map.chaos(passive, mateId);
-    }
+  public getDeckSize(): number {
+    return this.map.getDeckSize();
+  }
 
-    public planeswalk(
-        coordinates?: Coordinates,
-        passive: boolean = false,
-        mateId?: string,
-    ): boolean {
-        return this.map.planeswalk(coordinates, passive, mateId);
-    }
+  public chaos(passive: boolean = false, mateId?: string): void {
+    return this.map.chaos(passive, mateId);
+  }
 
-    public customPlaneswalk(planes: Array<Plane>, coordinates?: Coordinates): void {
-        return this.map.customPlaneswalk(planes, coordinates);
-    }
+  public planeswalk(
+    coordinates?: Coordinates,
+    passive: boolean = false,
+    mateId?: string,
+  ): boolean {
+    return this.map.planeswalk(coordinates, passive, mateId);
+  }
 
-    public updateCounter(id: string, change: number): void {
-        return this.map.updateCounter(id, change);
-    }
+  public customPlaneswalk(planes: Array<Plane>, coordinates?: Coordinates): void {
+    return this.map.customPlaneswalk(planes, coordinates);
+  }
 
-    public revealUntil(count: number, type: typeof Card = Card): boolean {
-        return this.map.revealUntil(count, type);
-    }
+  public updateCounter(id: string, change: number): void {
+    return this.map.updateCounter(id, change);
+  }
 
-    public resolveReveal(top: Card[], bottom: Card[]): void {
-        return this.map.resolveReveal(top, bottom);
-    }
+  public revealUntil(count: number, type: typeof Card = Card): boolean {
+    return this.map.revealUntil(count, type);
+  }
 
-    public putOnTop(cards: Card[]): void {
-        return this.map.putOnTop(cards);
-    }
+  public resolveReveal(top: Card[], bottom: Card[]): void {
+    return this.map.resolveReveal(top, bottom);
+  }
 
-    public putOnTheBottom(cards: Card[]): void {
-        return this.map.putOnTheBottom(cards);
-    }
+  public putOnTop(cards: Card[]): void {
+    return this.map.putOnTop(cards);
+  }
 
-    public clearRevealed(): void {
-        return this.map.clearRevealed();
-    }
+  public putOnTheBottom(cards: Card[]): void {
+    return this.map.putOnTheBottom(cards);
+  }
 
-    public export(): Exported {
-        return this.map.export();
-    }
+  public clearRevealed(): void {
+    return this.map.clearRevealed();
+  }
 
-    public applyShuffle(state: Exported): void {
-        return this.map.applyShuffle(state);
-    }
+  public export(): Exported {
+    return this.map.export();
+  }
 
-    public create(): Promise<string> {
-        const createPromise = new Promise<string>((resolve) => {
-            this.beacon.addEventListener('created', ((event: CustomEvent<string>) => {
-                console.log('CREATED', event.detail);
-                this.roomId = event.detail;
-                resolve(event.detail);
-            }) as EventListener);
-        });
+  public applyShuffle(state: Exported): void {
+    return this.map.applyShuffle(state);
+  }
 
-        this.beacon.create();
+  public create(): Promise<string> {
+    const createPromise = new Promise<string>((resolve) => {
+      this.beacon.addEventListener('created', ((event: CustomEvent<string>) => {
+        console.log('CREATED', event.detail);
+        this.roomId = event.detail;
+        resolve(event.detail);
+      }) as EventListener);
+    });
 
-        return createPromise;
-    }
+    this.beacon.create();
 
-    public async join(roomId: string): Promise<void> {
-        const peers = new Promise<Array<string>>((resolve) => {
-            this.beacon.addEventListener('joined', ((event: CustomEvent<Array<string>>) => {
-                console.log('JOINED', event.detail);
-                this.roomId = roomId;
-                resolve(event.detail);
-            }) as EventListener);
-        });
-        this.beacon.join(roomId);
-        await this.peers.addPeer(...await peers);
-        this.map = await this.peers.requestInit();
-    }
+    return createPromise;
+  }
 
-    public leave(): void {
-        this.peers.close();
-    }
+  public async join(roomId: string): Promise<void> {
+    const peers = new Promise<Array<string>>((resolve) => {
+      this.beacon.addEventListener('joined', ((event: CustomEvent<Array<string>>) => {
+        console.log('JOINED', event.detail);
+        this.roomId = roomId;
+        resolve(event.detail);
+      }) as EventListener);
+    });
+    this.beacon.join(roomId);
+    await this.peers.addPeer(...await peers);
+    this.map = await this.peers.requestInit();
+  }
 
-    public requestChaos(): void {
-        this.peers.broadcast(Event.CHAOS);
-    }
+  public leave(): void {
+    this.peers.close();
+  }
 
-    public requestPlaneswalk(coordinates?: Coordinates): void {
-        this.peers.broadcast(Event.PLANESWALK, { coordinates });
-    }
+  public requestChaos(): void {
+    this.peers.broadcast(Event.CHAOS);
+  }
 
-    public requestCustomPlaneswalk(payload: { planes: Array<string> }): void {
-        this.peers.broadcast(Event.CUSTOM_PLANESWALK, payload);
-    }
+  public requestPlaneswalk(coordinates?: Coordinates): void {
+    this.peers.broadcast(Event.PLANESWALK, { coordinates });
+  }
 
-    public requestCounterUpdate(payload: { id: string, change: number }): void {
-        this.peers.broadcast(Event.COUNTERS, payload);
-    }
+  public requestCustomPlaneswalk(payload: { planes: Array<string> }): void {
+    this.peers.broadcast(Event.CUSTOM_PLANESWALK, payload);
+  }
 
-    public requestReveal(payload: { count: number, type?: string }): void {
-        this.peers.broadcast(Event.REVEAL, payload);
-    }
+  public requestCounterUpdate(payload: { id: string, change: number }): void {
+    this.peers.broadcast(Event.COUNTERS, payload);
+  }
 
-    public requestRevealResolution(
-        payload: { top: Array<string>, bottom: Array<string> },
-    ): void {
-        this.peers.broadcast(Event.RESOLVE_REVEAL, payload);
-    }
+  public requestReveal(payload: { count: number, type?: string }): void {
+    this.peers.broadcast(Event.REVEAL, payload);
+  }
 
-    public requestShuffling(): void {
-        this.peers.broadcast(Event.SHUFFLE, this.map.export());
-    }
+  public requestRevealResolution(
+    payload: { top: Array<string>, bottom: Array<string> },
+  ): void {
+    this.peers.broadcast(Event.RESOLVE_REVEAL, payload);
+  }
+
+  public requestStartEternities(): void {
+    this.peers.broadcast(Event.START_ETERNITIES);
+  }
+
+  public requestShuffling(): void {
+    this.peers.broadcast(Event.SHUFFLE, this.map.export());
+  }
 }

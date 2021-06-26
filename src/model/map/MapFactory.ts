@@ -81,6 +81,7 @@ export class MapFactory {
             state: t.state,
             plane: this.deckProvider.getOrderedDeck(t.plane),
           })),
+          hasStarted: payload.hasStarted,
         });
         break;
       default:

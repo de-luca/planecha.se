@@ -13,6 +13,7 @@ export enum Event {
   REVEAL = 'REVEAL',
   RESOLVE_REVEAL = 'RESOLVE_REVEAL',
   SHUFFLE = 'SHUFFLE',
+  START_ETERNITIES = 'START_ETERNITIES',
 }
 
 export type Payload<T> = {
@@ -41,19 +42,22 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
     const payload = parse(event.data);
 
     switch (payload.event) {
-      case Event.REQUEST_INIT:
+      case Event.REQUEST_INIT: {
         this.send(stringify(Event.INIT, store.getters.map.export()));
         break;
+      }
 
-      case Event.SHUFFLE:
+      case Event.SHUFFLE: {
         store.commit(MutationTypes.SHUFFLE, payload.data as Exported);
         break;
+      }
 
-      case Event.CHAOS:
+      case Event.CHAOS: {
         store.commit(MutationTypes.CHAOS, { passive: true, mateId: this.label });
         break;
+      }
 
-      case Event.PLANESWALK:
+      case Event.PLANESWALK:{
         const data = payload.data as { coordinates?: Coordinates };
         store.commit(MutationTypes.PLANESWALK, {
           coordinates: data.coordinates,
@@ -61,6 +65,7 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
           mateId: this.label,
         });
         break;
+      }
 
       case Event.CUSTOM_PLANESWALK: {
         const data = payload.data as { planes: Array<string> };
@@ -107,7 +112,12 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
         break;
       }
 
-      case Event.HEY:
+      case Event.START_ETERNITIES: {
+        store.commit(MutationTypes.START_ETERNITIES);
+        break;
+      }
+
+      case Event.HEY: {
         if (!store.getters.mates.get(this.label)) {
           store.commit(MutationTypes.HEY, {
             id: this.label,
@@ -116,6 +126,7 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
           this.send(stringify(Event.HEY, { name: myName }));
         }
         break;
+      }
     }
   };
 }

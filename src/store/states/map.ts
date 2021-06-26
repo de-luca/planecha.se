@@ -59,6 +59,7 @@ export enum MutationTypes {
   COUNTERS = 'COUNTERS',
   REVEAL = 'REVEAL',
   RESOLVE_REVEAL = 'RESOLVE_REVEAL',
+  START_ETERNITIES = 'START_ETERNITIES',
 }
 
 // Mutation contracts
@@ -74,6 +75,7 @@ export type Mutations<S = State> = {
   [MutationTypes.COUNTERS](state: S, payload: CounterPayload): void,
   [MutationTypes.REVEAL](state: S, payload: RevealPayload): void,
   [MutationTypes.RESOLVE_REVEAL](state: S, payload: ResolveRevealPayload): void,
+  [MutationTypes.START_ETERNITIES](state: S): void,
 }
 
 // Define mutations
@@ -124,6 +126,9 @@ export const mutations: Mutations = {
   [MutationTypes.RESOLVE_REVEAL](state: State, payload: ResolveRevealPayload) {
     (<MapInterface>state.map).resolveReveal(payload.top, payload.bottom);
   },
+  [MutationTypes.START_ETERNITIES](state: State) {
+    (<MapInterface>state.map).hasStarted = true;
+  },
 };
 
 // Action enums
@@ -136,6 +141,7 @@ export enum ActionTypes {
   COUNTERS = 'COUNTERS',
   REVEAL = 'REVEAL',
   RESOLVE_REVEAL = 'RESOLVE_REVEAL',
+  START_ETERNITIES = 'START_ETERNITIES',
 }
 
 // Actions context
@@ -178,6 +184,9 @@ export interface Actions {
   [ActionTypes.RESOLVE_REVEAL](
     { commit }: AugmentedActionContext,
     payload: { top: Array<Card>, bottom: Array<Card> },
+  ): void,
+  [ActionTypes.START_ETERNITIES](
+    { commit }: AugmentedActionContext,
   ): void,
 }
 
@@ -263,6 +272,12 @@ export const actions: ActionTree<State, State> & Actions = {
         top: payload.top.map(c => c.id),
         bottom: payload.bottom.map(c => c.id),
       });
+    }
+  },
+  [ActionTypes.START_ETERNITIES]({ commit }) {
+    commit(MutationTypes.START_ETERNITIES);
+    if (state.online) {
+      (state.map as OnlineInterface).requestStartEternities();
     }
   },
 };

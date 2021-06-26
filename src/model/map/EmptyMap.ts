@@ -8,6 +8,7 @@ export class EmptyMap implements MapInterface {
   public revealed?: Revealed;
   public ready: Promise<void>;
   public tiles: Tile[];
+  public hasStarted: boolean;
   getDeckSize(): number {
     throw new Error('Method not implemented.');
   }

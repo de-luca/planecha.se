@@ -3,6 +3,8 @@ import { Card, Plane } from '../card';
 import { Coordinates, MapType } from './MapInterface';
 
 export class Classic extends Map {
+  public hasStarted = true;
+
   public constructor(props: Props) {
     super(props);
 
@@ -34,20 +36,20 @@ export class Classic extends Map {
   }
 
   public planeswalk(
-    _coordinates?: Coordinates, 
+    _coordinates?: Coordinates,
     passive: boolean = false,
     mateId?: string,
   ): boolean {
     this.active.forEach(c => c.leave());
     this.played.push(...this.active);
-    
+
     const { card, shuffled } = this.draw();
     this.active = [card];
     this.active.forEach(c => c.enter(passive, mateId));
-    
+
     return shuffled;
   }
-  
+
   public customPlaneswalk(planes: Array<Plane>, _coordinates?: Coordinates): void {
     this.active.forEach(c => c.leave());
     this.played.push(...this.active);

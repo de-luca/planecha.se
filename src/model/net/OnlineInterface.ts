@@ -14,9 +14,11 @@ export interface OnlineInterface {
     requestCustomPlaneswalk(payload: { planes: Array<string> }): void;
 
     requestCounterUpdate(payload: { id: string, change: number }): void;
-    
+
     requestReveal(payload: { count: number, type?: string }): void;
     requestRevealResolution(payload: { top: Array<string>, bottom: Array<string> }): void;
-    
+
+    requestStartEternities(): void;
+
     requestShuffling(): void;
 }

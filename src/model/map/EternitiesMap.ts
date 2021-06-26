@@ -15,6 +15,7 @@ interface Props {
   active?: Array<Plane>;
   revealed?: Revealed;
   tiles?: Array<Tile>;
+  hasStarted?: boolean;
 }
 
 export class EternitiesMap extends Map {
@@ -34,6 +35,7 @@ export class EternitiesMap extends Map {
     this.played = [];
     this.active = props.active ?? [this.draw<Plane>().card];
     this.tiles = props.tiles ?? this.initializeTiles();
+    this.hasStarted = props.hasStarted ?? false;
   }
 
   public get type(): MapType {
@@ -179,6 +181,7 @@ export class EternitiesMap extends Map {
         state: t.state,
         plane: t.plane.map(p => p.id),
       })),
+      hasStarted: this.hasStarted,
     };
   }
 }

@@ -35,6 +35,7 @@ export interface Exported {
   active: Array<string>;
   revealed?: { relevant: Array<string>, others: Array<string> };
   tiles?: Array<ExportedTile>;
+  hasStarted?: boolean;
 }
 
 export interface Revealed {
@@ -49,6 +50,7 @@ export interface MapInterface {
   revealed?: Revealed;
   ready: Promise<void>;
   tiles: Array<Tile>;
+  hasStarted: boolean;
 
   getDeckSize(): number;
 

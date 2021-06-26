@@ -17,8 +17,8 @@ export abstract class Map implements MapInterface {
   public played: Array<Card>;
   public active: Array<Card>;
   public revealed?: Revealed;
-
   public tiles: Array<Tile> = [];
+  public hasStarted: boolean;
 
   public constructor(props: Props) {
     this.deck = props.deck;
