@@ -35,6 +35,7 @@ export interface NotifEventPayload {
 
 type Emits<EventType, T> = {
   on(type: EventType, handler: (arg: T) => void): void;
+  off(type: '*', handler?: (arg: T) => void): void;
   off(type: EventType, handler: (arg: T) => void): void;
   emit(type: EventType, arg?: T): void;
 };

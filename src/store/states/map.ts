@@ -11,6 +11,7 @@ import { Coordinates, Exported, MapInterface, MapType, Revealed, Tile } from '@/
 import { BuildProps, MapFactory } from '@/model/map/MapFactory';
 import { OnlineInterface } from '@/model/net/OnlineInterface';
 import Container from 'typedi';
+import { eventBus } from '@/services/EventBus';
 
 
 // Declare state
@@ -90,6 +91,8 @@ export const mutations: Mutations = {
     state.online = false;
     state.mates = new Map();
     state.shuffled = false;
+
+    eventBus.off('*');
   },
   [MutationTypes.HEY](state: State, payload: HeyPayload) {
     state.mates.set(payload.id, payload.name);
