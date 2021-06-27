@@ -7,7 +7,7 @@ import { Exported, MapInterface, MapType } from './MapInterface';
 
 export interface AdvancedOptions {
   name?: string;
-  cards?: Set<string>;
+  cards?: Array<string>;
 }
 
 export interface BuildProps {
@@ -37,7 +37,9 @@ export class MapFactory {
         break;
       case MapType.ETERNITIES:
         map = new EternitiesMap({
-          deck: this.deckProvider.getPlaneDeck(),
+          deck: advanced.cards
+            ? this.deckProvider.getSpecificDeck(advanced.cards) as Array<Plane>
+            : this.deckProvider.getPlaneDeck(),
         });
     }
 

@@ -1,5 +1,10 @@
 <template>
   <nav class="panel">
+    <p class="panel-tabs" v-if="group === 'all'">
+      <a @click="selectedGroup = 'all'" :class="{'is-active': selectedGroup === 'all'}">All</a>
+      <a @click="selectedGroup = 'plane'" :class="{'is-active': selectedGroup === 'plane'}">Planes</a>
+      <a @click="selectedGroup = 'phenomenon'" :class="{'is-active': selectedGroup === 'phenomenon'}">Phenomenon</a>
+    </p>
     <div class="panel-block">
       <a @click="all" class="button">All</a>
       <a @click="none" class="button">None</a>
@@ -10,11 +15,6 @@
         </span>
       </p>
     </div>
-    <p class="panel-tabs">
-      <a @click="setGroup('all')" :class="{'is-active': group === 'all'}">All</a>
-      <a @click="setGroup('plane')" :class="{'is-active': group === 'plane'}">Planes</a>
-      <a @click="setGroup('phenomenon')" :class="{'is-active': group === 'phenomenon'}">Phenomenon</a>
-    </p>
     <template v-for="card in filtered" :key="card.id">
       <label class="panel-block">
         <span class="panel-icon">
@@ -32,48 +32,47 @@ import { Options, prop, Vue } from 'vue-class-component';
 import { DeckProvider } from '@/services/DeckProvider';
 import { Card } from '@/model/card';
 
-enum Group {
+export enum Group {
   ALL = 'all',
   PLANES = 'plane',
   PHENOMENA = 'phenomenon',
 }
 
 class Props {
-  public modelValue = prop<Set<string>>({ required: true });
+  public modelValue = prop<Array<Card>>({ required: true });
+  public group = prop<Group>({ required: true });
 }
 
 @Options({
   emits: ['update:modelValue'],
 })
 export default class CardPicker extends Vue.with(Props) {
+  private deckProvider: DeckProvider;
   private cards: Array<Card>;
   private search: string = '';
-  private group: Group = Group.ALL;
+  private selectedGroup: Group = this.group;
 
   public created() {
-    this.cards = Container.get(DeckProvider).getAllCards();
+    this.deckProvider = Container.get(DeckProvider);
+    this.cards = this.deckProvider.getAllCards();
   }
 
   public mounted() {
     this.all();
   }
 
-  public set selected(value: Set<string>) {
-    this.$emit('update:modelValue', value);
+  public set selected(value: Array<string>) {
+    this.$emit('update:modelValue', this.deckProvider.getOrderedDeck(value));
   }
 
-  public get selected(): Set<string> {    
-    return this.modelValue;
+  public get selected(): Array<string> {
+    return this.modelValue.map(c => c.id);
   }
 
   public get filtered(): Array<Card> {
     return this.cards
-      .filter(c => this.group === Group.ALL || c.type === this.group)
+      .filter(c => this.selectedGroup === Group.ALL || c.type === this.selectedGroup)
       .filter(c => c.name.toLowerCase().includes(this.search));
-  }
-
-  public setGroup(group: Group): void {
-    this.group = group;
   }
 
   public clearSearch(): void {
@@ -81,21 +80,24 @@ export default class CardPicker extends Vue.with(Props) {
   }
 
   public all(): void {
-    this.selected = new Set([
+    this.selected = [...new Set([
       ...this.filtered.map(c => c.id),
       ...this.selected,
-    ]);
+    ])];
   }
 
   public none(): void {
-    this.filtered
-      .map(c => c.id)
-      .forEach((id) => this.selected.delete(id));
+    const tmpSelected = new Set(this.selected);
+    this.filtered.forEach(c => tmpSelected.delete(c.id));
+    this.selected = [...tmpSelected];
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.panel-tabs {
+  font-size: 1em;
+}
 .panel-block {
   gap: 5px;
 }

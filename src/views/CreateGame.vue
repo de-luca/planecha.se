@@ -29,13 +29,13 @@
         <a @click.prevent="toggleAdvanced">Customize deck list</a>
       </div>
 
-      <card-picker v-if="showAdvanced" v-model="cards" />
+      <card-picker v-if="showAdvanced" v-model="cards" :group="group" />
 
       <div class="field create-game">
         <div class="control">
-          <button 
-            class="button is-dark" 
-            :class="{ 'is-loading': creating }" 
+          <button
+            class="button is-dark"
+            :class="{ 'is-loading': creating }"
             type="submit"
           >
             Create game
@@ -51,7 +51,8 @@ import { Options, Vue } from 'vue-class-component';
 import { useStore, Store, ActionTypes } from '@/store';
 import { MapType } from '@/model/map/MapInterface';
 import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';
-import CardPicker from '@/components/CardPicker.vue';
+import CardPicker, { Group } from '@/components/CardPicker.vue';
+import { Card } from '@/model/card';
 
 
 enum GameScope {
@@ -83,10 +84,10 @@ export default class CreateGame extends Vue {
   private scope: GameScope = GameScope.LOCAL;
   private mode: MapType = MapType.CLASSIC;
   private name: string = '';
-  private cards: Set<string> = new Set();
+  private cards: Array<Card> = [];
   private showAdvanced: boolean = false;
   private creating: boolean = false;
-  
+
   private store: Store;
 
   public created() {
@@ -95,6 +96,12 @@ export default class CreateGame extends Vue {
 
   public get requireName(): boolean {
     return this.scope === GameScope.ONLINE;
+  }
+
+  public get group(): Group {
+    return this.mode === MapType.ETERNITIES
+      ? Group.PLANES
+      : Group.ALL;
   }
 
   public toggleAdvanced(event: any): void {
@@ -108,7 +115,7 @@ export default class CreateGame extends Vue {
       online: this.scope === GameScope.ONLINE,
       advanced: {
         name: this.name,
-        cards: this.cards.size !== 0 ? this.cards : undefined,
+        cards: this.cards.length !== 0 ? this.cards.map(c => c.id) : undefined,
       },
     });
     this.creating = false;

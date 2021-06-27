@@ -35,7 +35,7 @@ export class DeckProvider {
         .filter((c) => c instanceof Plane) as Array<Plane>;
     }
 
-    public getSpecificDeck(cards: Set<string>): Array<Card> {
+    public getSpecificDeck(cards: Array<string>): Array<Card> {
       return _shuffle(this.getOrderedDeck<Card>([...cards]));
     }
 
