@@ -37,6 +37,7 @@
             class="button is-dark"
             :class="{ 'is-loading': creating }"
             type="submit"
+            :disabled="!hasRequiredCards"
           >
             Create game
           </button>
@@ -52,7 +53,7 @@ import { useStore, Store, ActionTypes } from '@/store';
 import { MapType } from '@/model/map/MapInterface';
 import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';
 import CardPicker, { Group } from '@/components/CardPicker.vue';
-import { Card } from '@/model/card';
+import { Card, Plane } from '@/model/card';
 
 
 enum GameScope {
@@ -104,7 +105,22 @@ export default class CreateGame extends Vue {
       : Group.ALL;
   }
 
-  public toggleAdvanced(event: any): void {
+  public get hasRequiredCards(): boolean {
+    if (!this.showAdvanced && this.cards.length === 0) {
+      return true;
+    }
+
+    switch (this.mode) {
+      case MapType.CLASSIC:
+        return this.cards.filter(c => c instanceof Plane).length >= 5;
+      case MapType.ETERNITIES:
+        return this.cards.filter(c => c instanceof Plane).length >= 25;
+      default:
+        return true;
+    }
+  }
+
+  public toggleAdvanced(): void {
     this.showAdvanced = !this.showAdvanced;
   }
 
