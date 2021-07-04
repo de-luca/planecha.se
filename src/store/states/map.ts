@@ -1,3 +1,4 @@
+import { Container } from 'typedi';
 import {
   ActionContext,
   Store as VuexStore,
@@ -7,10 +8,16 @@ import {
 } from 'vuex';
 
 import { Card, Plane } from '@/model/card';
-import { Coordinates, Exported, MapInterface, MapType, Revealed, Tile } from '@/model/map/MapInterface';
+import {
+  Coordinates,
+  Exported,
+  MapInterface,
+  MapType,
+  Revealed,
+  Tile,
+} from '@/model/map/MapInterface';
 import { BuildProps, MapFactory } from '@/model/map/MapFactory';
 import { OnlineInterface } from '@/model/net/OnlineInterface';
-import Container from 'typedi';
 import { eventBus } from '@/services/EventBus';
 
 
@@ -25,14 +32,18 @@ export type State = {
   shuffled: boolean;
 };
 
+function initState(): State {
+  return {
+    map: undefined,
+    feed: [],
+    online: false,
+    mates: new Map(),
+    shuffled: false,
+  };
+}
+
 // Init state
-export const state: State = {
-  map: undefined,
-  feed: [],
-  online: false,
-  mates: new Map(),
-  shuffled: false,
-};
+export const state: State = initState();
 
 
 export type Idable = { mateId?: string };
@@ -86,12 +97,7 @@ export const mutations: Mutations = {
       (state.map as OnlineInterface).leave();
     }
 
-    state.map = undefined;
-    state.feed = [];
-    state.online = false;
-    state.mates = new Map();
-    state.shuffled = false;
-
+    state = initState()
     eventBus.off('*');
   },
   [MutationTypes.HEY](state: State, payload: HeyPayload) {

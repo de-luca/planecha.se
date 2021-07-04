@@ -1,9 +1,16 @@
+import { Container } from 'typedi';
+import _shuffle from 'lodash.shuffle';
 import { DeckProvider } from '@/services/DeckProvider';
 import { eventBus, EventType } from '@/services/EventBus';
-import _shuffle from 'lodash.shuffle';
-import Container from 'typedi';
-import { Card, Counter, Phenomenon, Plane } from '../card';
-import { Coordinates, Exported, MapInterface, MapType, Revealed, Tile } from './MapInterface';
+import { Card, Plane } from '../card';
+import {
+  Coordinates,
+  Exported,
+  MapInterface,
+  MapType,
+  Revealed,
+  Tile,
+} from './MapInterface';
 
 export interface Props {
   deck: Array<Card>;

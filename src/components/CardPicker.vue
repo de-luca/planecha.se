@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import Container from 'typedi';
+import { Container } from 'typedi';
 import { Options, prop, Vue } from 'vue-class-component';
 import { DeckProvider } from '@/services/DeckProvider';
 import { Card } from '@/model/card';

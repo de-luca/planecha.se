@@ -1,4 +1,4 @@
-import Container from 'typedi';
+import { Container } from 'typedi';
 import { eventBus, EventType as BusEvent } from '@/services/EventBus';
 import { MapFactory } from '../map/MapFactory';
 import { Exported, MapInterface } from '../map/MapInterface';

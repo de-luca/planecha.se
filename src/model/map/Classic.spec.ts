@@ -1,4 +1,4 @@
-import Container from 'typedi';
+import { Container } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
 import { Classic } from '.';
 import { Plane } from '../card';

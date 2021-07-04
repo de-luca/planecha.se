@@ -6,18 +6,17 @@ import {
   getters,
   actions,
   Store,
-} from '@/store/states/map';
-
+} from './states/map';
 
 // Lazyness Re-exports
 export {
   ActionTypes,
   MutationTypes,
-} from '@/store/states/map';
+} from './states/map';
 export type {
   State,
   Store,
-} from '@/store/states/map';
+} from './states/map';
 
 const plugins = [ createFeeder() ];
 if (process.env.NODE_ENV !== 'production') {

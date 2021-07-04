@@ -1,9 +1,16 @@
 import { Card, Plane } from '../card';
-import { Coordinates, Exported, MapInterface, MapType, Revealed, Tile } from './MapInterface';
 import { Beacon } from '../net/Beacon';
 import { OnlineInterface } from '../net/OnlineInterface';
 import { PeerMap } from '../net/PeerMap';
 import { Event } from '../net/Handler';
+import {
+  Coordinates,
+  Exported,
+  MapInterface,
+  MapType,
+  Revealed,
+  Tile,
+} from './MapInterface';
 
 export class OnlineDecorator implements MapInterface, OnlineInterface {
   private beacon: Beacon;

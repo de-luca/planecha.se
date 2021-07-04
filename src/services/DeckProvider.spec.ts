@@ -1,4 +1,4 @@
-import Container from 'typedi';
+import { Container } from 'typedi';
 import { Plane } from '../model/card';
 import { DeckProvider } from './DeckProvider';
 
