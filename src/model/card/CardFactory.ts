@@ -12,30 +12,30 @@ export interface Counter {
 }
 
 export interface Props {
-    id: string;
-    oracleId: string;
-    multiverseIds: Array<number>;
-    name: string;
-    scryfallUri: string;
-    typeLine: string;
-    oracleText: string;
-    gathererUri: string;
-    counter?: Counter;
+  id: string;
+  oracleId: string;
+  multiverseIds: Array<number>;
+  name: string;
+  scryfallUri: string;
+  typeLine: string;
+  oracleText: string;
+  gathererUri: string;
+  counter?: Counter;
 }
 
 @Service()
 export class CardFactory {
-    @Inject(() => PlaneFactory)
-    private planeFactory: PlaneFactory;
+  @Inject(() => PlaneFactory)
+  private planeFactory: PlaneFactory;
 
-    @Inject(() => PhenomenonFactory)
-    private phenomenonFactory: PhenomenonFactory;
+  @Inject(() => PhenomenonFactory)
+  private phenomenonFactory: PhenomenonFactory;
 
-    public build(props: Props): Card {
-      if (props.typeLine === 'Phenomenon') {
-        return this.phenomenonFactory.build(props);
-      }
-
-      return this.planeFactory.build(props);
+  public build(props: Props): Card {
+    if (props.typeLine === 'Phenomenon') {
+      return this.phenomenonFactory.build(props);
     }
+
+    return this.planeFactory.build(props);
+  }
 }
