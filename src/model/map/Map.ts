@@ -1,5 +1,5 @@
-import { Container } from 'typedi';
 import _shuffle from 'lodash.shuffle';
+import { Container } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Card, Plane } from '../card';
@@ -77,7 +77,6 @@ export abstract class Map implements MapInterface {
   }
 
   protected shuffleDeck(): void {
-    console.log('SHUFFLED');
     this.deck = _shuffle(this.played);
     this.played = [];
   }
