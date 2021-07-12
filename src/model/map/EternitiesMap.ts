@@ -7,7 +7,14 @@ eslint no-param-reassign: [
 
 import { Map } from './Map';
 import { Plane } from '../card';
-import { Coordinates, Exported, MapType, Revealed, Tile, TileStatus } from './MapInterface';
+import {
+  Coordinates,
+  Exported,
+  MapType,
+  Revealed,
+  Tile,
+  TileStatus,
+} from './MapInterface';
 
 interface Props {
   deck: Array<Plane>;
@@ -67,11 +74,7 @@ export class EternitiesMap extends Map {
     return tiles;
   }
 
-  public planeswalk(
-    coordinates: Coordinates,
-    passive: boolean = false,
-    mateId?: string,
-  ): boolean {
+  public planeswalk(coordinates: Coordinates): boolean {
     let shuffled = false;
     const xOffset = coordinates.x;
     const yOffset = coordinates.y;
