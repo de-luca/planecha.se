@@ -12,11 +12,7 @@
         v-model="mode"
       />
 
-      <ButtonPicker
-        label="Local or online game?"
-        :options="scopeOptions"
-        v-model="scope"
-      />
+      <game-scope-picker v-model="scope" />
 
       <div class="field" v-if="requireName">
         <label class="label">Your player name:</label>
@@ -52,6 +48,7 @@ import { Options, Vue } from 'vue-class-component';
 import { useStore, Store, ActionTypes } from '@/store';
 import { MapType } from '@/model/map/MapInterface';
 import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';
+import GameScopePicker from '@/components/GameScopePicker.vue';
 import CardPicker, { Group } from '@/components/CardPicker.vue';
 import { Card, Plane } from '@/model/card';
 
@@ -62,7 +59,7 @@ enum GameScope {
 }
 
 @Options({
-  components: { ButtonPicker, CardPicker },
+  components: { ButtonPicker, CardPicker, GameScopePicker },
 })
 export default class CreateGame extends Vue {
   public scopeOptions: Array<Option<string>> = [{

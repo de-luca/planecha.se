@@ -10,4 +10,4 @@ services:
       - ./:/scripts:rw
     working_dir: /scripts
     entrypoint: ["yarn"]
-    command: ["serve"]
+    command: ["serve:docker"]

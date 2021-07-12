@@ -42,7 +42,7 @@ describe('DeckProvider.getSpecificDeck', () => {
     const deck = provider.getSpecificDeck(ids);
     expect(deck).toHaveLength(2);
     for (const card of deck) {
-      expect(ids.includes(card.id)).toEqual(true);
+      expect(ids).toContain(card.id);
     }
   });
 });

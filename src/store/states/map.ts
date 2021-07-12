@@ -97,7 +97,7 @@ export const mutations: Mutations = {
       (state.map as OnlineInterface).leave();
     }
 
-    state = initState()
+    state = initState();
     eventBus.off('*');
   },
   [MutationTypes.HEY](state: State, payload: HeyPayload) {

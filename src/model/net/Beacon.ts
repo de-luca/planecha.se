@@ -38,6 +38,20 @@ export class Beacon extends EventTarget {
     this.socket.onopen = () => this.open();
   }
 
+  public static check(): Promise<boolean> {
+    return new Promise((resolve) => {
+      const socket = new WebSocket('ws://localhost:3030');
+      socket.onerror = () => {
+        socket.close();
+        resolve(false);
+      };
+      socket.onopen = () => {
+        socket.close();
+        resolve(true);
+      };
+    });
+  }
+
   public create(): void {
     this.send(Method.CREATE);
   }
