@@ -167,6 +167,10 @@ export class EternitiesMap extends Map {
     throw new Error('Method not implemented.');
   }
 
+  public planeswalkFromPhenomenon(): boolean {
+    throw new Error('Method not implemented.');
+  }
+
   public export(): Exported {
     return {
       type: this.type,

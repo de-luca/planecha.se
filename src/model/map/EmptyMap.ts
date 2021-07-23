@@ -21,6 +21,9 @@ export class EmptyMap implements MapInterface {
   customPlaneswalk(): void {
     throw new Error('Method not implemented.');
   }
+  planeswalkFromPhenomenon(): boolean {
+    throw new Error('Method not implemented.');
+  }
   updateCounter(): void {
     throw new Error('Method not implemented.');
   }

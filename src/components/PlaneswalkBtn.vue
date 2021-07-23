@@ -1,7 +1,7 @@
 <template>
-  <button 
-    @click="resolve" 
-    :title="resolver ? 'Resolve' : 'Planeswalk'"
+  <button
+    @click="resolve"
+    :title="resolver ? 'Resolve Phenomenon' : 'Planeswalk'"
     :disabled="disabled"
     class="button is-light is-outline is-rounded"
   >
@@ -28,9 +28,13 @@ export default class PlaneswalkBtn extends Vue.with(Props) {
   }
 
   public resolve() {
-    this.resolver 
-      ? this.resolver() 
-      : this.store.dispatch(ActionTypes.PLANESWALK);
+    this.resolver
+      ? this.resolver()
+      : this.store.dispatch(
+          this.store.getters.active[0].type === 'plane'
+            ? ActionTypes.PLANESWALK
+            : ActionTypes.PLANESWALK_FROM_PHENOMENON,
+        );
   }
 }
 </script>

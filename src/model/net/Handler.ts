@@ -9,6 +9,7 @@ export enum Event {
   CHAOS = 'CHAOS',
   PLANESWALK = 'PLANESWALK',
   CUSTOM_PLANESWALK = 'CUSTOM_PLANESWALK',
+  PLANESWALK_FROM_PHENOMENON = 'PLANESWALK_FROM_PHENOMENON',
   COUNTERS = 'COUNTERS',
   REVEAL = 'REVEAL',
   RESOLVE_REVEAL = 'RESOLVE_REVEAL',
@@ -54,6 +55,11 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
 
       case Event.CHAOS: {
         store.commit(MutationTypes.CHAOS, { passive: true, mateId: this.label });
+        break;
+      }
+
+      case Event.PLANESWALK_FROM_PHENOMENON: {
+        store.commit(MutationTypes.PLANESWALK_FROM_PHENOMENON, { passive: true, mateId: this.label });
         break;
       }
 

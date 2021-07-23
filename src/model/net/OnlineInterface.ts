@@ -9,8 +9,10 @@ export interface OnlineInterface {
   leave(): void;
 
   requestChaos(): void;
+
   requestPlaneswalk(coordinates?: Coordinates): void;
   requestCustomPlaneswalk(payload: { planes: Array<string> }): void;
+  requestPlaneswalkFromPhenomenon(): void;
 
   requestCounterUpdate(payload: { id: string, change: number }): void;
 

@@ -54,6 +54,7 @@ export abstract class Map implements MapInterface {
     mateId?: string,
   ): boolean;
   public abstract customPlaneswalk(planes: Array<Plane>, coordinates?: Coordinates): void;
+  public abstract planeswalkFromPhenomenon(passive?: boolean, mateId?: string): boolean;
 
   public updateCounter(id: string, change: number): void {
     (this.active.find(c => c.id === id) as Plane).updateCounter(change);
@@ -74,6 +75,26 @@ export abstract class Map implements MapInterface {
     }
 
     return { card: card as T, shuffled: false };
+  }
+
+  protected drawPlane(): { card: Plane, shuffled: boolean } {
+    let card: Card;
+    let shuffled: boolean;
+    let found = false;
+
+    do {
+      // Draw card
+      ({ card, shuffled } = this.draw());
+      if (card instanceof Plane) {
+        // it's a plane
+        found = true;
+      } else {
+        // it's a phenomenon, put it in the bottom
+        this.deck.push(card);
+      }
+    } while (!found);
+
+    return { card: card as Plane, shuffled };
   }
 
   protected shuffleDeck(): void {

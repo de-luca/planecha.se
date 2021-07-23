@@ -15,26 +15,6 @@ export class Classic extends Map {
     return MapType.CLASSIC;
   }
 
-  private drawPlane(): { card: Plane, shuffled: boolean } {
-    let card: Card;
-    let shuffled: boolean;
-    let found = false;
-
-    do {
-      // Draw card
-      ({ card, shuffled } = this.draw());
-      if (card instanceof Plane) {
-        // it's a plane
-        found = true;
-      } else {
-        // it's a phenomenon, put it in the bottom
-        this.deck.push(card);
-      }
-    } while (!found);
-
-    return { card: card as Plane, shuffled };
-  }
-
   public planeswalk(
     _coordinates?: Coordinates,
     passive: boolean = false,
@@ -55,5 +35,9 @@ export class Classic extends Map {
     this.played.push(...this.active);
     this.active = planes;
     this.active.forEach(c => c.enter());
+  }
+
+  public planeswalkFromPhenomenon(passive: boolean = false, mateId?: string): boolean {
+    return this.planeswalk(undefined, passive, mateId);
   }
 }

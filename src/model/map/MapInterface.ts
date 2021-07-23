@@ -62,11 +62,14 @@ export interface MapInterface {
   clearRevealed(): void;
 
   chaos(passive?: boolean, mateId?: string): void;
+
   planeswalk(coordinates?: Coordinates, passive?: boolean, mateId?: string): boolean;
   customPlaneswalk(
     planes: Array<Plane>,
     coordinates?: Coordinates,
   ): void;
+  planeswalkFromPhenomenon(passive?: boolean, mateId?: string): boolean;
+
   updateCounter(id: string, change: number): void;
 
   export(): Exported;

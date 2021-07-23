@@ -53,6 +53,7 @@ export type HeyPayload = { id: string, name: string };
 export type ByePayload = { id: string };
 export type RevealPayload = { count: number, type?: typeof Card };
 export type ChaosPayload = Idable & Passiveable;
+export type ResolvePayload = Idable & Passiveable;
 export type PlaneswalkPayload = Idable & Passiveable & { coordinates?: Coordinates };
 export type CustomPlaneswalkPayload = PlaneswalkPayload & { planes: Array<Plane> };
 export type CounterPayload = Idable & { id: string, change: number };
@@ -68,6 +69,7 @@ export enum MutationTypes {
   CHAOS = 'CHAOS',
   PLANESWALK = 'PLANESWALK',
   CUSTOM_PLANESWALK = 'CUSTOM_PLANESWALK',
+  PLANESWALK_FROM_PHENOMENON = 'PLANESWALK_FROM_PHENOMENON',
   COUNTERS = 'COUNTERS',
   REVEAL = 'REVEAL',
   RESOLVE_REVEAL = 'RESOLVE_REVEAL',
@@ -84,6 +86,7 @@ export type Mutations<S = State> = {
   [MutationTypes.CHAOS](state: S, payload: ChaosPayload): void,
   [MutationTypes.PLANESWALK](state: S, payload: PlaneswalkPayload): void,
   [MutationTypes.CUSTOM_PLANESWALK](state: S, payload: CustomPlaneswalkPayload): void,
+  [MutationTypes.PLANESWALK_FROM_PHENOMENON](state: S, payload: ResolvePayload): void,
   [MutationTypes.COUNTERS](state: S, payload: CounterPayload): void,
   [MutationTypes.REVEAL](state: S, payload: RevealPayload): void,
   [MutationTypes.RESOLVE_REVEAL](state: S, payload: ResolveRevealPayload): void,
@@ -126,6 +129,9 @@ export const mutations: Mutations = {
   [MutationTypes.CUSTOM_PLANESWALK](state: State, payload: CustomPlaneswalkPayload) {
     (<MapInterface>state.map).customPlaneswalk(payload.planes);
   },
+  [MutationTypes.PLANESWALK_FROM_PHENOMENON](state: State, payload: ResolvePayload = {}) {
+    (<MapInterface>state.map).planeswalkFromPhenomenon(payload.passive, payload.mateId);
+  },
   [MutationTypes.COUNTERS](state: State, payload: CounterPayload) {
     (<MapInterface>state.map).updateCounter(payload.id, payload.change);
   },
@@ -147,6 +153,7 @@ export enum ActionTypes {
   CHAOS = 'CHAOS',
   PLANESWALK = 'PLANESWALK',
   CUSTOM_PLANESWALK = 'CUSTOM_PLANESWALK',
+  PLANESWALK_FROM_PHENOMENON = 'PLANESWALK_FROM_PHENOMENON',
   COUNTERS = 'COUNTERS',
   REVEAL = 'REVEAL',
   RESOLVE_REVEAL = 'RESOLVE_REVEAL',
@@ -181,6 +188,9 @@ export interface Actions {
   [ActionTypes.CUSTOM_PLANESWALK](
     { commit }: AugmentedActionContext,
     payload: { planes: Array<Plane> },
+  ): void,
+  [ActionTypes.PLANESWALK_FROM_PHENOMENON](
+    { commit }: AugmentedActionContext,
   ): void,
   [ActionTypes.COUNTERS](
     { commit }: AugmentedActionContext,
@@ -251,6 +261,13 @@ export const actions: ActionTree<State, State> & Actions = {
       (state.map as OnlineInterface).requestCustomPlaneswalk({
         planes: payload.planes.map(c => c.id),
       });
+    }
+  },
+  [ActionTypes.PLANESWALK_FROM_PHENOMENON]({ commit }) {
+    commit(MutationTypes.PLANESWALK_FROM_PHENOMENON);
+
+    if (state.online) {
+      (state.map as OnlineInterface).requestPlaneswalkFromPhenomenon();
     }
   },
   [ActionTypes.COUNTERS]({ commit }, payload: { id: string, change: number }) {
