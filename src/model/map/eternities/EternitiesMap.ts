@@ -5,8 +5,8 @@ eslint no-param-reassign: [
 ]
 */
 
-import { Map } from './Map';
-import { Plane } from '../card';
+import { Map } from '../Map';
+import { Plane } from '../../card';
 import {
   Coordinates,
   Exported,
@@ -14,7 +14,7 @@ import {
   Revealed,
   Tile,
   TileStatus,
-} from './MapInterface';
+} from '../MapInterface';
 
 interface Props {
   deck: Array<Plane>;
@@ -164,10 +164,6 @@ export class EternitiesMap extends Map {
   }
 
   public customPlaneswalk(planes: Array<Plane>, coordinates?: Coordinates): void {
-    throw new Error('Method not implemented.');
-  }
-
-  public planeswalkFromPhenomenon(): boolean {
     throw new Error('Method not implemented.');
   }
 

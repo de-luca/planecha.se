@@ -14,6 +14,13 @@
 
     <chaos-btn class="chaos" />
 
+    <phenomenon
+      v-if="inPlaneswalkPhenomenon"
+      :phenomenon="inPlaneswalkPhenomenon"
+      :resolver="revealer?.seeder"
+      :disabled="revealer && revealer.passive"
+    ></phenomenon>
+
     <component
       v-if="revealer && revealed"
       :is="revealer.component"
@@ -30,12 +37,16 @@ import { Component } from 'vue';
 import { Options, Vue } from 'vue-class-component';
 import { ActionTypes, Store, useStore } from '@/store';
 import { Revealed, Tile as TileModel } from '@/model/map/MapInterface';
+import { Phenomenon as PhenomenonModel, Plane } from '@/model/card';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Config, PickedLeft } from './reveal/BaseReveal';
 import ChaosBtn from '@/components/ChaosBtn.vue';
 import Tile from '@/components/eternities/Tile.vue';
+import Phenomenon from '@/components/eternities/Phenomenon.vue';
 import Scry from '@/components/reveal/Scry.vue';
+import Pick from '@/components/reveal/Pick.vue';
 import Show from '@/components/reveal/Show.vue';
+import { SingleDeckAllCards } from '@/model/map';
 
 type Revealer = {
   passive: boolean;
@@ -47,8 +58,8 @@ type Revealer = {
 
 @Options({
   components: {
-    Tile, ChaosBtn,
-    Scry, Show,
+    Tile, ChaosBtn, Phenomenon,
+    Scry, Pick, Show,
   },
 })
 export default class EternitiesMap extends Vue {
@@ -94,10 +105,42 @@ export default class EternitiesMap extends Vue {
         this.store.dispatch(ActionTypes.REVEAL, { count: 3 });
       }
     });
+    eventBus.on(EventType.INTERPLANAR_TUNNEL, (payload): void => {
+      this.revealer = {
+        passive: payload.passive,
+        component: Pick,
+        seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 5, type: Plane }),
+        resolver: this.customPlaneswalk,
+        config: {
+          sendShownTo: 'bottom',
+          passive: payload.passive,
+          mateName: payload.mateId ? this.store.getters.mates.get(payload.mateId) : undefined,
+        },
+      };
+    });
+    eventBus.on(EventType.SPACIAL_MERGING, (payload): void => {
+      this.revealer = {
+        passive: payload.passive,
+        component: Show,
+        seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 2, type: Plane }),
+        resolver: this.customPlaneswalk,
+        config: {
+          sendShownTo: 'top',
+          passive: payload.passive,
+          mateName: payload.mateId ? this.store.getters.mates.get(payload.mateId) : undefined,
+        },
+      };
+    });
   }
 
   public get revealed(): Revealed | undefined {
     return this.store.getters.revealed;
+  }
+
+  public get inPlaneswalkPhenomenon(): PhenomenonModel | undefined {
+    return (this.store.getters.map as SingleDeckAllCards).destination
+      ? this.store.getters.active[0]
+      : undefined;
   }
 
   public get hasStarted(): boolean {
@@ -126,6 +169,15 @@ export default class EternitiesMap extends Vue {
 
   public start(): void {
     this.store.dispatch(ActionTypes.START_ETERNITIES);
+  }
+
+  public customPlaneswalk(choices: PickedLeft): void {
+    console.log(choices);
+    this.store.dispatch(ActionTypes.CUSTOM_PLANESWALK, {
+      planes: choices.picked as Array<Plane>,
+    });
+
+    this.putBack({ picked: [], left: choices.left });
   }
 }
 </script>

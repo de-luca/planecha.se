@@ -1,7 +1,7 @@
 import { Container } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
-import { EternitiesMap } from '.';
-import { MapType } from './MapInterface';
+import { EternitiesMap } from '..';
+import { MapType } from '../MapInterface';
 
 describe('EternitiesMap.type', () => {
   it('returns the type', () => {

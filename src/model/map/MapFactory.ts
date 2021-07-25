@@ -2,7 +2,7 @@ import { Inject, Service } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
 import { Card, Plane } from '../card';
 import { OnlineDecorator } from './OnlineDecorator';
-import { Classic, EmptyMap, EternitiesMap } from '.';
+import { Classic, EmptyMap, SingleDeckAllCards } from '.';
 import { Exported, MapInterface, MapType } from './MapInterface';
 
 export interface AdvancedOptions {
@@ -36,10 +36,10 @@ export class MapFactory {
         });
         break;
       case MapType.ETERNITIES:
-        map = new EternitiesMap({
+        map = new SingleDeckAllCards({
           deck: advanced.cards
             ? this.deckProvider.getSpecificDeck(advanced.cards) as Array<Plane>
-            : this.deckProvider.getPlaneDeck(),
+            : this.deckProvider.getDeck(),
         });
     }
 
@@ -68,7 +68,7 @@ export class MapFactory {
         });
         break;
       case MapType.ETERNITIES:
-        map = new EternitiesMap({
+        map = new SingleDeckAllCards({
           deck: this.deckProvider.getOrderedDeck<Plane>(payload.deck),
           active: this.deckProvider.getOrderedDeck<Plane>(payload.active),
           played: this.deckProvider.getOrderedDeck<Plane>(payload.played),
