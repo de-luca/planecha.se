@@ -2,11 +2,13 @@
   <div class="tile">
     <div
       v-if="tile && state === 'planeswalkable'"
-      :class="state"
+      :class="[ { multi: tile.plane.length > 1 }, state ]"
       @click="planeswalk"
       title="Planeswalk"
     >
-      <card :card="tile.plane[0]" />
+      <template v-for="p in tile.plane" :key="p">
+        <card :card="p" />
+      </template>
     </div>
 
     <div
@@ -27,17 +29,21 @@
 
     <div
       v-if="tile && state === 'current'"
-      :class="state"
+      :class="[ { multi: tile.plane.length > 1 }, state ]"
       title="You are here ;)"
     >
-      <card :card="tile.plane[0]" :current="state === 'current'" />
+      <template v-for="p in tile.plane" :key="p">
+        <card :card="p" :current="state === 'current'" />
+      </template>
     </div>
 
     <div
       v-if="tile && state === 'unreachable'"
-      :class="state"
+      :class="[ { multi: tile.plane.length > 1 }, state ]"
     >
-      <card :card="tile.plane[0]" :current="state === 'current'" />
+      <template v-for="p in tile.plane" :key="p">
+        <card :card="p" :current="state === 'current'" />
+      </template>
     </div>
 
     <div
@@ -130,6 +136,67 @@ export default class Tile extends Vue.with(Props) {
     transform: scale(2.5);
   }
 }
+@keyframes scale-up-br {
+  0% {
+    transform: scale(1);
+    transform-origin: 100% 100%;
+  }
+  100% {
+    transform: scale(2.5);
+    transform-origin: 100% 100%;
+  }
+}
+@keyframes scale-up-tl {
+  0% {
+    transform: scale(1);
+    transform-origin: 0% 0%;
+  }
+  100% {
+    transform: scale(2.5);
+    transform-origin: 0% 0%;
+  }
+}
+
+.tile {
+}
+
+.multi {
+  width: 100%;
+  position: relative;
+
+  div:first-child {
+    position: absolute;
+    top: -.75rem;
+    left: -.75rem;
+  }
+
+  div:last-child {
+    position: absolute;
+    bottom: -.75rem;
+    right: -.75rem;
+  }
+
+  &:hover {
+    z-index: 3;
+
+    div:first-child {
+      animation: scale-up-br 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+
+      &:hover {
+        z-index: 4;
+      }
+    }
+
+    div:last-child {
+      animation: scale-up-tl 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+
+      &:hover {
+        z-index: 4;
+      }
+    }
+  }
+}
+
 
 .preparation:hover {
   cursor: pointer;
@@ -140,7 +207,7 @@ export default class Tile extends Vue.with(Props) {
   filter: drop-shadow(5px 5px 5px red)
           drop-shadow(-5px -5px 5px red);
 
-  &:hover {
+  &:not(.multi):hover {
     z-index: 3;
     filter: none;
     animation: scale-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
@@ -151,7 +218,7 @@ export default class Tile extends Vue.with(Props) {
   filter: drop-shadow(2px 2px 2px grey)
           drop-shadow(-2px -2px 2px grey);
 
-  &:hover {
+  &:not(.multi):hover {
     z-index: 3;
     cursor: pointer;
     filter: none;
@@ -162,7 +229,7 @@ export default class Tile extends Vue.with(Props) {
 .unreachable {
   filter: grayscale(1);
 
-  &:hover {
+  &:not(.multi):hover {
     z-index: 3;
     animation: scale-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
   }
@@ -193,4 +260,5 @@ export default class Tile extends Vue.with(Props) {
     }
   }
 }
+
 </style>

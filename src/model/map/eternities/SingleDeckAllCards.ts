@@ -75,31 +75,19 @@ export class SingleDeckAllCards extends Map {
   }
 
   public planeswalk(coordinates: Coordinates): boolean {
-    let shuffled = this.setActive(coordinates.x, coordinates.y);
-    return this.shiftBoard(coordinates.x, coordinates.y) || shuffled;
-  }
-
-  private setActive(
-    xOffset: number,
-    yOffset: number,
-    planes?: Array<Plane>,
-  ): boolean {
     let shuffled = false;
+    const xOffset = coordinates.x;
+    const yOffset = coordinates.y;
 
     // The active tile is at the center
-    const activeTile = this.tiles.find((t) => {
-      return t.coordinates.x === SingleDeckAllCards.center.x &&
-        t.coordinates.y === SingleDeckAllCards.center.y;
-    }) as Tile;
-
+    const activeTile = this.tiles.find((t) => t.coordinates.x === SingleDeckAllCards.center.x
+      && t.coordinates.y === SingleDeckAllCards.center.y) as Tile;
     // Moove out of the ACTIVE and make if VISIBLE
     activeTile.state = TileStatus.VISIBLE;
 
     // Look for the tile we are moving to
-    let newActiveTile = this.tiles.find((t) => {
-      return t.coordinates.x === xOffset &&
-        t.coordinates.y === yOffset;
-    });
+    let newActiveTile = this.tiles.find((t) => t.coordinates.x === xOffset
+      && t.coordinates.y === yOffset);
 
     if (newActiveTile) {
       // It exists so it become ACTIVE
@@ -107,7 +95,7 @@ export class SingleDeckAllCards extends Map {
     } else {
       // It does not exist (HellRiding)
       // Draw a card and put it in place
-      const drawn = this.draw<Card>();
+      const drawn = this.draw<Plane>();
       shuffled = drawn.shuffled;
 
       // This is a Phenomenon
@@ -129,29 +117,14 @@ export class SingleDeckAllCards extends Map {
           y: yOffset,
         },
         state: TileStatus.ACTIVE,
-        plane: [drawn.card as Plane],
+        plane: [drawn.card],
       };
 
-      // Push the new tile in the tile list
       this.tiles.push(newActiveTile);
-    }
-
-    // If we gave planes to use
-    // Put the current one in the played pile
-    // And replace it with the given one
-    if (planes) {
-      this.played.push(...newActiveTile.plane);
-      newActiveTile.plane = planes;
     }
 
     // Actualy change the active pointer
     this.active = newActiveTile.plane;
-
-    return shuffled;
-  }
-
-  private shiftBoard(xOffset: number, yOffset: number,): boolean {
-    let shuffled = false;
 
     // Look over the board
     for (
@@ -210,20 +183,30 @@ export class SingleDeckAllCards extends Map {
       Math.abs(t.coordinates.x) + Math.abs(t.coordinates.y) <= SingleDeckAllCards.maxRange
     ));
 
+    this.destination = undefined;
     return shuffled;
   }
 
-  public customPlaneswalk(planes: Array<Plane>, coordinates?: Coordinates): void {
-    console.log(planes, coordinates);
-    console.log(this.destination);
-
+  public customPlaneswalk(planes: Array<Plane>): void {
     const xOffset = (this.destination as Coordinates).x;
     const yOffset = (this.destination as Coordinates).y;
 
-    this.setActive(xOffset, yOffset, planes);
-    this.shiftBoard(xOffset, yOffset);
+    let destinationTile = this.tiles.find(
+      t => t.coordinates.x === xOffset && t.coordinates.y === yOffset,
+    );
 
-    this.destination = undefined;
+    if (destinationTile) {
+      destinationTile.plane = planes;
+    } else {
+      destinationTile = {
+        coordinates: {
+          x: xOffset,
+          y: yOffset,
+        },
+        state: TileStatus.ACTIVE,
+        plane: planes,
+      };
+    }
   }
 
   public planeswalkFromPhenomenon(passive: boolean = false, mateId?: string): boolean {
@@ -231,7 +214,6 @@ export class SingleDeckAllCards extends Map {
     this.played.push(...this.active);
     const shuffled = this.planeswalk(this.destination as Coordinates);
     console.log(this.played);
-    this.destination = undefined;
     return shuffled;
   }
 

@@ -178,6 +178,7 @@ export default class EternitiesMap extends Vue {
     });
 
     this.putBack({ picked: [], left: choices.left });
+    this.store.dispatch(ActionTypes.PLANESWALK_FROM_PHENOMENON);
   }
 }
 </script>
