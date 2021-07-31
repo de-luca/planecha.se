@@ -6,6 +6,7 @@ import {
   Props,
   Plane,
 } from '../model/card';
+import { Deck } from '@/model/deck/Deck';
 
 import cards from '../assets/cards.json';
 
@@ -26,20 +27,32 @@ export class DeckProvider {
     return this.cards.find(c => c.id === id) as T;
   }
 
-  public getDeck(): Array<Card> {
+  public getDeck(): Deck<Card> {
+    return new Deck<Card>(this.buildShuffledPile());
+  }
+
+  public getPlaneDeck(): Deck<Plane> {
+    return new Deck<Plane>(
+      this.buildShuffledPile()
+        .filter((c) => c instanceof Plane) as Array<Plane>,
+    );
+  }
+
+  public getSpecificDeck(cards: Array<string>): Deck<Card> {
+    return new Deck<Card>(
+      _shuffle(this.buildOrderedPile<Card>([...cards]))
+    );
+  }
+
+  public getOrderedDeck<T extends Card>(cards: Array<string>): Deck<T> {
+    return new Deck<T>(this.buildOrderedPile(cards));
+  }
+
+  private buildShuffledPile(): Array<Card> {
     return _shuffle(this.cards);
   }
 
-  public getPlaneDeck(): Array<Plane> {
-    return this.getDeck()
-      .filter((c) => c instanceof Plane) as Array<Plane>;
-  }
-
-  public getSpecificDeck(cards: Array<string>): Array<Card> {
-    return _shuffle(this.getOrderedDeck<Card>([...cards]));
-  }
-
-  public getOrderedDeck<T extends Card>(cards: Array<string>): Array<T> {
+  private buildOrderedPile<T extends Card>(cards: Array<string>): Array<T> {
     return cards.map(id => this.getCard<T>(id));
   }
 }
