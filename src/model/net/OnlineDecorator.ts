@@ -1,8 +1,8 @@
 import { Card, Plane } from '../card';
-import { Beacon } from '../net/Beacon';
-import { OnlineInterface } from '../net/OnlineInterface';
-import { PeerMap } from '../net/PeerMap';
-import { Event } from '../net/Handler';
+import { Beacon } from './Beacon';
+import { OnlineInterface } from './OnlineInterface';
+import { PeerMap } from './PeerMap';
+import { Event } from './Handler';
 import {
   Coordinates,
   Exported,
@@ -10,7 +10,7 @@ import {
   MapType,
   Revealed,
   Tile,
-} from './MapInterface';
+} from '../map';
 
 export class OnlineDecorator implements MapInterface, OnlineInterface {
   private beacon: Beacon;
@@ -43,6 +43,10 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     return this.map.active;
   }
 
+  public get remaining(): number {
+    return this.map.remaining;
+  }
+
   public get played(): Array<Card> {
     return this.map.played;
   }
@@ -64,10 +68,6 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
   }
   public set hasStarted(hasStarted: boolean) {
     this.map.hasStarted = hasStarted;
-  }
-
-  public getDeckSize(): number {
-    return this.map.getDeckSize();
   }
 
   public chaos(passive: boolean = false, mateId?: string): void {
@@ -100,14 +100,6 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
 
   public resolveReveal(top: Card[], bottom: Card[]): void {
     return this.map.resolveReveal(top, bottom);
-  }
-
-  public putOnTop(cards: Card[]): void {
-    return this.map.putOnTop(cards);
-  }
-
-  public putOnTheBottom(cards: Card[]): void {
-    return this.map.putOnTheBottom(cards);
   }
 
   public clearRevealed(): void {

@@ -3,6 +3,7 @@ import { Container } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Card, Plane } from '../card';
+import { Deck } from '../deck/Deck';
 import {
   Coordinates,
   Exported,
@@ -12,24 +13,24 @@ import {
   Tile,
 } from './MapInterface';
 
+
 export interface Props {
-  deck: Array<Card>;
-  played?: Array<Card>;
+  deck: Deck<Card>;
   active?: Array<Card>;
   revealed?: Revealed;
 }
 
 export abstract class Map implements MapInterface {
-  public deck: Array<Card>;
-  public played: Array<Card>;
+  protected deck: Deck<Card>;
+
   public active: Array<Card>;
   public revealed?: Revealed;
+
   public tiles: Array<Tile> = [];
   public hasStarted: boolean;
 
   public constructor(props: Props) {
     this.deck = props.deck;
-    this.played = props.played ?? [];
     this.active = props.active ?? [];
     this.revealed = props.revealed;
   }
@@ -40,8 +41,12 @@ export abstract class Map implements MapInterface {
     return new Promise(resolve => resolve());
   }
 
-  public getDeckSize(): number {
-    return this.deck.length;
+  public get remaining(): number {
+    return this.deck.remaining;
+  }
+
+  public get played(): Array<Card> {
+    return this.deck.played;
   }
 
   public chaos(passive: boolean = false, mateId?: string): void {
@@ -60,84 +65,18 @@ export abstract class Map implements MapInterface {
     (this.active.find(c => c.id === id) as Plane).updateCounter(change);
   }
 
-  protected draw<T extends Card>(): { card: T, shuffled: boolean } {
-    // Reach for the top card
-    const card = this.deck.shift();
-
-    // There's nothing, like the deep void in your heart
-    if (!card) {
-      this.shuffleDeck();
-
-      return {
-        card: this.deck.shift() as T,
-        shuffled: true,
-      };
-    }
-
-    return { card: card as T, shuffled: false };
-  }
-
-  protected drawPlane(): { card: Plane, shuffled: boolean } {
-    let card: Card;
-    let shuffled: boolean;
-    let found = false;
-
-    do {
-      // Draw card
-      ({ card, shuffled } = this.draw());
-      if (card instanceof Plane) {
-        // it's a plane
-        found = true;
-      } else {
-        // it's a phenomenon, put it in the bottom
-        this.deck.push(card);
-      }
-    } while (!found);
-
-    return { card: card as Plane, shuffled };
-  }
-
-  protected shuffleDeck(): void {
-    this.deck = _shuffle(this.played);
-    this.played = [];
-  }
-
-  public revealUntil(count = 1, type: typeof Card = Card): boolean {
-    const relevant: Array<Card> = [];
-    const others: Array<Card> = [];
-    let shuffled = false;
-    let found = 0;
-
-    do {
-      const drawn = this.draw();
-      shuffled = drawn.shuffled;
-
-      if (drawn.card instanceof type) {
-        found++;
-        relevant.push(drawn.card);
-      } else {
-        others.push(drawn.card);
-      }
-    } while (found < count);
-
+  public revealUntil(count: number, type?: typeof Card): boolean {
+    const { relevant, others, shuffled } = this.deck.revealUntil(count, type);
     this.revealed = { relevant, others };
-
     return shuffled;
   }
 
   public resolveReveal(top: Card[], bottom: Card[]): void {
-    this.putOnTop(top);
-    this.putOnTheBottom(bottom);
+    this.deck.putOnTop(top);
+    this.deck.putOnTheBottom(bottom);
+
     this.clearRevealed();
     eventBus.emit(EventType.RESOLVED_REVEAL);
-  }
-
-  public putOnTop(cards: Array<Card>): void {
-    this.deck.unshift(...cards);
-  }
-
-  public putOnTheBottom(cards: Array<Card>): void {
-    this.deck.push(...cards);
   }
 
   public clearRevealed(): void {
@@ -147,8 +86,7 @@ export abstract class Map implements MapInterface {
   public export(): Exported {
     return {
       type: this.type,
-      deck: this.deck.map(c => c.id),
-      played: this.played.map(c => c.id),
+      deck: this.deck.export(),
       active: this.active.map(c => c.id),
       revealed: this.revealed === undefined
         ? undefined
@@ -160,14 +98,16 @@ export abstract class Map implements MapInterface {
   }
 
   public applyShuffle(state: Exported): void {
-    this.played = [];
-    this.deck = Container.get(DeckProvider).getOrderedDeck(state.deck);
-    this.active = Container.get(DeckProvider).getOrderedDeck(state.active);
+    this.deck.restore({
+      cards: Container.get(DeckProvider).getOrderedPile(state.deck.cards),
+      played: Container.get(DeckProvider).getOrderedPile(state.deck.played),
+    });
+    this.active = Container.get(DeckProvider).getOrderedPile(state.active);
     this.revealed = state.revealed === undefined
       ? undefined
       : {
-        relevant: Container.get(DeckProvider).getOrderedDeck(state.revealed.relevant),
-        others: Container.get(DeckProvider).getOrderedDeck(state.revealed.others),
+        relevant: Container.get(DeckProvider).getOrderedPile(state.revealed.relevant),
+        others: Container.get(DeckProvider).getOrderedPile(state.revealed.others),
       };
   }
 }

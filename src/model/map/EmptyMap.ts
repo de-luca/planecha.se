@@ -3,15 +3,13 @@ import { Exported, MapInterface, MapType, Revealed, Tile } from './MapInterface'
 
 export class EmptyMap implements MapInterface {
   public type: MapType;
-  public active: Card[];
+  public remaining: number;
   public played: Card[];
+  public active: Card[];
   public revealed?: Revealed;
   public ready: Promise<void>;
   public tiles: Tile[];
   public hasStarted: boolean;
-  getDeckSize(): number {
-    throw new Error('Method not implemented.');
-  }
   chaos(): boolean {
     throw new Error('Method not implemented.');
   }
@@ -31,12 +29,6 @@ export class EmptyMap implements MapInterface {
     throw new Error('Method not implemented.');
   }
   resolveReveal(): void {
-    throw new Error('Method not implemented.');
-  }
-  putOnTop(): void {
-    throw new Error('Method not implemented.');
-  }
-  putOnTheBottom(): void {
     throw new Error('Method not implemented.');
   }
   clearRevealed(): void {

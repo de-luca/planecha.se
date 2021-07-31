@@ -8,7 +8,7 @@ export class Classic extends Map {
   public constructor(props: Props) {
     super(props);
 
-    this.active = props.active ?? [this.drawPlane().card];
+    this.active = props.active ?? [this.deck.drawPlane().card];
   }
 
   public get type(): MapType {
@@ -21,18 +21,18 @@ export class Classic extends Map {
     mateId?: string,
   ): boolean {
     this.active.forEach(c => c.leave());
-    this.played.push(...this.active);
+    this.deck.play(...this.active);
 
-    const { card, shuffled } = this.draw();
-    this.active = [card];
+    const { card, shuffled } = this.deck.draw();
+    this.active = [ card ];
     this.active.forEach(c => c.enter(passive, mateId));
 
     return shuffled;
   }
 
-  public customPlaneswalk(planes: Array<Plane>, _coordinates?: Coordinates): void {
+  public customPlaneswalk(planes: Array<Plane>): void {
     this.active.forEach(c => c.leave());
-    this.played.push(...this.active);
+    this.deck.play(...this.active);
     this.active = planes;
     this.active.forEach(c => c.enter());
   }

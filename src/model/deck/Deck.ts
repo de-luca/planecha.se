@@ -1,27 +1,17 @@
 import _shuffle from 'lodash.shuffle';
 import { Card, Plane } from "../card";
 
-interface Revealed {
-  relevant: Array<Card>;
-  others: Array<Card>;
-  shuffled: boolean;
-}
-
 export class Deck<T extends Card> {
   private cards: Array<T>;
-  private playedCards: Array<T>;
+  public played: Array<T>;
 
   public constructor(cards: Array<T>, played?: Array<T>) {
     this.cards = cards;
-    this.playedCards = played ?? [];
+    this.played = played ?? [];
   }
 
   public get remaining(): number {
     return this.cards.length;
-  }
-
-  public get played(): Array<T> {
-    return this.playedCards;
   }
 
   public draw(): { card: T, shuffled: boolean } {
@@ -42,7 +32,7 @@ export class Deck<T extends Card> {
   }
 
   public play(...cards: Array<T>): void {
-    this.playedCards.push(...cards);
+    this.played.push(...cards);
   }
 
   public drawPlane(): { card: Plane, shuffled: boolean } {
@@ -66,13 +56,21 @@ export class Deck<T extends Card> {
   }
 
   public shuffle(): void {
-    this.cards = _shuffle(this.playedCards);
-    this.playedCards = [];
+    this.cards = _shuffle(this.played);
+    this.played = [];
   }
 
-  public revealUntil(count = 1, type: typeof Card = Card): Revealed {
+  public revealUntil(
+    count: number = 1,
+    type: typeof Card = Card,
+  ): {
+    relevant: Array<Card>;
+    others: Array<Card>;
+    shuffled: boolean;
+  } {
     const relevant: Array<Card> = [];
     const others: Array<Card> = [];
+
     let shuffled = false;
     let found = 0;
 
@@ -97,5 +95,17 @@ export class Deck<T extends Card> {
 
   public putOnTheBottom(cards: Array<T>): void {
     this.cards.push(...cards);
+  }
+
+  public export(): { cards: Array<string>, played: Array<string> } {
+    return {
+      cards: this.cards.map(c => c.id),
+      played: this.played.map(c => c.id),
+    };
+  }
+
+  public restore(state: { cards: Array<T>, played: Array<T> }): void {
+    this.cards = state.cards;
+    this.played = state.played;
   }
 }

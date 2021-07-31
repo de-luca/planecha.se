@@ -30,8 +30,10 @@ export enum MapType {
 
 export interface Exported {
   type: MapType;
-  deck: Array<string>;
-  played: Array<string>;
+  deck: {
+    cards: Array<string>;
+    played: Array<string>;
+  };
   active: Array<string>;
   revealed?: { relevant: Array<string>, others: Array<string> };
   tiles?: Array<ExportedTile>;
@@ -45,20 +47,18 @@ export interface Revealed {
 
 export interface MapInterface {
   type: MapType;
+
   active: Array<Card>;
   played: Array<Card>;
+  remaining: number;
+
   revealed?: Revealed;
   ready: Promise<void>;
   tiles: Array<Tile>;
   hasStarted: boolean;
 
-  getDeckSize(): number;
-
   revealUntil(count: number, type?: typeof Card): boolean;
   resolveReveal(top: Array<Card>, bottom: Array<Card>): void;
-
-  putOnTop(cards: Array<Card>): void;
-  putOnTheBottom(cards: Array<Card>): void;
   clearRevealed(): void;
 
   chaos(passive?: boolean, mateId?: string): void;

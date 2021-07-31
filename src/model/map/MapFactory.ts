@@ -1,7 +1,7 @@
 import { Inject, Service } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
 import { Card, Plane } from '../card';
-import { OnlineDecorator } from './OnlineDecorator';
+import { OnlineDecorator } from '../net/OnlineDecorator';
 import { Classic, EmptyMap, SingleDeckAllCards } from '.';
 import { Exported, MapInterface, MapType } from './MapInterface';
 

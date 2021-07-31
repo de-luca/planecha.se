@@ -27,6 +27,10 @@ export class DeckProvider {
     return this.cards.find(c => c.id === id) as T;
   }
 
+  public getOrderedPile<T extends Card>(cards: Array<string>): Array<T> {
+    return cards.map(id => this.getCard<T>(id));
+  }
+
   public getDeck(): Deck<Card> {
     return new Deck<Card>(this.buildShuffledPile());
   }
@@ -40,19 +44,15 @@ export class DeckProvider {
 
   public getSpecificDeck(cards: Array<string>): Deck<Card> {
     return new Deck<Card>(
-      _shuffle(this.buildOrderedPile<Card>([...cards]))
+      _shuffle(this.getOrderedPile<Card>([...cards]))
     );
   }
 
   public getOrderedDeck<T extends Card>(cards: Array<string>): Deck<T> {
-    return new Deck<T>(this.buildOrderedPile(cards));
+    return new Deck<T>(this.getOrderedPile(cards));
   }
 
   private buildShuffledPile(): Array<Card> {
     return _shuffle(this.cards);
-  }
-
-  private buildOrderedPile<T extends Card>(cards: Array<string>): Array<T> {
-    return cards.map(id => this.getCard<T>(id));
   }
 }

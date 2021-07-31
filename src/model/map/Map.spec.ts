@@ -1,9 +1,8 @@
 import { Container } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
-import { Map, Props } from '.';
-import { Card, Plane } from '../card';
-import { MapType } from './MapInterface';
 import { eventBus } from '@/services/EventBus';
+import { Map, MapType } from '.';
+import { Card, Plane } from '../card';
 
 class TestMap extends Map {
   public get type(): MapType {
@@ -13,6 +12,9 @@ class TestMap extends Map {
     throw new Error('Method not implemented.');
   }
   public customPlaneswalk(): void {
+    throw new Error('Method not implemented.');
+  }
+  public planeswalkFromPhenomenon(): boolean {
     throw new Error('Method not implemented.');
   }
 }
@@ -49,7 +51,7 @@ describe('Map.updateCounter', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getPlaneDeck(),
     });
-    map.active = [ map['draw']().card ];
+    map.active = [ map['deck'].draw().card ];
     map.active.forEach((card) => {
       if (card instanceof Plane) {
         card.updateCounter = jest.fn();
@@ -60,65 +62,7 @@ describe('Map.updateCounter', () => {
   });
 });
 
-describe('Map.draw', () => {
-  it('draws a card', () => {
-    const map = new TestMap({
-      deck: Container.get(DeckProvider).getDeck(),
-    });
-    const drawn = map['draw']();
-    expect(drawn.card).toBeInstanceOf(Card);
-    expect(drawn.shuffled).toEqual(false);
-    expect(map.deck).toHaveLength(85);
-  });
-
-  it('reshuffle and draws a card', () => {
-    const map = new TestMap({
-      deck: Container.get(DeckProvider).getDeck(),
-    });
-    // eslint-disable-next-line prefer-destructuring
-    const deck = map.deck;
-    map.played = deck;
-    map.deck = [];
-
-    const drawn = map['draw']();
-
-    expect(drawn.card).toBeInstanceOf(Card);
-    expect(drawn.shuffled).toEqual(true);
-    expect(map.deck).toHaveLength(85);
-  });
-});
-
-describe('Map.shuffleDeck', () => {
-  it('shuffled played cards back', () => {
-    const map = new TestMap({
-      deck: Container.get(DeckProvider).getDeck(),
-    });
-
-    const deck = map.deck;
-    map.played = deck;
-    map.deck = [];
-
-    map['shuffleDeck']();
-
-    expect(map.deck).toHaveLength(86);
-  });
-});
-
 describe('Map.revealUntil', () => {
-  it('reveals a given number of requested Plane', () => {
-    const map = new TestMap({
-      deck: Container.get(DeckProvider).getDeck(),
-    });
-    map.revealUntil(2, Plane);
-    expect(map.revealed?.relevant).toHaveLength(2);
-    for (const card of map.revealed?.relevant ?? []) {
-      expect(card).toBeInstanceOf(Plane);
-    }
-    for (const card of map.revealed?.others ?? []) {
-      expect(card).not.toBeInstanceOf(Plane);
-    }
-  });
-
   it('reveals a given number of requested Card', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
@@ -138,8 +82,8 @@ describe('Map.resolveReveal', () => {
       deck: Container.get(DeckProvider).getDeck(),
     });
 
-    const putOnTop = jest.spyOn(map, 'putOnTop');
-    const putOnTheBottom = jest.spyOn(map, 'putOnTheBottom');
+    const putOnTop = jest.spyOn(map['deck'], 'putOnTop');
+    const putOnTheBottom = jest.spyOn(map['deck'], 'putOnTheBottom');
     const clearRevealed = jest.spyOn(map, 'clearRevealed');
     eventBus.emit = jest.fn();
 
@@ -152,37 +96,9 @@ describe('Map.resolveReveal', () => {
     expect(clearRevealed).toHaveBeenCalled();
     expect(eventBus.emit).toHaveBeenCalled();
 
-    expect(map.deck[0]).toEqual(top);
-    expect(map.deck[map.deck.length - 1]).toEqual(bottom);
+    expect(map['deck']['cards'][0]).toEqual(top);
+    expect(map['deck']['cards'][map.remaining - 1]).toEqual(bottom);
     expect(map.revealed).toBeUndefined();
-  });
-});
-
-describe('Map.putOnTop', () => {
-  it('puts given cards on top of the deck', () => {
-    const map = new TestMap({
-      deck: Container.get(DeckProvider).getDeck(),
-    });
-    // pick a card from the deck
-    const card = map.deck[1];
-
-    map.putOnTop([card]);
-    expect(map.deck).toHaveLength(87);
-    expect(map.deck[0]).toEqual(card);
-  });
-});
-
-describe('Map.putOnTheBottom', () => {
-  it('puts given cards on the bottom of the deck', () => {
-    const map = new TestMap({
-      deck: Container.get(DeckProvider).getDeck(),
-    });
-    // pick a card from the deck
-    const card = map.deck[1];
-
-    map.putOnTheBottom([card]);
-    expect(map.deck).toHaveLength(87);
-    expect(map.deck[map.deck.length - 1]).toEqual(card);
   });
 });
 
@@ -205,8 +121,8 @@ describe('Map.export', () => {
     });
     const exported = map.export();
     expect(exported.type).toEqual(MapType.EMPTY);
-    expect(exported.deck).toHaveLength(map.deck.length);
-    expect(exported.played).toHaveLength(map.played.length);
+    expect(exported.deck.cards).toHaveLength(map.remaining);
+    expect(exported.deck.played).toHaveLength(map.played.length);
     expect(exported.active).toHaveLength(map.active.length);
     for (const card of map.active) {
       expect(exported.active).toContain(card.id);

@@ -17,6 +17,19 @@ describe('DeckProvider.getCard', () => {
   });
 });
 
+describe('DeckProvider.getOrderedPile', () => {
+  it('returns an array with only requested cards in order', () => {
+    const ids = [
+      '56a1afab-782c-4f31-96f5-17b676852fea',
+      '5d87893f-36e0-4621-a139-fedbc74ed4c5',
+    ];
+    const cards = provider.getOrderedPile(ids);
+    expect(cards).toHaveLength(2);
+    expect(cards[0].id).toEqual(ids[0]);
+    expect(cards[1].id).toEqual(ids[1]);
+  });
+});
+
 describe('DeckProvider.getDeck', () => {
   it('returns a shuffled deck with all cards available', () => {
     expect(provider.getDeck().remaining).toEqual(86);

@@ -15,7 +15,7 @@ describe('Deck.draw', () => {
 
   it('reshuffle and draws a card', () => {
     const deck = provider.getDeck();
-    deck['playedCards'] = deck['cards'];
+    deck.played = deck['cards'];
     deck['cards'] = [];
 
     const drawn = deck.draw();
@@ -50,7 +50,7 @@ describe('Deck.drawPlane', () => {
 describe('Deck.shuffle', () => {
   it('shuffled played cards back', () => {
     const deck = provider.getDeck();
-    deck['playedCards'] = deck['cards'];
+    deck.played = deck['cards'];
     deck['cards'] = [];
 
     deck.shuffle();
