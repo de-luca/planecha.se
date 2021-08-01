@@ -103,9 +103,4 @@ export class Deck<T extends Card> {
       played: this.played.map(c => c.id),
     };
   }
-
-  public restore(state: { cards: Array<T>, played: Array<T> }): void {
-    this.cards = state.cards;
-    this.played = state.played;
-  }
 }

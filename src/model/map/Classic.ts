@@ -1,6 +1,6 @@
 import { Map, Props } from './Map';
-import { Card, Plane } from '../card';
-import { Coordinates, MapType } from './MapInterface';
+import { Plane } from '../card';
+import { Coordinates, MapSpecs, MapType } from './MapInterface';
 
 export class Classic extends Map {
   public hasStarted = true;
@@ -11,8 +11,8 @@ export class Classic extends Map {
     this.active = props.active ?? [this.deck.drawPlane().card];
   }
 
-  public get type(): MapType {
-    return MapType.CLASSIC;
+  public get specs(): MapSpecs {
+    return { type: MapType.CLASSIC };
   }
 
   public planeswalk(

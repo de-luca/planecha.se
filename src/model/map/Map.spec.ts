@@ -1,12 +1,12 @@
 import { Container } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
 import { eventBus } from '@/services/EventBus';
-import { Map, MapType } from '.';
 import { Card, Plane } from '../card';
+import { Map, MapSpecs, MapType } from '.';
 
 class TestMap extends Map {
-  public get type(): MapType {
-    return MapType.EMPTY;
+  public get specs(): MapSpecs {
+    return { type: MapType.EMPTY };
   }
   public planeswalk(): boolean {
     throw new Error('Method not implemented.');
@@ -120,7 +120,7 @@ describe('Map.export', () => {
       deck: Container.get(DeckProvider).getDeck(),
     });
     const exported = map.export();
-    expect(exported.type).toEqual(MapType.EMPTY);
+    expect(exported.specs.type).toEqual(MapType.EMPTY);
     expect(exported.deck.cards).toHaveLength(map.remaining);
     expect(exported.deck.played).toHaveLength(map.played.length);
     expect(exported.active).toHaveLength(map.active.length);

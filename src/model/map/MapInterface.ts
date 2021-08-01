@@ -28,8 +28,33 @@ export enum MapType {
   ETERNITIES = 'eternities',
 }
 
-export interface Exported {
+export enum EternitiesMapSubType {
+  SINGLE_DECK = 'SINGLE_DECK',
+  DUAL_DECK = 'DUAL_DECK',
+}
+
+export enum EternitiesMapDeckType {
+  PLANES = 'PLANES',
+  ALL = 'ALL',
+}
+
+export enum EternitiesMapVariant {
+  ON_HELLRIDE = 'ON_HELLRIDE',
+  ON_PLANESWALK = 'ON_PLANESWALK',
+}
+
+export interface MapSpecs {
   type: MapType;
+}
+
+export interface EternitiesMapSpecs extends MapSpecs {
+  subType: EternitiesMapSubType;
+  deckType: EternitiesMapDeckType
+  variants: Array<EternitiesMapVariant>;
+}
+
+export interface Exported {
+  specs: MapSpecs;
   deck: {
     cards: Array<string>;
     played: Array<string>;
@@ -46,8 +71,7 @@ export interface Revealed {
 }
 
 export interface MapInterface {
-  type: MapType;
-
+  specs: MapSpecs;
   active: Array<Card>;
   played: Array<Card>;
   remaining: number;

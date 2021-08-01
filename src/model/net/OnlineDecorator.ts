@@ -6,8 +6,8 @@ import { Event } from './Handler';
 import {
   Coordinates,
   Exported,
+  MapSpecs,
   MapInterface,
-  MapType,
   Revealed,
   Tile,
 } from '../map';
@@ -35,8 +35,8 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     return this.peers.yourName;
   }
 
-  public get type(): MapType {
-    return this.map.type;
+  public get specs(): MapSpecs {
+    return this.map.specs;
   }
 
   public get active(): Array<Card> {

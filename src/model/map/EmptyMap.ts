@@ -1,10 +1,16 @@
 import { Card } from '../card';
-import { Exported, MapInterface, MapType, Revealed, Tile } from './MapInterface';
+import {
+  Exported,
+  MapSpecs,
+  MapInterface,
+  Revealed,
+  Tile,
+} from './MapInterface';
 
 export class EmptyMap implements MapInterface {
-  public type: MapType;
-  public remaining: number;
+  public specs: MapSpecs;
   public played: Card[];
+  public remaining: number;
   public active: Card[];
   public revealed?: Revealed;
   public ready: Promise<void>;

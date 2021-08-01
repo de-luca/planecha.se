@@ -1,13 +1,21 @@
 import { Inject, Service } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
-import { Card, Plane } from '../card';
+import { Card } from '../card';
 import { OnlineDecorator } from '../net/OnlineDecorator';
-import { Classic, EmptyMap, SingleDeckAllCards } from '.';
-import { Exported, MapInterface, MapType } from './MapInterface';
+import {
+  Classic,
+  EmptyMap,
+  EternitiesMapFactory,
+  EternitiesMapSpecs,
+  Exported,
+  MapInterface,
+  MapType,
+} from '.';
 
 export interface AdvancedOptions {
   name?: string;
   cards?: Array<string>;
+  specs?: Omit<EternitiesMapSpecs, 'type'>;
 }
 
 export interface BuildProps {
@@ -20,6 +28,8 @@ export interface BuildProps {
 export class MapFactory {
   @Inject(() => DeckProvider)
   private deckProvider: DeckProvider;
+  @Inject(() => EternitiesMapFactory)
+  private eternitiesMapFactory: EternitiesMapFactory;
 
   public build({ type, online, advanced }: BuildProps): MapInterface {
     let map: MapInterface;
@@ -36,11 +46,11 @@ export class MapFactory {
         });
         break;
       case MapType.ETERNITIES:
-        map = new SingleDeckAllCards({
-          deck: advanced.cards
-            ? this.deckProvider.getSpecificDeck(advanced.cards) as Array<Plane>
-            : this.deckProvider.getDeck(),
-        });
+        map = this.eternitiesMapFactory.build({
+          type,
+          ...advanced.specs as Omit<EternitiesMapSpecs, 'type'>,
+        }, advanced.cards);
+        break;
     }
 
     if (online) {
@@ -51,45 +61,22 @@ export class MapFactory {
   }
 
   public restore(payload: Exported): MapInterface {
-    let map: MapInterface;
-
-    switch (payload.type) {
+    switch (payload.specs.type) {
       case MapType.CLASSIC:
-        map = new Classic({
-          deck: this.deckProvider.getOrderedDeck<Card>(payload.deck),
-          active: this.deckProvider.getOrderedDeck<Card>(payload.active),
-          played: this.deckProvider.getOrderedDeck<Card>(payload.played),
+        return new Classic({
+          deck: this.deckProvider.getDeckFromExport<Card>(payload.deck),
+          active: this.deckProvider.getOrderedPile<Card>(payload.active),
           revealed: payload.revealed
             ? {
-              relevant: this.deckProvider.getOrderedDeck<Card>(payload.revealed.relevant),
-              others: this.deckProvider.getOrderedDeck<Card>(payload.revealed.others),
+              relevant: this.deckProvider.getOrderedPile<Card>(payload.revealed.relevant),
+              others: this.deckProvider.getOrderedPile<Card>(payload.revealed.others),
             }
             : undefined,
         });
-        break;
       case MapType.ETERNITIES:
-        map = new SingleDeckAllCards({
-          deck: this.deckProvider.getOrderedDeck<Plane>(payload.deck),
-          active: this.deckProvider.getOrderedDeck<Plane>(payload.active),
-          played: this.deckProvider.getOrderedDeck<Plane>(payload.played),
-          revealed: payload.revealed
-            ? {
-              relevant: this.deckProvider.getOrderedDeck<Card>(payload.revealed.relevant),
-              others: this.deckProvider.getOrderedDeck<Card>(payload.revealed.others),
-            }
-            : undefined,
-          tiles: payload.tiles?.map(t => ({
-            coordinates: t.coordinates,
-            state: t.state,
-            plane: this.deckProvider.getOrderedDeck(t.plane),
-          })),
-          hasStarted: payload.hasStarted,
-        });
-        break;
+        return this.eternitiesMapFactory.restore(payload);
       default:
         throw new Error('Incompatible');
     }
-
-    return map;
   }
 }

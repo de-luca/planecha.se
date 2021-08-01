@@ -1,21 +1,29 @@
 import { Container } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
-import { EternitiesMap } from '..';
-import { MapType } from '../MapInterface';
+import { SingleDeck } from './SingleDeck';
+import {
+  MapType,
+  EternitiesMapDeckType,
+  EternitiesMapSubType,
+} from '..';
 
 describe('EternitiesMap.type', () => {
   it('returns the type', () => {
-    const map = new EternitiesMap({
+    const map = new SingleDeck({
+      deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
     });
-    expect(map.type).toEqual(MapType.ETERNITIES);
+    expect(map.specs.type).toEqual(MapType.ETERNITIES);
+    expect(map.specs.subType).toEqual(EternitiesMapSubType.SINGLE_DECK);
+    expect(map.specs.deckType).toEqual(EternitiesMapDeckType.PLANES);
   });
 });
 
 describe('EternitiesMap.initializeTiles', () => {
   it('initializes board tiles', () => {
     // it's called in the constructor...
-    const map = new EternitiesMap({
+    const map = new SingleDeck({
+      deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
     });
     expect(map.tiles).toHaveLength(5);
@@ -24,7 +32,8 @@ describe('EternitiesMap.initializeTiles', () => {
 
 describe('EternitiesMap.planeswalk', () => {
   it('changes current active plane', () => {
-    const map = new EternitiesMap({
+    const map = new SingleDeck({
+      deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
     });
     const currentActive = map.active;
@@ -33,7 +42,8 @@ describe('EternitiesMap.planeswalk', () => {
   });
 
   it('shifts the board right', () => {
-    const map = new EternitiesMap({
+    const map = new SingleDeck({
+      deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
     });
     map.planeswalk({ x: 1, y: 0 });
@@ -48,7 +58,8 @@ describe('EternitiesMap.planeswalk', () => {
   });
 
   it('shifts the board left', () => {
-    const map = new EternitiesMap({
+    const map = new SingleDeck({
+      deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
     });
     map.planeswalk({ x: -1, y: 0 });
@@ -63,7 +74,8 @@ describe('EternitiesMap.planeswalk', () => {
   });
 
   it('shifts the board up', () => {
-    const map = new EternitiesMap({
+    const map = new SingleDeck({
+      deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
     });
     map.planeswalk({ x: 0, y: 1 });
@@ -78,7 +90,8 @@ describe('EternitiesMap.planeswalk', () => {
   });
 
   it('shifts the board down', () => {
-    const map = new EternitiesMap({
+    const map = new SingleDeck({
+      deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
     });
     map.planeswalk({ x: 0, y: -1 });
@@ -93,7 +106,8 @@ describe('EternitiesMap.planeswalk', () => {
   });
 
   it('cleanup planes that are too far away', () => {
-    const map = new EternitiesMap({
+    const map = new SingleDeck({
+      deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
     });
 
@@ -125,13 +139,16 @@ describe('EternitiesMap.planeswalk', () => {
 
 describe('EternitiesMap.export', () => {
   it('exports the state of the map', () => {
-    const map = new EternitiesMap({
+    const map = new SingleDeck({
+      deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
     });
     const exported = map.export();
-    expect(exported.type).toEqual(MapType.ETERNITIES);
-    expect(exported.deck).toHaveLength(map.deck.length);
-    expect(exported.played).toHaveLength(map.played.length);
+    expect(exported.specs.type).toEqual(MapType.ETERNITIES);
+    expect(exported.specs.subType).toEqual(EternitiesMapSubType.SINGLE_DECK);
+    expect(exported.specs.deckType).toEqual(EternitiesMapDeckType.PLANES);
+    expect(exported.deck.cards).toHaveLength(map.remaining);
+    expect(exported.deck.played).toHaveLength(map.played.length);
     expect(exported.active).toHaveLength(map.active.length);
     for (const card of map.active) {
       expect(exported.active).toContain(card.id);

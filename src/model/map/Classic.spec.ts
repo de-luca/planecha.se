@@ -9,7 +9,7 @@ describe('Classic.type', () => {
       deck: Container.get(DeckProvider).getDeck(),
     });
 
-    expect(map.type).toEqual(MapType.CLASSIC);
+    expect(map.specs.type).toEqual(MapType.CLASSIC);
   });
 });
 

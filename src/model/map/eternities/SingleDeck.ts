@@ -1,63 +1,72 @@
-import { Map, Props as BaseProps } from '../Map';
-import { Card, Phenomenon, Plane } from '../../card';
+import { Map, Props } from '../Map';
+import { Phenomenon, Plane } from '../../card';
 import {
   Coordinates,
-  Exported,
+  EternitiesMapDeckType,
+  EternitiesMapSpecs,
+  EternitiesMapSubType,
+  Exported as BaseExported,
   MapType,
   Tile,
   TileStatus,
 } from '../MapInterface';
 
-interface Props extends BaseProps {
+interface Exported extends BaseExported {
+  specs: EternitiesMapSpecs;
+}
+
+export interface EternitiesProps extends Props {
+  deckType: EternitiesMapDeckType;
   tiles?: Array<Tile>;
   hasStarted?: boolean;
 }
 
-export class SingleDeckAllCards extends Map {
-  private static readonly activeRange = 1;
-  private static readonly maxRange = 3;
-  private static readonly center: Coordinates = { x: 0, y: 0 };
-
-  public deck: Array<Card>;
-  public played: Array<Card>;
-  public active: Array<Card>;
-  public tiles: Array<Tile>;
+export class SingleDeck extends Map {
+  protected static readonly activeRange = 1;
+  protected static readonly maxRange = 3;
+  protected static readonly center: Coordinates = { x: 0, y: 0 };
 
   public destination?: Coordinates;
+  protected deckType: EternitiesMapDeckType;
 
-  public constructor(props: Props) {
+  public constructor(props: EternitiesProps) {
     super(props);
 
     this.deck = props.deck;
-    this.played = [];
-    this.active = props.active ?? [this.drawPlane().card];
+    this.active = props.active ?? [this.deck.drawPlane().card];
     this.tiles = props.tiles ?? this.initializeTiles();
     this.hasStarted = props.hasStarted ?? false;
 
     this.destination = undefined;
+    this.deckType = props.deckType;
   }
 
-  public get type(): MapType {
-    return MapType.ETERNITIES;
+  public get specs(): EternitiesMapSpecs {
+    return {
+      type: MapType.ETERNITIES,
+      subType: EternitiesMapSubType.SINGLE_DECK,
+      deckType: this.deckType,
+      variants: [],
+    };
   }
 
   private initializeTiles(): Array<Tile> {
     const tiles: Array<Tile> = [{
       state: TileStatus.ACTIVE,
-      coordinates: { ...SingleDeckAllCards.center },
+      coordinates: { ...SingleDeck.center },
       plane: this.active as Array<Plane>,
     }];
 
-    for (let y = SingleDeckAllCards.activeRange * -1; y <= SingleDeckAllCards.activeRange; y++) {
-      for (let x = SingleDeckAllCards.activeRange * -1; x <= SingleDeckAllCards.activeRange; x++) {
+    for (let y = SingleDeck.activeRange * -1; y <= SingleDeck.activeRange; y++) {
+      for (let x = SingleDeck.activeRange * -1; x <= SingleDeck.activeRange; x++) {
         if (
-          Math.abs(x) + Math.abs(y) <= SingleDeckAllCards.activeRange
+          Math.abs(x) + Math.abs(y) <= SingleDeck.activeRange
           && Math.abs(x) + Math.abs(y) !== 0
         ) {
           tiles.push({
             coordinates: { x, y },
             state: TileStatus.VISIBLE,
-            plane: [this.drawPlane().card],
+            plane: [this.deck.drawPlane().card],
           });
         }
       }
@@ -80,8 +89,8 @@ export class SingleDeckAllCards extends Map {
     const yOffset = coordinates.y;
 
     // The active tile is at the center
-    const activeTile = this.tiles.find((t) => t.coordinates.x === SingleDeckAllCards.center.x
-      && t.coordinates.y === SingleDeckAllCards.center.y) as Tile;
+    const activeTile = this.tiles.find((t) => t.coordinates.x === SingleDeck.center.x
+      && t.coordinates.y === SingleDeck.center.y) as Tile;
     // Moove out of the ACTIVE and make if VISIBLE
     activeTile.state = TileStatus.VISIBLE;
 
@@ -95,7 +104,7 @@ export class SingleDeckAllCards extends Map {
     } else {
       // It does not exist (HellRiding)
       // Draw a card and put it in place
-      const drawn = this.draw<Plane>();
+      const drawn = this.deck.draw();
       shuffled = drawn.shuffled;
 
       // This is a Phenomenon
@@ -117,7 +126,7 @@ export class SingleDeckAllCards extends Map {
           y: yOffset,
         },
         state: TileStatus.ACTIVE,
-        plane: [drawn.card],
+        plane: [drawn.card as Plane],
       };
 
       this.tiles.push(newActiveTile);
@@ -128,24 +137,24 @@ export class SingleDeckAllCards extends Map {
 
     // Look over the board
     for (
-      let y = (SingleDeckAllCards.activeRange * -1) + yOffset;
-      y <= SingleDeckAllCards.activeRange + yOffset;
+      let y = (SingleDeck.activeRange * -1) + yOffset;
+      y <= SingleDeck.activeRange + yOffset;
       y++
     ) {
       for (
-        let x = (SingleDeckAllCards.activeRange * -1) + xOffset;
-        x <= SingleDeckAllCards.activeRange + xOffset;
+        let x = (SingleDeck.activeRange * -1) + xOffset;
+        x <= SingleDeck.activeRange + xOffset;
         x++
       ) {
         // IS THAT AN ADJACENT CARD !??
         if (
-          (Math.abs(x - xOffset) + Math.abs(y - yOffset)) <= SingleDeckAllCards.activeRange
+          (Math.abs(x - xOffset) + Math.abs(y - yOffset)) <= SingleDeck.activeRange
         ) {
           // IS THAT SPACE TAKEN ?!!
           const tile = this.tiles.find((t) => t.coordinates.x === x && t.coordinates.y === y);
           if (!tile) {
             // NO?!! Then draw and place a plane
-            const drawn = this.draw<Plane>();
+            const drawn = this.deck.draw();
             shuffled = drawn.shuffled;
 
             if (drawn.card instanceof Phenomenon) {
@@ -161,7 +170,7 @@ export class SingleDeckAllCards extends Map {
             this.tiles.push({
               coordinates: { x, y },
               state: TileStatus.VISIBLE,
-              plane: [drawn.card],
+              plane: [drawn.card as Plane],
             });
           }
         }
@@ -175,12 +184,12 @@ export class SingleDeckAllCards extends Map {
     });
 
     this.tiles
-      .filter(t => Math.abs(t.coordinates.x) + Math.abs(t.coordinates.y) > SingleDeckAllCards.maxRange)
-      .forEach(t => this.played.push(...t.plane));
+      .filter(t => Math.abs(t.coordinates.x) + Math.abs(t.coordinates.y) > SingleDeck.maxRange)
+      .forEach(t => this.deck.play(...t.plane));
 
     // Remove all the plan that are too far
     this.tiles = this.tiles.filter((t) => (
-      Math.abs(t.coordinates.x) + Math.abs(t.coordinates.y) <= SingleDeckAllCards.maxRange
+      Math.abs(t.coordinates.x) + Math.abs(t.coordinates.y) <= SingleDeck.maxRange
     ));
 
     this.destination = undefined;
@@ -211,7 +220,7 @@ export class SingleDeckAllCards extends Map {
 
   public planeswalkFromPhenomenon(passive: boolean = false, mateId?: string): boolean {
     console.log(this.active);
-    this.played.push(...this.active);
+    this.deck.play(...this.active);
     const shuffled = this.planeswalk(this.destination as Coordinates);
     console.log(this.played);
     return shuffled;
@@ -219,16 +228,8 @@ export class SingleDeckAllCards extends Map {
 
   public export(): Exported {
     return {
-      type: this.type,
-      deck: this.deck.map(c => c.id),
-      played: this.played.map(c => c.id),
-      active: this.active.map(c => c.id),
-      revealed: this.revealed === undefined
-        ? undefined
-        : {
-          relevant: this.revealed.relevant.map(c => c.id),
-          others: this.revealed.others.map(c => c.id),
-        },
+      ...super.export(),
+      specs: this.specs,
       tiles: this.tiles.map(t => ({
         coordinates: t.coordinates,
         state: t.state,

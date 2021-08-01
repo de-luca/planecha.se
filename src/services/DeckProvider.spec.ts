@@ -1,5 +1,5 @@
 import { Container } from 'typedi';
-import { Plane } from '../model/card';
+import { Phenomenon, Plane } from '../model/card';
 import { DeckProvider } from './DeckProvider';
 
 const provider = Container.get(DeckProvider);
@@ -42,6 +42,16 @@ describe('DeckProvider.getPlaneDeck', () => {
     expect(planeDeck.remaining).toEqual(78);
     for (const card of planeDeck['cards']) {
       expect(card).toBeInstanceOf(Plane);
+    }
+  });
+});
+
+describe('DeckProvider.getPhenomenonDeck', () => {
+  it('returns a deck with only phenomena', () => {
+    const planeDeck = provider.getPhenomenonDeck();
+    expect(planeDeck.remaining).toEqual(8);
+    for (const card of planeDeck['cards']) {
+      expect(card).toBeInstanceOf(Phenomenon);
     }
   });
 });

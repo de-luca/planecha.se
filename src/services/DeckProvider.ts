@@ -5,6 +5,7 @@ import {
   Card,
   Props,
   Plane,
+  Phenomenon,
 } from '../model/card';
 import { Deck } from '@/model/deck/Deck';
 
@@ -42,6 +43,13 @@ export class DeckProvider {
     );
   }
 
+  public getPhenomenonDeck(): Deck<Phenomenon> {
+    return new Deck<Phenomenon>(
+      this.buildShuffledPile()
+        .filter((c) => c instanceof Phenomenon) as Array<Phenomenon>,
+    );
+  }
+
   public getSpecificDeck(cards: Array<string>): Deck<Card> {
     return new Deck<Card>(
       _shuffle(this.getOrderedPile<Card>([...cards]))
@@ -50,6 +58,15 @@ export class DeckProvider {
 
   public getOrderedDeck<T extends Card>(cards: Array<string>): Deck<T> {
     return new Deck<T>(this.getOrderedPile(cards));
+  }
+
+  public getDeckFromExport<T extends Card>(
+    state: { cards: Array<string>, played: Array<string> },
+  ): Deck<T> {
+    return new Deck<T>(
+      this.getOrderedPile(state.cards),
+      this.getOrderedPile(state.played),
+    );
   }
 
   private buildShuffledPile(): Array<Card> {

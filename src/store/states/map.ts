@@ -12,6 +12,7 @@ import {
   Coordinates,
   Exported,
   MapInterface,
+  MapSpecs,
   MapType,
   Revealed,
   Tile,
@@ -316,11 +317,11 @@ export type Getters = {
   roomId(state: State): string;
   mates(state: State): Map<string, string>;
   map(state: State): MapInterface;
-  type(state: State): MapType;
+  specs(state: State): MapSpecs;
   active(state: State): Array<Card>;
   played(state: State): Array<Card>;
+  remaining(state: State): number;
   revealed(state: State): Revealed | undefined;
-  deckSize(state: State): number;
   tiles(state: State): Array<Tile>;
 }
 
@@ -332,11 +333,11 @@ export const getters: Getters = {
   roomId: state => (state.map as OnlineInterface).roomId,
   mates: state => state.mates,
   map: state => (state.map as MapInterface),
-  type: state => (state.map as MapInterface).type,
+  specs: state => (state.map as MapInterface).specs,
   active: state => (state.map as MapInterface).active,
   played: state => (state.map as MapInterface).played,
+  remaining: state => (state.map as MapInterface).remaining,
   revealed: state => (state.map as MapInterface).revealed,
-  deckSize: state => (state.map as MapInterface).getDeckSize(),
   tiles: state => (state.map as MapInterface).tiles,
 };
 

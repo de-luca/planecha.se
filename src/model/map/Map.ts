@@ -7,8 +7,8 @@ import { Deck } from '../deck/Deck';
 import {
   Coordinates,
   Exported,
+  MapSpecs,
   MapInterface,
-  MapType,
   Revealed,
   Tile,
 } from './MapInterface';
@@ -35,7 +35,7 @@ export abstract class Map implements MapInterface {
     this.revealed = props.revealed;
   }
 
-  public abstract get type(): MapType;
+  public abstract get specs(): MapSpecs;
 
   public get ready(): Promise<void> {
     return new Promise(resolve => resolve());
@@ -85,7 +85,7 @@ export abstract class Map implements MapInterface {
 
   public export(): Exported {
     return {
-      type: this.type,
+      specs: this.specs,
       deck: this.deck.export(),
       active: this.active.map(c => c.id),
       revealed: this.revealed === undefined
@@ -98,10 +98,7 @@ export abstract class Map implements MapInterface {
   }
 
   public applyShuffle(state: Exported): void {
-    this.deck.restore({
-      cards: Container.get(DeckProvider).getOrderedPile(state.deck.cards),
-      played: Container.get(DeckProvider).getOrderedPile(state.deck.played),
-    });
+    this.deck = Container.get(DeckProvider).getDeckFromExport(state.deck);
     this.active = Container.get(DeckProvider).getOrderedPile(state.active);
     this.revealed = state.revealed === undefined
       ? undefined
