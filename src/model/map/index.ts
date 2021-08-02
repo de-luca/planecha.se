@@ -2,4 +2,4 @@ export * from './Map';
 export * from './Classic';
 export * from './EmptyMap';
 export * from './MapInterface';
-export * from './eternities';
+export * as EternitiesMap from './eternities';

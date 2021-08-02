@@ -14,7 +14,7 @@ import {
 } from './MapInterface';
 
 
-export interface Props {
+export interface MapProps {
   deck: Deck<Card>;
   active?: Array<Card>;
   revealed?: Revealed;
@@ -29,7 +29,7 @@ export abstract class Map implements MapInterface {
   public tiles: Array<Tile> = [];
   public hasStarted: boolean;
 
-  public constructor(props: Props) {
+  public constructor(props: MapProps) {
     this.deck = props.deck;
     this.active = props.active ?? [];
     this.revealed = props.revealed;

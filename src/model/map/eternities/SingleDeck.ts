@@ -1,5 +1,5 @@
-import { Map, Props } from '../Map';
-import { Phenomenon, Plane } from '../../card';
+import { Phenomenon, Plane } from "@/model/card";
+import { Map, MapProps } from '../Map';
 import {
   Coordinates,
   EternitiesMapDeckType,
@@ -15,7 +15,7 @@ interface Exported extends BaseExported {
   specs: EternitiesMapSpecs;
 }
 
-export interface EternitiesProps extends Props {
+export interface SingleDeckProps extends MapProps {
   deckType: EternitiesMapDeckType;
   tiles?: Array<Tile>;
   hasStarted?: boolean;
@@ -29,7 +29,7 @@ export class SingleDeck extends Map {
   public destination?: Coordinates;
   protected deckType: EternitiesMapDeckType;
 
-  public constructor(props: EternitiesProps) {
+  public constructor(props: SingleDeckProps) {
     super(props);
 
     this.deck = props.deck;
@@ -46,7 +46,6 @@ export class SingleDeck extends Map {
       type: MapType.ETERNITIES,
       subType: EternitiesMapSubType.SINGLE_DECK,
       deckType: this.deckType,
-      variants: [],
     };
   }
 

@@ -1,6 +1,6 @@
 import { Phenomenon } from "@/model/card";
 import { Deck } from "@/model/deck/Deck";
-import { EternitiesProps, SingleDeck } from "./SingleDeck";
+import { SingleDeckProps, SingleDeck } from "./SingleDeck";
 import {
   EternitiesMapDeckType,
   EternitiesMapSpecs,
@@ -9,20 +9,31 @@ import {
   MapType,
 } from "../MapInterface";
 
-export interface DualDeckInterface extends MapInterface {}
-
-interface Props extends EternitiesProps {
+export interface DualDeckProps extends SingleDeckProps {
+  deckType: EternitiesMapDeckType.PLANES;
   phenomenaDeck: Deck<Phenomenon>;
+  phenomenonTriggers: Map<PhenomenonTrigger, TriggerConfig>;
 }
 
-export class DualDeck extends SingleDeck implements DualDeckInterface {
-  public phenomenaDeck: Deck<Phenomenon>;
+export enum PhenomenonTrigger {
+  ON_PLANESWALK = 'ON_PLANESWALK',
+  ON_HELLRIDE = 'ON_HELLRIDE',
+}
 
-  public constructor(props: Props) {
+export interface TriggerConfig {
+  enabled: boolean;
+  external: boolean;
+  ratio: number;
+}
+
+export class DualDeck extends SingleDeck implements MapInterface {
+  private phenomenaDeck: Deck<Phenomenon>;
+  private phenomenonTriggers: Map<PhenomenonTrigger, TriggerConfig>;
+
+  public constructor(props: DualDeckProps) {
     super(props);
 
     this.phenomenaDeck = props.phenomenaDeck;
-    this.deckType = EternitiesMapDeckType.PLANES;
   }
 
   public get specs(): EternitiesMapSpecs {
@@ -30,7 +41,6 @@ export class DualDeck extends SingleDeck implements DualDeckInterface {
       type: MapType.ETERNITIES,
       subType: EternitiesMapSubType.DUAL_DECK,
       deckType: this.deckType,
-      variants: [],
     };
   }
 }

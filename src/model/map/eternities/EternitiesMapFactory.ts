@@ -1,33 +1,25 @@
 import { Inject, Service } from "typedi";
 import { DeckProvider } from '@/services/DeckProvider';
-import { EternitiesProps, SingleDeck } from "./SingleDeck";
-import { DualDeck, DualDeckInterface } from "./DualDeck";
+import { SingleDeck, SingleDeckProps } from "./SingleDeck";
+import { DualDeck, DualDeckProps, PhenomenonTrigger, TriggerConfig } from "./DualDeck";
 import {
   EternitiesMapDeckType,
   EternitiesMapSpecs,
   EternitiesMapSubType,
-  EternitiesMapVariant,
   Exported,
   MapInterface,
 } from "../MapInterface";
 import { Card, Plane } from "@/model/card";
-import { BaseVariant, OnHellride, OnPlaneswalk } from "./variant";
 import { Deck } from "@/model/deck/Deck";
-
-type VariantConstructor = { new(map: DualDeckInterface): BaseVariant };
 
 @Service()
 export class EternitiesMapFactory {
-  private static readonly VariantMap: Record<EternitiesMapVariant, VariantConstructor> = {
-    [EternitiesMapVariant.ON_PLANESWALK]: OnPlaneswalk,
-    [EternitiesMapVariant.ON_HELLRIDE]: OnHellride,
-  }
-
   @Inject(() => DeckProvider)
   private deckProvider: DeckProvider;
 
   public build(
     specs: EternitiesMapSpecs,
+    phenomenonTriggers?: Record<PhenomenonTrigger, TriggerConfig>,
     cards?: Array<string>,
   ): MapInterface {
     const deck = this.getDeck(specs, cards);
@@ -36,17 +28,20 @@ export class EternitiesMapFactory {
       return new SingleDeck({ deck, deckType: specs.deckType });
     }
 
-    let map: MapInterface = new DualDeck({
-      deck,
-      deckType: specs.deckType,
-      phenomenaDeck: this.deckProvider.getPhenomenonDeck(),
-    });
-
-    for (const variant of specs.variants) {
-      map = new EternitiesMapFactory.VariantMap[variant](map);
+    const triggers = new Map<PhenomenonTrigger, TriggerConfig>();
+    if (phenomenonTriggers?.ON_HELLRIDE) {
+      triggers.set(PhenomenonTrigger.ON_HELLRIDE, phenomenonTriggers.ON_HELLRIDE);
+    }
+    if (phenomenonTriggers?.ON_PLANESWALK) {
+      triggers.set(PhenomenonTrigger.ON_PLANESWALK, phenomenonTriggers.ON_PLANESWALK);
     }
 
-    return map;
+    return new DualDeck({
+      deck,
+      deckType: EternitiesMapDeckType.PLANES,
+      phenomenaDeck: this.deckProvider.getPhenomenonDeck(),
+      phenomenonTriggers: triggers,
+    });
   }
 
   private getDeck(specs: EternitiesMapSpecs, cards?: Array<string>): Deck<Card> {
@@ -62,7 +57,7 @@ export class EternitiesMapFactory {
 
   public restore(payload: Exported): MapInterface {
     const specs = payload.specs as EternitiesMapSpecs;
-    const props: EternitiesProps = {
+    const props: SingleDeckProps = {
       deckType: specs.deckType,
       deck: this.deckProvider.getDeckFromExport<Plane>(payload.deck),
       active: this.deckProvider.getOrderedPile<Plane>(payload.active),
@@ -80,19 +75,13 @@ export class EternitiesMapFactory {
       hasStarted: payload.hasStarted,
     };
 
-    if (specs.subType === EternitiesMapSubType.SINGLE_DECK) {
+    // if (specs.subType === EternitiesMapSubType.SINGLE_DECK) {
       return new SingleDeck(props);
-    }
+    // }
 
-    let map: MapInterface = new DualDeck({
-      ...props,
-      phenomenaDeck: this.deckProvider.getPhenomenonDeck(),
-    });
-
-    for (const variant of specs.variants) {
-      map = new EternitiesMapFactory.VariantMap[variant](map);
-    }
-
-    return map;
+    // return new DualDeck({
+    //   ...props,
+    //   phenomenaDeck: this.deckProvider.getPhenomenonDeck(),
+    // });
   }
 }

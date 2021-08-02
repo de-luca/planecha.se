@@ -38,19 +38,13 @@ export enum EternitiesMapDeckType {
   ALL = 'ALL',
 }
 
-export enum EternitiesMapVariant {
-  ON_HELLRIDE = 'ON_HELLRIDE',
-  ON_PLANESWALK = 'ON_PLANESWALK',
-}
-
 export interface MapSpecs {
   type: MapType;
 }
 
 export interface EternitiesMapSpecs extends MapSpecs {
   subType: EternitiesMapSubType;
-  deckType: EternitiesMapDeckType
-  variants: Array<EternitiesMapVariant>;
+  deckType: EternitiesMapDeckType;
 }
 
 export interface Exported {

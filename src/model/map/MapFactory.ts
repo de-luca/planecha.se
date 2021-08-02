@@ -11,11 +11,14 @@ import {
   MapInterface,
   MapType,
 } from '.';
+import { PhenomenonTrigger, TriggerConfig } from './eternities';
+
 
 export interface AdvancedOptions {
   name?: string;
   cards?: Array<string>;
   specs?: Omit<EternitiesMapSpecs, 'type'>;
+  phenomenonTriggers?: Record<PhenomenonTrigger, TriggerConfig>;
 }
 
 export interface BuildProps {
@@ -46,10 +49,14 @@ export class MapFactory {
         });
         break;
       case MapType.ETERNITIES:
-        map = this.eternitiesMapFactory.build({
-          type,
-          ...advanced.specs as Omit<EternitiesMapSpecs, 'type'>,
-        }, advanced.cards);
+        map = this.eternitiesMapFactory.build(
+          {
+            type,
+            ...advanced.specs as Omit<EternitiesMapSpecs, 'type'>,
+          },
+          advanced.phenomenonTriggers,
+          advanced.cards,
+        );
         break;
     }
 
