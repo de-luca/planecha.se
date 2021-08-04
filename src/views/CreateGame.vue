@@ -7,29 +7,44 @@
 
     <form @submit.prevent="create">
 
-      <game-scope-picker v-model="scope" />
+      <game-scope-picker v-model="online" />
 
       <button-picker
         label="Game mode:"
-        :options="modeOptions"
-        v-model="mode"
+        :options="mapTypeOptions"
+        v-model="mapType"
       />
 
       <button-picker
-        label="Game mode:"
+        v-if="showSubType"
+        label="Eternities Map deck type:"
         :options="subTypeOptions"
         v-model="subType"
       />
+
+      <button-picker
+        v-if="showDeckType"
+        label="Deck composition:"
+        :options="deckTypeOptions"
+        v-model="deckType"
+      />
+
+      <encounter-setup v-model="encounterConfig" v-if="showDualDeckConfig" />
 
       <div class="field" v-if="requireName">
         <label class="label">Your player name:</label>
         <div class="control">
           <input v-model="name" class="input" type="text" placeholder="Super Cake" required>
         </div>
+        <p class="help">The name people in the game will see you as.</p>
       </div>
 
       <div class="field">
-        <a @click.prevent="toggleAdvanced">Customize deck list</a>
+        <a @click.prevent="toggleAdvanced">
+          <span v-if="showAdvanced">▼</span>
+          <span v-else>▶</span>
+          Customize deck list
+        </a>
       </div>
 
       <card-picker v-if="showAdvanced" v-model="cards" :group="group" />
@@ -53,39 +68,40 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { useStore, Store, ActionTypes } from '@/store';
-import { EternitiesMapDeckType, EternitiesMapSubType, MapType } from '@/model/map/MapInterface';
-import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';
-import GameScopePicker from '@/components/GameScopePicker.vue';
-import CardPicker, { Group } from '@/components/CardPicker.vue';
+import {
+  EternitiesMap,
+  EternitiesMapDeckType,
+  EternitiesMapSubType,
+  MapType,
+} from '@/model/map';
 import { Card, Plane } from '@/model/card';
+import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';
+import CardPicker, { Group } from '@/components/create/CardPicker.vue';
+import GameScopePicker from '@/components/create/GameScopePicker.vue';
+import EncounterSetup from '@/components/create/EncounterSetup.vue';
 
+import TriggerConfig = EternitiesMap.TriggerConfig;
+import PhenomenonTrigger = EternitiesMap.PhenomenonTrigger;
+import EncounterMechanic = EternitiesMap.EncounterMechanic;
 
-enum GameScope {
-  LOCAL = 'local',
-  ONLINE = 'online',
-}
 
 @Options({
-  components: { ButtonPicker, CardPicker, GameScopePicker },
+  components: {
+    ButtonPicker, CardPicker,
+    GameScopePicker, EncounterSetup,
+  },
 })
 export default class CreateGame extends Vue {
-  public scopeOptions: Array<Option<string>> = [{
-    label: 'Local',
-    value: GameScope.LOCAL,
-  }, {
-    label: 'Online',
-    value: GameScope.ONLINE,
-  }];
-  public modeOptions: Array<Option<string>> = [{
+  private readonly mapTypeOptions: Array<Option<string>> = [{
     label: 'Classic',
     value: MapType.CLASSIC,
     help: 'Rule 901.15. Single Planar Deck Option.',
   }, {
-    label: 'Eternities',
+    label: 'Eternities Map',
     value: MapType.ETERNITIES,
     help: 'The <a target="_blank" rel="noopener noreferrer" href="https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19">Eternities Map</a> variant of Planechase.',
   }];
-  public subTypeOptions: Array<Option<string>> = [{
+  private readonly subTypeOptions: Array<Option<string>> = [{
     label: 'Single Deck',
     value: EternitiesMapSubType.SINGLE_DECK,
     help: 'Use a single planar deck.',
@@ -94,23 +110,39 @@ export default class CreateGame extends Vue {
     value: EternitiesMapSubType.DUAL_DECK,
     help: 'Use two decks, one for Planes, one for Phenomena.',
   }];
-  public deckTypeOptions: Array<Option<string>> = [{
+  private readonly deckTypeOptions: Array<Option<string>> = [{
     label: 'Only Planes',
     value: EternitiesMapDeckType.PLANES,
     help: 'Basic Eternities Map with Planes only.',
   }, {
     label: 'Planes and Phenomena',
     value: EternitiesMapDeckType.ALL,
-    help: 'Planes and Phenomnena mixed in the same deck.',
+    help: 'Planes and Phenomnena mixed in the same deck. Phenomena are encountered when drawn.',
   }];
 
-  private scope: GameScope = GameScope.LOCAL;
-  private mode: MapType = MapType.CLASSIC;
-  private subType: EternitiesMapSubType = EternitiesMapSubType.SINGLE_DECK;
-  private name: string = '';
-  private cards: Array<Card> = [];
   private showAdvanced: boolean = false;
   private creating: boolean = false;
+
+  private online: boolean = false;
+  private mapType: MapType = MapType.CLASSIC;
+  private subType: EternitiesMapSubType = EternitiesMapSubType.SINGLE_DECK;
+  private deckType: EternitiesMapDeckType = EternitiesMapDeckType.PLANES;
+
+  private encounterConfig: Record<PhenomenonTrigger, TriggerConfig> = {
+    [PhenomenonTrigger.ON_PLANESWALK]: {
+      enabled: false,
+      mechanic: EncounterMechanic.MANUAL,
+      ratio: 6,
+    },
+    [PhenomenonTrigger.ON_HELLRIDE]: {
+      enabled: true,
+      mechanic: EncounterMechanic.MANUAL,
+      ratio: 1,
+    },
+  };
+
+  private name: string = '';
+  private cards: Array<Card> = [];
 
   private store: Store;
 
@@ -119,13 +151,32 @@ export default class CreateGame extends Vue {
   }
 
   public get requireName(): boolean {
-    return this.scope === GameScope.ONLINE;
+    return this.online;
+  }
+
+  public get showSubType(): boolean {
+    return this.mapType === MapType.ETERNITIES;
+  }
+
+  public get showDeckType(): boolean {
+    return this.showSubType
+      && this.subType === EternitiesMapSubType.SINGLE_DECK;
+  }
+
+  public get showDualDeckConfig(): boolean {
+    return this.showSubType
+      && this.subType === EternitiesMapSubType.DUAL_DECK;
   }
 
   public get group(): Group {
-    return this.mode === MapType.ETERNITIES
-      ? Group.PLANES
-      : Group.ALL;
+    if (
+         this.mapType === MapType.ETERNITIES
+      && this.deckType === EternitiesMapDeckType.PLANES
+    ) {
+      return Group.PLANES;
+    }
+
+    return Group.ALL;
   }
 
   public get hasRequiredCards(): boolean {
@@ -133,7 +184,7 @@ export default class CreateGame extends Vue {
       return true;
     }
 
-    switch (this.mode) {
+    switch (this.mapType) {
       case MapType.CLASSIC:
         return this.cards.filter(c => c instanceof Plane).length >= 5;
       case MapType.ETERNITIES:
@@ -151,8 +202,8 @@ export default class CreateGame extends Vue {
     this.creating = true;
 
     await this.store.dispatch(ActionTypes.INIT, {
-      type: this.mode,
-      online: this.scope === GameScope.ONLINE,
+      type: this.mapType,
+      online: this.online,
       advanced: {
         name: this.name,
         cards: this.cards.length !== 0 ? this.cards.map(c => c.id) : undefined,
@@ -184,6 +235,6 @@ export default class CreateGame extends Vue {
 }
 
 .field.create-game button {
-  width: 150px;
+  width: 250px;
 }
 </style>

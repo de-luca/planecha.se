@@ -5,20 +5,18 @@ import { OnlineDecorator } from '../net/OnlineDecorator';
 import {
   Classic,
   EmptyMap,
-  EternitiesMapFactory,
+  EternitiesMap,
   EternitiesMapSpecs,
   Exported,
   MapInterface,
   MapType,
 } from '.';
-import { PhenomenonTrigger, TriggerConfig } from './eternities';
-
 
 export interface AdvancedOptions {
   name?: string;
   cards?: Array<string>;
   specs?: Omit<EternitiesMapSpecs, 'type'>;
-  phenomenonTriggers?: Record<PhenomenonTrigger, TriggerConfig>;
+  phenomenonTriggers?: Record<EternitiesMap.PhenomenonTrigger, EternitiesMap.TriggerConfig>;
 }
 
 export interface BuildProps {
@@ -31,8 +29,8 @@ export interface BuildProps {
 export class MapFactory {
   @Inject(() => DeckProvider)
   private deckProvider: DeckProvider;
-  @Inject(() => EternitiesMapFactory)
-  private eternitiesMapFactory: EternitiesMapFactory;
+  @Inject(() => EternitiesMap.EternitiesMapFactory)
+  private eternitiesMapFactory: EternitiesMap.EternitiesMapFactory;
 
   public build({ type, online, advanced }: BuildProps): MapInterface {
     let map: MapInterface;

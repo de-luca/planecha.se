@@ -20,10 +20,15 @@ export enum PhenomenonTrigger {
   ON_HELLRIDE = 'ON_HELLRIDE',
 }
 
+export enum EncounterMechanic {
+  MANUAL = 'MANUAL',
+  AUTO = 'AUTO',
+}
+
 export interface TriggerConfig {
   enabled: boolean;
-  external: boolean;
-  ratio: number;
+  mechanic: EncounterMechanic;
+  ratio?: number;
 }
 
 export class DualDeck extends SingleDeck implements MapInterface {

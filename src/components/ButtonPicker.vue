@@ -46,7 +46,7 @@ export default class ButtonPicker extends Vue.with(Props) {
   public get selected(): string {
     return this.modelValue;
   }
-  
+
   public set selected(value: string) {
     this.$emit('update:modelValue', value);
   }
@@ -60,7 +60,7 @@ export default class ButtonPicker extends Vue.with(Props) {
 <style lang="scss" scoped>
 .field {
   button {
-    width: 150px;
+    width: 250px;
   }
 
   .control {
@@ -68,7 +68,7 @@ export default class ButtonPicker extends Vue.with(Props) {
     gap: 1rem;
 
     label {
-      width: 150px;
+      width: 250px;
     }
   }
 }

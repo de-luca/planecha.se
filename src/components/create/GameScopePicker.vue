@@ -1,12 +1,12 @@
 <template>
   <div class="field">
-    <label class="label">Local or online game?</label>
+    <label class="label">Local or Online game?</label>
 
     <div class="control">
       <input
         :id="id + 'local'"
         type="radio"
-        value="local"
+        value="false"
         v-model="selected"
       >
       <label class="button" :for="id + 'local'">Local</label>
@@ -14,7 +14,7 @@
       <input
         :id="id + 'online'"
         type="radio"
-        value="online"
+        value="true"
         v-model="selected"
         :disabled="!available"
       >
@@ -27,7 +27,7 @@
       </label>
     </div>
 
-    <p class="help" v-if="!available">Online unavailable. Server is dead.</p>
+    <p class="help" v-if="!available">Online unavailable. 🔥 Server is dead 🔥</p>
   </div>
 </template>
 
@@ -35,13 +35,8 @@
 import { Beacon } from '@/model/net/Beacon';
 import { Options, Vue, prop } from 'vue-class-component';
 
-export enum GameScope {
-  LOCAL = 'local',
-  ONLINE = 'online',
-}
-
 class Props {
-  public modelValue = prop<string>({ required: true });
+  public modelValue = prop<boolean>({ required: true });
 }
 
 @Options({
@@ -59,11 +54,11 @@ export default class GameScopePicker extends Vue.with(Props) {
       .finally(() => this.loading = false);
   }
 
-  public get selected(): string {
+  public get selected(): boolean {
     return this.modelValue;
   }
 
-  public set selected(value: string) {
+  public set selected(value: boolean) {
     this.$emit('update:modelValue', value);
   }
 }
@@ -72,7 +67,7 @@ export default class GameScopePicker extends Vue.with(Props) {
 <style lang="scss" scoped>
 .field {
   button {
-    width: 150px;
+    width: 250px;
   }
 
   .control {
@@ -80,7 +75,7 @@ export default class GameScopePicker extends Vue.with(Props) {
     gap: 1rem;
 
     label {
-      width: 150px;
+      width: 250px;
     }
   }
 }

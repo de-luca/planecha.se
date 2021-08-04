@@ -62,7 +62,7 @@ export default class CardPicker extends Vue.with(Props) {
   }
 
   public set selected(value: Array<string>) {
-    this.$emit('update:modelValue', this.deckProvider.getOrderedDeck(value));
+    this.$emit('update:modelValue', this.deckProvider.getOrderedPile(value));
   }
 
   public get selected(): Array<string> {
