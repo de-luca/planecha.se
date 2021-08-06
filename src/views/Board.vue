@@ -1,9 +1,12 @@
 <template>
   <div class="board">
+
     <div class="nav">
-      <span @click="thaNav">
-        The super logo here
-      </span>
+      <div class="brand" @click="thaNav">
+        <div>⟁</div>
+        <div>⟁</div>
+        <div>⟁</div>
+      </div>
       <online-controls v-if="online"/>
       <close-game />
     </div>
@@ -11,6 +14,7 @@
     <component class="map" :is="mapComponent" />
 
     <notif-center />
+
   </div>
 </template>
 
@@ -50,7 +54,7 @@ export default class Board extends Vue {
   }
 
   public get mapComponent(): Component {
-    switch (this.store.getters.type) {
+    switch (this.store.getters.specs.type) {
       case MapType.CLASSIC:
         return ClassicMap;
       case MapType.ETERNITIES:
@@ -94,6 +98,30 @@ export default class Board extends Vue {
   flex-direction: row;
   justify-content: space-between;
   gap: .5rem;
+
+  .brand {
+    div {
+      display: inline-block;
+      font-size: 2em;
+      width: 3rem;
+      text-align: center;
+
+      &:hover {
+        cursor: pointer;
+        color: gray;
+      }
+
+      &:nth-child(1) {
+        transform: rotate(180deg)
+      }
+      &:nth-child(2) {
+        transform: translateX(-1.5rem);
+      }
+      &:nth-child(3) {
+        transform: rotate(180deg) translateX(3rem);
+      }
+    }
+  }
 
   span:first-child {
     flex-grow: 1;
