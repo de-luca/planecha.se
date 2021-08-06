@@ -207,8 +207,14 @@ export default class CreateGame extends Vue {
       advanced: {
         name: this.name,
         cards: this.cards.length !== 0 ? this.cards.map(c => c.id) : undefined,
+        phenomenonTriggers: this.encounterConfig,
+        specs: {
+          subType: this.subType,
+          deckType: this.deckType,
+        },
       },
     });
+
     this.creating = false;
 
     this.$router.push('/board');
