@@ -1,16 +1,16 @@
 import { Inject, Service } from "typedi";
 import { DeckProvider } from '@/services/DeckProvider';
 import { SingleDeck, SingleDeckProps } from "./SingleDeck";
-import { DualDeck, DualDeckProps, PhenomenonTrigger, TriggerConfig } from "./DualDeck";
+import { DualDeck, DualDeckExported, EncounterTriggers } from "./DualDeck";
 import {
   EternitiesMapDeckType,
   EternitiesMapSpecs,
   EternitiesMapSubType,
-  Exported,
   MapInterface,
 } from "../MapInterface";
 import { Card, Plane } from "@/model/card";
 import { Deck } from "@/model/deck/Deck";
+import { EternitiesMapExported } from "./EternitiesMap";
 
 @Service()
 export class EternitiesMapFactory {
@@ -19,7 +19,7 @@ export class EternitiesMapFactory {
 
   public build(
     specs: EternitiesMapSpecs,
-    phenomenonTriggers?: Record<PhenomenonTrigger, TriggerConfig>,
+    encounterTriggers?: EncounterTriggers,
     cards?: Array<string>,
   ): MapInterface {
     const deck = this.getDeck(specs, cards);
@@ -28,19 +28,11 @@ export class EternitiesMapFactory {
       return new SingleDeck({ deck, deckType: specs.deckType });
     }
 
-    const triggers = new Map<PhenomenonTrigger, TriggerConfig>();
-    if (phenomenonTriggers?.ON_HELLRIDE) {
-      triggers.set(PhenomenonTrigger.ON_HELLRIDE, phenomenonTriggers.ON_HELLRIDE);
-    }
-    if (phenomenonTriggers?.ON_PLANESWALK) {
-      triggers.set(PhenomenonTrigger.ON_PLANESWALK, phenomenonTriggers.ON_PLANESWALK);
-    }
-
     return new DualDeck({
       deck,
       deckType: EternitiesMapDeckType.PLANES,
       phenomenaDeck: this.deckProvider.getPhenomenonDeck(),
-      phenomenonTriggers: triggers,
+      encounterTriggers: encounterTriggers as EncounterTriggers,
     });
   }
 
@@ -55,7 +47,7 @@ export class EternitiesMapFactory {
     }
   }
 
-  public restore(payload: Exported): MapInterface {
+  public restore(payload: EternitiesMapExported): MapInterface {
     const specs = payload.specs as EternitiesMapSpecs;
     const props: SingleDeckProps = {
       deckType: specs.deckType,
@@ -75,13 +67,15 @@ export class EternitiesMapFactory {
       hasStarted: payload.hasStarted,
     };
 
-    // if (specs.subType === EternitiesMapSubType.SINGLE_DECK) {
+    if (specs.subType === EternitiesMapSubType.SINGLE_DECK) {
       return new SingleDeck(props);
-    // }
+    }
 
-    // return new DualDeck({
-    //   ...props,
-    //   phenomenaDeck: this.deckProvider.getPhenomenonDeck(),
-    // });
+    return new DualDeck({
+      ...props,
+      deckType: EternitiesMapDeckType.PLANES,
+      phenomenaDeck: this.deckProvider.getPhenomenonDeck(),
+      encounterTriggers: (payload as DualDeckExported).encounterTriggers,
+    });
   }
 }

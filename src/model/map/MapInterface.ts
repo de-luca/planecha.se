@@ -1,4 +1,5 @@
 import { Card, Plane } from '../card';
+import { DeckState } from '../deck/Deck';
 
 export interface Coordinates {
   x: number;
@@ -49,10 +50,7 @@ export interface EternitiesMapSpecs extends MapSpecs {
 
 export interface Exported {
   specs: MapSpecs;
-  deck: {
-    cards: Array<string>;
-    played: Array<string>;
-  };
+  deck: DeckState;
   active: Array<string>;
   revealed?: { relevant: Array<string>, others: Array<string> };
   tiles?: Array<ExportedTile>;

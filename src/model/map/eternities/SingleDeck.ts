@@ -1,44 +1,19 @@
 import { Phenomenon, Plane } from "@/model/card";
-import { Map, MapProps } from '../Map';
+import { EternitiesMap, EternitiesMapProps } from "./EternitiesMap";
 import {
   Coordinates,
-  EternitiesMapDeckType,
   EternitiesMapSpecs,
   EternitiesMapSubType,
-  Exported as BaseExported,
   MapType,
   Tile,
   TileStatus,
 } from '../MapInterface';
 
-interface Exported extends BaseExported {
-  specs: EternitiesMapSpecs;
-}
+export interface SingleDeckProps extends EternitiesMapProps {}
 
-export interface SingleDeckProps extends MapProps {
-  deckType: EternitiesMapDeckType;
-  tiles?: Array<Tile>;
-  hasStarted?: boolean;
-}
-
-export class SingleDeck extends Map {
-  protected static readonly activeRange = 1;
-  protected static readonly maxRange = 3;
-  protected static readonly center: Coordinates = { x: 0, y: 0 };
-
-  public destination?: Coordinates;
-  protected deckType: EternitiesMapDeckType;
-
+export class SingleDeck extends EternitiesMap {
   public constructor(props: SingleDeckProps) {
     super(props);
-
-    this.deck = props.deck;
-    this.active = props.active ?? [this.deck.drawPlane().card];
-    this.tiles = props.tiles ?? this.initializeTiles();
-    this.hasStarted = props.hasStarted ?? false;
-
-    this.destination = undefined;
-    this.deckType = props.deckType;
   }
 
   public get specs(): EternitiesMapSpecs {
@@ -47,31 +22,6 @@ export class SingleDeck extends Map {
       subType: EternitiesMapSubType.SINGLE_DECK,
       deckType: this.deckType,
     };
-  }
-
-  private initializeTiles(): Array<Tile> {
-    const tiles: Array<Tile> = [{
-      state: TileStatus.ACTIVE,
-      coordinates: { ...SingleDeck.center },
-      plane: this.active as Array<Plane>,
-    }];
-
-    for (let y = SingleDeck.activeRange * -1; y <= SingleDeck.activeRange; y++) {
-      for (let x = SingleDeck.activeRange * -1; x <= SingleDeck.activeRange; x++) {
-        if (
-          Math.abs(x) + Math.abs(y) <= SingleDeck.activeRange
-          && Math.abs(x) + Math.abs(y) !== 0
-        ) {
-          tiles.push({
-            coordinates: { x, y },
-            state: TileStatus.VISIBLE,
-            plane: [this.deck.drawPlane().card],
-          });
-        }
-      }
-    }
-
-    return tiles;
   }
 
   private encounterPhenomenon(card: Phenomenon, coordinates: Coordinates): void {
@@ -223,18 +173,5 @@ export class SingleDeck extends Map {
     const shuffled = this.planeswalk(this.destination as Coordinates);
     console.log(this.played);
     return shuffled;
-  }
-
-  public export(): Exported {
-    return {
-      ...super.export(),
-      specs: this.specs,
-      tiles: this.tiles.map(t => ({
-        coordinates: t.coordinates,
-        state: t.state,
-        plane: t.plane.map(p => p.id),
-      })),
-      hasStarted: this.hasStarted,
-    };
   }
 }

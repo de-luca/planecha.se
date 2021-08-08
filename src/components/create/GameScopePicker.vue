@@ -6,7 +6,7 @@
       <input
         :id="id + 'local'"
         type="radio"
-        value="false"
+        :value="false"
         v-model="selected"
       >
       <label class="button" :for="id + 'local'">Local</label>
@@ -14,7 +14,7 @@
       <input
         :id="id + 'online'"
         type="radio"
-        value="true"
+        :value="true"
         v-model="selected"
         :disabled="!available"
       >

@@ -9,6 +9,15 @@
 
       <game-scope-picker v-model="online" />
 
+      <div class="field" v-if="requireName">
+        <label class="label">Your player name:</label>
+        <div class="control">
+          <input v-model="name" class="input" type="text" placeholder="Super Cake" required>
+        </div>
+        <p class="help">The name people in the game will see you as.</p>
+      </div>
+
+
       <button-picker
         label="Game mode:"
         :options="mapTypeOptions"
@@ -30,14 +39,6 @@
       />
 
       <encounter-setup v-model="encounterConfig" v-if="showDualDeckConfig" />
-
-      <div class="field" v-if="requireName">
-        <label class="label">Your player name:</label>
-        <div class="control">
-          <input v-model="name" class="input" type="text" placeholder="Super Cake" required>
-        </div>
-        <p class="help">The name people in the game will see you as.</p>
-      </div>
 
       <div class="field">
         <a @click.prevent="toggleAdvanced">
@@ -80,8 +81,8 @@ import CardPicker, { Group } from '@/components/create/CardPicker.vue';
 import GameScopePicker from '@/components/create/GameScopePicker.vue';
 import EncounterSetup from '@/components/create/EncounterSetup.vue';
 
-import TriggerConfig = EternitiesMap.TriggerConfig;
-import PhenomenonTrigger = EternitiesMap.PhenomenonTrigger;
+import EncounterTriggers = EternitiesMap.EncounterTriggers;
+import EncounterTrigger = EternitiesMap.EncounterTrigger;
 import EncounterMechanic = EternitiesMap.EncounterMechanic;
 
 
@@ -128,13 +129,13 @@ export default class CreateGame extends Vue {
   private subType: EternitiesMapSubType = EternitiesMapSubType.SINGLE_DECK;
   private deckType: EternitiesMapDeckType = EternitiesMapDeckType.PLANES;
 
-  private encounterConfig: Record<PhenomenonTrigger, TriggerConfig> = {
-    [PhenomenonTrigger.ON_PLANESWALK]: {
+  private encounterConfig: EncounterTriggers = {
+    [EncounterTrigger.ON_PLANESWALK]: {
       enabled: false,
       mechanic: EncounterMechanic.MANUAL,
       ratio: 6,
     },
-    [PhenomenonTrigger.ON_HELLRIDE]: {
+    [EncounterTrigger.ON_HELLRIDE]: {
       enabled: true,
       mechanic: EncounterMechanic.MANUAL,
       ratio: 1,
@@ -207,7 +208,7 @@ export default class CreateGame extends Vue {
       advanced: {
         name: this.name,
         cards: this.cards.length !== 0 ? this.cards.map(c => c.id) : undefined,
-        phenomenonTriggers: this.encounterConfig,
+        encounterTriggers: this.encounterConfig,
         specs: {
           subType: this.subType,
           deckType: this.deckType,

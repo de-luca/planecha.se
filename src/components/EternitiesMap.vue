@@ -36,7 +36,11 @@ import _shuffle from 'lodash.shuffle';
 import { Component } from 'vue';
 import { Options, Vue } from 'vue-class-component';
 import { ActionTypes, Store, useStore } from '@/store';
-import { Revealed, Tile as TileModel } from '@/model/map/MapInterface';
+import {
+  EternitiesMap as EMap,
+  Revealed,
+  Tile as TileModel
+} from '@/model/map';
 import { Phenomenon as PhenomenonModel, Plane } from '@/model/card';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Config, PickedLeft } from './reveal/BaseReveal';
@@ -46,7 +50,6 @@ import Phenomenon from '@/components/eternities/Phenomenon.vue';
 import Scry from '@/components/reveal/Scry.vue';
 import Pick from '@/components/reveal/Pick.vue';
 import Show from '@/components/reveal/Show.vue';
-import { SingleDeckAllCards } from '@/model/map';
 
 type Revealer = {
   passive: boolean;
@@ -138,7 +141,7 @@ export default class EternitiesMap extends Vue {
   }
 
   public get inPlaneswalkPhenomenon(): PhenomenonModel | undefined {
-    return (this.store.getters.map as SingleDeckAllCards).destination
+    return (this.store.getters.map as EMap.EternitiesMap).destination
       ? this.store.getters.active[0]
       : undefined;
   }

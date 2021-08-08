@@ -16,7 +16,7 @@ export interface AdvancedOptions {
   name?: string;
   cards?: Array<string>;
   specs?: Omit<EternitiesMapSpecs, 'type'>;
-  phenomenonTriggers?: Record<EternitiesMap.PhenomenonTrigger, EternitiesMap.TriggerConfig>;
+  encounterTriggers?: EternitiesMap.EncounterTriggers;
 }
 
 export interface BuildProps {
@@ -52,7 +52,7 @@ export class MapFactory {
             type,
             ...advanced.specs as Omit<EternitiesMapSpecs, 'type'>,
           },
-          advanced.phenomenonTriggers,
+          advanced.encounterTriggers,
           advanced.cards,
         );
         break;
@@ -79,7 +79,7 @@ export class MapFactory {
             : undefined,
         });
       case MapType.ETERNITIES:
-        return this.eternitiesMapFactory.restore(payload);
+        return this.eternitiesMapFactory.restore(payload as EternitiesMap.EternitiesMapExported);
       default:
         throw new Error('Incompatible');
     }

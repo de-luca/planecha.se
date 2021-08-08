@@ -7,7 +7,7 @@ import {
   Plane,
   Phenomenon,
 } from '../model/card';
-import { Deck } from '@/model/deck/Deck';
+import { Deck, DeckState } from '@/model/deck/Deck';
 
 import cards from '../assets/cards.json';
 
@@ -60,9 +60,7 @@ export class DeckProvider {
     return new Deck<T>(this.getOrderedPile(cards));
   }
 
-  public getDeckFromExport<T extends Card>(
-    state: { cards: Array<string>, played: Array<string> },
-  ): Deck<T> {
+  public getDeckFromExport<T extends Card>(state: DeckState): Deck<T> {
     return new Deck<T>(
       this.getOrderedPile(state.cards),
       this.getOrderedPile(state.played),

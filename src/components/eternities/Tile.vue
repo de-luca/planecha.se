@@ -47,7 +47,7 @@
     </div>
 
     <div
-      v-if="!tile && state === 'hellrideable'"
+      v-if="!tile && !hidden && state === 'hellrideable'"
       :class="state"
       @click="planeswalk"
       title="Hellride"

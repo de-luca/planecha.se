@@ -1,6 +1,11 @@
 import _shuffle from 'lodash.shuffle';
 import { Card, Plane } from "../card";
 
+export interface DeckState {
+  cards: Array<string>;
+  played: Array<string>;
+}
+
 export class Deck<T extends Card> {
   private cards: Array<T>;
   public played: Array<T>;
@@ -97,7 +102,7 @@ export class Deck<T extends Card> {
     this.cards.push(...cards);
   }
 
-  public export(): { cards: Array<string>, played: Array<string> } {
+  public export(): DeckState {
     return {
       cards: this.cards.map(c => c.id),
       played: this.played.map(c => c.id),
