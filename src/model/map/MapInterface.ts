@@ -70,8 +70,10 @@ export interface MapInterface {
 
   revealed?: Revealed;
   ready: Promise<void>;
+
   tiles: Array<Tile>;
   hasStarted: boolean;
+  destination?: Coordinates;
 
   revealUntil(count: number, type?: typeof Card): boolean;
   resolveReveal(top: Array<Card>, bottom: Array<Card>): void;

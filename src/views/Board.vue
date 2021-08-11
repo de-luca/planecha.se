@@ -100,6 +100,8 @@ export default class Board extends Vue {
   gap: .5rem;
 
   .brand {
+    flex-grow: 1;
+
     div {
       display: inline-block;
       font-size: 2em;
@@ -121,10 +123,6 @@ export default class Board extends Vue {
         transform: rotate(180deg) translateX(3rem);
       }
     }
-  }
-
-  span:first-child {
-    flex-grow: 1;
   }
 
   button {

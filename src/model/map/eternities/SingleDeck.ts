@@ -24,15 +24,22 @@ export class SingleDeck extends EternitiesMap {
     };
   }
 
-  private encounterPhenomenon(card: Phenomenon, coordinates: Coordinates): void {
+  private encounterPhenomenon(
+    card: Phenomenon,
+    coordinates: Coordinates,
+    passive: boolean = false,
+    mateId?: string,
+  ): void {
     this.active = [card];
     this.destination = coordinates;
-    this.active.forEach(c => c.enter());
-
-    console.log(this);
+    this.active.forEach(c => c.enter(passive, mateId));
   }
 
-  public planeswalk(coordinates: Coordinates): boolean {
+  public planeswalk(
+    coordinates: Coordinates,
+    passive: boolean = false,
+    mateId?: string,
+  ): boolean {
     let shuffled = false;
     const xOffset = coordinates.x;
     const yOffset = coordinates.y;
@@ -59,10 +66,12 @@ export class SingleDeck extends EternitiesMap {
       // This is a Phenomenon
       if (drawn.card instanceof Phenomenon) {
         // Special encounter
-        this.encounterPhenomenon(drawn.card, {
-          x: xOffset,
-          y: yOffset,
-        });
+        this.encounterPhenomenon(
+          drawn.card,
+          { x: xOffset, y: yOffset },
+          passive,
+          mateId,
+        );
         // Return imediately
         return shuffled;
       }
@@ -108,10 +117,12 @@ export class SingleDeck extends EternitiesMap {
 
             if (drawn.card instanceof Phenomenon) {
               // Special encounter
-              this.encounterPhenomenon(drawn.card, {
-                x: xOffset,
-                y: yOffset,
-              });
+              this.encounterPhenomenon(
+                drawn.card,
+                { x: xOffset, y: yOffset },
+                passive,
+                mateId,
+              );
 
               return shuffled;
             }
@@ -142,6 +153,9 @@ export class SingleDeck extends EternitiesMap {
     ));
 
     this.destination = undefined;
+
+    this.active.forEach(c => c.enter(passive, mateId));
+
     return shuffled;
   }
 
@@ -168,10 +182,12 @@ export class SingleDeck extends EternitiesMap {
   }
 
   public planeswalkFromPhenomenon(passive: boolean = false, mateId?: string): boolean {
-    console.log(this.active);
     this.deck.play(...this.active);
-    const shuffled = this.planeswalk(this.destination as Coordinates);
-    console.log(this.played);
+    const shuffled = this.planeswalk(
+      this.destination as Coordinates,
+      passive,
+      mateId,
+    );
     return shuffled;
   }
 }

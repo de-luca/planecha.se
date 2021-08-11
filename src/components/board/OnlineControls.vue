@@ -1,18 +1,18 @@
 <template>
-  <div 
+  <div
     :class="{ 'is-active': active }"
-    class="dropdown is-right" 
+    class="dropdown is-right"
   >
     <div class="dropdown-trigger">
       <button @click="active = !active" class="button is-light" aria-haspopup="true" aria-controls="dropdown-menu">
         <span>Online Controls</span>
       </button>
     </div>
-    
+
     <div class="dropdown-menu" id="dropdown-menu" role="menu">
-      
+
       <div class="dropdown-content">
-        
+
         <div class="dropdown-item">
           <div class="field">
             <label class="label">Invite players</label>
@@ -21,7 +21,7 @@
                 <input class="input" type="text" :value="roomUrl" readonly>
               </div>
               <div class="control">
-                <a @click="copy" class="button">Copy</a>
+                <a @click="copy" id="copy" class="button">{{ copyBtnText }}</a>
               </div>
             </div>
             <p class="help">Give this thing to people!</p>
@@ -39,7 +39,7 @@
         </div>
 
       </div>
-      
+
     </div>
 
   </div>
@@ -49,9 +49,15 @@
 import { Store, useStore } from '@/store';
 import { Vue } from 'vue-class-component';
 
+enum BtnText {
+  IDLE = 'Copy',
+  SUCCESS = 'Copied!',
+}
+
 export default class OnlineControls extends Vue {
-  public store: Store;
-  public active: boolean = true;
+  private store: Store;
+  private active: boolean = true;
+  private copyBtnText: BtnText = BtnText.IDLE;
 
   public created() {
     this.store = useStore();
@@ -72,20 +78,26 @@ export default class OnlineControls extends Vue {
   public async copy(): Promise<void> {
     try {
       await navigator.clipboard.writeText(this.roomUrl);
+      this.copyBtnText = BtnText.SUCCESS;
+      setTimeout(() => this.copyBtnText = BtnText.IDLE, 5000);
     } catch (err) {
       console.error(err);
     }
   }
-  
+
 
 
 }
 </script>
 
 <style lang="scss" scoped>
+#copy {
+  width: 5rem;
+}
+
 .dropdown-trigger {
   height: 100%;
-  
+
   button {
     height: 100%;
   }

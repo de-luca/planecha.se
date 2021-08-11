@@ -70,6 +70,10 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     this.map.hasStarted = hasStarted;
   }
 
+  public get destination(): Coordinates | undefined {
+    return this.map.destination;
+  }
+
   public chaos(passive: boolean = false, mateId?: string): void {
     return this.map.chaos(passive, mateId);
   }
