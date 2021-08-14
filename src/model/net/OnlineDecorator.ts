@@ -10,6 +10,7 @@ import {
   MapInterface,
   Revealed,
   Tile,
+  EncounterTriggers,
 } from '../map';
 
 export class OnlineDecorator implements MapInterface, OnlineInterface {
@@ -72,6 +73,10 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
 
   public get destination(): Coordinates | undefined {
     return this.map.destination;
+  }
+
+  public get encounterTriggers(): EncounterTriggers {
+    return this.map.encounterTriggers;
   }
 
   public chaos(passive: boolean = false, mateId?: string): void {

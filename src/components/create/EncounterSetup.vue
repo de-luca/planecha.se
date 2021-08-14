@@ -106,15 +106,12 @@
 </template>
 
 <script lang="ts">
+import { EncounterMechanic, EncounterTriggers } from '@/model/map';
 import { Options, Vue, prop } from 'vue-class-component';
-import { EternitiesMap } from '@/model/map';
 
-import TriggerConfig = EternitiesMap.TriggerConfig;
-import PhenomenonTrigger = EternitiesMap.PhenomenonTrigger;
-import EncounterMechanic = EternitiesMap.EncounterMechanic;
 
 class Props {
-  public modelValue = prop<Record<PhenomenonTrigger, TriggerConfig>>({ required: true });
+  public modelValue = prop<EncounterTriggers>({ required: true });
 }
 
 @Options({
@@ -126,11 +123,11 @@ export default class EncounterSetup extends Vue.with(Props) {
     [EncounterMechanic.AUTO]: 'The encounter will be rolled automaticaly with the probability you defined.',
   }
 
-  public get setup(): Record<PhenomenonTrigger, TriggerConfig> {
+  public get setup(): EncounterTriggers {
     return this.modelValue;
   }
 
-  public set setup(value: Record<PhenomenonTrigger, TriggerConfig>) {
+  public set setup(value: EncounterTriggers) {
     this.$emit('update:modelValue', value);
   }
 }

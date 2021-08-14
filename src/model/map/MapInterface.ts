@@ -23,6 +23,24 @@ export interface ExportedTile {
   plane: Array<string>;
 }
 
+export enum EncounterTrigger {
+  ON_PLANESWALK = 'ON_PLANESWALK',
+  ON_HELLRIDE = 'ON_HELLRIDE',
+}
+
+export enum EncounterMechanic {
+  MANUAL = 'MANUAL',
+  AUTO = 'AUTO',
+}
+
+export interface TriggerConfig {
+  enabled: boolean;
+  mechanic: EncounterMechanic;
+  ratio: number;
+}
+
+export type EncounterTriggers = Record<EncounterTrigger, TriggerConfig>;
+
 export enum MapType {
   EMPTY = 'empty',
   CLASSIC = 'classic',
@@ -74,6 +92,7 @@ export interface MapInterface {
   tiles: Array<Tile>;
   hasStarted: boolean;
   destination?: Coordinates;
+  encounterTriggers: EncounterTriggers
 
   revealUntil(count: number, type?: typeof Card): boolean;
   resolveReveal(top: Array<Card>, bottom: Array<Card>): void;

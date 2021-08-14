@@ -56,11 +56,15 @@
 
 <script lang="ts">
 import { Options, prop, Vue } from 'vue-class-component';
-import { Coordinates, EternitiesMap as EMap } from '@/model/map';
+import {
+  Coordinates,
+  EncounterMechanic,
+  TriggerConfig,
+} from '@/model/map';
 
 export type EncounterWallConfig = {
   coordinates: Coordinates;
-  triggerConfig: EMap.TriggerConfig;
+  triggerConfig: TriggerConfig;
 }
 
 class Props {
@@ -74,7 +78,7 @@ export default class EncounterWall extends Vue.with(Props) {
   private rolled: number = 0;
 
   public get title(): string {
-    return this.config.triggerConfig.mechanic === EMap.EncounterMechanic.MANUAL
+    return this.config.triggerConfig.mechanic === EncounterMechanic.MANUAL
       ? 'Now\'s the time to roll your dice!'
       : 'Let\'s roll for the encounter!';
   }

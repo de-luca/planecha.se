@@ -70,7 +70,9 @@
 import { Options, Vue } from 'vue-class-component';
 import { useStore, Store, ActionTypes } from '@/store';
 import {
-  EternitiesMap,
+  EncounterMechanic,
+  EncounterTrigger,
+  EncounterTriggers,
   EternitiesMapDeckType,
   EternitiesMapSubType,
   MapType,
@@ -80,11 +82,6 @@ import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';
 import CardPicker, { Group } from '@/components/create/CardPicker.vue';
 import GameScopePicker from '@/components/create/GameScopePicker.vue';
 import EncounterSetup from '@/components/create/EncounterSetup.vue';
-
-import EncounterTriggers = EternitiesMap.EncounterTriggers;
-import EncounterTrigger = EternitiesMap.EncounterTrigger;
-import EncounterMechanic = EternitiesMap.EncounterMechanic;
-
 
 @Options({
   components: {

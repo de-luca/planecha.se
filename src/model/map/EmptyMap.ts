@@ -5,9 +5,13 @@ import {
   MapInterface,
   Revealed,
   Tile,
+  Coordinates,
+  EncounterTriggers,
 } from './MapInterface';
 
 export class EmptyMap implements MapInterface {
+  public destination?: Coordinates | undefined;
+  public encounterTriggers: EncounterTriggers;
   public specs: MapSpecs;
   public played: Card[];
   public remaining: number;

@@ -1,8 +1,9 @@
 import { Inject, Service } from "typedi";
 import { DeckProvider } from '@/services/DeckProvider';
 import { SingleDeck, SingleDeckProps } from "./SingleDeck";
-import { DualDeck, DualDeckExported, EncounterTriggers } from "./DualDeck";
+import { DualDeck, DualDeckExported } from "./DualDeck";
 import {
+  EncounterTriggers,
   EternitiesMapDeckType,
   EternitiesMapSpecs,
   EternitiesMapSubType,

@@ -5,18 +5,19 @@ import { OnlineDecorator } from '../net/OnlineDecorator';
 import {
   Classic,
   EmptyMap,
-  EternitiesMap,
+  EncounterTriggers,
   EternitiesMapSpecs,
   Exported,
   MapInterface,
   MapType,
 } from '.';
+import { EternitiesMapExported, EternitiesMapFactory } from './eternities';
 
 export interface AdvancedOptions {
   name?: string;
   cards?: Array<string>;
   specs?: Omit<EternitiesMapSpecs, 'type'>;
-  encounterTriggers?: EternitiesMap.EncounterTriggers;
+  encounterTriggers?: EncounterTriggers;
 }
 
 export interface BuildProps {
@@ -29,8 +30,8 @@ export interface BuildProps {
 export class MapFactory {
   @Inject(() => DeckProvider)
   private deckProvider: DeckProvider;
-  @Inject(() => EternitiesMap.EternitiesMapFactory)
-  private eternitiesMapFactory: EternitiesMap.EternitiesMapFactory;
+  @Inject(() => EternitiesMapFactory)
+  private eternitiesMapFactory: EternitiesMapFactory;
 
   public build({ type, online, advanced }: BuildProps): MapInterface {
     let map: MapInterface;
@@ -79,7 +80,7 @@ export class MapFactory {
             : undefined,
         });
       case MapType.ETERNITIES:
-        return this.eternitiesMapFactory.restore(payload as EternitiesMap.EternitiesMapExported);
+        return this.eternitiesMapFactory.restore(payload as EternitiesMapExported);
       default:
         throw new Error('Incompatible');
     }

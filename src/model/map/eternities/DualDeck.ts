@@ -3,6 +3,7 @@ import { Deck, DeckState } from "@/model/deck/Deck";
 import { SingleDeckProps, SingleDeck } from "./SingleDeck";
 import {
   Coordinates,
+  EncounterTriggers,
   EternitiesMapDeckType,
   EternitiesMapSpecs,
   EternitiesMapSubType,
@@ -20,24 +21,6 @@ export interface DualDeckProps extends SingleDeckProps {
   phenomenaDeck: Deck<Phenomenon>;
   encounterTriggers: EncounterTriggers;
 }
-
-export enum EncounterTrigger {
-  ON_PLANESWALK = 'ON_PLANESWALK',
-  ON_HELLRIDE = 'ON_HELLRIDE',
-}
-
-export enum EncounterMechanic {
-  MANUAL = 'MANUAL',
-  AUTO = 'AUTO',
-}
-
-export interface TriggerConfig {
-  enabled: boolean;
-  mechanic: EncounterMechanic;
-  ratio: number;
-}
-
-export type EncounterTriggers = Record<EncounterTrigger, TriggerConfig>;
 
 export class DualDeck extends SingleDeck {
   private phenomenaDeck: Deck<Phenomenon>;

@@ -10,7 +10,6 @@ import Pick from '@/components/reveal/Pick.vue';
 import Show from '@/components/reveal/Show.vue';
 import {
   Coordinates,
-  EternitiesMap as EMap,
   Revealed,
   Tile,
 } from '@/model/map';
@@ -99,7 +98,7 @@ export class EternitiesMap extends Vue {
   }
 
   public get inPlaneswalkPhenomenon(): PhenomenonModel | undefined {
-    return (this.store.getters.map as EMap.EternitiesMap).destination
+    return this.store.getters.map.destination
       ? this.store.getters.active[0]
       : undefined;
   }

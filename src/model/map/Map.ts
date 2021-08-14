@@ -11,6 +11,7 @@ import {
   MapInterface,
   Revealed,
   Tile,
+  EncounterTriggers,
 } from './MapInterface';
 
 
@@ -28,6 +29,8 @@ export abstract class Map implements MapInterface {
 
   public tiles: Array<Tile> = [];
   public hasStarted: boolean;
+  public destination?: Coordinates | undefined;
+  public readonly encounterTriggers: EncounterTriggers;
 
   public constructor(props: MapProps) {
     this.deck = props.deck;
