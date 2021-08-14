@@ -21,19 +21,21 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { MutationTypes, Store, useStore } from '@/store';
-import ClassicMap from '@/components/ClassicMap.vue';
-import EternitiesMap from '@/components/EternitiesMap.vue';
+import { Component } from '@vue/runtime-core';
+import { MapType, EternitiesMapSpecs, EternitiesMapSubType } from '@/model/map';
+import { eventBus, EventType } from '@/services/EventBus';
+
+import ClassicMap from '@/components/classic/ClassicMap.vue';
+import MapSingleDeck from '@/components/eternities/MapSingleDeck.vue';
+import MapDualDeck from '@/components/eternities/MapDualDeck.vue';
 import OnlineControls from '@/components/board/OnlineControls.vue';
 import NotifCenter from '@/components/board/NotifCenter.vue';
 import CloseGame from '@/components/board/CloseGame.vue';
-import { Component } from '@vue/runtime-core';
-import { MapType } from '@/model/map/MapInterface';
-import { eventBus, EventType } from '@/services/EventBus';
 
 
 @Options({
   components: {
-    ClassicMap, EternitiesMap,
+    ClassicMap, MapSingleDeck, MapDualDeck,
     OnlineControls, NotifCenter, CloseGame,
   },
 })
@@ -54,11 +56,15 @@ export default class Board extends Vue {
   }
 
   public get mapComponent(): Component {
-    switch (this.store.getters.specs.type) {
+    const specs = this.store.getters.specs;
+
+    switch (specs.type) {
       case MapType.CLASSIC:
         return ClassicMap;
       case MapType.ETERNITIES:
-        return EternitiesMap;
+        return (specs as EternitiesMapSpecs).subType === EternitiesMapSubType.SINGLE_DECK
+          ? MapSingleDeck
+          : MapDualDeck;
       default:
         throw new Error('Incompatible');
     }

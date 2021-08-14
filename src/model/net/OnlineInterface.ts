@@ -12,7 +12,9 @@ export interface OnlineInterface {
 
   requestPlaneswalk(coordinates?: Coordinates): void;
   requestCustomPlaneswalk(payload: { planes: Array<string> }): void;
+
   requestPlaneswalkFromPhenomenon(): void;
+  requestEncounter(coordinates: Coordinates): void;
 
   requestCounterUpdate(payload: { id: string, change: number }): void;
 

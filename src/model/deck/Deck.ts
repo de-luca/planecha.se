@@ -36,7 +36,7 @@ export class Deck<T extends Card> {
     return { card: card as T, shuffled: false };
   }
 
-  public play(...cards: Array<T>): void {
+  public setPlayed(...cards: Array<T>): void {
     this.played.push(...cards);
   }
 

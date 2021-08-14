@@ -58,8 +58,23 @@ export abstract class Map implements MapInterface {
     passive?: boolean,
     mateId?: string,
   ): boolean;
-  public abstract customPlaneswalk(planes: Array<Plane>, coordinates?: Coordinates): void;
-  public abstract planeswalkFromPhenomenon(passive?: boolean, mateId?: string): boolean;
+  public abstract customPlaneswalk(
+    planes: Array<Plane>,
+    coordinates?: Coordinates,
+  ): void;
+
+  public abstract planeswalkFromPhenomenon(
+    passive?: boolean,
+    mateId?: string,
+  ): boolean;
+
+  public encounter(
+    _coordinates: Coordinates,
+    _passive: boolean = false,
+    _mateId?: string,
+  ): boolean {
+    throw new Error(`Not compatible with ${this.constructor.name} class.`);
+  }
 
   public updateCounter(id: string, change: number): void {
     (this.active.find(c => c.id === id) as Plane).updateCounter(change);

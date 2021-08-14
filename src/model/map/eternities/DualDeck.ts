@@ -2,6 +2,7 @@ import { Phenomenon } from "@/model/card";
 import { Deck, DeckState } from "@/model/deck/Deck";
 import { SingleDeckProps, SingleDeck } from "./SingleDeck";
 import {
+  Coordinates,
   EternitiesMapDeckType,
   EternitiesMapSpecs,
   EternitiesMapSubType,
@@ -33,14 +34,14 @@ export enum EncounterMechanic {
 export interface TriggerConfig {
   enabled: boolean;
   mechanic: EncounterMechanic;
-  ratio?: number;
+  ratio: number;
 }
 
 export type EncounterTriggers = Record<EncounterTrigger, TriggerConfig>;
 
 export class DualDeck extends SingleDeck {
   private phenomenaDeck: Deck<Phenomenon>;
-  private encounterTriggers: EncounterTriggers;
+  public readonly encounterTriggers: EncounterTriggers;
 
   public constructor(props: DualDeckProps) {
     super(props);
@@ -55,6 +56,28 @@ export class DualDeck extends SingleDeck {
       subType: EternitiesMapSubType.DUAL_DECK,
       deckType: this.deckType,
     };
+  }
+
+  public planeswalkFromPhenomenon(passive: boolean = false, mateId?: string): boolean {
+    this.phenomenaDeck.setPlayed(...this.active);
+    const shuffled = this.planeswalk(
+      this.destination as Coordinates,
+      passive,
+      mateId,
+    );
+    return shuffled;
+  }
+
+  public override encounter(
+    coordinates: Coordinates,
+    passive: boolean = false,
+    mateId?: string,
+  ): boolean {
+    this.destination = coordinates;
+    const { card: drawn, shuffled } = this.phenomenaDeck.draw();
+    this.active = [ drawn ];
+    this.active.forEach(c => c.enter(passive, mateId));
+    return shuffled;
   }
 
   public export(): DualDeckExported {

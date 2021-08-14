@@ -82,11 +82,10 @@ export interface MapInterface {
   chaos(passive?: boolean, mateId?: string): void;
 
   planeswalk(coordinates?: Coordinates, passive?: boolean, mateId?: string): boolean;
-  customPlaneswalk(
-    planes: Array<Plane>,
-    coordinates?: Coordinates,
-  ): void;
+  customPlaneswalk(planes: Array<Plane>, coordinates?: Coordinates): void;
+
   planeswalkFromPhenomenon(passive?: boolean, mateId?: string): boolean;
+  encounter(coordinates: Coordinates, passive?: boolean, mateId?: string): boolean;
 
   updateCounter(id: string, change: number): void;
 

@@ -28,6 +28,9 @@ export class EmptyMap implements MapInterface {
   planeswalkFromPhenomenon(): boolean {
     throw new Error('Method not implemented.');
   }
+  encounter(): boolean {
+    throw new Error('Method not implemented.');
+  }
   updateCounter(): void {
     throw new Error('Method not implemented.');
   }

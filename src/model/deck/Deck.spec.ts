@@ -31,7 +31,7 @@ describe('Deck.play', () => {
   it('sets a played card in the played pile', () => {
     const deck = provider.getDeck();
     const drawn = deck.draw();
-    deck.play(drawn.card);
+    deck.setPlayed(drawn.card);
     expect(deck.remaining).toEqual(85);
     expect(deck.played).toHaveLength(1);
   });

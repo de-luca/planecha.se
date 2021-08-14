@@ -44,7 +44,6 @@ import Pick from '@/components/reveal/Pick.vue';
 import Scry from '@/components/reveal/Scry.vue';
 import Show from '@/components/reveal/Show.vue';
 
-
 type Revealer = {
   passive: boolean;
   component: Component;

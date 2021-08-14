@@ -145,7 +145,7 @@ export class SingleDeck extends EternitiesMap {
 
     this.tiles
       .filter(t => Math.abs(t.coordinates.x) + Math.abs(t.coordinates.y) > SingleDeck.maxRange)
-      .forEach(t => this.deck.play(...t.plane));
+      .forEach(t => this.deck.setPlayed(...t.plane));
 
     // Remove all the plan that are too far
     this.tiles = this.tiles.filter((t) => (
@@ -178,11 +178,12 @@ export class SingleDeck extends EternitiesMap {
         state: TileStatus.ACTIVE,
         plane: planes,
       };
+      this.tiles.push(destinationTile);
     }
   }
 
   public planeswalkFromPhenomenon(passive: boolean = false, mateId?: string): boolean {
-    this.deck.play(...this.active);
+    this.deck.setPlayed(...this.active);
     const shuffled = this.planeswalk(
       this.destination as Coordinates,
       passive,

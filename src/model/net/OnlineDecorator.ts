@@ -86,12 +86,26 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     return this.map.planeswalk(coordinates, passive, mateId);
   }
 
-  public customPlaneswalk(planes: Array<Plane>, coordinates?: Coordinates): void {
+  public customPlaneswalk(
+    planes: Array<Plane>,
+    coordinates?: Coordinates,
+  ): void {
     return this.map.customPlaneswalk(planes, coordinates);
   }
 
-  public planeswalkFromPhenomenon(passive: boolean = false, mateId?: string): boolean {
+  public planeswalkFromPhenomenon(
+    passive: boolean = false,
+    mateId?: string,
+  ): boolean {
     return this.map.planeswalkFromPhenomenon(passive, mateId);
+  }
+
+  public encounter(
+    coordinates: Coordinates,
+    passive: boolean = false,
+    mateId?: string,
+  ): boolean {
+    return this.map.encounter(coordinates, passive, mateId);
   }
 
   public updateCounter(id: string, change: number): void {
@@ -163,6 +177,10 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
 
   public requestPlaneswalkFromPhenomenon(): void {
     this.peers.broadcast(Event.PLANESWALK_FROM_PHENOMENON);
+  }
+
+  public requestEncounter(coordinates: Coordinates): void {
+    this.peers.broadcast(Event.ENCOUNTER, { coordinates });
   }
 
   public requestCounterUpdate(payload: { id: string, change: number }): void {

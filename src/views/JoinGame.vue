@@ -7,37 +7,39 @@
 
     <form @submit.prevent="join">
       <div class="field">
-        <label class="label">Room ID:</label>
+        <label class="label">Game ID:</label>
         <div class="control">
-          <input 
-            v-model="roomId" 
-            class="input" 
-            type="text" 
-            placeholder="00000000-0000-0000-0000-000000000000" 
+          <input
+            v-model="roomId"
+            class="input"
+            type="text"
+            placeholder="00000000-0000-0000-0000-000000000000"
             required
             pattern="[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
           >
         </div>
+        <p class="help">That's the part your friend should give you.</p>
       </div>
 
       <div class="field">
         <label class="label">Your player name:</label>
         <div class="control">
-          <input 
-            v-model="name" 
-            class="input" 
-            type="text" 
-            placeholder="Super Cake" 
+          <input
+            v-model="name"
+            class="input"
+            type="text"
+            placeholder="Super Cake"
             required
           >
         </div>
+        <p class="help">The name people in the game will see you as.</p>
       </div>
 
       <div class="field join-game">
         <div class="control">
-          <button 
-            class="button is-dark" 
-            :class="{ 'is-loading': joining }" 
+          <button
+            class="button is-dark"
+            :class="{ 'is-loading': joining }"
             type="submit"
           >
             Join game
@@ -63,7 +65,7 @@ export default class JoinGame extends Vue {
     this.roomId = this.$route.params.roomId as string ?? '';
     this.name = '';
   }
-  
+
   public async join() {
     this.joining = true;
     await this.store.dispatch(ActionTypes.JOIN, { roomId: this.roomId, name: this.name });

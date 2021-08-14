@@ -1,57 +1,21 @@
-<template>
-  <div class="map">
-    <template v-for="y in 7" :key="y">
-      <tile
-        v-for="x in 7"
-        :key="x"
-        :tile="getTile(x, y)"
-        :x="x - off"
-        :y="y - off"
-        :hidden="!hasStarted"
-        @start="start"
-      />
-    </template>
-
-    <chaos-btn class="chaos" />
-
-    <phenomenon
-      v-if="inPlaneswalkPhenomenon"
-      :phenomenon="inPlaneswalkPhenomenon"
-      :resolver="revealer?.seeder"
-      :disabled="revealer && revealer.passive"
-    ></phenomenon>
-
-    <component
-      v-if="revealer && revealed"
-      :is="revealer.component"
-      :revealed="revealed"
-      :config="revealer.config"
-      @done="revealer.resolver"
-    />
-  </div>
-</template>
-
-<script lang="ts">
 import _shuffle from 'lodash.shuffle';
 import { Component } from 'vue';
-import { Options, Vue } from 'vue-class-component';
 import { ActionTypes, Store, useStore } from '@/store';
-import {
-  EternitiesMap as EMap,
-  Revealed,
-  Tile as TileModel
-} from '@/model/map';
-import { Phenomenon as PhenomenonModel, Plane } from '@/model/card';
 import { eventBus, EventType } from '@/services/EventBus';
-import { Config, PickedLeft } from './reveal/BaseReveal';
-import ChaosBtn from '@/components/ChaosBtn.vue';
-import Tile from '@/components/eternities/Tile.vue';
-import Phenomenon from '@/components/eternities/Phenomenon.vue';
+import { Phenomenon as PhenomenonModel, Plane } from '@/model/card';
+import { Config, PickedLeft } from '../reveal/BaseReveal';
+import { Vue } from 'vue-class-component';
 import Scry from '@/components/reveal/Scry.vue';
 import Pick from '@/components/reveal/Pick.vue';
 import Show from '@/components/reveal/Show.vue';
+import {
+  Coordinates,
+  EternitiesMap as EMap,
+  Revealed,
+  Tile,
+} from '@/model/map';
 
-type Revealer = {
+export type Revealer = {
   passive: boolean;
   component: Component;
   seeder: () => void;
@@ -59,18 +23,12 @@ type Revealer = {
   config: Config;
 }
 
-@Options({
-  components: {
-    Tile, ChaosBtn, Phenomenon,
-    Scry, Pick, Show,
-  },
-})
-export default class EternitiesMap extends Vue {
-  private readonly off = 4;
-  private store: Store;
-  private revealer: Revealer | null = null;
+export class EternitiesMap extends Vue {
+  protected readonly off: number = 4;
+  protected store: Store;
+  protected revealer: Revealer | null = null;
 
-  public created(): void {
+  protected setUp(): void {
     this.store = useStore();
 
     eventBus.on(EventType.RESOLVED_REVEAL, () => this.revealer = null);
@@ -78,7 +36,7 @@ export default class EternitiesMap extends Vue {
       this.revealer = {
         passive: payload.passive,
         component: Scry,
-        seeder: () => {},
+        seeder: () => { },
         resolver: this.putBack,
         config: {
           sendShownTo: 'bottom',
@@ -95,7 +53,7 @@ export default class EternitiesMap extends Vue {
       this.revealer = {
         passive: payload.passive,
         component: Show,
-        seeder: () => {},
+        seeder: () => { },
         resolver: this.putBack,
         config: {
           sendShownTo: 'bottom',
@@ -154,7 +112,7 @@ export default class EternitiesMap extends Vue {
     return Math.abs(x - this.off) + Math.abs(y - this.off) > 3;
   }
 
-  public getTile(x: number, y: number): TileModel | undefined {
+  public getTile(x: number, y: number): Tile | undefined {
     return this.store.getters.tiles.find((tile) => {
       return tile.coordinates.x === x - this.off
         && tile.coordinates.y === y - this.off;
@@ -174,6 +132,10 @@ export default class EternitiesMap extends Vue {
     this.store.dispatch(ActionTypes.START_ETERNITIES);
   }
 
+  public planeswalk(coordinates: Coordinates): void {
+    this.store.dispatch(ActionTypes.PLANESWALK, { coordinates });
+  }
+
   public customPlaneswalk(choices: PickedLeft): void {
     console.log(choices);
     this.store.dispatch(ActionTypes.CUSTOM_PLANESWALK, {
@@ -184,24 +146,3 @@ export default class EternitiesMap extends Vue {
     this.store.dispatch(ActionTypes.PLANESWALK_FROM_PHENOMENON);
   }
 }
-</script>
-
-<style lang="scss" scoped>
-.map {
-  position: relative;
-
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(7, auto);
-  gap: 1rem;
-  align-content: center;
-}
-
-.chaos {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 10rem;
-  width: 10rem;
-}
-</style>

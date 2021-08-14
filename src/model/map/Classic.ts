@@ -21,7 +21,7 @@ export class Classic extends Map {
     mateId?: string,
   ): boolean {
     this.active.forEach(c => c.leave());
-    this.deck.play(...this.active);
+    this.deck.setPlayed(...this.active);
 
     const { card, shuffled } = this.deck.draw();
     this.active = [ card ];
@@ -32,12 +32,15 @@ export class Classic extends Map {
 
   public customPlaneswalk(planes: Array<Plane>): void {
     this.active.forEach(c => c.leave());
-    this.deck.play(...this.active);
+    this.deck.setPlayed(...this.active);
     this.active = planes;
     this.active.forEach(c => c.enter());
   }
 
-  public planeswalkFromPhenomenon(passive: boolean = false, mateId?: string): boolean {
+  public planeswalkFromPhenomenon(
+    passive: boolean = false,
+    mateId?: string,
+  ): boolean {
     return this.planeswalk(undefined, passive, mateId);
   }
 }
