@@ -41,25 +41,20 @@ export class DualDeck extends SingleDeck {
     };
   }
 
-  public planeswalkFromPhenomenon(passive: boolean = false, mateId?: string): boolean {
+  public planeswalkFromPhenomenon(passivity?: Passivity): boolean {
     this.phenomenaDeck.setPlayed(...this.active);
-    const shuffled = this.planeswalk(
-      this.destination as Coordinates,
-      passive,
-      mateId,
-    );
+    const shuffled = this.planeswalk(this.destination as Coordinates, passivity);
     return shuffled;
   }
 
   public override encounter(
     coordinates: Coordinates,
-    passive: boolean = false,
-    mateId?: string,
+    passivity?: Passivity,
   ): boolean {
     this.destination = coordinates;
     const { card: drawn, shuffled } = this.phenomenaDeck.draw();
     this.active = [ drawn ];
-    this.active.forEach(c => c.enter(passive, mateId));
+    this.active.forEach(c => c.enter(passivity));
     return shuffled;
   }
 

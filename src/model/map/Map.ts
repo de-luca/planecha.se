@@ -14,7 +14,6 @@ import {
   EncounterTriggers,
 } from './MapInterface';
 
-
 export interface MapProps {
   deck: Deck<Card>;
   active?: Array<Card>;
@@ -52,29 +51,24 @@ export abstract class Map implements MapInterface {
     return this.deck.played;
   }
 
-  public chaos(passive: boolean = false, mateId?: string): void {
-    this.active.forEach(c => c.chaos(passive, mateId));
+  public chaos(passivity?: Passivity): void {
+    this.active.forEach(c => c.chaos(passivity));
   }
 
   public abstract planeswalk(
     coordinates?: Coordinates,
-    passive?: boolean,
-    mateId?: string,
+    passivity?: Passivity,
   ): boolean;
   public abstract customPlaneswalk(
     planes: Array<Plane>,
     coordinates?: Coordinates,
   ): void;
 
-  public abstract planeswalkFromPhenomenon(
-    passive?: boolean,
-    mateId?: string,
-  ): boolean;
+  public abstract planeswalkFromPhenomenon(passivity?: Passivity): boolean;
 
   public encounter(
     _coordinates: Coordinates,
-    _passive: boolean = false,
-    _mateId?: string,
+    _passivity?: Passivity,
   ): boolean {
     throw new Error(`Not compatible with ${this.constructor.name} class.`);
   }

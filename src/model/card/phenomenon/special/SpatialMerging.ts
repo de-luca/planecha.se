@@ -10,7 +10,7 @@ import { Phenomenon } from '../Phenomenon';
  * bottom of your planar deck in any order.
  */
 export class SpatialMerging extends Phenomenon {
-  public enter(passive: boolean = false, mateId?: string): void {
-    eventBus.emit(EventType.SPACIAL_MERGING, { passive, mateId });
+  public enter({ passive = false, initiator }: Passivity = {}): void {
+    eventBus.emit(EventType.SPACIAL_MERGING, { passive, initiator });
   }
 }

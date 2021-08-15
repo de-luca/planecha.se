@@ -27,18 +27,16 @@ export class SingleDeck extends EternitiesMap {
   private encounterPhenomenon(
     card: Phenomenon,
     coordinates: Coordinates,
-    passive: boolean = false,
-    mateId?: string,
+    passivity?: Passivity,
   ): void {
     this.active = [card];
     this.destination = coordinates;
-    this.active.forEach(c => c.enter(passive, mateId));
+    this.active.forEach(c => c.enter(passivity));
   }
 
   public planeswalk(
     coordinates: Coordinates,
-    passive: boolean = false,
-    mateId?: string,
+    passivity?: Passivity,
   ): boolean {
     let shuffled = false;
     const xOffset = coordinates.x;
@@ -69,8 +67,7 @@ export class SingleDeck extends EternitiesMap {
         this.encounterPhenomenon(
           drawn.card,
           { x: xOffset, y: yOffset },
-          passive,
-          mateId,
+          passivity,
         );
         // Return imediately
         return shuffled;
@@ -120,8 +117,7 @@ export class SingleDeck extends EternitiesMap {
               this.encounterPhenomenon(
                 drawn.card,
                 { x: xOffset, y: yOffset },
-                passive,
-                mateId,
+                passivity,
               );
 
               return shuffled;
@@ -154,7 +150,7 @@ export class SingleDeck extends EternitiesMap {
 
     this.destination = undefined;
 
-    this.active.forEach(c => c.enter(passive, mateId));
+    this.active.forEach(c => c.enter(passivity));
 
     return shuffled;
   }
@@ -182,13 +178,9 @@ export class SingleDeck extends EternitiesMap {
     }
   }
 
-  public planeswalkFromPhenomenon(passive: boolean = false, mateId?: string): boolean {
+  public planeswalkFromPhenomenon(passivity?: Passivity): boolean {
     this.deck.setPlayed(...this.active);
-    const shuffled = this.planeswalk(
-      this.destination as Coordinates,
-      passive,
-      mateId,
-    );
+    const shuffled = this.planeswalk(this.destination as Coordinates, passivity);
     return shuffled;
   }
 }

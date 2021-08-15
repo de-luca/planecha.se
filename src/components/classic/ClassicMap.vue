@@ -77,7 +77,7 @@ export default class ClassicMap extends Vue {
         config: {
           sendShownTo: 'bottom',
           passive: payload.passive,
-          mateName: payload.mateId ? this.store.getters.mates.get(payload.mateId) : undefined,
+          mateName: payload.initiator ? this.store.getters.mates.get(payload.initiator) : undefined,
         },
       };
 
@@ -94,7 +94,7 @@ export default class ClassicMap extends Vue {
         config: {
           sendShownTo: 'bottom',
           passive: payload.passive,
-          mateName: payload.mateId ? this.store.getters.mates.get(payload.mateId) : undefined,
+          mateName: payload.initiator ? this.store.getters.mates.get(payload.initiator) : undefined,
         },
       };
 
@@ -111,7 +111,7 @@ export default class ClassicMap extends Vue {
         config: {
           sendShownTo: 'bottom',
           passive: payload.passive,
-          mateName: payload.mateId ? this.store.getters.mates.get(payload.mateId) : undefined,
+          mateName: payload.initiator ? this.store.getters.mates.get(payload.initiator) : undefined,
         },
       };
     });
@@ -124,7 +124,7 @@ export default class ClassicMap extends Vue {
         config: {
           sendShownTo: 'top',
           passive: payload.passive,
-          mateName: payload.mateId ? this.store.getters.mates.get(payload.mateId) : undefined,
+          mateName: payload.initiator ? this.store.getters.mates.get(payload.initiator) : undefined,
         },
       };
     });

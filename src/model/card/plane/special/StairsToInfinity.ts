@@ -10,7 +10,7 @@ import { Plane } from '../Plane';
  * You may put it on the bottom of your planar deck.
  */
 export class StairsToInfinity extends Plane {
-  public chaos(passive: boolean = false, mateId?: string): void {
-    eventBus.emit(EventType.STAIRS_TO_INFINITY, { passive, mateId });
+  public chaos({ passive = false, initiator }: Passivity = {}): void {
+    eventBus.emit(EventType.STAIRS_TO_INFINITY, { passive, initiator });
   }
 }

@@ -23,8 +23,8 @@ export abstract class Card implements CardInterface {
   }
 
   public abstract get type(): string;
-    
-  public abstract chaos(passive?: boolean, mateId?: string): void;
-  public abstract enter(passive?: boolean, mateId?: string): void;
+
+  public abstract chaos(passivity?: Passivity): void;
+  public abstract enter(passivity?: Passivity): void;
   public abstract leave(): void;
 }

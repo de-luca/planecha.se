@@ -10,7 +10,7 @@ export interface CardInterface {
 
   type: string;
 
-  chaos(passive?: boolean, mateId?: string): void;
-  enter(passive?: boolean, mateId?: string): void;
+  chaos(passivity?: Passivity): void;
+  enter(passivity?: Passivity): void;
   leave(): void;
 }

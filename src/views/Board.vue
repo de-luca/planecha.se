@@ -47,11 +47,11 @@ export default class Board extends Vue {
 
     eventBus.on(EventType.BYE, (payload) => {
       eventBus.emit(EventType.NOTIF, {
-        text: `<b>${this.store.getters.mates.get(payload.mateId)}</b> has left the game`,
+        text: `<b>${this.store.getters.mates.get(payload.initiator)}</b> has left the game`,
         className: 'is-warning',
       });
 
-      this.store.commit(MutationTypes.BYE, { id: payload.mateId });
+      this.store.commit(MutationTypes.BYE, { id: payload.initiator });
     });
   }
 

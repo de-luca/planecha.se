@@ -1,17 +1,15 @@
 import { MutationPayload } from 'vuex';
 import { Plane } from '@/model/card';
-import { 
-  MutationTypes, 
-  State, 
+import {
+  MutationTypes,
+  State,
   Store,
 } from '..';
-import { 
-  Idable, 
-  ByePayload,
-  HeyPayload, 
+import {
+  HeyPayload,
   ChaosPayload,
-  PlaneswalkPayload, 
-  CounterPayload, 
+  PlaneswalkPayload,
+  CounterPayload,
   ResolveRevealPayload,
 } from '../states/map';
 
@@ -44,7 +42,7 @@ function handler(store: Store): (mutation: MutationPayload, state: State) => Pro
       }
       case MutationTypes.PLANESWALK: {
         const payload = mutation.payload as PlaneswalkPayload;
-        const message = `<b>${name(payload?.mateId)}</b> ` +
+        const message = `<b>${name(payload?.passivity?.initiator)}</b> ` +
           (state.map?.active[0].type === 'plane' ? 'planeswalked to ' : 'encountered ') +
           `<b>${state.map?.active[0].name}</b>`;
         store.state.feed.push(message);
@@ -52,20 +50,20 @@ function handler(store: Store): (mutation: MutationPayload, state: State) => Pro
       }
       case MutationTypes.CUSTOM_PLANESWALK: {
         const payload = mutation.payload as PlaneswalkPayload;
-        const message = `<b>${name(payload?.mateId)}</b> planeswalked to ` +
+        const message = `<b>${name(payload?.passivity?.initiator)}</b> planeswalked to ` +
           `<b>${state.map?.active.map(c => c.name).join('</b> and <b>')}</b>`;
         store.state.feed.push(message);
         break;
       }
       case MutationTypes.CHAOS: {
         const payload = mutation.payload as ChaosPayload;
-        store.state.feed.push(`<b>${name(payload?.mateId)}</b> triggered <b>Chaos</b>`);
+        store.state.feed.push(`<b>${name(payload?.passivity?.initiator)}</b> triggered <b>Chaos</b>`);
         break;
       }
       case MutationTypes.COUNTERS: {
         const payload = mutation.payload as CounterPayload;
         const plane = state.map?.active.find(c => c.id === payload.id) as Plane;
-        const message = `<b>${name(payload?.mateId)}</b> ` +
+        const message = `<b>${name(payload?.initiator)}</b> ` +
           `${payload.change > 0 ? 'added ' : 'removed '} <b>${Math.abs(payload.change)}</b> counter on ` +
           `<b>${plane.name}</b> (<b>${plane.counter?.value}</b>)`;
         store.state.feed.push(message);
@@ -75,13 +73,13 @@ function handler(store: Store): (mutation: MutationPayload, state: State) => Pro
         const payload = mutation.payload as ResolveRevealPayload;
         if (payload.top.length > 0 ) {
           store.state.feed.push(
-            `<b>${name(payload?.mateId)}</b> putted on top ` +
+            `<b>${name(payload?.initiator)}</b> putted on top ` +
             `<b>${payload.top.map(c => c.name).join('</b>, <b>')}</b>`,
           );
         }
         if (payload.bottom.length > 0) {
           store.state.feed.push(
-            `<b>${name(payload?.mateId)}</b> putted at the bottom ` +
+            `<b>${name(payload?.initiator)}</b> putted at the bottom ` +
             `<b>${payload.bottom.map(c => c.name).join('</b>, <b>')}</b>`,
           );
         }

@@ -98,13 +98,13 @@ export interface MapInterface {
   resolveReveal(top: Array<Card>, bottom: Array<Card>): void;
   clearRevealed(): void;
 
-  chaos(passive?: boolean, mateId?: string): void;
+  chaos(passivity?: Passivity): void;
 
-  planeswalk(coordinates?: Coordinates, passive?: boolean, mateId?: string): boolean;
+  planeswalk(coordinates?: Coordinates, passivity?: Passivity): boolean;
   customPlaneswalk(planes: Array<Plane>, coordinates?: Coordinates): void;
 
-  planeswalkFromPhenomenon(passive?: boolean, mateId?: string): boolean;
-  encounter(coordinates: Coordinates, passive?: boolean, mateId?: string): boolean;
+  planeswalkFromPhenomenon(passivity?: Passivity): boolean;
+  encounter(coordinates: Coordinates, passivity?: Passivity): boolean;
 
   updateCounter(id: string, change: number): void;
 

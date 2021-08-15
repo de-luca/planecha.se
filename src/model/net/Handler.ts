@@ -55,12 +55,16 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
       }
 
       case Event.CHAOS: {
-        store.commit(MutationTypes.CHAOS, { passive: true, mateId: this.label });
+        store.commit(MutationTypes.CHAOS, {
+          passivity: { passive: true, initiator: this.label },
+        });
         break;
       }
 
       case Event.PLANESWALK_FROM_PHENOMENON: {
-        store.commit(MutationTypes.PLANESWALK_FROM_PHENOMENON, { passive: true, mateId: this.label });
+        store.commit(MutationTypes.PLANESWALK_FROM_PHENOMENON, {
+          passivity: { passive: true, initiator: this.label },
+        });
         break;
       }
 
@@ -68,8 +72,7 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
         const data = payload.data as { coordinates: Coordinates };
         store.commit(MutationTypes.ENCOUNTER, {
           coordinates: data.coordinates,
-          passive: true,
-          mateId: this.label,
+          passivity: { passive: true, initiator: this.label },
         });
         break;
       }
@@ -78,8 +81,7 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
         const data = payload.data as { coordinates?: Coordinates };
         store.commit(MutationTypes.PLANESWALK, {
           coordinates: data.coordinates,
-          passive: true,
-          mateId: this.label,
+          passivity: { passive: true, initiator: this.label },
         });
         break;
       }
@@ -100,7 +102,7 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
       case Event.COUNTERS: {
         store.commit(MutationTypes.COUNTERS, {
           ...payload.data as { id: string, change: number },
-          mateId: this.label,
+          initiator: this.label,
         });
         break;
       }
@@ -124,7 +126,7 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
         store.commit(MutationTypes.RESOLVE_REVEAL, {
           top: data.top.map((id) => allCards.find(c => c.id === id) as Card),
           bottom: data.bottom.map((id) => allCards.find(c => c.id === id) as Card),
-          mateId: this.label,
+          initiator: this.label,
         });
         break;
       }

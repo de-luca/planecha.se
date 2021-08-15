@@ -21,11 +21,11 @@ export enum EventType {
 
 export interface CardEventPayload {
   passive: boolean;
-  mateId?: string;
+  initiator?: string;
 }
 
 export interface ByeEventPayload {
-  mateId: string;
+  initiator: string;
 }
 
 export interface NotifEventPayload {

@@ -47,17 +47,17 @@ function initState(): State {
 export const state: State = initState();
 
 
-export type Idable = { mateId?: string };
-export type Passiveable = { passive?: boolean };
+export type Idable = { initiator?: string };
+export type Passiveable = { passivity?: Passivity };
 
 export type HeyPayload = { id: string, name: string };
 export type ByePayload = { id: string };
 export type RevealPayload = { count: number, type?: typeof Card };
-export type ChaosPayload = Idable & Passiveable;
-export type ResolvePayload = Idable & Passiveable;
-export type PlaneswalkPayload = Idable & Passiveable & { coordinates?: Coordinates };
+export type ChaosPayload = Passiveable;
+export type ResolvePayload = Passiveable;
+export type PlaneswalkPayload = Passiveable & { coordinates?: Coordinates };
 export type CustomPlaneswalkPayload = PlaneswalkPayload & { planes: Array<Plane> };
-export type EncounterPayload = Idable & Passiveable & { coordinates: Coordinates };
+export type EncounterPayload = Passiveable & { coordinates: Coordinates };
 export type CounterPayload = Idable & { id: string, change: number };
 export type ResolveRevealPayload = Idable & { top: Array<Card>, bottom: Array<Card> };
 
@@ -121,26 +121,24 @@ export const mutations: Mutations = {
     (<MapInterface>state.map).applyShuffle(payload);
   },
   [MutationTypes.CHAOS](state: State, payload: ChaosPayload = {}) {
-    (<MapInterface>state.map).chaos(payload.passive, payload.mateId);
+    (<MapInterface>state.map).chaos(payload.passivity);
   },
-  [MutationTypes.PLANESWALK](state: State, payload: PlaneswalkPayload = {}) {
+  [MutationTypes.PLANESWALK](state: State, payload: PlaneswalkPayload) {
     state.shuffled = (<MapInterface>state.map).planeswalk(
       payload.coordinates,
-      payload.passive,
-      payload.mateId,
+      payload.passivity,
     );
   },
   [MutationTypes.CUSTOM_PLANESWALK](state: State, payload: CustomPlaneswalkPayload) {
     (<MapInterface>state.map).customPlaneswalk(payload.planes);
   },
   [MutationTypes.PLANESWALK_FROM_PHENOMENON](state: State, payload: ResolvePayload = {}) {
-    (<MapInterface>state.map).planeswalkFromPhenomenon(payload.passive, payload.mateId);
+    (<MapInterface>state.map).planeswalkFromPhenomenon(payload.passivity);
   },
   [MutationTypes.ENCOUNTER](state: State, payload: EncounterPayload) {
     (<MapInterface>state.map).encounter(
       payload.coordinates,
-      payload.passive,
-      payload.mateId,
+      payload.passivity,
     );
   },
   [MutationTypes.COUNTERS](state: State, payload: CounterPayload) {
