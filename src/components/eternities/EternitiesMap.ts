@@ -3,7 +3,7 @@ import { Component } from 'vue';
 import { ActionTypes, Store, useStore } from '@/store';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Phenomenon as PhenomenonModel, Plane } from '@/model/card';
-import { Config, PickedLeft } from '../reveal/BaseReveal';
+import { PickedLeft, RevealConfig } from '../reveal/BaseReveal';
 import { Vue } from 'vue-class-component';
 import Scry from '@/components/reveal/Scry.vue';
 import Pick from '@/components/reveal/Pick.vue';
@@ -13,83 +13,35 @@ import {
   Revealed,
   Tile,
 } from '@/model/map';
+import { RevealerMode, RevealerSource } from '@/model/state/Revealer';
 
-export type Revealer = {
+type Revealer = {
   passive: boolean;
   component: Component;
   seeder: () => void;
   resolver: (choices: PickedLeft) => void;
-  config: Config;
+  config: RevealConfig;
+}
+
+const RevealerMap: Record<RevealerMode, Component> = {
+  [RevealerMode.SCRY]: Scry,
+  [RevealerMode.SHOW]: Show,
+  [RevealerMode.PICK]: Pick,
 }
 
 export class EternitiesMap extends Vue {
   protected readonly off: number = 4;
   protected store: Store;
-  protected revealer: Revealer | null = null;
 
   protected setUp(): void {
     this.store = useStore();
 
-    eventBus.on(EventType.RESOLVED_REVEAL, () => this.revealer = null);
-    eventBus.on(EventType.STAIRS_TO_INFINITY, (payload): void => {
-      this.revealer = {
-        passive: payload.passive,
-        component: Scry,
-        seeder: () => { },
-        resolver: this.putBack,
-        config: {
-          sendShownTo: 'bottom',
-          passive: payload.passive,
-          mateName: payload.initiator ? this.store.getters.mates.get(payload.initiator) : undefined,
-        },
-      };
-
-      if (!payload.passive) {
-        this.store.dispatch(ActionTypes.REVEAL, { count: 1 });
-      }
+    eventBus.on(EventType.STAIRS_TO_INFINITY, (): void => {
+      this.store.dispatch(ActionTypes.REVEAL, { count: 1 });
     });
-    eventBus.on(EventType.POOL_OF_BECOMING, (payload): void => {
-      this.revealer = {
-        passive: payload.passive,
-        component: Show,
-        seeder: () => { },
-        resolver: this.putBack,
-        config: {
-          sendShownTo: 'bottom',
-          passive: payload.passive,
-          mateName: payload.initiator ? this.store.getters.mates.get(payload.initiator) : undefined,
-        },
-      };
-
-      if (!payload.passive) {
-        this.store.dispatch(ActionTypes.REVEAL, { count: 3 });
-      }
-    });
-    eventBus.on(EventType.INTERPLANAR_TUNNEL, (payload): void => {
-      this.revealer = {
-        passive: payload.passive,
-        component: Pick,
-        seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 5, type: Plane }),
-        resolver: this.customPlaneswalk,
-        config: {
-          sendShownTo: 'bottom',
-          passive: payload.passive,
-          mateName: payload.initiator ? this.store.getters.mates.get(payload.initiator) : undefined,
-        },
-      };
-    });
-    eventBus.on(EventType.SPACIAL_MERGING, (payload): void => {
-      this.revealer = {
-        passive: payload.passive,
-        component: Show,
-        seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 2, type: Plane }),
-        resolver: this.customPlaneswalk,
-        config: {
-          sendShownTo: 'top',
-          passive: payload.passive,
-          mateName: payload.initiator ? this.store.getters.mates.get(payload.initiator) : undefined,
-        },
-      };
+    eventBus.on(EventType.POOL_OF_BECOMING, (): void => {
+      console.log('LA');
+      this.store.dispatch(ActionTypes.REVEAL, { count: 3 });
     });
   }
 
@@ -97,9 +49,51 @@ export class EternitiesMap extends Vue {
     return this.store.getters.revealed;
   }
 
-  public get inPlaneswalkPhenomenon(): PhenomenonModel | undefined {
+  public get revealer(): Revealer | undefined {
+    const revealer = this.store.getters.map.state.revealer;
+
+    if (!revealer) {
+      return undefined;
+    }
+
+    const config = {
+      passive: revealer.passive,
+      component: RevealerMap[revealer.component],
+      config: {
+        sendShownTo: revealer.sendShownTo,
+        passive: revealer.passive,
+        mateName: revealer.initiator
+          ? this.store.getters.mates.get(revealer.initiator)
+          : undefined,
+      },
+    };
+
+    switch (revealer.source) {
+      case RevealerSource.STAIRS_TO_INFINITY:
+      case RevealerSource.POOL_OF_BECOMING:
+        return {
+          ...config,
+          seeder: () => { },
+          resolver: this.putBack,
+        };
+      case RevealerSource.INTERPLANAR_TUNNEL:
+        return {
+          ...config,
+          seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 5, type: Plane }),
+          resolver: this.customPlaneswalk,
+        };
+      case RevealerSource.SPACIAL_MERGING:
+        return {
+          ...config,
+          seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 2, type: Plane }),
+          resolver: this.customPlaneswalk,
+        };
+    }
+  }
+
+  public get encounteringPhenomenon(): PhenomenonModel | undefined {
     return this.store.getters.map.destination
-      ? this.store.getters.active[0]
+      ? this.store.getters.active[0] as PhenomenonModel
       : undefined;
   }
 

@@ -9,19 +9,11 @@ export enum EventType {
   INTERPLANAR_TUNNEL = 'INTERPLANAR_TUNNEL',
   SPACIAL_MERGING = 'SPACIAL_MERGING',
 
-  // GENERIC EVENTS
-  RESOLVED_REVEAL = 'RESOLVED_REVEAL',
-
   // ONLINE EVENTS
   BYE = 'BYE',
 
   // NOTIF EVENTS
   NOTIF = 'NOTIF',
-}
-
-export interface CardEventPayload {
-  passive: boolean;
-  initiator?: string;
 }
 
 export interface ByeEventPayload {
@@ -40,9 +32,9 @@ type Emits<EventType, T> = {
   emit(type: EventType, arg?: T): void;
 };
 
-type Emitter = Emits<EventType.RESOLVED_REVEAL, undefined>
-  & Emits<EventType.BYE, ByeEventPayload>
+type Emitter =
+    Emits<EventType.BYE, ByeEventPayload>
   & Emits<EventType.NOTIF, NotifEventPayload>
-  & Emits<EventType, CardEventPayload>;
+  & Emits<EventType, undefined>;
 
 export const eventBus: Emitter = mitt();

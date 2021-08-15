@@ -154,9 +154,6 @@ export default class Tile extends Vue.with(Props) {
   }
 }
 
-.tile {
-}
-
 .multi {
   width: 100%;
   position: relative;

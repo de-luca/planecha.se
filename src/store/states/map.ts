@@ -25,6 +25,7 @@ import { eventBus } from '@/services/EventBus';
 // Declare state
 export type State = {
   map?: MapInterface | MapInterface & OnlineInterface;
+
   feed: Array<string>;
 
   online: boolean;

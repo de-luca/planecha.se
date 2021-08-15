@@ -17,8 +17,8 @@
     <chaos-btn class="chaos" />
 
     <phenomenon
-      v-if="inPlaneswalkPhenomenon"
-      :phenomenon="inPlaneswalkPhenomenon"
+      v-if="encounteringPhenomenon"
+      :phenomenon="encounteringPhenomenon"
       :resolver="revealer?.seeder"
       :disabled="revealer && revealer.passive"
     ></phenomenon>

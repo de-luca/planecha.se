@@ -1,5 +1,6 @@
 import { Card, Plane } from '../card';
 import { DeckState } from '../deck/Deck';
+import { State } from '../state/State';
 
 export interface Coordinates {
   x: number;
@@ -81,6 +82,8 @@ export interface Revealed {
 }
 
 export interface MapInterface {
+  state: State;
+
   specs: MapSpecs;
   active: Array<Card>;
   played: Array<Card>;

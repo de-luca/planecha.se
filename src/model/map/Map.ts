@@ -1,9 +1,9 @@
 import _shuffle from 'lodash.shuffle';
 import { Container } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
-import { eventBus, EventType } from '@/services/EventBus';
 import { Card, Plane } from '../card';
 import { Deck } from '../deck/Deck';
+import { State } from '../state/State';
 import {
   Coordinates,
   Exported,
@@ -15,6 +15,7 @@ import {
 } from './MapInterface';
 
 export interface MapProps {
+  state: State;
   deck: Deck<Card>;
   active?: Array<Card>;
   revealed?: Revealed;
@@ -22,6 +23,7 @@ export interface MapProps {
 
 export abstract class Map implements MapInterface {
   protected deck: Deck<Card>;
+  public readonly state: State;
 
   public active: Array<Card>;
   public revealed?: Revealed;
@@ -33,6 +35,7 @@ export abstract class Map implements MapInterface {
 
   public constructor(props: MapProps) {
     this.deck = props.deck;
+    this.state = props.state;
     this.active = props.active ?? [];
     this.revealed = props.revealed;
   }
@@ -52,7 +55,7 @@ export abstract class Map implements MapInterface {
   }
 
   public chaos(passivity?: Passivity): void {
-    this.active.forEach(c => c.chaos(passivity));
+    this.active.forEach(c => c.chaos(this.state, passivity));
   }
 
   public abstract planeswalk(
@@ -88,7 +91,7 @@ export abstract class Map implements MapInterface {
     this.deck.putOnTheBottom(bottom);
 
     this.clearRevealed();
-    eventBus.emit(EventType.RESOLVED_REVEAL);
+    this.state.closeRevealer();
   }
 
   public clearRevealed(): void {

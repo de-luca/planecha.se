@@ -12,6 +12,7 @@ import {
   Tile,
   EncounterTriggers,
 } from '../map';
+import { State } from '../state/State';
 
 export class OnlineDecorator implements MapInterface, OnlineInterface {
   private beacon: Beacon;
@@ -30,6 +31,10 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
         this.beacon.addEventListener('ready', _ => resolve());
     });
     this.peers = new PeerMap(this.beacon, name);
+  }
+
+  public get state(): State {
+    return this.map.state;
   }
 
   public get yourName(): string {
@@ -79,16 +84,12 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     return this.map.encounterTriggers;
   }
 
-  public chaos(passive: boolean = false, mateId?: string): void {
-    return this.map.chaos(passive, mateId);
+  public chaos(passivity?: Passivity): void {
+    return this.map.chaos(passivity);
   }
 
-  public planeswalk(
-    coordinates?: Coordinates,
-    passive: boolean = false,
-    mateId?: string,
-  ): boolean {
-    return this.map.planeswalk(coordinates, passive, mateId);
+  public planeswalk(coordinates?: Coordinates, passivity?: Passivity): boolean {
+    return this.map.planeswalk(coordinates, passivity);
   }
 
   public customPlaneswalk(
@@ -98,19 +99,12 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     return this.map.customPlaneswalk(planes, coordinates);
   }
 
-  public planeswalkFromPhenomenon(
-    passive: boolean = false,
-    mateId?: string,
-  ): boolean {
-    return this.map.planeswalkFromPhenomenon(passive, mateId);
+  public planeswalkFromPhenomenon(passivity?: Passivity): boolean {
+    return this.map.planeswalkFromPhenomenon(passivity);
   }
 
-  public encounter(
-    coordinates: Coordinates,
-    passive: boolean = false,
-    mateId?: string,
-  ): boolean {
-    return this.map.encounter(coordinates, passive, mateId);
+  public encounter(coordinates: Coordinates, passivity?: Passivity): boolean {
+    return this.map.encounter(coordinates, passivity);
   }
 
   public updateCounter(id: string, change: number): void {

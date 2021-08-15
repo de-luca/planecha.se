@@ -1,4 +1,5 @@
-import { eventBus, EventType } from '@/services/EventBus';
+import { RevealerMode, RevealerSource } from '@/model/state/Revealer';
+import { State } from '@/model/state/State';
 import { Phenomenon } from '../Phenomenon';
 
 /**
@@ -10,7 +11,13 @@ import { Phenomenon } from '../Phenomenon';
  * in a random order.
  */
 export class InterplanarTunnel extends Phenomenon {
-  public enter({ passive = false, initiator }: Passivity = {}): void {
-    eventBus.emit(EventType.INTERPLANAR_TUNNEL, { passive, initiator });
+  public enter(state: State, { passive = false, initiator }: Passivity = {}): void {
+    state.openRevealer({
+      source: RevealerSource.INTERPLANAR_TUNNEL,
+      component: RevealerMode.PICK,
+      sendShownTo: 'top',
+      passive,
+      initiator,
+    });
   }
 }

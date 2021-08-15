@@ -12,6 +12,7 @@ import {
   MapType,
 } from '.';
 import { EternitiesMapExported, EternitiesMapFactory } from './eternities';
+import { State } from '../state/State';
 
 export interface AdvancedOptions {
   name?: string;
@@ -45,6 +46,7 @@ export class MapFactory {
           deck: advanced.cards
             ? this.deckProvider.getSpecificDeck(advanced.cards)
             : this.deckProvider.getDeck(),
+          state: new State(true),
         });
         break;
       case MapType.ETERNITIES:
@@ -71,6 +73,8 @@ export class MapFactory {
       case MapType.CLASSIC:
         return new Classic({
           deck: this.deckProvider.getDeckFromExport<Card>(payload.deck),
+          // TODO: CHANGE THAT INTO A RESTORE STATE
+          state: new State(true),
           active: this.deckProvider.getOrderedPile<Card>(payload.active),
           revealed: payload.revealed
             ? {

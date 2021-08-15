@@ -14,8 +14,13 @@
 
     <div class="controls">
       <chaos-btn v-if="canChaos" />
-      <planeswalk-btn :resolver="revealer?.seeder" :disabled="revealer && revealer.passive" />
+      <planeswalk-btn
+        :resolver="revealer?.seeder"
+        :disabled="revealer && revealer.passive"
+      />
     </div>
+
+    {{ revealer }}
 
     <component
       v-if="revealer && revealed"
@@ -28,14 +33,13 @@
 </template>
 
 <script lang="ts">
+import _shuffle from 'lodash.shuffle';
 import { Options, Vue } from 'vue-class-component';
 import { Component } from '@vue/runtime-core';
-import _shuffle from 'lodash.shuffle';
 import { ActionTypes, Store, useStore } from '@/store';
 import { Card as ModelCard, Plane } from '@/model/card';
 import { eventBus, EventType } from '@/services/EventBus';
-import { Revealed } from '@/model/map/MapInterface';
-import { PickedLeft, Config } from '@/components/reveal/BaseReveal';
+import { Revealed } from '@/model/map';
 import ChaosBtn from '@/components/ChaosBtn.vue';
 import PlaneswalkBtn from '@/components/PlaneswalkBtn.vue';
 import Card from '@/components/classic/Card.vue';
@@ -43,15 +47,22 @@ import Feed from '@/components/classic/Feed.vue';
 import Pick from '@/components/reveal/Pick.vue';
 import Scry from '@/components/reveal/Scry.vue';
 import Show from '@/components/reveal/Show.vue';
+import { PickedLeft, RevealConfig } from '../reveal/BaseReveal';
+import { RevealerMode, RevealerSource } from '@/model/state/Revealer';
 
 type Revealer = {
   passive: boolean;
   component: Component;
   seeder: () => void;
   resolver: (choices: PickedLeft) => void;
-  config: Config;
+  config: RevealConfig;
 }
 
+const RevealerMap: Record<RevealerMode, Component> = {
+  [RevealerMode.SCRY]: Scry,
+  [RevealerMode.SHOW]: Show,
+  [RevealerMode.PICK]: Pick,
+}
 
 @Options({
   components: {
@@ -62,71 +73,15 @@ type Revealer = {
 })
 export default class ClassicMap extends Vue {
   private store: Store;
-  private revealer: Revealer | null = null;
 
   public created() {
     this.store = useStore();
 
-    eventBus.on(EventType.RESOLVED_REVEAL, () => this.revealer = null);
-    eventBus.on(EventType.STAIRS_TO_INFINITY, (payload): void => {
-      this.revealer = {
-        passive: payload.passive,
-        component: Scry,
-        seeder: () => {},
-        resolver: this.putBack,
-        config: {
-          sendShownTo: 'bottom',
-          passive: payload.passive,
-          mateName: payload.initiator ? this.store.getters.mates.get(payload.initiator) : undefined,
-        },
-      };
-
-      if (!payload.passive) {
-        this.store.dispatch(ActionTypes.REVEAL, { count: 1 });
-      }
+    eventBus.on(EventType.STAIRS_TO_INFINITY, (): void => {
+      this.store.dispatch(ActionTypes.REVEAL, { count: 1 });
     });
-    eventBus.on(EventType.POOL_OF_BECOMING, (payload): void => {
-      this.revealer = {
-        passive: payload.passive,
-        component: Show,
-        seeder: () => {},
-        resolver: this.putBack,
-        config: {
-          sendShownTo: 'bottom',
-          passive: payload.passive,
-          mateName: payload.initiator ? this.store.getters.mates.get(payload.initiator) : undefined,
-        },
-      };
-
-      if (!payload.passive) {
-        this.store.dispatch(ActionTypes.REVEAL, { count: 3 });
-      }
-    });
-    eventBus.on(EventType.INTERPLANAR_TUNNEL, (payload): void => {
-      this.revealer = {
-        passive: payload.passive,
-        component: Pick,
-        seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 5, type: Plane }),
-        resolver: this.customPlaneswalk,
-        config: {
-          sendShownTo: 'bottom',
-          passive: payload.passive,
-          mateName: payload.initiator ? this.store.getters.mates.get(payload.initiator) : undefined,
-        },
-      };
-    });
-    eventBus.on(EventType.SPACIAL_MERGING, (payload): void => {
-      this.revealer = {
-        passive: payload.passive,
-        component: Show,
-        seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 2, type: Plane }),
-        resolver: this.customPlaneswalk,
-        config: {
-          sendShownTo: 'top',
-          passive: payload.passive,
-          mateName: payload.initiator ? this.store.getters.mates.get(payload.initiator) : undefined,
-        },
-      };
+    eventBus.on(EventType.POOL_OF_BECOMING, (): void => {
+      this.store.dispatch(ActionTypes.REVEAL, { count: 3 });
     });
   }
 
@@ -142,8 +97,49 @@ export default class ClassicMap extends Vue {
     return this.store.getters.active[0].type === 'plane';
   }
 
+  public get revealer(): Revealer | undefined {
+    const revealer = this.store.getters.map.state.revealer;
+
+    if (!revealer) {
+      return undefined;
+    }
+
+    const config = {
+      passive: revealer.passive,
+      component: RevealerMap[revealer.component],
+      config: {
+        sendShownTo: revealer.sendShownTo,
+        passive: revealer.passive,
+        mateName: revealer.initiator
+          ? this.store.getters.mates.get(revealer.initiator)
+          : undefined,
+      },
+    };
+
+    switch (revealer.source) {
+      case RevealerSource.STAIRS_TO_INFINITY:
+      case RevealerSource.POOL_OF_BECOMING:
+        return {
+          ...config,
+          seeder: () => {},
+          resolver: this.putBack,
+        };
+      case RevealerSource.INTERPLANAR_TUNNEL:
+        return {
+          ...config,
+          seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 5, type: Plane }),
+          resolver: this.customPlaneswalk,
+        };
+      case RevealerSource.SPACIAL_MERGING:
+        return {
+          ...config,
+          seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 2, type: Plane }),
+          resolver: this.customPlaneswalk,
+        };
+    }
+  }
+
   public customPlaneswalk(choices: PickedLeft): void {
-    console.log(choices);
     this.store.dispatch(ActionTypes.CUSTOM_PLANESWALK, {
       planes: choices.picked as Array<Plane>,
     });

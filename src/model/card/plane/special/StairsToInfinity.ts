@@ -1,3 +1,5 @@
+import { RevealerMode, RevealerSource } from '@/model/state/Revealer';
+import { State } from '@/model/state/State';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Plane } from '../Plane';
 
@@ -10,7 +12,17 @@ import { Plane } from '../Plane';
  * You may put it on the bottom of your planar deck.
  */
 export class StairsToInfinity extends Plane {
-  public chaos({ passive = false, initiator }: Passivity = {}): void {
-    eventBus.emit(EventType.STAIRS_TO_INFINITY, { passive, initiator });
+  public chaos(state: State, { passive = false, initiator }: Passivity = {}): void {
+    state.openRevealer({
+      source: RevealerSource.STAIRS_TO_INFINITY,
+      component: RevealerMode.SCRY,
+      sendShownTo: 'bottom',
+      passive,
+      initiator,
+    });
+
+    if (!passive) {
+      eventBus.emit(EventType.STAIRS_TO_INFINITY);
+    }
   }
 }

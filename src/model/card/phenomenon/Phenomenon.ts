@@ -1,3 +1,4 @@
+import { State } from '@/model/state/State';
 import { Card } from '../Card';
 
 export class Phenomenon extends Card {
@@ -9,7 +10,7 @@ export class Phenomenon extends Card {
     return;
   }
 
-  public enter(): void {
+  public enter(_state: State): void {
     return;
   }
 

@@ -1,3 +1,5 @@
+import { RevealerMode, RevealerSource } from '@/model/state/Revealer';
+import { State } from '@/model/state/State';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Plane } from '../Plane';
 
@@ -10,7 +12,17 @@ import { Plane } from '../Plane';
  * Then put the revealed cards on the bottom of your planar deck in any order.
  */
 export class PoolOfBecoming extends Plane {
-  public chaos({ passive = false, initiator }: Passivity = {}): void {
-    eventBus.emit(EventType.POOL_OF_BECOMING, { passive, initiator });
+  public chaos(state: State, { passive = false, initiator }: Passivity = {}): void {
+    state.openRevealer({
+      source: RevealerSource.POOL_OF_BECOMING,
+      component: RevealerMode.SHOW,
+      sendShownTo: 'bottom',
+      passive,
+      initiator,
+    });
+
+    if (!passive) {
+      eventBus.emit(EventType.POOL_OF_BECOMING);
+    }
   }
 }

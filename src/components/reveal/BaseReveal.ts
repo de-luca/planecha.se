@@ -1,13 +1,15 @@
+import { Component } from 'vue';
 import { prop } from 'vue-class-component';
 import { Card } from '@/model/card';
 import { Revealed } from '@/model/map/MapInterface';
+import { RevealerMode } from '@/model/state/Revealer';
 
 export type PickedLeft = {
   picked: Array<Card>;
   left: Array<Card>;
 }
 
-export type Config = {
+export type RevealConfig = {
   passive: boolean;
   sendShownTo: 'top' | 'bottom';
   title?: string;
@@ -16,5 +18,5 @@ export type Config = {
 
 export class BaseReveal {
   public revealed = prop<Revealed>({ required: true });
-  public config = prop<Config>({ required: true });
+  public config = prop<RevealConfig>({ required: true });
 }

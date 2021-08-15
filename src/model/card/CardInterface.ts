@@ -1,3 +1,5 @@
+import { State } from "../state/State";
+
 export interface CardInterface {
   id: string;
   oracleId: string;
@@ -10,7 +12,7 @@ export interface CardInterface {
 
   type: string;
 
-  chaos(passivity?: Passivity): void;
-  enter(passivity?: Passivity): void;
+  chaos(state: State, passivity?: Passivity): void;
+  enter(state: State, passivity?: Passivity): void;
   leave(): void;
 }
