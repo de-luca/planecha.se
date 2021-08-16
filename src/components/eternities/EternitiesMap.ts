@@ -2,7 +2,7 @@ import _shuffle from 'lodash.shuffle';
 import { Component } from 'vue';
 import { ActionTypes, Store, useStore } from '@/store';
 import { eventBus, EventType } from '@/services/EventBus';
-import { Phenomenon as PhenomenonModel, Plane } from '@/model/card';
+import { Phenomenon, Plane } from '@/model/card';
 import { PickedLeft, RevealConfig } from '../reveal/BaseReveal';
 import { Vue } from 'vue-class-component';
 import Scry from '@/components/reveal/Scry.vue';
@@ -13,9 +13,10 @@ import {
   Revealed,
   Tile,
 } from '@/model/map';
-import { RevealerMode, RevealerSource } from '@/model/state/Revealer';
+import { Revealer, RevealerMode, RevealerSource } from '@/model/state/Revealer';
+import { StateKey } from '@/model/state/MapState';
 
-type Revealer = {
+type RevealerConfig = {
   passive: boolean;
   component: Component;
   seeder: () => void;
@@ -40,7 +41,6 @@ export class EternitiesMap extends Vue {
       this.store.dispatch(ActionTypes.REVEAL, { count: 1 });
     });
     eventBus.on(EventType.POOL_OF_BECOMING, (): void => {
-      console.log('LA');
       this.store.dispatch(ActionTypes.REVEAL, { count: 3 });
     });
   }
@@ -49,8 +49,9 @@ export class EternitiesMap extends Vue {
     return this.store.getters.revealed;
   }
 
-  public get revealer(): Revealer | undefined {
-    const revealer = this.store.getters.map.state.revealer;
+  public get revealer(): RevealerConfig | undefined {
+    const revealer =
+      this.store.getters.map.state.get(StateKey.REVEALER) as Revealer | undefined;
 
     if (!revealer) {
       return undefined;
@@ -91,9 +92,9 @@ export class EternitiesMap extends Vue {
     }
   }
 
-  public get encounteringPhenomenon(): PhenomenonModel | undefined {
+  public get encounteringPhenomenon(): Phenomenon | undefined {
     return this.store.getters.map.destination
-      ? this.store.getters.active[0] as PhenomenonModel
+      ? this.store.getters.active[0] as Phenomenon
       : undefined;
   }
 

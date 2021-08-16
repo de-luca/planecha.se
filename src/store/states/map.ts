@@ -20,6 +20,7 @@ import {
 import { BuildProps, MapFactory } from '@/model/map/MapFactory';
 import { OnlineInterface } from '@/model/net/OnlineInterface';
 import { eventBus } from '@/services/EventBus';
+import { StateKey, StateOp, State as MState } from '@/model/state/MapState';
 
 
 // Declare state
@@ -60,6 +61,7 @@ export type PlaneswalkPayload = Passiveable & { coordinates?: Coordinates };
 export type CustomPlaneswalkPayload = PlaneswalkPayload & { planes: Array<Plane> };
 export type EncounterPayload = Passiveable & { coordinates: Coordinates };
 export type CounterPayload = Idable & { id: string, change: number };
+export type UpdateStatePayload = { key: StateKey, op: StateOp, val: MState };
 export type ResolveRevealPayload = Idable & { top: Array<Card>, bottom: Array<Card> };
 
 // mutations enums
@@ -69,14 +71,20 @@ export enum MutationTypes {
   BYE = 'BYE',
   INIT = 'INIT',
   SHUFFLE = 'SHUFFLE',
+
   CHAOS = 'CHAOS',
   PLANESWALK = 'PLANESWALK',
   CUSTOM_PLANESWALK = 'CUSTOM_PLANESWALK',
   PLANESWALK_FROM_PHENOMENON = 'PLANESWALK_FROM_PHENOMENON',
   ENCOUNTER = 'ENCOUNTER',
+
   COUNTERS = 'COUNTERS',
+
+  UPDATE_STATE = 'UPDATE_STATE',
+
   REVEAL = 'REVEAL',
   RESOLVE_REVEAL = 'RESOLVE_REVEAL',
+
   START_ETERNITIES = 'START_ETERNITIES',
 }
 
@@ -93,6 +101,7 @@ export type Mutations<S = State> = {
   [MutationTypes.PLANESWALK_FROM_PHENOMENON](state: S, payload: ResolvePayload): void,
   [MutationTypes.ENCOUNTER](state: S, payload: EncounterPayload): void,
   [MutationTypes.COUNTERS](state: S, payload: CounterPayload): void,
+  [MutationTypes.UPDATE_STATE](state: S, payload: UpdateStatePayload): void,
   [MutationTypes.REVEAL](state: S, payload: RevealPayload): void,
   [MutationTypes.RESOLVE_REVEAL](state: S, payload: ResolveRevealPayload): void,
   [MutationTypes.START_ETERNITIES](state: S): void,
@@ -145,6 +154,9 @@ export const mutations: Mutations = {
   [MutationTypes.COUNTERS](state: State, payload: CounterPayload) {
     (<MapInterface>state.map).updateCounter(payload.id, payload.change);
   },
+  [MutationTypes.UPDATE_STATE](state: State, payload: UpdateStatePayload) {
+    (<MapInterface>state.map).state.apply(payload.key, payload.op, payload.val);
+  },
   [MutationTypes.REVEAL](state: State, payload: RevealPayload) {
     state.shuffled = (<MapInterface>state.map).revealUntil(payload.count, payload.type);
   },
@@ -166,6 +178,7 @@ export enum ActionTypes {
   PLANESWALK_FROM_PHENOMENON = 'PLANESWALK_FROM_PHENOMENON',
   ENCOUNTER = 'ENCOUNTER',
   COUNTERS = 'COUNTERS',
+  UPDATE_STATE = 'UPDATE_STATE',
   REVEAL = 'REVEAL',
   RESOLVE_REVEAL = 'RESOLVE_REVEAL',
   START_ETERNITIES = 'START_ETERNITIES',
@@ -210,6 +223,10 @@ export interface Actions {
   [ActionTypes.COUNTERS](
     { commit }: AugmentedActionContext,
     payload: { id: string, change: number },
+  ): void,
+  [ActionTypes.UPDATE_STATE](
+    { commit }: AugmentedActionContext,
+    payload: { key: StateKey, op: StateOp, val: MState },
   ): void,
   [ActionTypes.REVEAL](
     { commit }: AugmentedActionContext,
@@ -306,6 +323,13 @@ export const actions: ActionTree<State, State> & Actions = {
 
     if (state.online) {
       (state.map as OnlineInterface).requestCounterUpdate(payload);
+    }
+  },
+  [ActionTypes.UPDATE_STATE]({ commit }, payload: { key: StateKey, op: StateOp, val: MState }) {
+    commit(MutationTypes.UPDATE_STATE, payload);
+
+    if (state.online) {
+      // (state.map as OnlineInterface).(payload);
     }
   },
   [ActionTypes.REVEAL]({ commit }, payload: { count: number, type?: typeof Card }) {

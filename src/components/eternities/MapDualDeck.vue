@@ -16,7 +16,7 @@
 
     <chaos-btn class="chaos" />
 
-    <phenomenon
+    <phenomenon-wall
       v-if="encounteringPhenomenon"
       :phenomenon="encounteringPhenomenon"
       :resolver="revealer?.seeder"
@@ -56,14 +56,15 @@ import
   EncounterWall,
   { EncounterWallConfig }
 from '@/components/eternities/EncounterWall.vue';
-import Phenomenon from '@/components/eternities/Phenomenon.vue';
+import PhenomenonWall from '@/components/eternities/PhenomenonWall.vue';
 import Scry from '@/components/reveal/Scry.vue';
 import Pick from '@/components/reveal/Pick.vue';
 import Show from '@/components/reveal/Show.vue';
 
 @Options({
   components: {
-    Tile, ChaosBtn, Phenomenon, EncounterWall,
+    Tile, ChaosBtn,
+    PhenomenonWall, EncounterWall,
     Scry, Pick, Show,
   },
 })

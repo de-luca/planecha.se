@@ -12,7 +12,7 @@ import {
 import { Card, Plane } from "@/model/card";
 import { Deck } from "@/model/deck/Deck";
 import { EternitiesMapExported } from "./EternitiesMap";
-import { State } from "@/model/state/State";
+import { MapState, State } from "@/model/state/MapState";
 
 @Service()
 export class EternitiesMapFactory {
@@ -25,7 +25,7 @@ export class EternitiesMapFactory {
     cards?: Array<string>,
   ): MapInterface {
     const deck = this.getDeck(specs, cards);
-    const state = new State(false);
+    const state = new MapState();
 
     if (specs.subType === EternitiesMapSubType.SINGLE_DECK) {
       return new SingleDeck({ deck, state, deckType: specs.deckType });
@@ -54,8 +54,7 @@ export class EternitiesMapFactory {
   public restore(payload: EternitiesMapExported): MapInterface {
     const specs = payload.specs as EternitiesMapSpecs;
     const props: SingleDeckProps = {
-      // TODO: CHANGE THAT INTO A RESTORE STATE
-      state: new State(false),
+      state: MapState.from(payload.state),
       deckType: specs.deckType,
       deck: this.deckProvider.getDeckFromExport<Plane>(payload.deck),
       active: this.deckProvider.getOrderedPile<Plane>(payload.active),

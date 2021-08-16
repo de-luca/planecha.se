@@ -3,6 +3,7 @@ import { Beacon } from './Beacon';
 import { OnlineInterface } from './OnlineInterface';
 import { PeerMap } from './PeerMap';
 import { Event } from './Handler';
+import { MapState } from '../state/MapState';
 import {
   Coordinates,
   Exported,
@@ -12,7 +13,6 @@ import {
   Tile,
   EncounterTriggers,
 } from '../map';
-import { State } from '../state/State';
 
 export class OnlineDecorator implements MapInterface, OnlineInterface {
   private beacon: Beacon;
@@ -33,7 +33,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     this.peers = new PeerMap(this.beacon, name);
   }
 
-  public get state(): State {
+  public get state(): MapState {
     return this.map.state;
   }
 

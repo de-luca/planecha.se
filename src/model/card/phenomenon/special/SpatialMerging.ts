@@ -1,5 +1,5 @@
-import { RevealerMode, RevealerSource } from '@/model/state/Revealer';
-import { State } from '@/model/state/State';
+import { Revealer, RevealerMode, RevealerSource } from '@/model/state/Revealer';
+import { MapState, StateKey } from '@/model/state/MapState';
 import { Phenomenon } from '../Phenomenon';
 
 /**
@@ -11,13 +11,15 @@ import { Phenomenon } from '../Phenomenon';
  * bottom of your planar deck in any order.
  */
 export class SpatialMerging extends Phenomenon {
-  public enter(state: State, { passive = false, initiator }: Passivity = {}): void {
-    state.openRevealer({
+  public enter(state: MapState, { passive = false, initiator }: Passivity = {}): void {
+    const revealer: Revealer = {
       source: RevealerSource.SPACIAL_MERGING,
       component: RevealerMode.SHOW,
       sendShownTo: 'top',
       passive,
       initiator,
-    });
+    };
+
+    state.set(StateKey.REVEALER, revealer);
   }
 }

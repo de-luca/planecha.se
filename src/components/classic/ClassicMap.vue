@@ -48,9 +48,10 @@ import Pick from '@/components/reveal/Pick.vue';
 import Scry from '@/components/reveal/Scry.vue';
 import Show from '@/components/reveal/Show.vue';
 import { PickedLeft, RevealConfig } from '../reveal/BaseReveal';
-import { RevealerMode, RevealerSource } from '@/model/state/Revealer';
+import { Revealer, RevealerMode, RevealerSource } from '@/model/state/Revealer';
+import { StateKey } from '@/model/state/MapState';
 
-type Revealer = {
+type RevealerConfig = {
   passive: boolean;
   component: Component;
   seeder: () => void;
@@ -97,8 +98,11 @@ export default class ClassicMap extends Vue {
     return this.store.getters.active[0].type === 'plane';
   }
 
-  public get revealer(): Revealer | undefined {
-    const revealer = this.store.getters.map.state.revealer;
+  public get revealer(): RevealerConfig | undefined {
+    const revealer =
+      this.store.getters.map.state.get(StateKey.REVEALER) as Revealer | undefined;
+
+    console.log('REVEALER', revealer);
 
     if (!revealer) {
       return undefined;
@@ -148,6 +152,7 @@ export default class ClassicMap extends Vue {
   }
 
   public putBack(choices: PickedLeft): void {
+    console.log(choices);
     const payload = {
       top: choices.picked,
       bottom: _shuffle(choices.left),

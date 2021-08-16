@@ -11,11 +11,11 @@
 
 <script lang="ts">
 import { Options, prop, Vue } from 'vue-class-component';
-import { Phenomenon as PhenomenonModel } from '@/model/card';
+import { Phenomenon } from '@/model/card';
 import PlaneswalkBtn from '@/components/PlaneswalkBtn.vue';
 
 class Props {
-  public phenomenon = prop<PhenomenonModel>({ required: true });
+  public phenomenon = prop<Phenomenon>({ required: true });
   public disabled = prop<boolean>({ required: false, default: false });
   public resolver = prop<() => void>({ required: false });
 }
@@ -23,7 +23,7 @@ class Props {
 @Options({
   components: { PlaneswalkBtn },
 })
-export default class Phenomenon extends Vue.with(Props) {
+export default class PhenomenonWall extends Vue.with(Props) {
   public get imgSrc(): string {
     return `/cards/${this.phenomenon.id}.png`;
   }

@@ -3,7 +3,7 @@ import { Container } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
 import { Card, Plane } from '../card';
 import { Deck } from '../deck/Deck';
-import { State } from '../state/State';
+import { MapState, State, StateKey } from '../state/MapState';
 import {
   Coordinates,
   Exported,
@@ -15,7 +15,7 @@ import {
 } from './MapInterface';
 
 export interface MapProps {
-  state: State;
+  state: MapState;
   deck: Deck<Card>;
   active?: Array<Card>;
   revealed?: Revealed;
@@ -23,7 +23,7 @@ export interface MapProps {
 
 export abstract class Map implements MapInterface {
   protected deck: Deck<Card>;
-  public readonly state: State;
+  public readonly state: MapState;
 
   public active: Array<Card>;
   public revealed?: Revealed;
@@ -91,7 +91,7 @@ export abstract class Map implements MapInterface {
     this.deck.putOnTheBottom(bottom);
 
     this.clearRevealed();
-    this.state.closeRevealer();
+    this.state.delete(StateKey.REVEALER);
   }
 
   public clearRevealed(): void {
@@ -100,6 +100,7 @@ export abstract class Map implements MapInterface {
 
   public export(): Exported {
     return {
+      state: this.state.export(),
       specs: this.specs,
       deck: this.deck.export(),
       active: this.active.map(c => c.id),

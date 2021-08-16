@@ -38,7 +38,7 @@ import { mixins, Options } from 'vue-class-component';
 import { EternitiesMap } from '@/components/eternities/EternitiesMap';
 import ChaosBtn from '@/components/ChaosBtn.vue';
 import Tile from '@/components/eternities/Tile.vue';
-import Phenomenon from '@/components/eternities/Phenomenon.vue';
+import Phenomenon from '@/components/eternities/PhenomenonWall.vue';
 import Scry from '@/components/reveal/Scry.vue';
 import Pick from '@/components/reveal/Pick.vue';
 import Show from '@/components/reveal/Show.vue';

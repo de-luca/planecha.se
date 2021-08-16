@@ -1,4 +1,4 @@
-import { State } from '../state/State';
+import { MapState } from '../state/MapState';
 import { Props } from './CardFactory';
 import { CardInterface } from './CardInterface';
 
@@ -25,7 +25,7 @@ export abstract class Card implements CardInterface {
 
   public abstract get type(): string;
 
-  public abstract chaos(state: State, passivity?: Passivity): void;
-  public abstract enter(state: State, passivity?: Passivity): void;
+  public abstract chaos(state: MapState, passivity?: Passivity): void;
+  public abstract enter(state: MapState, passivity?: Passivity): void;
   public abstract leave(): void;
 }

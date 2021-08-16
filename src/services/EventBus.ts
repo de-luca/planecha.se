@@ -17,7 +17,7 @@ export enum EventType {
 }
 
 export interface ByeEventPayload {
-  initiator: string;
+  mateId: string;
 }
 
 export interface NotifEventPayload {
