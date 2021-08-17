@@ -83,6 +83,7 @@ export class MapFactory {
               others: this.deckProvider.getOrderedPile<Card>(payload.revealed.others),
             }
             : undefined,
+          destination: payload.destination,
         });
       case MapType.ETERNITIES:
         return this.eternitiesMapFactory.restore(payload as EternitiesMapExported);

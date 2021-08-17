@@ -74,6 +74,7 @@ export interface Exported {
   active: Array<string>;
   revealed?: { relevant: Array<string>, others: Array<string> };
   tiles?: Array<ExportedTile>;
+  destination?: Coordinates;
   hasStarted?: boolean;
 }
 

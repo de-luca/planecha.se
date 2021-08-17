@@ -70,6 +70,7 @@ export class EternitiesMapFactory {
         plane: this.deckProvider.getOrderedPile(t.plane),
       })),
       hasStarted: payload.hasStarted,
+      destination: payload.destination,
     };
 
     if (specs.subType === EternitiesMapSubType.SINGLE_DECK) {

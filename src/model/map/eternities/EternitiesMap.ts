@@ -24,7 +24,6 @@ export abstract class EternitiesMap extends Map {
   protected static readonly maxRange = 3;
   protected static readonly center: Coordinates = { x: 0, y: 0 };
 
-  public destination?: Coordinates;
   protected deckType: EternitiesMapDeckType;
 
   protected constructor(props: EternitiesMapProps) {
@@ -34,8 +33,6 @@ export abstract class EternitiesMap extends Map {
     this.active = props.active ?? [this.deck.drawPlane().card];
     this.tiles = props.tiles ?? this.initializeTiles();
     this.hasStarted = props.hasStarted ?? false;
-
-    this.destination = undefined;
     this.deckType = props.deckType;
   }
 

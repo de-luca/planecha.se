@@ -8,6 +8,7 @@ import {
   Tile,
   TileStatus,
 } from '../MapInterface';
+import { StateKey } from "@/model/state/MapState";
 
 export interface SingleDeckProps extends EternitiesMapProps {}
 
@@ -27,11 +28,12 @@ export class SingleDeck extends EternitiesMap {
   private encounterPhenomenon(
     card: Phenomenon,
     coordinates: Coordinates,
-    passivity?: Passivity,
+    passivity: Passivity = { passive: false },
   ): void {
     this.active = [card];
     this.destination = coordinates;
-    this.active.forEach(c => c.enter(passivity));
+    this.active.forEach(c => c.enter(this.state, passivity));
+    this.state.set(StateKey.PHENOMENON_WALL, { passive: passivity.passive ?? false });
   }
 
   public planeswalk(
@@ -150,7 +152,7 @@ export class SingleDeck extends EternitiesMap {
 
     this.destination = undefined;
 
-    this.active.forEach(c => c.enter(passivity));
+    this.active.forEach(c => c.enter(this.state, passivity));
 
     return shuffled;
   }
@@ -180,7 +182,10 @@ export class SingleDeck extends EternitiesMap {
 
   public planeswalkFromPhenomenon(passivity?: Passivity): boolean {
     this.deck.setPlayed(...this.active);
+    this.state.delete(StateKey.PHENOMENON_WALL);
+
     const shuffled = this.planeswalk(this.destination as Coordinates, passivity);
+
     return shuffled;
   }
 }

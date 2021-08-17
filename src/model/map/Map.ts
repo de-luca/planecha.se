@@ -19,6 +19,7 @@ export interface MapProps {
   deck: Deck<Card>;
   active?: Array<Card>;
   revealed?: Revealed;
+  destination?: Coordinates;
 }
 
 export abstract class Map implements MapInterface {
@@ -30,7 +31,7 @@ export abstract class Map implements MapInterface {
 
   public tiles: Array<Tile> = [];
   public hasStarted: boolean;
-  public destination?: Coordinates | undefined;
+  public destination?: Coordinates;
   public readonly encounterTriggers: EncounterTriggers;
 
   public constructor(props: MapProps) {
@@ -38,6 +39,7 @@ export abstract class Map implements MapInterface {
     this.state = props.state;
     this.active = props.active ?? [];
     this.revealed = props.revealed;
+    this.destination = props.destination;
   }
 
   public abstract get specs(): MapSpecs;
@@ -110,6 +112,7 @@ export abstract class Map implements MapInterface {
           relevant: this.revealed.relevant.map(c => c.id),
           others: this.revealed.others.map(c => c.id),
         },
+      destination: this.destination,
     };
   }
 

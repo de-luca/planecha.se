@@ -24,6 +24,11 @@ type RevealerConfig = {
   config: RevealConfig;
 }
 
+type PhenomenonWallConfig = {
+  passive: boolean;
+  phenomenon: Phenomenon;
+}
+
 const RevealerMap: Record<RevealerMode, Component> = {
   [RevealerMode.SCRY]: Scry,
   [RevealerMode.SHOW]: Show,
@@ -92,10 +97,17 @@ export class EternitiesMap extends Vue {
     }
   }
 
-  public get encounteringPhenomenon(): Phenomenon | undefined {
-    return this.store.getters.map.destination
-      ? this.store.getters.active[0] as Phenomenon
-      : undefined;
+  public get phenomenonWall(): PhenomenonWallConfig | undefined {
+    if (this.store.getters.map.destination) {
+      const c = {
+        passive: this.store.getters.map.state.get(StateKey.PHENOMENON_WALL)?.passive ?? false,
+        phenomenon: this.store.getters.map.active[0] as Phenomenon,
+      };
+
+      return c;
+    }
+
+    return undefined;
   }
 
   public get hasStarted(): boolean {
