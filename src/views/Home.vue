@@ -3,7 +3,7 @@
   <div class="container">
     <div class="cta">
       <h1 class="title">
-        <div class="brand" @click="thaNav">
+        <div class="brand">
           <div>⟁</div>
           <div>⟁</div>
           <div>⟁</div>

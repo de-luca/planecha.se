@@ -27,7 +27,7 @@
       </label>
     </div>
 
-    <p class="help" v-if="!available">Online unavailable. 🔥 Server is dead 🔥</p>
+    <p class="help"></p>
   </div>
 </template>
 
@@ -42,7 +42,7 @@ class Props {
 @Options({
   emits: ['update:modelValue'],
 })
-export default class GameScopePicker extends Vue.with(Props) {
+export default class OnlinePicker extends Vue.with(Props) {
   private id: string = '';
   private loading = true;
   private available = false;
@@ -52,6 +52,18 @@ export default class GameScopePicker extends Vue.with(Props) {
     Beacon.check()
       .then(state => this.available = state)
       .finally(() => this.loading = false);
+  }
+
+  public get helpText(): string {
+    if (!this.available) {
+      return 'Online unavailable. 🔥 Server is dead 🔥';
+    }
+
+    if (this.loading) {
+      return 'Checking the Planar Beacon...';
+    }
+
+    return '';
   }
 
   public get selected(): boolean {

@@ -3,9 +3,9 @@
 
     <div class="nav">
       <div class="brand" @click="thaNav">
-        <div>⟁</div>
-        <div>⟁</div>
-        <div>⟁</div>
+        <div title="F">⟁</div>
+        <div title="D">⟁</div>
+        <div title="F">⟁</div>
       </div>
       <online-controls v-if="online"/>
       <close-game />
@@ -109,6 +109,8 @@ export default class Board extends Vue {
     flex-grow: 1;
 
     div {
+      position: relative;
+      z-index: 1;
       display: inline-block;
       font-size: 2em;
       width: 3rem;
@@ -124,6 +126,7 @@ export default class Board extends Vue {
       }
       &:nth-child(2) {
         transform: translateX(-1.5rem);
+        z-index: 2;
       }
       &:nth-child(3) {
         transform: rotate(180deg) translateX(3rem);

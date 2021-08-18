@@ -7,7 +7,7 @@
 
     <form @submit.prevent="create">
 
-      <game-scope-picker v-model="online" />
+      <online-picker v-model="online" />
 
       <div class="field" v-if="requireName">
         <label class="label">Your player name:</label>
@@ -80,13 +80,13 @@ import {
 import { Card, Plane } from '@/model/card';
 import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';
 import CardPicker, { Group } from '@/components/create/CardPicker.vue';
-import GameScopePicker from '@/components/create/GameScopePicker.vue';
+import OnlinePicker from '@/components/create/OnlinePicker.vue';
 import EncounterSetup from '@/components/create/EncounterSetup.vue';
 
 @Options({
   components: {
     ButtonPicker, CardPicker,
-    GameScopePicker, EncounterSetup,
+    OnlinePicker, EncounterSetup,
   },
 })
 export default class CreateGame extends Vue {
