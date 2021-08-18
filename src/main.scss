@@ -1,5 +1,11 @@
 @import "../node_modules/bulma/bulma.sass";
 
+@font-face {
+  font-family: 'MazeletterUtopia';
+  src:  url('fonts/mazeletter-utopia.woff2') format('woff2'),
+        url('fonts/mazeletter-utopia.woff') format('woff');
+}
+
 html, body, #app {
   height: 100%;
 }
