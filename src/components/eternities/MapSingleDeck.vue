@@ -36,6 +36,7 @@
 <script lang="ts">
 import { mixins, Options } from 'vue-class-component';
 import { EternitiesMap } from '@/components/eternities/EternitiesMap';
+
 import ChaosBtn from '@/components/ChaosBtn.vue';
 import Tile from '@/components/eternities/Tile.vue';
 import PhenomenonWall from '@/components/eternities/PhenomenonWall.vue';

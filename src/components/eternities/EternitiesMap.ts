@@ -1,22 +1,21 @@
 import _shuffle from 'lodash.shuffle';
 import { Component } from 'vue';
+import { Vue } from 'vue-class-component';
 import { ActionTypes, Store, useStore } from '@/store';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Phenomenon, Plane } from '@/model/card';
 import { PickedLeft, RevealConfig } from '../reveal/BaseReveal';
-import { Vue } from 'vue-class-component';
-import Scry from '@/components/reveal/Scry.vue';
-import Pick from '@/components/reveal/Pick.vue';
-import Show from '@/components/reveal/Show.vue';
+import { RevealFactory } from '../reveal/RevealFactory';
+import { Revealed, Tile } from '@/model/map';
 import {
-  Coordinates,
-  Revealed,
-  Tile,
-} from '@/model/map';
-import { Revealer, RevealerMode, RevealerSource } from '@/model/state/Revealer';
-import { StateKey } from '@/model/state/MapState';
+  RevealerWallState,
+  RevealerSource,
+  StateKey,
+  PhenomenonWallState,
+} from '@/model/states';
 
-type RevealerConfig = {
+
+type LocalRevealerConfig = {
   passive: boolean;
   component: Component;
   seeder: () => void;
@@ -24,15 +23,9 @@ type RevealerConfig = {
   config: RevealConfig;
 }
 
-type PhenomenonWallConfig = {
+type LocalPhenomenonWallConfig = {
   passive: boolean;
   phenomenon: Phenomenon;
-}
-
-const RevealerMap: Record<RevealerMode, Component> = {
-  [RevealerMode.SCRY]: Scry,
-  [RevealerMode.SHOW]: Show,
-  [RevealerMode.PICK]: Pick,
 }
 
 export class EternitiesMap extends Vue {
@@ -54,9 +47,9 @@ export class EternitiesMap extends Vue {
     return this.store.getters.revealed;
   }
 
-  public get revealer(): RevealerConfig | undefined {
+  public get revealer(): LocalRevealerConfig | undefined {
     const revealer =
-      this.store.getters.map.state.get(StateKey.REVEALER) as Revealer | undefined;
+      this.store.getters.map.states.get(StateKey.REVEALER) as RevealerWallState | undefined;
 
     if (!revealer) {
       return undefined;
@@ -64,7 +57,7 @@ export class EternitiesMap extends Vue {
 
     const config = {
       passive: revealer.passive,
-      component: RevealerMap[revealer.component],
+      component: RevealFactory.get(revealer.component),
       config: {
         sendShownTo: revealer.sendShownTo,
         passive: revealer.passive,
@@ -97,14 +90,15 @@ export class EternitiesMap extends Vue {
     }
   }
 
-  public get phenomenonWall(): PhenomenonWallConfig | undefined {
+  public get phenomenonWall(): LocalPhenomenonWallConfig | undefined {
     if (this.store.getters.map.destination) {
-      const c = {
-        passive: this.store.getters.map.state.get(StateKey.PHENOMENON_WALL)?.passive ?? false,
+      return {
+        passive:
+          this.store.getters.map.states.get<PhenomenonWallState>(
+            StateKey.PHENOMENON_WALL
+          )?.passive ?? false,
         phenomenon: this.store.getters.map.active[0] as Phenomenon,
       };
-
-      return c;
     }
 
     return undefined;
@@ -143,7 +137,6 @@ export class EternitiesMap extends Vue {
   }
 
   public customPlaneswalk(choices: PickedLeft): void {
-    console.log(choices);
     this.store.dispatch(ActionTypes.CUSTOM_PLANESWALK, {
       planes: choices.picked as Array<Plane>,
     });

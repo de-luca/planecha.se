@@ -25,8 +25,6 @@ export default class Maze extends Vue {
   private computeCols(): void {
     const canaryWidth = (document.getElementById('canary') as HTMLElement).clientWidth;
     const screenWidth = window.innerWidth;
-    console.log(canaryWidth);
-    console.log(screenWidth);
 
     this.cols = Math.ceil(screenWidth / canaryWidth);
   }

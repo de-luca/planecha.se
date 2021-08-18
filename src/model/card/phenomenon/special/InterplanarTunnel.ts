@@ -1,6 +1,11 @@
-import { Revealer, RevealerMode, RevealerSource } from '@/model/state/Revealer';
-import { MapState, StateKey } from '@/model/state/MapState';
 import { Phenomenon } from '../Phenomenon';
+import {
+  MapStates,
+  RevealerMode,
+  RevealerSource,
+  RevealerWallState,
+  StateKey,
+} from '@/model/states';
 
 /**
  * When you encounter Interplanar Tunnel,
@@ -11,8 +16,8 @@ import { Phenomenon } from '../Phenomenon';
  * in a random order.
  */
 export class InterplanarTunnel extends Phenomenon {
-  public enter(state: MapState, { passive = false, initiator }: Passivity = {}): void {
-    const revealer: Revealer = {
+  public enter(states: MapStates, { passive = false, initiator }: Passivity = {}): void {
+    const revealer: RevealerWallState = {
       source: RevealerSource.INTERPLANAR_TUNNEL,
       component: RevealerMode.PICK,
       sendShownTo: 'top',
@@ -20,6 +25,6 @@ export class InterplanarTunnel extends Phenomenon {
       initiator,
     };
 
-    state.set(StateKey.REVEALER, revealer);
+    states.set(StateKey.REVEALER, revealer);
   }
 }

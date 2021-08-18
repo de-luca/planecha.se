@@ -1,11 +1,6 @@
+import { ExportedMapState, MapStates } from '../states';
 import { Card, Plane } from '../card';
 import { DeckState } from '../deck/Deck';
-import { ExportedMapState, MapState } from '../state/MapState';
-
-export interface Coordinates {
-  x: number;
-  y: number;
-}
 
 export enum TileStatus {
   ACTIVE = 'active',
@@ -69,13 +64,13 @@ export interface EternitiesMapSpecs extends MapSpecs {
 
 export interface Exported {
   specs: MapSpecs;
-  state: ExportedMapState;
+  states: ExportedMapState;
+  hasStarted: boolean;
   deck: DeckState;
   active: Array<string>;
   revealed?: { relevant: Array<string>, others: Array<string> };
   tiles?: Array<ExportedTile>;
   destination?: Coordinates;
-  hasStarted?: boolean;
 }
 
 export interface Revealed {
@@ -84,7 +79,8 @@ export interface Revealed {
 }
 
 export interface MapInterface {
-  state: MapState;
+  states: MapStates;
+  hasStarted: boolean;
 
   specs: MapSpecs;
   active: Array<Card>;
@@ -95,7 +91,6 @@ export interface MapInterface {
   ready: Promise<void>;
 
   tiles: Array<Tile>;
-  hasStarted: boolean;
   destination?: Coordinates;
   encounterTriggers: EncounterTriggers
 

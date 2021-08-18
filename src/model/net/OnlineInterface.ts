@@ -1,5 +1,4 @@
-import { Coordinates } from '../map/MapInterface';
-import { StateKey, StateOp, State } from '../state/MapState';
+import { StateKey, StateOp, MapState } from '../states';
 
 export interface OnlineInterface {
   roomId: string;
@@ -22,7 +21,7 @@ export interface OnlineInterface {
   requestReveal(payload: { count: number, type?: string }): void;
   requestRevealResolution(payload: { top: Array<string>, bottom: Array<string> }): void;
 
-  requestUpdateState(payload: { key: StateKey, op: StateOp, val?: State }): void;
+  requestUpdateState(payload: { key: StateKey, op: StateOp, val?: MapState }): void;
 
   requestStartEternities(): void;
 

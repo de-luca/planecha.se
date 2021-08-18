@@ -1,17 +1,16 @@
 import { Card } from '../card';
-import { MapState } from '../state/MapState';
+import { MapStates } from '../states';
 import {
   Exported,
   MapSpecs,
   MapInterface,
   Revealed,
   Tile,
-  Coordinates,
   EncounterTriggers,
 } from './MapInterface';
 
 export class EmptyMap implements MapInterface {
-  public state: MapState;
+  public states: MapStates;
   public destination?: Coordinates | undefined;
   public encounterTriggers: EncounterTriggers;
   public specs: MapSpecs;

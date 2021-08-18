@@ -56,11 +56,7 @@
 
 <script lang="ts">
 import { Options, prop, Vue } from 'vue-class-component';
-import {
-  Coordinates,
-  EncounterMechanic,
-  TriggerConfig,
-} from '@/model/map';
+import { EncounterMechanic, TriggerConfig } from '@/model/map';
 
 export type EncounterWallConfig = {
   coordinates: Coordinates;

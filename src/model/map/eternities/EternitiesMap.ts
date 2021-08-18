@@ -1,7 +1,6 @@
 import { Plane } from "@/model/card";
 import { Map, MapProps } from "../Map";
 import {
-  Coordinates,
   EternitiesMapDeckType,
   EternitiesMapSpecs,
   Exported,
@@ -16,7 +15,6 @@ export interface EternitiesMapExported extends Exported {
 export interface EternitiesMapProps extends MapProps {
   deckType: EternitiesMapDeckType;
   tiles?: Array<Tile>;
-  hasStarted?: boolean;
 }
 
 export abstract class EternitiesMap extends Map {
@@ -32,7 +30,6 @@ export abstract class EternitiesMap extends Map {
     this.deck = props.deck;
     this.active = props.active ?? [this.deck.drawPlane().card];
     this.tiles = props.tiles ?? this.initializeTiles();
-    this.hasStarted = props.hasStarted ?? false;
     this.deckType = props.deckType;
   }
 
@@ -76,7 +73,6 @@ export abstract class EternitiesMap extends Map {
         state: t.state,
         plane: t.plane.map(p => p.id),
       })),
-      hasStarted: this.hasStarted,
     };
   }
 }

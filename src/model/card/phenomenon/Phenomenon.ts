@@ -1,4 +1,4 @@
-import { MapState } from '@/model/state/MapState';
+import { MapStates } from '@/model/states';
 import { Card } from '../Card';
 
 export class Phenomenon extends Card {
@@ -10,7 +10,7 @@ export class Phenomenon extends Card {
     return;
   }
 
-  public enter(_state: MapState): void {
+  public enter(_states: MapStates): void {
     return;
   }
 

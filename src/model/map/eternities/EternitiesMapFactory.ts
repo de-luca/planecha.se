@@ -9,11 +9,10 @@ import {
   EternitiesMapSubType,
   MapInterface,
 } from "../MapInterface";
-import { Card, Phenomenon, Plane } from "@/model/card";
+import { Card, Plane } from "@/model/card";
 import { Deck } from "@/model/deck/Deck";
 import { EternitiesMapExported } from "./EternitiesMap";
-import { MapState, State } from "@/model/state/MapState";
-import { parseQuery } from "vue-router";
+import { MapStates } from "@/model/states";
 
 @Service()
 export class EternitiesMapFactory {
@@ -26,15 +25,21 @@ export class EternitiesMapFactory {
     cards?: Array<string>,
   ): MapInterface {
     const deck = this.getDeck(specs, cards);
-    const state = new MapState();
+    const state = new MapStates();
 
     if (specs.subType === EternitiesMapSubType.SINGLE_DECK) {
-      return new SingleDeck({ deck, state, deckType: specs.deckType });
+      return new SingleDeck({
+        deck,
+        states: state,
+        hasStarted: false,
+        deckType: specs.deckType,
+      });
     }
 
     return new DualDeck({
       deck,
-      state,
+      states: state,
+      hasStarted: false,
       deckType: EternitiesMapDeckType.PLANES,
       phenomenaDeck: this.deckProvider.getPhenomenonDeck(),
       encounterTriggers: encounterTriggers as EncounterTriggers,
@@ -55,7 +60,8 @@ export class EternitiesMapFactory {
   public restore(payload: EternitiesMapExported): MapInterface {
     const specs = payload.specs as EternitiesMapSpecs;
     const props: SingleDeckProps = {
-      state: MapState.from(payload.state),
+      states: new MapStates(payload.states),
+      hasStarted: payload.hasStarted,
       deckType: specs.deckType,
       deck: this.deckProvider.getDeckFromExport<Plane>(payload.deck),
       active: this.deckProvider.getOrderedPile<Plane>(payload.active),
@@ -70,7 +76,6 @@ export class EternitiesMapFactory {
         state: t.state,
         plane: this.deckProvider.getOrderedPile(t.plane),
       })),
-      hasStarted: payload.hasStarted,
       destination: payload.destination,
     };
 

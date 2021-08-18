@@ -1,7 +1,12 @@
-import { Revealer, RevealerMode, RevealerSource } from '@/model/state/Revealer';
-import { MapState, StateKey } from '@/model/state/MapState';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Plane } from '../Plane';
+import {
+  MapStates,
+  RevealerMode,
+  RevealerSource,
+  RevealerWallState,
+  StateKey,
+} from '@/model/states';
 
 /**
  * Players have no maximum hand size.
@@ -12,8 +17,8 @@ import { Plane } from '../Plane';
  * You may put it on the bottom of your planar deck.
  */
 export class StairsToInfinity extends Plane {
-  public chaos(state: MapState, { passive = false, initiator }: Passivity = {}): void {
-    const revealer: Revealer = {
+  public chaos(states: MapStates, { passive = false, initiator }: Passivity = {}): void {
+    const revealer: RevealerWallState = {
       source: RevealerSource.STAIRS_TO_INFINITY,
       component: RevealerMode.SCRY,
       sendShownTo: 'bottom',
@@ -21,7 +26,7 @@ export class StairsToInfinity extends Plane {
       initiator,
     };
 
-    state.set(StateKey.REVEALER, revealer);
+    states.set(StateKey.REVEALER, revealer);
 
     if (!passive) {
       eventBus.emit(EventType.STAIRS_TO_INFINITY);

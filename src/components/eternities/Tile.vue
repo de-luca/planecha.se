@@ -61,7 +61,8 @@
 
 <script lang="ts">
 import { Options, prop, Vue } from 'vue-class-component';
-import { Coordinates, Tile as TileModel } from '@/model/map/MapInterface';
+import { Tile as TileModel } from '@/model/map/MapInterface';
+
 import Card from '@/components/eternities/Card.vue';
 
 enum State {

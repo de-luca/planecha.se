@@ -1,4 +1,4 @@
-import { MapState } from "../state/MapState";
+import { MapStates } from "../states";
 
 export interface CardInterface {
   id: string;
@@ -12,7 +12,7 @@ export interface CardInterface {
 
   type: string;
 
-  chaos(state: MapState, passivity?: Passivity): void;
-  enter(state: MapState, passivity?: Passivity): void;
+  chaos(state: MapStates, passivity?: Passivity): void;
+  enter(state: MapStates, passivity?: Passivity): void;
   leave(): void;
 }

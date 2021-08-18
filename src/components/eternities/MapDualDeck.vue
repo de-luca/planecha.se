@@ -42,26 +42,30 @@
 
 <script lang="ts">
 import { mixins, Options } from 'vue-class-component';
+import { ActionTypes } from '@/store';
+import { EternitiesMap } from '@/components/eternities/EternitiesMap';
 import {
-  Coordinates,
   EncounterTrigger,
   EncounterTriggers,
   TriggerConfig,
 } from '@/model/map';
-import { ActionTypes } from '@/store';
-import { EternitiesMap } from '@/components/eternities/EternitiesMap';
+import {
+  EncounterWallState,
+  StateKey,
+  StateOp,
+} from '@/model/states';
+
 import ChaosBtn from '@/components/ChaosBtn.vue';
 import Tile from '@/components/eternities/Tile.vue';
+import PhenomenonWall from '@/components/eternities/PhenomenonWall.vue';
 import
   EncounterWall,
   { EncounterWallConfig }
 from '@/components/eternities/EncounterWall.vue';
-import PhenomenonWall from '@/components/eternities/PhenomenonWall.vue';
 import Scry from '@/components/reveal/Scry.vue';
 import Pick from '@/components/reveal/Pick.vue';
 import Show from '@/components/reveal/Show.vue';
-import { StateKey, StateOp } from '@/model/state/MapState';
-import { EncounterWallState } from '@/model/state/EncounterWallState';
+
 
 @Options({
   components: {
@@ -79,26 +83,19 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
   }
 
   public get encounterWallConfig(): EncounterWallConfig | undefined {
-    return this.store.getters.map.state.get(
+    return this.store.getters.map.states.get<EncounterWallState>(
       StateKey.ENCOUNTER_WALL,
-    ) as EncounterWallState | undefined;
-  }
-
-  public preHellride(coordinates: Coordinates): void {
-    console.log('HELLRIDE', coordinates);
-    console.log(this.getTriggerConfig(EncounterTrigger.ON_HELLRIDE) ??
-      this.getTriggerConfig(EncounterTrigger.ON_PLANESWALK));
-
-    this.handleTrigger(
-      coordinates,
-      this.getTriggerConfig(EncounterTrigger.ON_HELLRIDE) ??
-      this.getTriggerConfig(EncounterTrigger.ON_PLANESWALK),
     );
   }
 
+  public preHellride(coordinates: Coordinates): void {
+    const config = this.getTriggerConfig(EncounterTrigger.ON_HELLRIDE)
+      ?? this.getTriggerConfig(EncounterTrigger.ON_PLANESWALK);
+
+    this.handleTrigger(coordinates, config);
+  }
+
   public prePlaneswalk(coordinates: Coordinates): void {
-    console.log('PLANESWALK', coordinates);
-    console.log(this.getTriggerConfig(EncounterTrigger.ON_PLANESWALK),);
     this.handleTrigger(
       coordinates,
       this.getTriggerConfig(EncounterTrigger.ON_PLANESWALK),
@@ -121,9 +118,7 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
     this.store.dispatch(ActionTypes.ENCOUNTER, { coordinates });
   }
 
-  private getTriggerConfig(
-    trigger: EncounterTrigger,
-  ): TriggerConfig | undefined {
+  private getTriggerConfig(trigger: EncounterTrigger): TriggerConfig | undefined {
     return this.triggers[trigger].enabled
       ? this.triggers[trigger]
       : undefined;

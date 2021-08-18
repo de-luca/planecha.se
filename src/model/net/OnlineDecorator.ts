@@ -3,9 +3,8 @@ import { Beacon } from './Beacon';
 import { OnlineInterface } from './OnlineInterface';
 import { PeerMap } from './PeerMap';
 import { Event } from './Handler';
-import { MapState, State, StateKey, StateOp } from '../state/MapState';
+import { MapStates, MapState, StateKey, StateOp } from '../states';
 import {
-  Coordinates,
   Exported,
   MapSpecs,
   MapInterface,
@@ -33,8 +32,8 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     this.peers = new PeerMap(this.beacon, name);
   }
 
-  public get state(): MapState {
-    return this.map.state;
+  public get states(): MapStates {
+    return this.map.states;
   }
 
   public get yourName(): string {
@@ -134,7 +133,6 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
   public create(): Promise<string> {
     const createPromise = new Promise<string>((resolve) => {
       this.beacon.addEventListener('created', ((event: CustomEvent<string>) => {
-        console.log('CREATED', event.detail);
         this.roomId = event.detail;
         resolve(event.detail);
       }) as EventListener);
@@ -148,7 +146,6 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
   public async join(roomId: string): Promise<void> {
     const peers = new Promise<Array<string>>((resolve) => {
       this.beacon.addEventListener('joined', ((event: CustomEvent<Array<string>>) => {
-        console.log('JOINED', event.detail);
         this.roomId = roomId;
         resolve(event.detail);
       }) as EventListener);
@@ -197,7 +194,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
   }
 
   public requestUpdateState(
-    payload: { key: StateKey, op: StateOp, val?: State },
+    payload: { key: StateKey, op: StateOp, val?: MapState },
   ): void {
     this.peers.broadcast(Event.UPDATE_STATE, payload);
   }

@@ -1,4 +1,4 @@
-import { MapState } from '@/model/state/MapState';
+import { MapStates } from '@/model/states';
 import { Counter, Props } from '../CardFactory';
 import { Card } from '../Card';
 
@@ -31,11 +31,11 @@ export class Plane extends Card {
     return this.counter.value;
   }
 
-  public chaos(_state: MapState): void {
+  public chaos(_states: MapStates): void {
     return;
   }
 
-  public enter(_state: MapState): void {
+  public enter(_states: MapStates): void {
     return;
   }
 

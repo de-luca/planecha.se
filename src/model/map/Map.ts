@@ -3,9 +3,8 @@ import { Container } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
 import { Card, Plane } from '../card';
 import { Deck } from '../deck/Deck';
-import { MapState, State, StateKey } from '../state/MapState';
+import { MapStates, StateKey } from '../states';
 import {
-  Coordinates,
   Exported,
   MapSpecs,
   MapInterface,
@@ -15,7 +14,8 @@ import {
 } from './MapInterface';
 
 export interface MapProps {
-  state: MapState;
+  states: MapStates;
+  hasStarted: boolean;
   deck: Deck<Card>;
   active?: Array<Card>;
   revealed?: Revealed;
@@ -24,19 +24,20 @@ export interface MapProps {
 
 export abstract class Map implements MapInterface {
   protected deck: Deck<Card>;
-  public readonly state: MapState;
+  public readonly states: MapStates;
+  public hasStarted: boolean;
 
   public active: Array<Card>;
   public revealed?: Revealed;
 
   public tiles: Array<Tile> = [];
-  public hasStarted: boolean;
   public destination?: Coordinates;
   public readonly encounterTriggers: EncounterTriggers;
 
   public constructor(props: MapProps) {
     this.deck = props.deck;
-    this.state = props.state;
+    this.states = props.states;
+    this.hasStarted = props.hasStarted;
     this.active = props.active ?? [];
     this.revealed = props.revealed;
     this.destination = props.destination;
@@ -57,7 +58,7 @@ export abstract class Map implements MapInterface {
   }
 
   public chaos(passivity?: Passivity): void {
-    this.active.forEach(c => c.chaos(this.state, passivity));
+    this.active.forEach(c => c.chaos(this.states, passivity));
   }
 
   public abstract planeswalk(
@@ -93,7 +94,7 @@ export abstract class Map implements MapInterface {
     this.deck.putOnTheBottom(bottom);
 
     this.clearRevealed();
-    this.state.delete(StateKey.REVEALER);
+    this.states.delete(StateKey.REVEALER);
   }
 
   public clearRevealed(): void {
@@ -102,7 +103,8 @@ export abstract class Map implements MapInterface {
 
   public export(): Exported {
     return {
-      state: this.state.export(),
+      states: this.states.export(),
+      hasStarted: this.hasStarted,
       specs: this.specs,
       deck: this.deck.export(),
       active: this.active.map(c => c.id),

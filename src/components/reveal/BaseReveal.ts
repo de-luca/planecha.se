@@ -1,8 +1,6 @@
-import { Component } from 'vue';
 import { prop } from 'vue-class-component';
 import { Card } from '@/model/card';
 import { Revealed } from '@/model/map/MapInterface';
-import { RevealerMode } from '@/model/state/Revealer';
 
 export type PickedLeft = {
   picked: Array<Card>;

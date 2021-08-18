@@ -1,4 +1,4 @@
-import { State } from "./MapState";
+import { MapState } from "./MapStates";
 
 export enum RevealerMode {
   SCRY = 'SCRY',
@@ -15,7 +15,7 @@ export enum RevealerSource {
   SPACIAL_MERGING = 'SPACIAL_MERGING',
 }
 
-export interface Revealer extends State {
+export interface RevealerWallState extends MapState {
   source: RevealerSource;
   component: RevealerMode;
   sendShownTo: 'top' | 'bottom';

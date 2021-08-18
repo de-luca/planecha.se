@@ -9,18 +9,18 @@ import {
 
 import { Card, Plane } from '@/model/card';
 import {
-  Coordinates,
+  BuildProps,
   Exported,
+  MapFactory,
   MapInterface,
   MapSpecs,
   MapType,
   Revealed,
   Tile,
-} from '@/model/map/MapInterface';
-import { BuildProps, MapFactory } from '@/model/map/MapFactory';
+} from '@/model/map';
 import { OnlineInterface } from '@/model/net/OnlineInterface';
 import { eventBus } from '@/services/EventBus';
-import { StateKey, StateOp, State as MState } from '@/model/state/MapState';
+import { StateKey, StateOp, MapState } from '@/model/states';
 
 
 // Declare state
@@ -61,7 +61,7 @@ export type PlaneswalkPayload = Passiveable & { coordinates?: Coordinates };
 export type CustomPlaneswalkPayload = PlaneswalkPayload & { planes: Array<Plane> };
 export type EncounterPayload = Passiveable & { coordinates: Coordinates };
 export type CounterPayload = Idable & { id: string, change: number };
-export type UpdateStatePayload = { key: StateKey, op: StateOp, val?: MState };
+export type UpdateStatePayload = { key: StateKey, op: StateOp, val?: MapState };
 export type ResolveRevealPayload = Idable & { top: Array<Card>, bottom: Array<Card> };
 
 // mutations enums
@@ -155,7 +155,7 @@ export const mutations: Mutations = {
     (<MapInterface>state.map).updateCounter(payload.id, payload.change);
   },
   [MutationTypes.UPDATE_STATE](state: State, payload: UpdateStatePayload) {
-    (<MapInterface>state.map).state.apply(payload.key, payload.op, payload.val);
+    (<MapInterface>state.map).states.apply(payload.key, payload.op, payload.val);
   },
   [MutationTypes.REVEAL](state: State, payload: RevealPayload) {
     state.shuffled = (<MapInterface>state.map).revealUntil(payload.count, payload.type);
@@ -226,7 +226,7 @@ export interface Actions {
   ): void,
   [ActionTypes.UPDATE_STATE](
     { commit }: AugmentedActionContext,
-    payload: { key: StateKey, op: StateOp, val?: MState },
+    payload: { key: StateKey, op: StateOp, val?: MapState },
   ): void,
   [ActionTypes.REVEAL](
     { commit }: AugmentedActionContext,
@@ -325,7 +325,7 @@ export const actions: ActionTree<State, State> & Actions = {
       (state.map as OnlineInterface).requestCounterUpdate(payload);
     }
   },
-  [ActionTypes.UPDATE_STATE]({ commit }, payload: { key: StateKey, op: StateOp, val?: MState }) {
+  [ActionTypes.UPDATE_STATE]({ commit }, payload: { key: StateKey, op: StateOp, val?: MapState }) {
     commit(MutationTypes.UPDATE_STATE, payload);
 
     if (state.online) {

@@ -75,7 +75,7 @@ export default class Board extends Vue {
   }
 
   public thaNav(): void {
-    console.log('Fucking dumpster fire');
+    console.log('Fucking Dumpster Fire (FDF)');
   }
 }
 </script>

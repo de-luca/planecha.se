@@ -1,6 +1,6 @@
 import { Plane } from '../card';
 import { Map, MapProps } from './Map';
-import { Coordinates, MapSpecs, MapType } from './MapInterface';
+import { MapSpecs, MapType } from './MapInterface';
 
 export class Classic extends Map {
   public hasStarted = true;
@@ -24,7 +24,7 @@ export class Classic extends Map {
 
     const { card, shuffled } = this.deck.draw();
     this.active = [ card ];
-    this.active.forEach(c => c.enter(this.state, passivity));
+    this.active.forEach(c => c.enter(this.states, passivity));
 
     return shuffled;
   }
@@ -33,7 +33,7 @@ export class Classic extends Map {
     this.active.forEach(c => c.leave());
     this.deck.setPlayed(...this.active);
     this.active = planes;
-    this.active.forEach(c => c.enter(this.state));
+    this.active.forEach(c => c.enter(this.states));
   }
 
   public planeswalkFromPhenomenon(passivity: Passivity): boolean {

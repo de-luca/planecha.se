@@ -1,7 +1,6 @@
 import { Container } from 'typedi';
 import { eventBus, EventType as BusEvent } from '@/services/EventBus';
-import { MapFactory } from '../map/MapFactory';
-import { Exported, MapInterface } from '../map/MapInterface';
+import { Exported, MapFactory, MapInterface } from '../map';
 import { Beacon, SignalData, SignalPayload } from './Beacon';
 import { getHandler, Payload, Event, parse, stringify } from './Handler';
 

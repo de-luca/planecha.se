@@ -20,8 +20,6 @@
       />
     </div>
 
-    {{ revealer }}
-
     <component
       v-if="revealer && revealed"
       :is="revealer.component"
@@ -40,6 +38,14 @@ import { ActionTypes, Store, useStore } from '@/store';
 import { Card as ModelCard, Plane } from '@/model/card';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Revealed } from '@/model/map';
+import { PickedLeft, RevealConfig } from '../reveal/BaseReveal';
+import { RevealFactory } from '../reveal/RevealFactory';
+import {
+  RevealerWallState,
+  RevealerSource,
+  StateKey
+} from '@/model/states';
+
 import ChaosBtn from '@/components/ChaosBtn.vue';
 import PlaneswalkBtn from '@/components/PlaneswalkBtn.vue';
 import Card from '@/components/classic/Card.vue';
@@ -47,22 +53,13 @@ import Feed from '@/components/classic/Feed.vue';
 import Pick from '@/components/reveal/Pick.vue';
 import Scry from '@/components/reveal/Scry.vue';
 import Show from '@/components/reveal/Show.vue';
-import { PickedLeft, RevealConfig } from '../reveal/BaseReveal';
-import { Revealer, RevealerMode, RevealerSource } from '@/model/state/Revealer';
-import { StateKey } from '@/model/state/MapState';
 
-type RevealerConfig = {
+type LocalRevealerConfig = {
   passive: boolean;
   component: Component;
   seeder: () => void;
   resolver: (choices: PickedLeft) => void;
   config: RevealConfig;
-}
-
-const RevealerMap: Record<RevealerMode, Component> = {
-  [RevealerMode.SCRY]: Scry,
-  [RevealerMode.SHOW]: Show,
-  [RevealerMode.PICK]: Pick,
 }
 
 @Options({
@@ -98,11 +95,9 @@ export default class ClassicMap extends Vue {
     return this.store.getters.active[0].type === 'plane';
   }
 
-  public get revealer(): RevealerConfig | undefined {
+  public get revealer(): LocalRevealerConfig | undefined {
     const revealer =
-      this.store.getters.map.state.get(StateKey.REVEALER) as Revealer | undefined;
-
-    console.log('REVEALER', revealer);
+      this.store.getters.map.states.get<RevealerWallState>(StateKey.REVEALER);
 
     if (!revealer) {
       return undefined;
@@ -110,7 +105,7 @@ export default class ClassicMap extends Vue {
 
     const config = {
       passive: revealer.passive,
-      component: RevealerMap[revealer.component],
+      component: RevealFactory.get(revealer.component),
       config: {
         sendShownTo: revealer.sendShownTo,
         passive: revealer.passive,
@@ -152,7 +147,6 @@ export default class ClassicMap extends Vue {
   }
 
   public putBack(choices: PickedLeft): void {
-    console.log(choices);
     const payload = {
       top: choices.picked,
       bottom: _shuffle(choices.left),
@@ -227,3 +221,7 @@ export default class ClassicMap extends Vue {
   overflow: scroll;
 }
 </style>
+
+function RevealFactory(arg0: RevealerMode[], config: any, arg2: { sendShownTo: "top"|"bottom"; passive: boolean; mateName: string|undefined; }) {
+  throw new Error('Function not implemented.');
+}
