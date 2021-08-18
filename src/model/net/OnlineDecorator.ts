@@ -3,7 +3,7 @@ import { Beacon } from './Beacon';
 import { OnlineInterface } from './OnlineInterface';
 import { PeerMap } from './PeerMap';
 import { Event } from './Handler';
-import { MapState } from '../state/MapState';
+import { MapState, State, StateKey, StateOp } from '../state/MapState';
 import {
   Coordinates,
   Exported,
@@ -194,6 +194,12 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     payload: { top: Array<string>, bottom: Array<string> },
   ): void {
     this.peers.broadcast(Event.RESOLVE_REVEAL, payload);
+  }
+
+  public requestUpdateState(
+    payload: { key: StateKey, op: StateOp, val?: State },
+  ): void {
+    this.peers.broadcast(Event.UPDATE_STATE, payload);
   }
 
   public requestStartEternities(): void {

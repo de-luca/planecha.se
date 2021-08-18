@@ -1,6 +1,7 @@
 import { MutationTypes, useStore } from '@/store';
 import { Card, Phenomenon, Plane } from '../card';
 import { Coordinates, Exported } from '../map/MapInterface';
+import { State, StateKey, StateOp } from '../state/MapState';
 
 export enum Event {
   REQUEST_INIT = 'REQUEST_INIT',
@@ -16,6 +17,7 @@ export enum Event {
   RESOLVE_REVEAL = 'RESOLVE_REVEAL',
   SHUFFLE = 'SHUFFLE',
   START_ETERNITIES = 'START_ETERNITIES',
+  UPDATE_STATE = 'UPDATE_STATE',
 }
 
 export type Payload<T> = {
@@ -128,6 +130,12 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
           bottom: data.bottom.map((id) => allCards.find(c => c.id === id) as Card),
           initiator: this.label,
         });
+        break;
+      }
+
+      case Event.UPDATE_STATE: {
+        const data = payload.data as { key: StateKey, op: StateOp, val?: State };
+        store.commit(MutationTypes.UPDATE_STATE, data);
         break;
       }
 

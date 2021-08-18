@@ -61,7 +61,7 @@ export type PlaneswalkPayload = Passiveable & { coordinates?: Coordinates };
 export type CustomPlaneswalkPayload = PlaneswalkPayload & { planes: Array<Plane> };
 export type EncounterPayload = Passiveable & { coordinates: Coordinates };
 export type CounterPayload = Idable & { id: string, change: number };
-export type UpdateStatePayload = { key: StateKey, op: StateOp, val: MState };
+export type UpdateStatePayload = { key: StateKey, op: StateOp, val?: MState };
 export type ResolveRevealPayload = Idable & { top: Array<Card>, bottom: Array<Card> };
 
 // mutations enums
@@ -226,7 +226,7 @@ export interface Actions {
   ): void,
   [ActionTypes.UPDATE_STATE](
     { commit }: AugmentedActionContext,
-    payload: { key: StateKey, op: StateOp, val: MState },
+    payload: { key: StateKey, op: StateOp, val?: MState },
   ): void,
   [ActionTypes.REVEAL](
     { commit }: AugmentedActionContext,
@@ -325,11 +325,11 @@ export const actions: ActionTree<State, State> & Actions = {
       (state.map as OnlineInterface).requestCounterUpdate(payload);
     }
   },
-  [ActionTypes.UPDATE_STATE]({ commit }, payload: { key: StateKey, op: StateOp, val: MState }) {
+  [ActionTypes.UPDATE_STATE]({ commit }, payload: { key: StateKey, op: StateOp, val?: MState }) {
     commit(MutationTypes.UPDATE_STATE, payload);
 
     if (state.online) {
-      // (state.map as OnlineInterface).(payload);
+      (state.map as OnlineInterface).requestUpdateState(payload);
     }
   },
   [ActionTypes.REVEAL]({ commit }, payload: { count: number, type?: typeof Card }) {

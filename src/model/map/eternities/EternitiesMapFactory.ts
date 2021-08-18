@@ -9,10 +9,11 @@ import {
   EternitiesMapSubType,
   MapInterface,
 } from "../MapInterface";
-import { Card, Plane } from "@/model/card";
+import { Card, Phenomenon, Plane } from "@/model/card";
 import { Deck } from "@/model/deck/Deck";
 import { EternitiesMapExported } from "./EternitiesMap";
 import { MapState, State } from "@/model/state/MapState";
+import { parseQuery } from "vue-router";
 
 @Service()
 export class EternitiesMapFactory {
@@ -80,7 +81,8 @@ export class EternitiesMapFactory {
     return new DualDeck({
       ...props,
       deckType: EternitiesMapDeckType.PLANES,
-      phenomenaDeck: this.deckProvider.getPhenomenonDeck(),
+      phenomenaDeck:
+        this.deckProvider.getDeckFromExport((payload as DualDeckExported).phenomenaDeck),
       encounterTriggers: (payload as DualDeckExported).encounterTriggers,
     });
   }

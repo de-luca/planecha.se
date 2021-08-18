@@ -34,8 +34,16 @@ export class MapState extends Map<StateKey, State> {
     this.hasStarted = true;
   }
 
-  public apply(key: StateKey, op: StateOp, val: State): void {
-    this[op](key, val);
+  public apply(key: StateKey, op: StateOp, val?: State): void {
+    switch(op) {
+      case StateOp.SET:
+        this.set(key, val as State);
+        break;
+      case StateOp.DELETE:
+        console.log('HEY');
+        this.delete(key)
+        break;
+    }
   }
 
   public export(): ExportedMapState {

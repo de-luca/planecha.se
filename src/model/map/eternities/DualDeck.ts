@@ -10,6 +10,7 @@ import {
   MapType,
 } from "../MapInterface";
 import { EternitiesMapExported } from "./EternitiesMap";
+import { StateKey } from "@/model/state/MapState";
 
 export interface DualDeckExported extends EternitiesMapExported {
   phenomenaDeck: DeckState;
@@ -42,19 +43,21 @@ export class DualDeck extends SingleDeck {
   }
 
   public planeswalkFromPhenomenon(passivity?: Passivity): boolean {
-    this.phenomenaDeck.setPlayed(...this.active);
+    this.phenomenaDeck.setPlayed(...this.active as Array<Phenomenon>);
+    this.state.delete(StateKey.PHENOMENON_WALL);
     const shuffled = this.planeswalk(this.destination as Coordinates, passivity);
     return shuffled;
   }
 
   public override encounter(
     coordinates: Coordinates,
-    passivity?: Passivity,
+    passivity: Passivity = { passive: false },
   ): boolean {
     this.destination = coordinates;
     const { card: drawn, shuffled } = this.phenomenaDeck.draw();
     this.active = [ drawn ];
-    this.active.forEach(c => c.enter(passivity));
+    this.active.forEach(c => c.enter(this.state, passivity));
+    this.state.set(StateKey.PHENOMENON_WALL, { passive: passivity.passive ?? false });
     return shuffled;
   }
 
