@@ -50,6 +50,8 @@ export class EternitiesMapFactory {
     switch (true) {
       case cards !== undefined:
         return this.deckProvider.getSpecificDeck(cards as Array<string>);
+      case specs.subType === EternitiesMapSubType.DUAL_DECK:
+        return this.deckProvider.getPlaneDeck();
       case specs.deckType === EternitiesMapDeckType.ALL:
         return this.deckProvider.getDeck();
       default:

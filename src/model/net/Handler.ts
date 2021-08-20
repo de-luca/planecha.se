@@ -135,6 +135,13 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
 
       case Event.UPDATE_STATE: {
         const data = payload.data as { key: StateKey, op: StateOp, val?: MapState };
+        if (data.val) {
+          data.val = {
+            ...data.val,
+            passive: true,
+            initiator: this.label,
+          };
+        }
         store.commit(MutationTypes.UPDATE_STATE, data);
         break;
       }

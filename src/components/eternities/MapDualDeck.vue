@@ -18,14 +18,16 @@
 
     <phenomenon-wall
       v-if="phenomenonWall"
+      :config="phenomenonWall.config"
       :phenomenon="phenomenonWall.phenomenon"
-      :disabled="phenomenonWall.passive"
       :resolver="revealer?.seeder"
     />
 
     <encounter-wall
       v-if="encounterWallConfig"
-      :config="encounterWallConfig"
+      :config="encounterWallConfig.config"
+      :coordinates="encounterWallConfig.coordinates"
+      :triggerConfig="encounterWallConfig.triggerConfig"
       @planeswalk="planeswalk"
       @encounter="encounter"
     />
@@ -45,6 +47,7 @@ import { mixins, Options } from 'vue-class-component';
 import { ActionTypes } from '@/store';
 import { EternitiesMap } from '@/components/eternities/EternitiesMap';
 import {
+  EncounterMechanic,
   EncounterTrigger,
   EncounterTriggers,
   TriggerConfig,
@@ -57,15 +60,18 @@ import {
 
 import ChaosBtn from '@/components/ChaosBtn.vue';
 import Tile from '@/components/eternities/Tile.vue';
-import PhenomenonWall from '@/components/eternities/PhenomenonWall.vue';
-import
-  EncounterWall,
-  { EncounterWallConfig }
-from '@/components/eternities/EncounterWall.vue';
+import PhenomenonWall from '@/components/wall/PhenomenonWall.vue';
+import EncounterWall from '@/components/wall/EncounterWall.vue';
 import Scry from '@/components/reveal/Scry.vue';
 import Pick from '@/components/reveal/Pick.vue';
 import Show from '@/components/reveal/Show.vue';
+import { WallConfig } from '../wall/Wall';
 
+type LocalEncounterWallConfig = {
+  config: WallConfig;
+  coordinates: Coordinates;
+  triggerConfig: TriggerConfig;
+}
 
 @Options({
   components: {
@@ -82,10 +88,25 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
     this.triggers = this.store.getters.map.encounterTriggers;
   }
 
-  public get encounterWallConfig(): EncounterWallConfig | undefined {
-    return this.store.getters.map.states.get<EncounterWallState>(
-      StateKey.ENCOUNTER_WALL,
-    );
+  public get encounterWallConfig(): LocalEncounterWallConfig | undefined {
+    const wall =
+      this.store.getters.map.states.get<EncounterWallState>(StateKey.ENCOUNTER_WALL);
+
+    if (!wall) {
+      return undefined;
+    }
+
+    console.log(wall);
+
+    return {
+      ...wall,
+      config: {
+        passive: wall?.passive ?? false,
+        mateName: wall?.initiator
+          ? this.store.getters.mates.get(wall.initiator)
+          : undefined,
+      },
+    };
   }
 
   public preHellride(coordinates: Coordinates): void {
@@ -129,15 +150,22 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
     trigger: TriggerConfig | undefined,
   ): void {
     if (trigger) {
-      this.store.dispatch(ActionTypes.UPDATE_STATE, {
-        key: StateKey.ENCOUNTER_WALL,
-        op: StateOp.SET,
-        val: {
-          passive: false,
-          coordinates,
-          triggerConfig: trigger,
-        } as EncounterWallState,
-      });
+      if (
+        trigger.mechanic === EncounterMechanic.AUTO &&
+        trigger.ratio === 1
+      ) {
+        this.encounter(coordinates);
+      } else {
+        this.store.dispatch(ActionTypes.UPDATE_STATE, {
+          key: StateKey.ENCOUNTER_WALL,
+          op: StateOp.SET,
+          val: {
+            passive: false,
+            coordinates,
+            triggerConfig: trigger,
+          } as EncounterWallState,
+        });
+      }
     } else {
       this.planeswalk(coordinates);
     }

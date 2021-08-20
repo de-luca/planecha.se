@@ -32,7 +32,10 @@ export class SingleDeck extends EternitiesMap {
     this.active = [card];
     this.destination = coordinates;
     this.active.forEach(c => c.enter(this.states, passivity));
-    this.states.set(StateKey.PHENOMENON_WALL, { passive: passivity.passive ?? false });
+    this.states.set(StateKey.PHENOMENON_WALL, {
+      passive: passivity.passive ?? false,
+      initiator: passivity.initiator,
+    });
   }
 
   public planeswalk(

@@ -4,26 +4,34 @@
     <div class="modal-content">
       <h1 class="title">You encountered a Phenomenon</h1>
       <img :src="imgSrc">
-      <planeswalk-btn class="planeswalk-btn" :disabled="disabled" :resolver="resolver"/>
+      <div v-if="config.passive" class="control">
+        <p class="subtitle"><b>{{ mateName }}</b> has control.</p>
+      </div>
+      <planeswalk-btn
+        v-else
+        class="planeswalk-btn"
+        :resolver="resolver"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Options, prop, Vue } from 'vue-class-component';
+import { mixins, Options, prop, Vue } from 'vue-class-component';
 import { Phenomenon } from '@/model/card';
+import { Wall, WallProps } from './Wall';
+
 import PlaneswalkBtn from '@/components/PlaneswalkBtn.vue';
 
-class Props {
+class Props extends WallProps {
   public phenomenon = prop<Phenomenon>({ required: true });
-  public disabled = prop<boolean>({ required: false, default: false });
   public resolver = prop<() => void>({ required: false });
 }
 
 @Options({
   components: { PlaneswalkBtn },
 })
-export default class PhenomenonWall extends Vue.with(Props) {
+export default class PhenomenonWall extends mixins(Wall).with(Props) {
   public get imgSrc(): string {
     return `/cards/${this.phenomenon.id}.png`;
   }

@@ -19,6 +19,5 @@ export interface RevealerWallState extends MapState {
   source: RevealerSource;
   component: RevealerMode;
   sendShownTo: 'top' | 'bottom';
-  initiator?: string;
   title?: string;
 }

@@ -196,6 +196,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
   public requestUpdateState(
     payload: { key: StateKey, op: StateOp, val?: MapState },
   ): void {
+    console.log('BROADCAST', payload);
     this.peers.broadcast(Event.UPDATE_STATE, payload);
   }
 

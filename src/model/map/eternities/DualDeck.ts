@@ -56,7 +56,10 @@ export class DualDeck extends SingleDeck {
     const { card: drawn, shuffled } = this.phenomenaDeck.draw();
     this.active = [ drawn ];
     this.active.forEach(c => c.enter(this.states, passivity));
-    this.states.set(StateKey.PHENOMENON_WALL, { passive: passivity.passive ?? false });
+    this.states.set(StateKey.PHENOMENON_WALL, {
+      passive: passivity.passive ?? false,
+      initiator: passivity.initiator,
+    });
     return shuffled;
   }
 

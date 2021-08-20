@@ -18,8 +18,8 @@
 
     <phenomenon-wall
       v-if="phenomenonWall"
+      :config="phenomenonWall.config"
       :phenomenon="phenomenonWall.phenomenon"
-      :disabled="phenomenonWall.passive"
       :resolver="revealer?.seeder"
     />
 
@@ -37,12 +37,12 @@
 import { mixins, Options } from 'vue-class-component';
 import { EternitiesMap } from '@/components/eternities/EternitiesMap';
 
-import ChaosBtn from '@/components/ChaosBtn.vue';
 import Tile from '@/components/eternities/Tile.vue';
-import PhenomenonWall from '@/components/eternities/PhenomenonWall.vue';
+import PhenomenonWall from '@/components/wall/PhenomenonWall.vue';
 import Scry from '@/components/reveal/Scry.vue';
 import Pick from '@/components/reveal/Pick.vue';
 import Show from '@/components/reveal/Show.vue';
+import ChaosBtn from '@/components/ChaosBtn.vue';
 
 @Options({
   components: {

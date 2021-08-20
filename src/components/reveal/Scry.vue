@@ -59,20 +59,21 @@
       >
         Confirm choice
       </button>
-      <p class="subtitle" v-if="config.passive"><b>{{ config.mateName }}</b> is chosing.</p>
+      <p class="subtitle" v-if="config.passive"><b>{{ mateName }}</b> is chosing.</p>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { mixins, Options } from 'vue-class-component';
 import { BaseReveal, PickedLeft } from './BaseReveal';
 import { Card } from '@/model/card';
+import { Wall } from '../wall/Wall';
 
 @Options({
   emits: ['done'],
 })
-export default class Scry extends Vue.with(BaseReveal) {
+export default class Scry extends mixins(Wall).with(BaseReveal) {
   private picked: Record<string, boolean> = {};
   private id: string = '';
 

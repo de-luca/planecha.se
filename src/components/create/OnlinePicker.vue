@@ -27,7 +27,7 @@
       </label>
     </div>
 
-    <p class="help"></p>
+    <p class="help" v-html="helpText"></p>
   </div>
 </template>
 

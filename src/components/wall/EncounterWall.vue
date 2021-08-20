@@ -13,7 +13,10 @@
         </div>
       </div>
 
-      <div v-if="config.triggerConfig.mechanic === 'MANUAL'" class="control">
+      <div v-if="config.passive" class="control">
+        <p class="subtitle"><b>{{ mateName }}</b> is rolling.</p>
+      </div>
+      <div v-else-if="triggerConfig.mechanic === 'MANUAL'" class="control">
         <button
           class="button is-outlined is-danger is-medium"
           @click="encounter"
@@ -55,41 +58,38 @@
 </template>
 
 <script lang="ts">
-import { Options, prop, Vue } from 'vue-class-component';
+import { mixins, Options, prop, Vue } from 'vue-class-component';
 import { EncounterMechanic, TriggerConfig } from '@/model/map';
+import { Wall, WallProps } from './Wall';
 
-export type EncounterWallConfig = {
-  coordinates: Coordinates;
-  triggerConfig: TriggerConfig;
-}
-
-class Props {
-  public config = prop<EncounterWallConfig>({ required: true });
+class Props extends WallProps {
+  public coordinates = prop<Coordinates>({ required: true });
+  public triggerConfig = prop<TriggerConfig>({ required: true });
 }
 
 @Options({
   emits: [ 'planeswalk', 'encounter' ],
 })
-export default class EncounterWall extends Vue.with(Props) {
+export default class EncounterWall extends mixins(Wall).with(Props) {
   private rolled: number = 0;
 
   public get title(): string {
-    return this.config.triggerConfig.mechanic === EncounterMechanic.MANUAL
+    return this.triggerConfig.mechanic === EncounterMechanic.MANUAL
       ? 'Now\'s the time to roll your dice!'
       : 'Let\'s roll for the encounter!';
   }
 
   public roll(): number {
-    this.rolled = Math.floor(Math.random() * this.config.triggerConfig.ratio) + 1;
+    this.rolled = Math.floor(Math.random() * this.triggerConfig.ratio) + 1;
     return this.rolled
   }
 
   public encounter(): void {
-    this.$emit('encounter', this.config.coordinates);
+    this.$emit('encounter', this.coordinates);
   }
 
   public planeswalk(): void {
-    this.$emit('planeswalk', this.config.coordinates);
+    this.$emit('planeswalk', this.coordinates);
   }
 }
 </script>

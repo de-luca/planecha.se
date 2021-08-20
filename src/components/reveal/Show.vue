@@ -46,20 +46,21 @@
       >
         Okay
       </button>
-      <p class="subtitle" v-if="config.passive"><b>{{ config.mateName }}</b> is chosing.</p>
+      <p class="subtitle" v-if="config.passive"><b>{{ mateName }}</b> is chosing.</p>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { mixins, Options, Vue } from 'vue-class-component';
 import { BaseReveal } from './BaseReveal';
 import { Card } from '@/model/card';
+import { Wall } from '../wall/Wall';
 
 @Options({
   emits: ['done'],
 })
-export default class Show extends Vue.with(BaseReveal) {
+export default class Show extends mixins(Wall).with(BaseReveal) {
   private static readonly fanAngle = 5;
 
   private activeTab: string = 'relevant';

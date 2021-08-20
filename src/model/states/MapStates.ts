@@ -11,6 +11,7 @@ export enum StateOp {
 
 export interface MapState {
   passive: boolean;
+  initiator?: string;
 }
 
 export type ExportedMapState = Array<[StateKey, MapState]>;

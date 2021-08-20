@@ -6,6 +6,7 @@ import { eventBus, EventType } from '@/services/EventBus';
 import { Phenomenon, Plane } from '@/model/card';
 import { PickedLeft, RevealConfig } from '../reveal/BaseReveal';
 import { RevealFactory } from '../reveal/RevealFactory';
+import { WallConfig } from '../wall/Wall';
 import { Revealed, Tile } from '@/model/map';
 import {
   RevealerWallState,
@@ -24,7 +25,7 @@ type LocalRevealerConfig = {
 }
 
 type LocalPhenomenonWallConfig = {
-  passive: boolean;
+  config: WallConfig;
   phenomenon: Phenomenon;
 }
 
@@ -49,7 +50,7 @@ export class EternitiesMap extends Vue {
 
   public get revealer(): LocalRevealerConfig | undefined {
     const revealer =
-      this.store.getters.map.states.get(StateKey.REVEALER) as RevealerWallState | undefined;
+      this.store.getters.map.states.get<RevealerWallState>(StateKey.REVEALER);
 
     if (!revealer) {
       return undefined;
@@ -72,7 +73,7 @@ export class EternitiesMap extends Vue {
       case RevealerSource.POOL_OF_BECOMING:
         return {
           ...config,
-          seeder: () => { },
+          seeder: () => {},
           resolver: this.putBack,
         };
       case RevealerSource.INTERPLANAR_TUNNEL:
@@ -92,11 +93,17 @@ export class EternitiesMap extends Vue {
 
   public get phenomenonWall(): LocalPhenomenonWallConfig | undefined {
     if (this.store.getters.map.destination) {
+      const wall = this.store.getters.map.states.get<PhenomenonWallState>(
+        StateKey.PHENOMENON_WALL,
+      );
+
       return {
-        passive:
-          this.store.getters.map.states.get<PhenomenonWallState>(
-            StateKey.PHENOMENON_WALL
-          )?.passive ?? false,
+        config: {
+          passive: wall?.passive ?? false,
+          mateName: wall?.initiator
+            ? this.store.getters.mates.get(wall.initiator)
+            : undefined,
+        },
         phenomenon: this.store.getters.map.active[0] as Phenomenon,
       };
     }
