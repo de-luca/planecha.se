@@ -1,5 +1,10 @@
 import { MapStates } from "../states";
 
+export interface ExportedCard {
+  id: string;
+  counters?: number;
+}
+
 export interface CardInterface {
   id: string;
   oracleId: string;
@@ -15,4 +20,5 @@ export interface CardInterface {
   chaos(state: MapStates, passivity?: Passivity): void;
   enter(state: MapStates, passivity?: Passivity): void;
   leave(): void;
+  export(): ExportedCard;
 }

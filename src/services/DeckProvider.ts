@@ -6,6 +6,7 @@ import {
   Props,
   Plane,
   Phenomenon,
+  ExportedCard,
 } from '../model/card';
 import { Deck, DeckState } from '@/model/deck/Deck';
 
@@ -30,6 +31,17 @@ export class DeckProvider {
 
   public getOrderedPile<T extends Card>(cards: Array<string>): Array<T> {
     return cards.map(id => this.getCard<T>(id));
+  }
+
+  public getPileWithState<T extends Card>(cards: Array<ExportedCard>): Array<T> {
+    return cards.map(state => {
+      const card = this.getCard<T>(state.id);
+      if (state.counters && card instanceof Plane && card.counter) {
+        card.counter.value = state.counters;
+      }
+
+      return card;
+    });
   }
 
   public getDeck(): Deck<Card> {

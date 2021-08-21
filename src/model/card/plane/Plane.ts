@@ -1,6 +1,7 @@
 import { MapStates } from '@/model/states';
 import { Counter, Props } from '../CardFactory';
 import { Card } from '../Card';
+import { ExportedCard } from '../CardInterface';
 
 export class Plane extends Card {
   public counter?: Counter;
@@ -45,5 +46,12 @@ export class Plane extends Card {
     if (this.counter?.reset) {
       this.counter.value = this.counter.start;
     }
+  }
+
+  public export(): ExportedCard {
+    return {
+      id: this.id,
+      counters: this.counter?.value,
+    };
   }
 }

@@ -66,7 +66,7 @@ export class EternitiesMapFactory {
       hasStarted: payload.hasStarted,
       deckType: specs.deckType,
       deck: this.deckProvider.getDeckFromExport<Plane>(payload.deck),
-      active: this.deckProvider.getOrderedPile<Plane>(payload.active),
+      active: this.deckProvider.getPileWithState<Plane>(payload.active),
       revealed: payload.revealed
         ? {
           relevant: this.deckProvider.getOrderedPile<Card>(payload.revealed.relevant),
@@ -76,7 +76,7 @@ export class EternitiesMapFactory {
       tiles: payload.tiles?.map(t => ({
         coords: t.coords,
         state: t.state,
-        plane: this.deckProvider.getOrderedPile(t.plane),
+        plane: this.deckProvider.getPileWithState(t.plane),
       })),
       destination: payload.destination,
     };

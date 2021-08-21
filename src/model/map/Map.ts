@@ -107,7 +107,7 @@ export abstract class Map implements MapInterface {
       hasStarted: this.hasStarted,
       specs: this.specs,
       deck: this.deck.export(),
-      active: this.active.map(c => c.id),
+      active: this.active.map(c => c.export()),
       revealed: this.revealed === undefined
         ? undefined
         : {
@@ -120,7 +120,7 @@ export abstract class Map implements MapInterface {
 
   public applyShuffle(state: Exported): void {
     this.deck = Container.get(DeckProvider).getDeckFromExport(state.deck);
-    this.active = Container.get(DeckProvider).getOrderedPile(state.active);
+    this.active = Container.get(DeckProvider).getPileWithState(state.active);
     this.revealed = state.revealed === undefined
       ? undefined
       : {

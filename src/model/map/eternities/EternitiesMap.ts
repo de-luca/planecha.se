@@ -71,7 +71,7 @@ export abstract class EternitiesMap extends Map {
       tiles: this.tiles.map(t => ({
         coords: t.coords,
         state: t.state,
-        plane: t.plane.map(p => p.id),
+        plane: t.plane.map(p => p.export()),
       })),
     };
   }

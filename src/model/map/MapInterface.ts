@@ -1,5 +1,5 @@
 import { ExportedMapState, MapStates } from '../states';
-import { Card, Plane } from '../card';
+import { Card, ExportedCard, Plane } from '../card';
 import { DeckState } from '../deck/Deck';
 
 export enum TileStatus {
@@ -16,7 +16,7 @@ export interface Tile {
 export interface ExportedTile {
   coords: Coordinates;
   state: TileStatus;
-  plane: Array<string>;
+  plane: Array<ExportedCard>;
 }
 
 export enum EncounterTrigger {
@@ -67,7 +67,7 @@ export interface Exported {
   states: ExportedMapState;
   hasStarted: boolean;
   deck: DeckState;
-  active: Array<string>;
+  active: Array<ExportedCard>;
   revealed?: { relevant: Array<string>, others: Array<string> };
   tiles?: Array<ExportedTile>;
   destination?: Coordinates;

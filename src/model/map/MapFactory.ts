@@ -78,7 +78,7 @@ export class MapFactory {
           deck: this.deckProvider.getDeckFromExport<Card>(payload.deck),
           states: new MapStates(payload.states),
           hasStarted: payload.hasStarted,
-          active: this.deckProvider.getOrderedPile<Card>(payload.active),
+          active: this.deckProvider.getPileWithState<Card>(payload.active),
           revealed: payload.revealed
             ? {
               relevant: this.deckProvider.getOrderedPile<Card>(payload.revealed.relevant),

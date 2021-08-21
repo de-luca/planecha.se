@@ -1,6 +1,6 @@
 import { MapStates } from '../states';
 import { Props } from './CardFactory';
-import { CardInterface } from './CardInterface';
+import { CardInterface, ExportedCard } from './CardInterface';
 
 export abstract class Card implements CardInterface {
   public id: string;
@@ -22,10 +22,13 @@ export abstract class Card implements CardInterface {
     this.oracleText = props.oracleText;
     this.gathererUri = props.gathererUri;
   }
-
   public abstract get type(): string;
 
   public abstract chaos(states: MapStates, passivity?: Passivity): void;
   public abstract enter(states: MapStates, passivity?: Passivity): void;
   public abstract leave(): void;
+
+  public export(): ExportedCard {
+    return { id: this.id }
+  }
 }
