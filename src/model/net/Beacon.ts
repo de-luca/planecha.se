@@ -60,6 +60,10 @@ export class Beacon extends EventTarget {
     this.send(Method.JOIN, { roomId });
   }
 
+  public close(): void {
+    this.socket.close();
+  }
+
   public signal(peerId: string, data: SignalData): void {
     this.send(Method.SIGNAL, { peerId, data });
   }

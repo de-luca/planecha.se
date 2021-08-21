@@ -1,6 +1,6 @@
+import * as ActPayload from './payloads';
 import { MutationTypes, useStore } from '@/store';
 import { Card, Phenomenon, Plane } from '../card';
-import { MapState, StateKey, StateOp } from '../states';
 import { Exported } from '../map';
 
 export enum Event {
@@ -10,17 +10,17 @@ export enum Event {
   CHAOS = 'CHAOS',
   PLANESWALK = 'PLANESWALK',
   CUSTOM_PLANESWALK = 'CUSTOM_PLANESWALK',
-  PLANESWALK_FROM_PHENOMENON = 'PLANESWALK_FROM_PHENOMENON',
   ENCOUNTER = 'ENCOUNTER',
+  RESOLVE = 'RESOLVE',
   COUNTERS = 'COUNTERS',
   REVEAL = 'REVEAL',
   RESOLVE_REVEAL = 'RESOLVE_REVEAL',
   SHUFFLE = 'SHUFFLE',
-  START_ETERNITIES = 'START_ETERNITIES',
+  START_GAME = 'START_GAME',
   UPDATE_STATE = 'UPDATE_STATE',
 }
 
-export type Payload<T> = {
+export interface Payload<T> {
   event: Event,
   data: T,
 }
@@ -39,11 +39,14 @@ export function stringify(event: Event, data: any = {}): string {
   return JSON.stringify({ event, data });
 }
 
-export function getHandler(myName: string): (this: RTCDataChannel, event: MessageEvent<string>) => any {
+export function getHandler(
+  myName: string,
+): (this: RTCDataChannel, event: MessageEvent<string>) => any {
   const store = useStore();
 
   return function(this: RTCDataChannel, event: MessageEvent<string>) {
     const payload = parse(event.data);
+    const passivity: Passivity = { passive: true, initiator: this.label };
 
     switch (payload.event) {
       case Event.REQUEST_INIT: {
@@ -52,65 +55,54 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
       }
 
       case Event.SHUFFLE: {
-        store.commit(MutationTypes.SHUFFLE, payload.data as Exported);
+        const data = payload.data as Exported;
+        store.commit(MutationTypes.SHUFFLE, data);
         break;
       }
 
       case Event.CHAOS: {
-        store.commit(MutationTypes.CHAOS, {
-          passivity: { passive: true, initiator: this.label },
-        });
+        store.commit(MutationTypes.CHAOS, { passivity });
         break;
       }
 
-      case Event.PLANESWALK_FROM_PHENOMENON: {
-        store.commit(MutationTypes.PLANESWALK_FROM_PHENOMENON, {
-          passivity: { passive: true, initiator: this.label },
-        });
+      case Event.RESOLVE: {
+        store.commit(MutationTypes.RESOLVE, { passivity });
         break;
       }
 
       case Event.ENCOUNTER: {
-        const data = payload.data as { coordinates: Coordinates };
-        store.commit(MutationTypes.ENCOUNTER, {
-          coordinates: data.coordinates,
-          passivity: { passive: true, initiator: this.label },
-        });
+        const data = payload.data as ActPayload.Encounter;
+        store.commit(MutationTypes.ENCOUNTER, { ...data, passivity });
         break;
       }
 
       case Event.PLANESWALK:{
-        const data = payload.data as { coordinates?: Coordinates };
-        store.commit(MutationTypes.PLANESWALK, {
-          coordinates: data.coordinates,
-          passivity: { passive: true, initiator: this.label },
-        });
+        const data = payload.data as ActPayload.Planeswalk;
+        store.commit(MutationTypes.PLANESWALK, { ...data, passivity });
         break;
       }
 
       case Event.CUSTOM_PLANESWALK: {
-        const data = payload.data as { planes: Array<string> };
+        const data = payload.data as ActPayload.CustomPlaneswalkWire;
         const allCards = Array<Card>().concat(
           store.getters.revealed?.relevant ?? [],
           store.getters.revealed?.others ?? [],
         );
 
         store.commit(MutationTypes.CUSTOM_PLANESWALK, {
-          planes: data.planes.map((id) => allCards.find(c => c.id === id) as Plane),
+          planes: data.planes.map(id => allCards.find(c => c.id === id) as Plane),
         });
         break;
       }
 
       case Event.COUNTERS: {
-        store.commit(MutationTypes.COUNTERS, {
-          ...payload.data as { id: string, change: number },
-          initiator: this.label,
-        });
+        const data = payload.data as ActPayload.Counter;
+        store.commit(MutationTypes.COUNTERS, { ...data, initiator: this.label });
         break;
       }
 
       case Event.REVEAL: {
-        const data = payload.data as { count: number, type?: string };
+        const data = payload.data as ActPayload.RevealWire;
         store.commit(MutationTypes.REVEAL, {
           count: data.count,
           type: data.type ? cardTypeMap[data.type] : undefined,
@@ -119,7 +111,7 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
       }
 
       case Event.RESOLVE_REVEAL: {
-        const data = payload.data as { top: Array<string>, bottom: Array<string> };
+        const data = payload.data as ActPayload.ResolveRevealWire;
         const allCards = Array<Card>().concat(
           store.getters.revealed?.relevant ?? [],
           store.getters.revealed?.others ?? [],
@@ -134,29 +126,23 @@ export function getHandler(myName: string): (this: RTCDataChannel, event: Messag
       }
 
       case Event.UPDATE_STATE: {
-        const data = payload.data as { key: StateKey, op: StateOp, val?: MapState };
+        const data = payload.data as ActPayload.UpdateState;
         if (data.val) {
-          data.val = {
-            ...data.val,
-            passive: true,
-            initiator: this.label,
-          };
+          data.val = { ...data.val, initiator: this.label };
         }
         store.commit(MutationTypes.UPDATE_STATE, data);
         break;
       }
 
-      case Event.START_ETERNITIES: {
-        store.commit(MutationTypes.START_ETERNITIES);
+      case Event.START_GAME: {
+        store.commit(MutationTypes.START_GAME);
         break;
       }
 
       case Event.HEY: {
         if (!store.getters.mates.get(this.label)) {
-          store.commit(MutationTypes.HEY, {
-            id: this.label,
-            name: (payload.data as { name: string }).name,
-          });
+          const data = payload.data as ActPayload.NameWire;
+          store.commit(MutationTypes.HEY, { ...data, id: this.label });
           this.send(stringify(Event.HEY, { name: myName }));
         }
         break;

@@ -7,9 +7,9 @@ import {
   ActionTree,
 } from 'vuex';
 
-import { Card, Plane } from '@/model/card';
 import {
   BuildProps,
+  EmptyMap,
   Exported,
   MapFactory,
   MapInterface,
@@ -18,51 +18,36 @@ import {
   Revealed,
   Tile,
 } from '@/model/map';
+import * as ActPayload from '@/model/net/payloads';
 import { OnlineInterface } from '@/model/net/OnlineInterface';
+import { Card } from '@/model/card';
 import { eventBus } from '@/services/EventBus';
-import { StateKey, StateOp, MapState } from '@/model/states';
 
 
 // Declare state
 export type State = {
-  map?: MapInterface | MapInterface & OnlineInterface;
+  map: MapInterface | MapInterface & OnlineInterface;
 
   feed: Array<string>;
 
   online: boolean;
   mates: Map<string, string>;
 
-  shuffled: boolean;
+  wasShuffled: boolean;
 };
 
 function initState(): State {
   return {
-    map: undefined,
+    map: new EmptyMap(),
     feed: [],
     online: false,
     mates: new Map(),
-    shuffled: false,
+    wasShuffled: false,
   };
 }
 
 // Init state
 export const state: State = initState();
-
-
-export type Idable = { initiator?: string };
-export type Passiveable = { passivity?: Passivity };
-
-export type HeyPayload = { id: string, name: string };
-export type ByePayload = { id: string };
-export type RevealPayload = { count: number, type?: typeof Card };
-export type ChaosPayload = Passiveable;
-export type ResolvePayload = Passiveable;
-export type PlaneswalkPayload = Passiveable & { coordinates?: Coordinates };
-export type CustomPlaneswalkPayload = PlaneswalkPayload & { planes: Array<Plane> };
-export type EncounterPayload = Passiveable & { coordinates: Coordinates };
-export type CounterPayload = Idable & { id: string, change: number };
-export type UpdateStatePayload = { key: StateKey, op: StateOp, val?: MapState };
-export type ResolveRevealPayload = Idable & { top: Array<Card>, bottom: Array<Card> };
 
 // mutations enums
 export enum MutationTypes {
@@ -71,40 +56,53 @@ export enum MutationTypes {
   BYE = 'BYE',
   INIT = 'INIT',
   SHUFFLE = 'SHUFFLE',
-
   CHAOS = 'CHAOS',
   PLANESWALK = 'PLANESWALK',
   CUSTOM_PLANESWALK = 'CUSTOM_PLANESWALK',
-  PLANESWALK_FROM_PHENOMENON = 'PLANESWALK_FROM_PHENOMENON',
+  RESOLVE = 'RESOLVE',
   ENCOUNTER = 'ENCOUNTER',
-
   COUNTERS = 'COUNTERS',
-
   UPDATE_STATE = 'UPDATE_STATE',
-
   REVEAL = 'REVEAL',
   RESOLVE_REVEAL = 'RESOLVE_REVEAL',
+  START_GAME = 'START_GAME',
+}
 
-  START_ETERNITIES = 'START_ETERNITIES',
+export namespace Payload {
+  export type Idable = { initiator?: string };
+  export type Passiveable = { passivity?: Passivity };
+
+  export type Hey = { id: string, name: string };
+  export type Bye = { id: string };
+
+  export type Chaos = Passiveable;
+  export type Resolve = Passiveable;
+  export type Planeswalk = Passiveable & ActPayload.Planeswalk;
+  export type CustomPlaneswalk = Planeswalk & ActPayload.CustomPlaneswalk;
+  export type Encounter = Passiveable & ActPayload.Encounter;
+  export type Counter = Idable & ActPayload.Counter;
+  export type UpdateState = ActPayload.UpdateState;
+  export type Reveal = ActPayload.Reveal;
+  export type ResolveReveal = Idable & ActPayload.ResolveReveal;
 }
 
 // Mutation contracts
 export type Mutations<S = State> = {
   [MutationTypes.LEAVE](state: S): void,
-  [MutationTypes.HEY](state: S, payload: HeyPayload): void,
-  [MutationTypes.BYE](state: S, payload: ByePayload): void,
+  [MutationTypes.HEY](state: S, payload: Payload.Hey): void,
+  [MutationTypes.BYE](state: S, payload: Payload.Bye): void,
   [MutationTypes.INIT](state: S, payload: BuildProps): void,
   [MutationTypes.SHUFFLE](state: S, payload: Exported): void,
-  [MutationTypes.CHAOS](state: S, payload: ChaosPayload): void,
-  [MutationTypes.PLANESWALK](state: S, payload: PlaneswalkPayload): void,
-  [MutationTypes.CUSTOM_PLANESWALK](state: S, payload: CustomPlaneswalkPayload): void,
-  [MutationTypes.PLANESWALK_FROM_PHENOMENON](state: S, payload: ResolvePayload): void,
-  [MutationTypes.ENCOUNTER](state: S, payload: EncounterPayload): void,
-  [MutationTypes.COUNTERS](state: S, payload: CounterPayload): void,
-  [MutationTypes.UPDATE_STATE](state: S, payload: UpdateStatePayload): void,
-  [MutationTypes.REVEAL](state: S, payload: RevealPayload): void,
-  [MutationTypes.RESOLVE_REVEAL](state: S, payload: ResolveRevealPayload): void,
-  [MutationTypes.START_ETERNITIES](state: S): void,
+  [MutationTypes.CHAOS](state: S, payload: Payload.Chaos): void,
+  [MutationTypes.PLANESWALK](state: S, payload: Payload.Planeswalk): void,
+  [MutationTypes.CUSTOM_PLANESWALK](state: S, payload: Payload.CustomPlaneswalk): void,
+  [MutationTypes.RESOLVE](state: S, payload: Payload.Resolve): void,
+  [MutationTypes.ENCOUNTER](state: S, payload: Payload.Encounter): void,
+  [MutationTypes.COUNTERS](state: S, payload: Payload.Counter): void,
+  [MutationTypes.UPDATE_STATE](state: S, payload: Payload.UpdateState): void,
+  [MutationTypes.REVEAL](state: S, payload: Payload.Reveal): void,
+  [MutationTypes.RESOLVE_REVEAL](state: S, payload: Payload.ResolveReveal): void,
+  [MutationTypes.START_GAME](state: S): void,
 }
 
 // Define mutations
@@ -116,57 +114,61 @@ export const mutations: Mutations = {
 
     state = initState();
     eventBus.off('*');
+
+    console.log(state.mates);
   },
-  [MutationTypes.HEY](state: State, payload: HeyPayload) {
+
+  [MutationTypes.HEY](state: State, payload) {
     state.mates.set(payload.id, payload.name);
   },
-  [MutationTypes.BYE](state: State, payload: ByePayload) {
+  [MutationTypes.BYE](state: State, payload) {
     state.mates.delete(payload.id);
   },
+
   [MutationTypes.INIT](state: State, payload: BuildProps) {
     state.map = Container.get(MapFactory).build(payload);
     state.online = payload.online;
   },
+
   [MutationTypes.SHUFFLE](state: State, payload: Exported) {
-    (<MapInterface>state.map).applyShuffle(payload);
+    state.map.applyShuffle(payload);
   },
-  [MutationTypes.CHAOS](state: State, payload: ChaosPayload = {}) {
-    (<MapInterface>state.map).chaos(payload.passivity);
+  [MutationTypes.CHAOS](state: State, payload = {}) {
+    state.map.chaos(payload.passivity);
   },
-  [MutationTypes.PLANESWALK](state: State, payload: PlaneswalkPayload) {
-    state.shuffled = (<MapInterface>state.map).planeswalk(
-      payload.coordinates,
+  [MutationTypes.PLANESWALK](state: State, payload = {}) {
+    state.wasShuffled = state.map.planeswalk(
+      payload.coords,
       payload.passivity,
     );
   },
-  [MutationTypes.CUSTOM_PLANESWALK](state: State, payload: CustomPlaneswalkPayload) {
-    (<MapInterface>state.map).customPlaneswalk(payload.planes);
+  [MutationTypes.CUSTOM_PLANESWALK](state: State, payload) {
+    state.map.customPlaneswalk(payload.planes);
   },
-  [MutationTypes.PLANESWALK_FROM_PHENOMENON](state: State, payload: ResolvePayload = {}) {
-    (<MapInterface>state.map).planeswalkFromPhenomenon(payload.passivity);
+  [MutationTypes.RESOLVE](state: State, payload = {}) {
+    state.map.resolve(payload.passivity);
   },
-  [MutationTypes.ENCOUNTER](state: State, payload: EncounterPayload) {
-    (<MapInterface>state.map).encounter(
-      payload.coordinates,
-      payload.passivity,
-    );
+  [MutationTypes.ENCOUNTER](state: State, payload) {
+    state.map.encounter( payload.coords, payload.passivity);
   },
-  [MutationTypes.COUNTERS](state: State, payload: CounterPayload) {
-    (<MapInterface>state.map).updateCounter(payload.id, payload.change);
+  [MutationTypes.COUNTERS](state: State, payload) {
+    state.map.updateCounter(payload.planeId, payload.change);
   },
-  [MutationTypes.UPDATE_STATE](state: State, payload: UpdateStatePayload) {
-    (<MapInterface>state.map).states.apply(payload.key, payload.op, payload.val);
+  [MutationTypes.UPDATE_STATE](state: State, payload) {
+    state.map.states.apply(payload.key, payload.op, payload.val);
   },
-  [MutationTypes.REVEAL](state: State, payload: RevealPayload) {
-    state.shuffled = (<MapInterface>state.map).revealUntil(payload.count, payload.type);
+  [MutationTypes.REVEAL](state: State, payload) {
+    state.wasShuffled = state.map.revealUntil(payload.count, payload.type);
   },
-  [MutationTypes.RESOLVE_REVEAL](state: State, payload: ResolveRevealPayload) {
-    (<MapInterface>state.map).resolveReveal(payload.top, payload.bottom);
+  [MutationTypes.RESOLVE_REVEAL](state: State, payload) {
+    state.map.resolveReveal(payload.top, payload.bottom);
   },
-  [MutationTypes.START_ETERNITIES](state: State) {
-    (<MapInterface>state.map).hasStarted = true;
+  [MutationTypes.START_GAME](state: State) {
+    state.map.hasStarted = true;
   },
 };
+
+
 
 // Action enums
 export enum ActionTypes {
@@ -175,13 +177,13 @@ export enum ActionTypes {
   CHAOS = 'CHAOS',
   PLANESWALK = 'PLANESWALK',
   CUSTOM_PLANESWALK = 'CUSTOM_PLANESWALK',
-  PLANESWALK_FROM_PHENOMENON = 'PLANESWALK_FROM_PHENOMENON',
+  RESOLVE = 'RESOLVE',
   ENCOUNTER = 'ENCOUNTER',
   COUNTERS = 'COUNTERS',
   UPDATE_STATE = 'UPDATE_STATE',
   REVEAL = 'REVEAL',
   RESOLVE_REVEAL = 'RESOLVE_REVEAL',
-  START_ETERNITIES = 'START_ETERNITIES',
+  START_GAME = 'START_GAME',
 }
 
 // Actions context
@@ -200,166 +202,126 @@ export interface Actions {
   ): Promise<void>,
   [ActionTypes.JOIN](
     { commit }: AugmentedActionContext,
-    payload: { roomId: string, name: string },
+    payload: ActPayload.Join,
   ): Promise<void>,
   [ActionTypes.CHAOS](
     { commit }: AugmentedActionContext,
   ): void,
   [ActionTypes.PLANESWALK](
     { commit }: AugmentedActionContext,
-    payload?: { coordinates?: Coordinates },
+    payload: ActPayload.Planeswalk,
   ): void,
   [ActionTypes.CUSTOM_PLANESWALK](
     { commit }: AugmentedActionContext,
-    payload: { planes: Array<Plane> },
+    payload: ActPayload.CustomPlaneswalk,
   ): void,
-  [ActionTypes.PLANESWALK_FROM_PHENOMENON](
+  [ActionTypes.RESOLVE](
     { commit }: AugmentedActionContext,
   ): void,
   [ActionTypes.ENCOUNTER](
     { commit }: AugmentedActionContext,
-    payload: { coordinates: Coordinates },
+    payload: ActPayload.Encounter,
   ): void,
   [ActionTypes.COUNTERS](
     { commit }: AugmentedActionContext,
-    payload: { id: string, change: number },
+    payload: ActPayload.Counter,
   ): void,
   [ActionTypes.UPDATE_STATE](
     { commit }: AugmentedActionContext,
-    payload: { key: StateKey, op: StateOp, val?: MapState },
+    payload: ActPayload.UpdateState,
   ): void,
   [ActionTypes.REVEAL](
     { commit }: AugmentedActionContext,
-    payload: { count: number, type?: typeof Card },
+    payload: ActPayload.Reveal,
   ): void,
   [ActionTypes.RESOLVE_REVEAL](
     { commit }: AugmentedActionContext,
-    payload: { top: Array<Card>, bottom: Array<Card> },
+    payload: ActPayload.ResolveReveal,
   ): void,
-  [ActionTypes.START_ETERNITIES](
+  [ActionTypes.START_GAME](
     { commit }: AugmentedActionContext,
   ): void,
 }
 
+function requestIfOnline(method: string, payload?: any): void {
+  if (state.online) {
+    if (state.wasShuffled) {
+      (state.map as OnlineInterface).requestShuffling();
+      state.wasShuffled = false;
+    } else {
+      (state.map as { [method: string]: any })[method](payload);
+    }
+  }
+}
+
 // Define actions
 export const actions: ActionTree<State, State> & Actions = {
-  async [ActionTypes.INIT]({ commit }, payload: BuildProps) {
+  async [ActionTypes.INIT]({ commit }, payload) {
     try {
       commit(MutationTypes.INIT, payload);
-      await (<MapInterface>state.map).ready;
+      await state.map.ready;
 
       if (payload.online) {
-        await (<OnlineInterface>state.map).create();
+        await (state.map as OnlineInterface).create();
+        console.log(state.mates);
       }
     } catch (err) {
       console.error(err);
     }
   },
-  async [ActionTypes.JOIN]({ commit }, payload: { roomId: string, name: string }) {
+  async [ActionTypes.JOIN]({ commit }, payload) {
     try {
       commit(MutationTypes.INIT, {
         type: MapType.EMPTY,
         online: true,
         advanced: { name: payload.name },
       });
-      await (<MapInterface>state.map).ready;
-      await (<OnlineInterface>state.map).join(payload.roomId);
+      await state.map.ready;
+      await (state.map as OnlineInterface).join(payload.roomId);
     } catch (err) {
         // some error handling logic
     }
   },
+
   [ActionTypes.CHAOS]({ commit }) {
     commit(MutationTypes.CHAOS);
-
-    if (state.online) {
-      (state.map as OnlineInterface).requestChaos();
-    }
+    requestIfOnline('requestChaos');
   },
-  [ActionTypes.PLANESWALK]({ commit }, payload: { coordinates?: Coordinates } = {}) {
+  [ActionTypes.PLANESWALK]({ commit }, payload = {}) {
     commit(MutationTypes.PLANESWALK, payload);
-    if (state.online) {
-      if (state.shuffled) {
-        (state.map as OnlineInterface).requestShuffling();
-        state.shuffled = false;
-      } else {
-        (state.map as OnlineInterface).requestPlaneswalk(payload.coordinates);
-      }
-    }
+    requestIfOnline('requestPlaneswalk', payload);
   },
-  [ActionTypes.CUSTOM_PLANESWALK]({ commit }, payload: { planes: Array<Plane> }) {
+  [ActionTypes.CUSTOM_PLANESWALK]({ commit }, payload) {
     commit(MutationTypes.CUSTOM_PLANESWALK, payload);
-
-    if (state.online) {
-      (state.map as OnlineInterface).requestCustomPlaneswalk({
-        planes: payload.planes.map(c => c.id),
-      });
-    }
+    requestIfOnline('requestCustomPlaneswalk', payload);
   },
-  [ActionTypes.PLANESWALK_FROM_PHENOMENON]({ commit }) {
-    commit(MutationTypes.PLANESWALK_FROM_PHENOMENON);
-
-    if (state.online) {
-      if (state.shuffled) {
-        (state.map as OnlineInterface).requestShuffling();
-        state.shuffled = false;
-      } else {
-        (state.map as OnlineInterface).requestPlaneswalkFromPhenomenon();
-      }
-    }
-  },
-  [ActionTypes.ENCOUNTER]({ commit }, payload: { coordinates: Coordinates }) {
+  [ActionTypes.ENCOUNTER]({ commit }, payload) {
     commit(MutationTypes.ENCOUNTER, payload);
-    if (state.online) {
-      if (state.shuffled) {
-        (state.map as OnlineInterface).requestShuffling();
-        state.shuffled = false;
-      } else {
-        (state.map as OnlineInterface).requestEncounter(payload.coordinates);
-      }
-    }
+    requestIfOnline('requestEncounter', payload);
   },
-  [ActionTypes.COUNTERS]({ commit }, payload: { id: string, change: number }) {
+  [ActionTypes.RESOLVE]({ commit }) {
+    commit(MutationTypes.RESOLVE);
+    requestIfOnline('requestResolve');
+  },
+  [ActionTypes.COUNTERS]({ commit }, payload) {
     commit(MutationTypes.COUNTERS, payload);
-
-    if (state.online) {
-      (state.map as OnlineInterface).requestCounterUpdate(payload);
-    }
+    requestIfOnline('requestCounterUpdate', payload);
   },
-  [ActionTypes.UPDATE_STATE]({ commit }, payload: { key: StateKey, op: StateOp, val?: MapState }) {
+  [ActionTypes.UPDATE_STATE]({ commit }, payload) {
     commit(MutationTypes.UPDATE_STATE, payload);
-
-    if (state.online) {
-      (state.map as OnlineInterface).requestUpdateState(payload);
-    }
+    requestIfOnline('requestUpdateState', payload);
   },
-  [ActionTypes.REVEAL]({ commit }, payload: { count: number, type?: typeof Card }) {
+  [ActionTypes.REVEAL]({ commit }, payload) {
     commit(MutationTypes.REVEAL, payload);
-    if (state.online) {
-      if (state.shuffled) {
-        (state.map as OnlineInterface).requestShuffling();
-        state.shuffled = false;
-      } else {
-        (state.map as OnlineInterface).requestReveal({
-          count: payload.count,
-          type: payload.type?.name,
-        });
-      }
-    }
+    requestIfOnline('requestReveal', payload);
   },
-  [ActionTypes.RESOLVE_REVEAL]({ commit }, payload: { top: Array<Card>, bottom: Array<Card> }) {
+  [ActionTypes.RESOLVE_REVEAL]({ commit }, payload) {
     commit(MutationTypes.RESOLVE_REVEAL, payload);
-    if (state.online) {
-      (state.map as OnlineInterface).requestRevealResolution({
-        top: payload.top.map(c => c.id),
-        bottom: payload.bottom.map(c => c.id),
-      });
-    }
+    requestIfOnline('requestResolveReveal', payload);
   },
-  [ActionTypes.START_ETERNITIES]({ commit }) {
-    commit(MutationTypes.START_ETERNITIES);
-    if (state.online) {
-      (state.map as OnlineInterface).requestStartEternities();
-    }
+  [ActionTypes.START_GAME]({ commit }) {
+    commit(MutationTypes.START_GAME);
+    requestIfOnline('requestStartGame');
   },
 };
 
@@ -368,7 +330,7 @@ export type Getters = {
   feed(state: State): Array<string>;
   online(state: State): boolean;
   yourName(state: State): string;
-  roomId(state: State): string;
+  gameId(state: State): string;
   mates(state: State): Map<string, string>;
   map(state: State): MapInterface;
   specs(state: State): MapSpecs;
@@ -384,15 +346,15 @@ export const getters: Getters = {
   feed: state => state.feed,
   online: state => state.online,
   yourName: state => (state.map as OnlineInterface).yourName,
-  roomId: state => (state.map as OnlineInterface).roomId,
+  gameId: state => (state.map as OnlineInterface).gameId,
   mates: state => state.mates,
-  map: state => (state.map as MapInterface),
-  specs: state => (state.map as MapInterface).specs,
-  active: state => (state.map as MapInterface).active,
-  played: state => (state.map as MapInterface).played,
-  remaining: state => (state.map as MapInterface).remaining,
-  revealed: state => (state.map as MapInterface).revealed,
-  tiles: state => (state.map as MapInterface).tiles,
+  map: state => state.map,
+  specs: state => state.map.specs,
+  active: state => state.map.active,
+  played: state => state.map.played,
+  remaining: state => state.map.remaining,
+  revealed: state => state.map.revealed,
+  tiles: state => state.map.tiles,
 };
 
 // Setup store type

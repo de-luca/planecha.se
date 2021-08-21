@@ -121,8 +121,8 @@ export class EternitiesMap extends Vue {
 
   public getTile(x: number, y: number): Tile | undefined {
     return this.store.getters.tiles.find((tile) => {
-      return tile.coordinates.x === x - this.off
-        && tile.coordinates.y === y - this.off;
+      return tile.coords.x === x - this.off
+        && tile.coords.y === y - this.off;
     });
   }
 
@@ -136,11 +136,11 @@ export class EternitiesMap extends Vue {
   }
 
   public start(): void {
-    this.store.dispatch(ActionTypes.START_ETERNITIES);
+    this.store.dispatch(ActionTypes.START_GAME);
   }
 
-  public planeswalk(coordinates: Coordinates): void {
-    this.store.dispatch(ActionTypes.PLANESWALK, { coordinates });
+  public planeswalk(coords: Coordinates): void {
+    this.store.dispatch(ActionTypes.PLANESWALK, { coords });
   }
 
   public customPlaneswalk(choices: PickedLeft): void {
@@ -149,6 +149,6 @@ export class EternitiesMap extends Vue {
     });
 
     this.putBack({ picked: [], left: choices.left });
-    this.store.dispatch(ActionTypes.PLANESWALK_FROM_PHENOMENON);
+    this.store.dispatch(ActionTypes.RESOLVE);
   }
 }

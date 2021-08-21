@@ -41,7 +41,7 @@ export class DualDeck extends SingleDeck {
     };
   }
 
-  public planeswalkFromPhenomenon(passivity?: Passivity): boolean {
+  public resolve(passivity?: Passivity): boolean {
     this.phenomenaDeck.setPlayed(...this.active as Array<Phenomenon>);
     this.states.delete(StateKey.PHENOMENON_WALL);
     const shuffled = this.planeswalk(this.destination as Coordinates, passivity);
@@ -49,10 +49,10 @@ export class DualDeck extends SingleDeck {
   }
 
   public override encounter(
-    coordinates: Coordinates,
+    coords: Coordinates,
     passivity: Passivity = { passive: false },
   ): boolean {
-    this.destination = coordinates;
+    this.destination = coords;
     const { card: drawn, shuffled } = this.phenomenaDeck.draw();
     this.active = [ drawn ];
     this.active.forEach(c => c.enter(this.states, passivity));

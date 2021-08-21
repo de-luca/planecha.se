@@ -48,7 +48,7 @@ export default class Card extends Vue.with(Props) {
   }
 
   public update(change: number) {
-    this.store.dispatch(ActionTypes.COUNTERS, { id: this.card.id, change });
+    this.store.dispatch(ActionTypes.COUNTERS, { planeId: this.card.id, change });
   }
 }
 </script>

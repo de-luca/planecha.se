@@ -1,9 +1,9 @@
-declare type Coordinates = {
+declare interface Coordinates {
   x: number;
   y: number;
 }
 
-declare type Passivity = {
+declare interface Passivity {
   passive?: boolean;
   initiator?: string;
 }

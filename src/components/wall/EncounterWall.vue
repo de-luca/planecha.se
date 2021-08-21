@@ -63,7 +63,7 @@ import { EncounterMechanic, TriggerConfig } from '@/model/map';
 import { Wall, WallProps } from './Wall';
 
 class Props extends WallProps {
-  public coordinates = prop<Coordinates>({ required: true });
+  public coords = prop<Coordinates>({ required: true });
   public triggerConfig = prop<TriggerConfig>({ required: true });
 }
 
@@ -85,11 +85,11 @@ export default class EncounterWall extends mixins(Wall).with(Props) {
   }
 
   public encounter(): void {
-    this.$emit('encounter', this.coordinates);
+    this.$emit('encounter', this.coords);
   }
 
   public planeswalk(): void {
-    this.$emit('planeswalk', this.coordinates);
+    this.$emit('planeswalk', this.coords);
   }
 }
 </script>

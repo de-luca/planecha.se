@@ -26,11 +26,11 @@ export class SingleDeck extends EternitiesMap {
 
   private encounterPhenomenon(
     card: Phenomenon,
-    coordinates: Coordinates,
+    coords: Coordinates,
     passivity: Passivity = { passive: false },
   ): void {
     this.active = [card];
-    this.destination = coordinates;
+    this.destination = coords;
     this.active.forEach(c => c.enter(this.states, passivity));
     this.states.set(StateKey.PHENOMENON_WALL, {
       passive: passivity.passive ?? false,
@@ -39,22 +39,22 @@ export class SingleDeck extends EternitiesMap {
   }
 
   public planeswalk(
-    coordinates: Coordinates,
+    coords: Coordinates,
     passivity?: Passivity,
   ): boolean {
     let shuffled = false;
-    const xOffset = coordinates.x;
-    const yOffset = coordinates.y;
+    const xOffset = coords.x;
+    const yOffset = coords.y;
 
     // The active tile is at the center
-    const activeTile = this.tiles.find((t) => t.coordinates.x === SingleDeck.center.x
-      && t.coordinates.y === SingleDeck.center.y) as Tile;
+    const activeTile = this.tiles.find((t) => t.coords.x === SingleDeck.center.x
+      && t.coords.y === SingleDeck.center.y) as Tile;
     // Moove out of the ACTIVE and make if VISIBLE
     activeTile.state = TileStatus.VISIBLE;
 
     // Look for the tile we are moving to
-    let newActiveTile = this.tiles.find((t) => t.coordinates.x === xOffset
-      && t.coordinates.y === yOffset);
+    let newActiveTile = this.tiles.find((t) => t.coords.x === xOffset
+      && t.coords.y === yOffset);
 
     if (newActiveTile) {
       // It exists so it become ACTIVE
@@ -80,7 +80,7 @@ export class SingleDeck extends EternitiesMap {
       // This is a Plane
       // We add the new tile with the drawn plane
       newActiveTile = {
-        coordinates: {
+        coords: {
           x: xOffset,
           y: yOffset,
         },
@@ -110,7 +110,7 @@ export class SingleDeck extends EternitiesMap {
           (Math.abs(x - xOffset) + Math.abs(y - yOffset)) <= SingleDeck.activeRange
         ) {
           // IS THAT SPACE TAKEN ?!!
-          const tile = this.tiles.find((t) => t.coordinates.x === x && t.coordinates.y === y);
+          const tile = this.tiles.find((t) => t.coords.x === x && t.coords.y === y);
           if (!tile) {
             // NO?!! Then draw and place a plane
             const drawn = this.deck.draw();
@@ -128,7 +128,7 @@ export class SingleDeck extends EternitiesMap {
             }
 
             this.tiles.push({
-              coordinates: { x, y },
+              coords: { x, y },
               state: TileStatus.VISIBLE,
               plane: [drawn.card as Plane],
             });
@@ -139,17 +139,17 @@ export class SingleDeck extends EternitiesMap {
 
     // Move the planes on the table so every body can see
     this.tiles.forEach((t) => {
-      t.coordinates.x += xOffset * -1;
-      t.coordinates.y += yOffset * -1;
+      t.coords.x += xOffset * -1;
+      t.coords.y += yOffset * -1;
     });
 
     this.tiles
-      .filter(t => Math.abs(t.coordinates.x) + Math.abs(t.coordinates.y) > SingleDeck.maxRange)
+      .filter(t => Math.abs(t.coords.x) + Math.abs(t.coords.y) > SingleDeck.maxRange)
       .forEach(t => this.deck.setPlayed(...t.plane));
 
     // Remove all the plan that are too far
     this.tiles = this.tiles.filter((t) => (
-      Math.abs(t.coordinates.x) + Math.abs(t.coordinates.y) <= SingleDeck.maxRange
+      Math.abs(t.coords.x) + Math.abs(t.coords.y) <= SingleDeck.maxRange
     ));
 
     this.destination = undefined;
@@ -164,14 +164,14 @@ export class SingleDeck extends EternitiesMap {
     const yOffset = (this.destination as Coordinates).y;
 
     let destinationTile = this.tiles.find(
-      t => t.coordinates.x === xOffset && t.coordinates.y === yOffset,
+      t => t.coords.x === xOffset && t.coords.y === yOffset,
     );
 
     if (destinationTile) {
       destinationTile.plane = planes;
     } else {
       destinationTile = {
-        coordinates: {
+        coords: {
           x: xOffset,
           y: yOffset,
         },
@@ -182,7 +182,7 @@ export class SingleDeck extends EternitiesMap {
     }
   }
 
-  public planeswalkFromPhenomenon(passivity?: Passivity): boolean {
+  public resolve(passivity?: Passivity): boolean {
     this.deck.setPlayed(...this.active);
     this.states.delete(StateKey.PHENOMENON_WALL);
 

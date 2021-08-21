@@ -4,6 +4,7 @@ import JoinGame from '../views/JoinGame.vue';
 import CreateGame from '../views/CreateGame.vue';
 import Board from '../views/Board.vue';
 import { useStore } from '@/store';
+import { EmptyMap } from '@/model/map';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -26,7 +27,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Board',
     component: Board,
     beforeEnter: () => {
-      if (useStore().getters.map === undefined) {
+      if (useStore().getters.map instanceof EmptyMap) {
         console.log('NO MAP STATE => /CREATE');
         return '/create';
       }

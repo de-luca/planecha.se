@@ -26,7 +26,7 @@
     <encounter-wall
       v-if="encounterWallConfig"
       :config="encounterWallConfig.config"
-      :coordinates="encounterWallConfig.coordinates"
+      :coords="encounterWallConfig.coords"
       :triggerConfig="encounterWallConfig.triggerConfig"
       @planeswalk="planeswalk"
       @encounter="encounter"
@@ -69,7 +69,7 @@ import { WallConfig } from '../wall/Wall';
 
 type LocalEncounterWallConfig = {
   config: WallConfig;
-  coordinates: Coordinates;
+  coords: Coordinates;
   triggerConfig: TriggerConfig;
 }
 
@@ -109,34 +109,34 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
     };
   }
 
-  public preHellride(coordinates: Coordinates): void {
+  public preHellride(coords: Coordinates): void {
     const config = this.getTriggerConfig(EncounterTrigger.ON_HELLRIDE)
       ?? this.getTriggerConfig(EncounterTrigger.ON_PLANESWALK);
 
-    this.handleTrigger(coordinates, config);
+    this.handleTrigger(coords, config);
   }
 
-  public prePlaneswalk(coordinates: Coordinates): void {
+  public prePlaneswalk(coords: Coordinates): void {
     this.handleTrigger(
-      coordinates,
+      coords,
       this.getTriggerConfig(EncounterTrigger.ON_PLANESWALK),
     );
   }
 
-  public planeswalk(coordinates: Coordinates): void {
+  public planeswalk(coords: Coordinates): void {
     this.store.dispatch(ActionTypes.UPDATE_STATE, {
       key: StateKey.ENCOUNTER_WALL,
       op: StateOp.DELETE,
     });
-    this.store.dispatch(ActionTypes.PLANESWALK, { coordinates });
+    this.store.dispatch(ActionTypes.PLANESWALK, { coords });
   }
 
-  public encounter(coordinates: Coordinates): void {
+  public encounter(coords: Coordinates): void {
     this.store.dispatch(ActionTypes.UPDATE_STATE, {
       key: StateKey.ENCOUNTER_WALL,
       op: StateOp.DELETE,
     });
-    this.store.dispatch(ActionTypes.ENCOUNTER, { coordinates });
+    this.store.dispatch(ActionTypes.ENCOUNTER, { coords });
   }
 
   private getTriggerConfig(trigger: EncounterTrigger): TriggerConfig | undefined {
@@ -146,7 +146,7 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
   }
 
   private handleTrigger(
-    coordinates: Coordinates,
+    coords: Coordinates,
     trigger: TriggerConfig | undefined,
   ): void {
     if (trigger) {
@@ -154,20 +154,19 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
         trigger.mechanic === EncounterMechanic.AUTO &&
         trigger.ratio === 1
       ) {
-        this.encounter(coordinates);
+        this.encounter(coords);
       } else {
         this.store.dispatch(ActionTypes.UPDATE_STATE, {
           key: StateKey.ENCOUNTER_WALL,
           op: StateOp.SET,
           val: {
-            passive: false,
-            coordinates,
+            coords,
             triggerConfig: trigger,
           } as EncounterWallState,
         });
       }
     } else {
-      this.planeswalk(coordinates);
+      this.planeswalk(coords);
     }
   }
 }

@@ -8,13 +8,13 @@ export enum TileStatus {
 }
 
 export interface Tile {
-  coordinates: Coordinates;
+  coords: Coordinates;
   state: TileStatus;
   plane: Array<Plane>;
 }
 
 export interface ExportedTile {
-  coordinates: Coordinates;
+  coords: Coordinates;
   state: TileStatus;
   plane: Array<string>;
 }
@@ -96,17 +96,16 @@ export interface MapInterface {
 
   revealUntil(count: number, type?: typeof Card): boolean;
   resolveReveal(top: Array<Card>, bottom: Array<Card>): void;
-  clearRevealed(): void;
 
   chaos(passivity?: Passivity): void;
 
-  planeswalk(coordinates?: Coordinates, passivity?: Passivity): boolean;
-  customPlaneswalk(planes: Array<Plane>, coordinates?: Coordinates): void;
+  planeswalk(coords?: Coordinates, passivity?: Passivity): boolean;
+  customPlaneswalk(planes: Array<Plane>, coords?: Coordinates): void;
 
-  planeswalkFromPhenomenon(passivity?: Passivity): boolean;
-  encounter(coordinates: Coordinates, passivity?: Passivity): boolean;
+  resolve(passivity?: Passivity): boolean;
+  encounter(coords: Coordinates, passivity?: Passivity): boolean;
 
-  updateCounter(id: string, change: number): void;
+  updateCounter(planeId: string, change: number): void;
 
   export(): Exported;
   applyShuffle(state: Exported): void;

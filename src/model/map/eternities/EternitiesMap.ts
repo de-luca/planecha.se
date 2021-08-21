@@ -38,7 +38,7 @@ export abstract class EternitiesMap extends Map {
   private initializeTiles(): Array<Tile> {
     const tiles: Array<Tile> = [{
       state: TileStatus.ACTIVE,
-      coordinates: { ...EternitiesMap.center },
+      coords: { ...EternitiesMap.center },
       plane: this.active as Array<Plane>,
     }];
 
@@ -49,7 +49,7 @@ export abstract class EternitiesMap extends Map {
           && Math.abs(x) + Math.abs(y) !== 0
         ) {
           tiles.push({
-            coordinates: { x, y },
+            coords: { x, y },
             state: TileStatus.VISIBLE,
             plane: [this.deck.drawPlane().card],
           });
@@ -69,7 +69,7 @@ export abstract class EternitiesMap extends Map {
       ...super.export(),
       specs: this.specs,
       tiles: this.tiles.map(t => ({
-        coordinates: t.coordinates,
+        coords: t.coords,
         state: t.state,
         plane: t.plane.map(p => p.id),
       })),

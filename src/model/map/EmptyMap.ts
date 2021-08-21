@@ -30,7 +30,7 @@ export class EmptyMap implements MapInterface {
   customPlaneswalk(): void {
     throw new Error('Method not implemented.');
   }
-  planeswalkFromPhenomenon(): boolean {
+  resolve(): boolean {
     throw new Error('Method not implemented.');
   }
   encounter(): boolean {

@@ -33,7 +33,7 @@ export default class PlaneswalkBtn extends Vue.with(Props) {
       : this.store.dispatch(
           this.store.getters.active[0].type === 'plane'
             ? ActionTypes.PLANESWALK
-            : ActionTypes.PLANESWALK_FROM_PHENOMENON,
+            : ActionTypes.RESOLVE,
         );
   }
 }

@@ -26,7 +26,9 @@ export class Plane extends Card {
       return undefined;
     }
 
-    this.counter.value = this.counter.value + change;
+    this.counter.value = this.counter.value + change < 0
+      ? 0
+      : this.counter.value + change;
 
     return this.counter.value;
   }

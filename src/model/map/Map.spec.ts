@@ -14,7 +14,7 @@ class TestMap extends Map {
   public customPlaneswalk(): void {
     throw new Error('Method not implemented.');
   }
-  public planeswalkFromPhenomenon(): boolean {
+  public resolve(): boolean {
     throw new Error('Method not implemented.');
   }
 }

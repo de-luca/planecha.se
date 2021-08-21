@@ -1,16 +1,17 @@
+import * as Payload from './payloads';
 import { Card, Plane } from '../card';
 import { Beacon } from './Beacon';
 import { OnlineInterface } from './OnlineInterface';
 import { PeerMap } from './PeerMap';
 import { Event } from './Handler';
-import { MapStates, MapState, StateKey, StateOp } from '../states';
+import { MapStates } from '../states';
 import {
+  EncounterTriggers,
   Exported,
   MapSpecs,
   MapInterface,
   Revealed,
   Tile,
-  EncounterTriggers,
 } from '../map';
 
 export class OnlineDecorator implements MapInterface, OnlineInterface {
@@ -20,7 +21,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
 
   private readyState: Promise<void>;
 
-  public roomId: string;
+  public gameId: string;
 
   public constructor(map: MapInterface, name: string) {
     this.map = map;
@@ -30,6 +31,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
         this.beacon.addEventListener('ready', _ => resolve());
     });
     this.peers = new PeerMap(this.beacon, name);
+    console.log(this.peers);
   }
 
   public get states(): MapStates {
@@ -87,23 +89,20 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     return this.map.chaos(passivity);
   }
 
-  public planeswalk(coordinates?: Coordinates, passivity?: Passivity): boolean {
-    return this.map.planeswalk(coordinates, passivity);
+  public planeswalk(coords?: Coordinates, passivity?: Passivity): boolean {
+    return this.map.planeswalk(coords, passivity);
   }
 
-  public customPlaneswalk(
-    planes: Array<Plane>,
-    coordinates?: Coordinates,
-  ): void {
-    return this.map.customPlaneswalk(planes, coordinates);
+  public customPlaneswalk(planes: Array<Plane>, coords?: Coordinates): void {
+    return this.map.customPlaneswalk(planes, coords);
   }
 
-  public planeswalkFromPhenomenon(passivity?: Passivity): boolean {
-    return this.map.planeswalkFromPhenomenon(passivity);
+  public resolve(passivity?: Passivity): boolean {
+    return this.map.resolve(passivity);
   }
 
-  public encounter(coordinates: Coordinates, passivity?: Passivity): boolean {
-    return this.map.encounter(coordinates, passivity);
+  public encounter(coords: Coordinates, passivity?: Passivity): boolean {
+    return this.map.encounter(coords, passivity);
   }
 
   public updateCounter(id: string, change: number): void {
@@ -118,10 +117,6 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     return this.map.resolveReveal(top, bottom);
   }
 
-  public clearRevealed(): void {
-    return this.map.clearRevealed();
-  }
-
   public export(): Exported {
     return this.map.export();
   }
@@ -130,10 +125,11 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     return this.map.applyShuffle(state);
   }
 
+
   public create(): Promise<string> {
     const createPromise = new Promise<string>((resolve) => {
       this.beacon.addEventListener('created', ((event: CustomEvent<string>) => {
-        this.roomId = event.detail;
+        this.gameId = event.detail;
         resolve(event.detail);
       }) as EventListener);
     });
@@ -143,19 +139,20 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     return createPromise;
   }
 
-  public async join(roomId: string): Promise<void> {
+  public async join(gameId: string): Promise<void> {
     const peers = new Promise<Array<string>>((resolve) => {
       this.beacon.addEventListener('joined', ((event: CustomEvent<Array<string>>) => {
-        this.roomId = roomId;
+        this.gameId = gameId;
         resolve(event.detail);
       }) as EventListener);
     });
-    this.beacon.join(roomId);
+    this.beacon.join(gameId);
     await this.peers.addPeer(...await peers);
     this.map = await this.peers.requestInit();
   }
 
   public leave(): void {
+    this.beacon.close();
     this.peers.close();
   }
 
@@ -163,45 +160,53 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     this.peers.broadcast(Event.CHAOS);
   }
 
-  public requestPlaneswalk(coordinates?: Coordinates): void {
-    this.peers.broadcast(Event.PLANESWALK, { coordinates });
+  public requestPlaneswalk(payload: Payload.Planeswalk): void {
+    this.peers.broadcast(Event.PLANESWALK, payload);
   }
 
-  public requestCustomPlaneswalk(payload: { planes: Array<string> }): void {
-    this.peers.broadcast(Event.CUSTOM_PLANESWALK, payload);
+  public requestCustomPlaneswalk(payload: Payload.CustomPlaneswalk): void {
+    this.peers.broadcast(Event.CUSTOM_PLANESWALK, {
+      planes: payload.planes.map(c => c.id),
+    });
   }
 
-  public requestPlaneswalkFromPhenomenon(): void {
-    this.peers.broadcast(Event.PLANESWALK_FROM_PHENOMENON);
+  public requestEncounter(payload: Payload.Encounter): void {
+    this.peers.broadcast(Event.ENCOUNTER, payload);
   }
 
-  public requestEncounter(coordinates: Coordinates): void {
-    this.peers.broadcast(Event.ENCOUNTER, { coordinates });
+  public requestResolve(): void {
+    this.peers.broadcast(Event.RESOLVE);
   }
 
-  public requestCounterUpdate(payload: { id: string, change: number }): void {
+  public requestCounterUpdate(payload: Payload.Counter): void {
     this.peers.broadcast(Event.COUNTERS, payload);
   }
 
-  public requestReveal(payload: { count: number, type?: string }): void {
-    this.peers.broadcast(Event.REVEAL, payload);
+  public requestReveal(payload: Payload.Reveal): void {
+    this.peers.broadcast(Event.REVEAL, {
+      count: payload.count,
+      type: payload.type?.name,
+    });
   }
 
-  public requestRevealResolution(
-    payload: { top: Array<string>, bottom: Array<string> },
-  ): void {
-    this.peers.broadcast(Event.RESOLVE_REVEAL, payload);
+  public requestResolveReveal(payload: Payload.ResolveReveal): void {
+    this.peers.broadcast(Event.RESOLVE_REVEAL, {
+      top: payload.top.map(c => c.id),
+      bottom: payload.bottom.map(c => c.id),
+    });
   }
 
-  public requestUpdateState(
-    payload: { key: StateKey, op: StateOp, val?: MapState },
-  ): void {
-    console.log('BROADCAST', payload);
-    this.peers.broadcast(Event.UPDATE_STATE, payload);
+  public requestUpdateState(payload: Payload.UpdateState): void {
+    this.peers.broadcast(Event.UPDATE_STATE, {
+      ...payload,
+      val: payload.val?.passive === undefined
+        ? { ...payload.val, passive: true }
+        : payload.val,
+    });
   }
 
-  public requestStartEternities(): void {
-    this.peers.broadcast(Event.START_ETERNITIES);
+  public requestStartGame(): void {
+    this.peers.broadcast(Event.START_GAME);
   }
 
   public requestShuffling(): void {

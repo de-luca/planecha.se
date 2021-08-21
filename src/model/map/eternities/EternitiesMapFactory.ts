@@ -74,7 +74,7 @@ export class EternitiesMapFactory {
         }
         : undefined,
       tiles: payload.tiles?.map(t => ({
-        coordinates: t.coordinates,
+        coords: t.coords,
         state: t.state,
         plane: this.deckProvider.getOrderedPile(t.plane),
       })),

@@ -68,7 +68,7 @@ export default class OnlineControls extends Vue {
   }
 
   public get roomUrl(): string {
-    return 'localhost:8080/#/join/' + this.store.getters.roomId;
+    return 'localhost:8080/#/join/' + this.store.getters.gameId;
   }
 
   public get mates(): Map<string, string> {

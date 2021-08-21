@@ -2,11 +2,12 @@ import { Container } from 'typedi';
 import { eventBus, EventType as BusEvent } from '@/services/EventBus';
 import { Exported, MapFactory, MapInterface } from '../map';
 import { Beacon, SignalData, SignalPayload } from './Beacon';
-import { getHandler, Payload, Event, parse, stringify } from './Handler';
+import * as Handler from './Handler';
+import * as Payload from './payloads';
 
-type Peer = {
-  connection: RTCPeerConnection,
-  channel: RTCDataChannel,
+interface Peer {
+  connection: RTCPeerConnection;
+  channel: RTCDataChannel;
 }
 
 export class PeerMap {
@@ -28,8 +29,21 @@ export class PeerMap {
     });
   }
 
-  public broadcast(event: Event, data: any = {}): void {
-    this.peers.forEach(peer => peer.channel.send(stringify(event, data)));
+  broadcast(event: Handler.Event.CHAOS): void;
+  broadcast(event: Handler.Event.RESOLVE): void;
+  broadcast(event: Handler.Event.START_GAME): void;
+  broadcast(event: Handler.Event.REQUEST_INIT): void;
+  broadcast(event: Handler.Event.SHUFFLE, data: Exported): void;
+  broadcast(event: Handler.Event.HEY, data: Payload.NameWire): void;
+  broadcast(event: Handler.Event.COUNTERS, data: Payload.Counter): void;
+  broadcast(event: Handler.Event.REVEAL, data: Payload.RevealWire): void;
+  broadcast(event: Handler.Event.ENCOUNTER, data: Payload.Encounter): void;
+  broadcast(event: Handler.Event.PLANESWALK, data: Payload.Planeswalk): void;
+  broadcast(event: Handler.Event.UPDATE_STATE, data: Payload.UpdateState): void;
+  broadcast(event: Handler.Event.RESOLVE_REVEAL, data: Payload.ResolveRevealWire): void;
+  broadcast(event: Handler.Event.CUSTOM_PLANESWALK, data: Payload.CustomPlaneswalkWire): void;
+  public broadcast(event: Handler.Event, data: any = {}): void {
+    this.peers.forEach(peer => peer.channel.send(Handler.stringify(event, data)));
   }
 
   public close(): void {
@@ -41,15 +55,15 @@ export class PeerMap {
 
   public async requestInit(): Promise<MapInterface> {
     const p = this.peers.values().next().value as Peer;
-    const payload: Payload<{}> = {
-      event: Event.REQUEST_INIT,
+    const payload: Handler.Payload<{}> = {
+      event: Handler.Event.REQUEST_INIT,
       data: {},
     };
 
     const initRequest = new Promise<MapInterface>((resolve) => {
       const handler = (event: MessageEvent<string>) => {
-        const payload = parse<Exported>(event.data);
-        if (payload.event === Event.INIT) {
+        const payload = Handler.parse<Exported>(event.data);
+        if (payload.event === Handler.Event.INIT) {
           const map = Container.get(MapFactory).restore(payload.data);
           p.channel.removeEventListener('message', handler);
           resolve(map);
@@ -69,8 +83,10 @@ export class PeerMap {
       const peer = this.buildPeer(id);
 
       channelOpen.push(new Promise((resolve) => {
-        peer.channel.onopen = _ => {
-          peer.channel.send(stringify(Event.HEY, { name: this.yourName }));
+        peer.channel.onopen = (_) => {
+          peer.channel.send(
+            Handler.stringify(Handler.Event.HEY, { name: this.yourName }),
+          );
           resolve();
         };
       }));
@@ -89,13 +105,13 @@ export class PeerMap {
     const connection = new RTCPeerConnection(PeerMap.RTCConfig);
     const channel = connection.createDataChannel(id, PeerMap.channelConfig);
 
-    channel.onmessage = getHandler(this.yourName);
+    channel.onmessage = Handler.getHandler(this.yourName);
     connection.oniceconnectionstatechange = (_) => {
       if (connection.iceConnectionState === 'disconnected') {
         this.peers.delete(id);
         eventBus.emit(BusEvent.BYE, { mateId: id });
       }
-      console.log('[oniceconnectionstatechange]', connection.iceConnectionState);
+      console.log(`[oniceconnectionstatechange][${id}]`, connection.iceConnectionState);
     };
     connection.onicecandidate = ({ candidate }) => {
       if (candidate) {

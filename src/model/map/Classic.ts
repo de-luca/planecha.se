@@ -36,7 +36,7 @@ export class Classic extends Map {
     this.active.forEach(c => c.enter(this.states));
   }
 
-  public planeswalkFromPhenomenon(passivity: Passivity): boolean {
+  public resolve(passivity: Passivity): boolean {
     return this.planeswalk(undefined, passivity);
   }
 }

@@ -1,29 +1,29 @@
-import { StateKey, StateOp, MapState } from '../states';
+import * as Payload from './payloads';
 
 export interface OnlineInterface {
-  roomId: string;
+  gameId: string;
   yourName: string;
 
   create(): Promise<string>;
-  join(roomId: string): void;
+  join(gameId: string): void;
   leave(): void;
 
   requestChaos(): void;
 
-  requestPlaneswalk(coordinates?: Coordinates): void;
-  requestCustomPlaneswalk(payload: { planes: Array<string> }): void;
+  requestPlaneswalk(payload: Payload.Planeswalk): void;
+  requestCustomPlaneswalk(payload: Payload.CustomPlaneswalk): void;
 
-  requestPlaneswalkFromPhenomenon(): void;
-  requestEncounter(coordinates: Coordinates): void;
+  requestEncounter(payload: Payload.Encounter): void;
+  requestResolve(): void;
 
-  requestCounterUpdate(payload: { id: string, change: number }): void;
+  requestCounterUpdate(payload: Payload.Counter): void;
 
-  requestReveal(payload: { count: number, type?: string }): void;
-  requestRevealResolution(payload: { top: Array<string>, bottom: Array<string> }): void;
+  requestReveal(payload: Payload.Reveal): void;
+  requestResolveReveal(payload: Payload.ResolveReveal): void;
 
-  requestUpdateState(payload: { key: StateKey, op: StateOp, val?: MapState }): void;
+  requestUpdateState(payload: Payload.UpdateState): void;
 
-  requestStartEternities(): void;
+  requestStartGame(): void;
 
   requestShuffling(): void;
 }

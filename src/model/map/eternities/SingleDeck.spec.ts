@@ -50,9 +50,9 @@ describe('EternitiesMap.planeswalk', () => {
     expect(map.tiles).toHaveLength(8);
     expect(map.tiles).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ coordinates: { x: -2, y: 0 } }),
-        expect.objectContaining({ coordinates: { x: -1, y: -1 } }),
-        expect.objectContaining({ coordinates: { x: -1, y: 1 } }),
+        expect.objectContaining({ coords: { x: -2, y: 0 } }),
+        expect.objectContaining({ coords: { x: -1, y: -1 } }),
+        expect.objectContaining({ coords: { x: -1, y: 1 } }),
       ]),
     );
   });
@@ -66,9 +66,9 @@ describe('EternitiesMap.planeswalk', () => {
     expect(map.tiles).toHaveLength(8);
     expect(map.tiles).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ coordinates: { x: 2, y: 0 } }),
-        expect.objectContaining({ coordinates: { x: 1, y: 1 } }),
-        expect.objectContaining({ coordinates: { x: 1, y: -1 } }),
+        expect.objectContaining({ coords: { x: 2, y: 0 } }),
+        expect.objectContaining({ coords: { x: 1, y: 1 } }),
+        expect.objectContaining({ coords: { x: 1, y: -1 } }),
       ]),
     );
   });
@@ -82,9 +82,9 @@ describe('EternitiesMap.planeswalk', () => {
     expect(map.tiles).toHaveLength(8);
     expect(map.tiles).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ coordinates: { x: 0, y: -2 } }),
-        expect.objectContaining({ coordinates: { x: -1, y: -1 } }),
-        expect.objectContaining({ coordinates: { x: 1, y: -1 } }),
+        expect.objectContaining({ coords: { x: 0, y: -2 } }),
+        expect.objectContaining({ coords: { x: -1, y: -1 } }),
+        expect.objectContaining({ coords: { x: 1, y: -1 } }),
       ]),
     );
   });
@@ -98,9 +98,9 @@ describe('EternitiesMap.planeswalk', () => {
     expect(map.tiles).toHaveLength(8);
     expect(map.tiles).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ coordinates: { x: 0, y: 2 } }),
-        expect.objectContaining({ coordinates: { x: -1, y: 1 } }),
-        expect.objectContaining({ coordinates: { x: 1, y: 1 } }),
+        expect.objectContaining({ coords: { x: 0, y: 2 } }),
+        expect.objectContaining({ coords: { x: -1, y: 1 } }),
+        expect.objectContaining({ coords: { x: 1, y: 1 } }),
       ]),
     );
   });
@@ -115,7 +115,7 @@ describe('EternitiesMap.planeswalk', () => {
     expect(map.tiles).toHaveLength(8);
     expect(map.tiles).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ coordinates: { x: 0, y: 2 } }),
+        expect.objectContaining({ coords: { x: 0, y: 2 } }),
       ]),
     );
 
@@ -123,7 +123,7 @@ describe('EternitiesMap.planeswalk', () => {
     expect(map.tiles).toHaveLength(11);
     expect(map.tiles).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ coordinates: { x: 0, y: 3 } }),
+        expect.objectContaining({ coords: { x: 0, y: 3 } }),
       ]),
     );
 
@@ -131,7 +131,7 @@ describe('EternitiesMap.planeswalk', () => {
     expect(map.tiles).toHaveLength(11);
     expect(map.tiles).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ coordinates: { x: 0, y: 3 } }),
+        expect.objectContaining({ coords: { x: 0, y: 3 } }),
       ]),
     );
   });

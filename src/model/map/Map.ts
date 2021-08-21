@@ -62,25 +62,25 @@ export abstract class Map implements MapInterface {
   }
 
   public abstract planeswalk(
-    coordinates?: Coordinates,
+    coords?: Coordinates,
     passivity?: Passivity,
   ): boolean;
   public abstract customPlaneswalk(
     planes: Array<Plane>,
-    coordinates?: Coordinates,
+    coords?: Coordinates,
   ): void;
 
-  public abstract planeswalkFromPhenomenon(passivity?: Passivity): boolean;
+  public abstract resolve(passivity?: Passivity): boolean;
 
   public encounter(
-    _coordinates: Coordinates,
+    _coords: Coordinates,
     _passivity?: Passivity,
   ): boolean {
     throw new Error(`Not compatible with ${this.constructor.name} class.`);
   }
 
-  public updateCounter(id: string, change: number): void {
-    (this.active.find(c => c.id === id) as Plane).updateCounter(change);
+  public updateCounter(planeId: string, change: number): void {
+    (this.active.find(c => c.id === planeId) as Plane).updateCounter(change);
   }
 
   public revealUntil(count: number, type?: typeof Card): boolean {
