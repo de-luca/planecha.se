@@ -96,7 +96,7 @@ export function getHandler(
       }
 
       case Event.COUNTERS: {
-        const data = payload.data as ActPayload.Counter;
+        const data = payload.data as ActPayload.Counters;
         store.commit(MutationTypes.COUNTERS, { ...data, initiator: this.label });
         break;
       }

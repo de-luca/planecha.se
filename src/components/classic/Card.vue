@@ -55,6 +55,8 @@ export default class Card extends Vue.with(Props) {
 }
 
 img {
+  width:100%;
+  max-width:1000px;
   filter: drop-shadow(1px 1px 1px #585858);
 
   &.phenomenon {

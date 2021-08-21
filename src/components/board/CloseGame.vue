@@ -2,7 +2,7 @@
   <button class="button is-light is-warning" @click="opened = true">
     {{ online ? 'Leave' : 'Close' }} Game
   </button>
-  
+
   <div class="modal" :style="{ display: (opened ? 'block' : 'none' ) }">
     <div class="modal-background"></div>
     <div class="modal-content">
@@ -30,7 +30,7 @@ import { Vue } from 'vue-class-component';
 export default class CloseGame extends Vue {
   private store: Store;
   private opened = false;
-  
+
   public created(): void {
     this.store = useStore();
   }

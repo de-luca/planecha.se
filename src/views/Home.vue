@@ -59,7 +59,9 @@ export default class Home extends Vue {}
         position: relative;
         z-index: 1;
         display: inline-block;
+        font-size: 2.5rem;
         width: 3rem;
+        line-height: 3rem;
         text-align: center;
 
         &:hover {

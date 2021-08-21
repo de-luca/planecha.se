@@ -42,8 +42,7 @@
 
       <div class="field">
         <a @click.prevent="toggleAdvanced">
-          <span v-if="showAdvanced">▼</span>
-          <span v-else>▶</span>
+          <font-awesome-icon :icon="showAdvanced ? 'angle-down' : 'angle-right'" fixed-width />
           Customize deck list
         </a>
       </div>

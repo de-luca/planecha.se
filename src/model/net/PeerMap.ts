@@ -35,7 +35,7 @@ export class PeerMap {
   broadcast(event: Handler.Event.REQUEST_INIT): void;
   broadcast(event: Handler.Event.SHUFFLE, data: Exported): void;
   broadcast(event: Handler.Event.HEY, data: Payload.NameWire): void;
-  broadcast(event: Handler.Event.COUNTERS, data: Payload.Counter): void;
+  broadcast(event: Handler.Event.COUNTERS, data: Payload.Counters): void;
   broadcast(event: Handler.Event.REVEAL, data: Payload.RevealWire): void;
   broadcast(event: Handler.Event.ENCOUNTER, data: Payload.Encounter): void;
   broadcast(event: Handler.Event.PLANESWALK, data: Payload.Planeswalk): void;

@@ -17,7 +17,7 @@ export interface Encounter {
   coords: Coordinates;
 }
 
-export interface Counter {
+export interface Counters {
   planeId: string;
   change: number;
 }

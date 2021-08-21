@@ -15,31 +15,33 @@
     </template>
 
     <chaos-btn class="chaos" />
-
-    <phenomenon-wall
-      v-if="phenomenonWall"
-      :config="phenomenonWall.config"
-      :phenomenon="phenomenonWall.phenomenon"
-      :resolver="revealer?.seeder"
-    />
-
-    <encounter-wall
-      v-if="encounterWallConfig"
-      :config="encounterWallConfig.config"
-      :coords="encounterWallConfig.coords"
-      :triggerConfig="encounterWallConfig.triggerConfig"
-      @planeswalk="planeswalk"
-      @encounter="encounter"
-    />
-
-    <component
-      v-if="revealer && revealed"
-      :is="revealer.component"
-      :revealed="revealed"
-      :config="revealer.config"
-      @done="revealer.resolver"
-    />
   </div>
+
+  <feed :defaultShow="false" />
+
+  <phenomenon-wall
+    v-if="phenomenonWall"
+    :config="phenomenonWall.config"
+    :phenomenon="phenomenonWall.phenomenon"
+    :resolver="revealer?.seeder"
+  />
+
+  <encounter-wall
+    v-if="encounterWallConfig"
+    :config="encounterWallConfig.config"
+    :coords="encounterWallConfig.coords"
+    :triggerConfig="encounterWallConfig.triggerConfig"
+    @planeswalk="planeswalk"
+    @encounter="encounter"
+  />
+
+  <component
+    v-if="revealer && revealed"
+    :is="revealer.component"
+    :revealed="revealed"
+    :config="revealer.config"
+    @done="revealer.resolver"
+  />
 </template>
 
 <script lang="ts">
@@ -57,6 +59,7 @@ import {
   StateKey,
   StateOp,
 } from '@/model/states';
+import { WallConfig } from '../wall/Wall';
 
 import ChaosBtn from '@/components/ChaosBtn.vue';
 import Tile from '@/components/eternities/Tile.vue';
@@ -65,7 +68,8 @@ import EncounterWall from '@/components/wall/EncounterWall.vue';
 import Scry from '@/components/reveal/Scry.vue';
 import Pick from '@/components/reveal/Pick.vue';
 import Show from '@/components/reveal/Show.vue';
-import { WallConfig } from '../wall/Wall';
+import Feed from '@/components/board/Feed.vue';
+
 
 type LocalEncounterWallConfig = {
   config: WallConfig;
@@ -75,7 +79,7 @@ type LocalEncounterWallConfig = {
 
 @Options({
   components: {
-    Tile, ChaosBtn,
+    Tile, ChaosBtn, Feed,
     PhenomenonWall, EncounterWall,
     Scry, Pick, Show,
   },

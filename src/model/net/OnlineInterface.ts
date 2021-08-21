@@ -16,7 +16,7 @@ export interface OnlineInterface {
   requestEncounter(payload: Payload.Encounter): void;
   requestResolve(): void;
 
-  requestCounterUpdate(payload: Payload.Counter): void;
+  requestCounterUpdate(payload: Payload.Counters): void;
 
   requestReveal(payload: Payload.Reveal): void;
   requestResolveReveal(payload: Payload.ResolveReveal): void;

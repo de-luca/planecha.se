@@ -83,11 +83,8 @@ export default class Board extends Vue {
 <style lang="scss" scoped>
 .board {
   height: 100%;
-
   padding: 1rem;
-
   overflow: hidden;
-
   display: grid;
   grid-template-rows: 3rem 1fr;
   gap: 1.5rem;
@@ -99,7 +96,6 @@ export default class Board extends Vue {
 
 .nav {
   grid-area: nav;
-
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -112,7 +108,8 @@ export default class Board extends Vue {
       position: relative;
       z-index: 1;
       display: inline-block;
-      font-size: 2em;
+      font-size: 2.5em;
+      line-height: 3rem;
       width: 3rem;
       text-align: center;
 
@@ -141,11 +138,8 @@ export default class Board extends Vue {
 
 .map {
   grid-area: map;
-
   margin-left: auto;
   margin-right: auto;
-
-  max-width: 1800px;
   height: 100%;
   width: 100%;
 }

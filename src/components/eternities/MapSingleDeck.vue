@@ -15,39 +15,43 @@
     </template>
 
     <chaos-btn class="chaos" />
-
-    <phenomenon-wall
-      v-if="phenomenonWall"
-      :config="phenomenonWall.config"
-      :phenomenon="phenomenonWall.phenomenon"
-      :resolver="revealer?.seeder"
-    />
-
-    <component
-      v-if="revealer && revealed"
-      :is="revealer.component"
-      :revealed="revealed"
-      :config="revealer.config"
-      @done="revealer.resolver"
-    />
   </div>
+
+  <feed :defaultShow="false" />
+
+  <phenomenon-wall
+    v-if="phenomenonWall"
+    :config="phenomenonWall.config"
+    :phenomenon="phenomenonWall.phenomenon"
+    :resolver="revealer?.seeder"
+  />
+
+  <component
+    v-if="revealer && revealed"
+    :is="revealer.component"
+    :revealed="revealed"
+    :config="revealer.config"
+    @done="revealer.resolver"
+  />
 </template>
 
 <script lang="ts">
 import { mixins, Options } from 'vue-class-component';
 import { EternitiesMap } from '@/components/eternities/EternitiesMap';
 
-import Tile from '@/components/eternities/Tile.vue';
+import ChaosBtn from '@/components/ChaosBtn.vue';
 import PhenomenonWall from '@/components/wall/PhenomenonWall.vue';
+import Tile from '@/components/eternities/Tile.vue';
 import Scry from '@/components/reveal/Scry.vue';
 import Pick from '@/components/reveal/Pick.vue';
 import Show from '@/components/reveal/Show.vue';
-import ChaosBtn from '@/components/ChaosBtn.vue';
+import Feed from '@/components/board/Feed.vue';
 
 @Options({
   components: {
     Tile, ChaosBtn, PhenomenonWall,
     Scry, Pick, Show,
+    Feed,
   },
 })
 export default class EternitiesMapSingleDeck extends mixins(EternitiesMap) {

@@ -80,7 +80,7 @@ export namespace Payload {
   export type Planeswalk = Passiveable & ActPayload.Planeswalk;
   export type CustomPlaneswalk = Planeswalk & ActPayload.CustomPlaneswalk;
   export type Encounter = Passiveable & ActPayload.Encounter;
-  export type Counter = Idable & ActPayload.Counter;
+  export type Counters = Idable & ActPayload.Counters;
   export type UpdateState = ActPayload.UpdateState;
   export type Reveal = ActPayload.Reveal;
   export type ResolveReveal = Idable & ActPayload.ResolveReveal;
@@ -98,7 +98,7 @@ export type Mutations<S = State> = {
   [MutationTypes.CUSTOM_PLANESWALK](state: S, payload: Payload.CustomPlaneswalk): void,
   [MutationTypes.RESOLVE](state: S, payload: Payload.Resolve): void,
   [MutationTypes.ENCOUNTER](state: S, payload: Payload.Encounter): void,
-  [MutationTypes.COUNTERS](state: S, payload: Payload.Counter): void,
+  [MutationTypes.COUNTERS](state: S, payload: Payload.Counters): void,
   [MutationTypes.UPDATE_STATE](state: S, payload: Payload.UpdateState): void,
   [MutationTypes.REVEAL](state: S, payload: Payload.Reveal): void,
   [MutationTypes.RESOLVE_REVEAL](state: S, payload: Payload.ResolveReveal): void,
@@ -224,7 +224,7 @@ export interface Actions {
   ): void,
   [ActionTypes.COUNTERS](
     { commit }: AugmentedActionContext,
-    payload: ActPayload.Counter,
+    payload: ActPayload.Counters,
   ): void,
   [ActionTypes.UPDATE_STATE](
     { commit }: AugmentedActionContext,

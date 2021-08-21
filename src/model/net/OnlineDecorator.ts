@@ -178,7 +178,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     this.peers.broadcast(Event.RESOLVE);
   }
 
-  public requestCounterUpdate(payload: Payload.Counter): void {
+  public requestCounterUpdate(payload: Payload.Counters): void {
     this.peers.broadcast(Event.COUNTERS, payload);
   }
 

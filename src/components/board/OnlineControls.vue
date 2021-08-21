@@ -15,7 +15,10 @@
 
         <div class="dropdown-item">
           <div class="field">
-            <label class="label">Invite players</label>
+            <label class="label">
+              <font-awesome-icon icon="user-plus" fixed-width />
+              Invite players
+            </label>
             <div class="field has-addons">
               <div class="control is-expanded">
                 <input class="input" type="text" :value="roomUrl" readonly>
@@ -31,7 +34,10 @@
         <hr class="dropdown-divider">
 
         <div class="dropdown-item">
-          <p class="label">Current Players</p>
+          <p class="label">
+            <font-awesome-icon icon="users" fixed-width />
+            Current Players
+          </p>
           <p>{{ yourName }}</p>
           <template v-for="[id, name] in mates" :key="id">
             <p>{{ name }}</p>

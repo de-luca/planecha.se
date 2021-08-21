@@ -8,10 +8,6 @@
       </div>
     </div>
 
-    <div class="box feed">
-      <feed />
-    </div>
-
     <div class="controls">
       <chaos-btn v-if="canChaos" />
       <planeswalk-btn
@@ -19,15 +15,17 @@
         :disabled="revealer && revealer.passive"
       />
     </div>
-
-    <component
-      v-if="revealer && revealed"
-      :is="revealer.component"
-      :revealed="revealed"
-      :config="revealer.config"
-      @done="revealer.resolver"
-    />
   </div>
+
+  <feed :defaultShow="true" />
+
+  <component
+    v-if="revealer && revealed"
+    :is="revealer.component"
+    :revealed="revealed"
+    :config="revealer.config"
+    @done="revealer.resolver"
+  />
 </template>
 
 <script lang="ts">
@@ -49,7 +47,7 @@ import {
 import ChaosBtn from '@/components/ChaosBtn.vue';
 import PlaneswalkBtn from '@/components/PlaneswalkBtn.vue';
 import Card from '@/components/classic/Card.vue';
-import Feed from '@/components/classic/Feed.vue';
+import Feed from '@/components/board/Feed.vue';
 import Pick from '@/components/reveal/Pick.vue';
 import Scry from '@/components/reveal/Scry.vue';
 import Show from '@/components/reveal/Show.vue';
@@ -160,14 +158,14 @@ export default class ClassicMap extends Vue {
 <style lang="scss" scoped>
 .map {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 11rem auto 40rem;
+  grid-template-columns: 1fr 1fr 22rem;
+  grid-template-rows: 10rem auto 50vh;
   column-gap: 3rem;
   row-gap: .5rem;
   grid-template-areas:
     "active active controls "
     "active active .        "
-    "active active logs     "
+    "active active .        "
   ;
 }
 
@@ -215,13 +213,4 @@ export default class ClassicMap extends Vue {
     width: 10rem;
   }
 }
-
-.feed {
-  grid-area: logs;
-  overflow: scroll;
-}
 </style>
-
-function RevealFactory(arg0: RevealerMode[], config: any, arg2: { sendShownTo: "top"|"bottom"; passive: boolean; mateName: string|undefined; }) {
-  throw new Error('Function not implemented.');
-}
