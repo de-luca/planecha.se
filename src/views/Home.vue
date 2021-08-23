@@ -8,7 +8,9 @@
           <div>⟁</div>
           <div>⟁</div>
         </div>
-        Mirrod.in
+        <div class="name">
+          Planecha<span class="dot">.</span>se
+        </div>
       </h1>
       <div class="btn-grp">
         <router-link class="button is-light" to="/join">
@@ -50,6 +52,10 @@ export default class Home extends Vue {}
       .button {
         width: 150px;
       }
+    }
+
+    .name .dot {
+      color: gray;
     }
 
     .brand {
