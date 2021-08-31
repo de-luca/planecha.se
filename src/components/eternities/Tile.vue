@@ -15,7 +15,7 @@
       v-if="tile && state === 'hidden'"
       :class="state"
     >
-      <img v-if="hidden" src="/cards/back.png">
+      <img v-if="hidden" src="/cards/back.jpg">
     </div>
 
     <div
@@ -195,6 +195,10 @@ export default class Tile extends Vue.with(Props) {
 
 .preparation:hover {
   cursor: pointer;
+}
+
+.hidden img {
+  border-radius: 3.5% / 4.7%;
 }
 
 .current, .preparation {

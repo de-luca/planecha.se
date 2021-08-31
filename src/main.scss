@@ -2,8 +2,8 @@
 
 @font-face {
   font-family: 'MazeletterUtopia';
-  src:  url('fonts/mazeletter-utopia.woff2') format('woff2'),
-        url('fonts/mazeletter-utopia.woff') format('woff');
+  src:  url('/fonts/mazeletter-utopia.woff2') format('woff2'),
+        url('/fonts/mazeletter-utopia.woff') format('woff');
 }
 
 html, body, #app {
@@ -13,4 +13,6 @@ html, body, #app {
 svg.control {
   overflow: visible;
   max-height: 100%;
+  height: 100%;
+  width: 100%;
 }

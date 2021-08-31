@@ -8,7 +8,7 @@
     </span>
   </button>
 
-  <div class="feed box" :class="{ shown: show, hidden: !shown }">
+  <div class="feed box" :class="{ shown: show, hidden: !show }">
     <template v-for="m in messages.slice().reverse()" :key="m">
       <p v-html="m"></p>
     </template>

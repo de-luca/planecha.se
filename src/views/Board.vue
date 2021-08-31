@@ -11,7 +11,7 @@
       <close-game />
     </div>
 
-    <component class="map" :is="mapComponent" />
+    <component :is="mapComponent" />
 
     <notif-center />
 

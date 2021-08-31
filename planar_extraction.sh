@@ -3,7 +3,7 @@
 TMP_RAW_JSON=".tmp.json"
 TMP_CARD_IDS=".card_ids"
 LOCK_FILE="cards.lock"
-BACK_IMG="public/cards/back.png"
+BACK_IMG="public/cards/back.jpg"
 CARDS_JSON="src/assets/cards.json"
 CARDS_DIR="public/cards/"
 
@@ -75,14 +75,14 @@ function build_json {
 }
 
 function build_back {
-  curl -sL 'https://c1.scryfall.com/file/scryfall-card-backs/png/78/7840c131-f96b-4700-9347-2215c43156e6.png' | \
+  curl -sL 'https://c1.scryfall.com/file/scryfall-card-backs/large/78/7840c131-f96b-4700-9347-2215c43156e6.jpg' | \
     convert - -rotate 90 $BACK_IMG
   echo "Built back img"
 }
 
 function build_card {
-  curl -sL "https://api.scryfall.com/cards/$1?format=image&version=png" | \
-    convert - -rotate 90 "$CARDS_DIR$1.png"
+  curl -sL "https://api.scryfall.com/cards/$1?format=image&version=large" | \
+    convert - -rotate 90 "$CARDS_DIR$1.jpg"
   echo "Built card ${id}"
 }
 

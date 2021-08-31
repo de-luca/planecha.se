@@ -1,6 +1,6 @@
 <template>
   <div class="deck-container">
-    <img src="/cards/back.png">
+    <img src="/cards/back.jpg">
     <div class="count">
       <strong>{{ count }}</strong> cards remaining
     </div>
@@ -23,6 +23,7 @@ export default class Deck extends Vue.with(Props) {}
 
   img {
     height: 15rem;
+    border-radius: 3.5% / 4.7%;
   }
 }
 .count {

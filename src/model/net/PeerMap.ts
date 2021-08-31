@@ -107,7 +107,7 @@ export class PeerMap {
 
     channel.onmessage = Handler.getHandler(this.yourName);
     connection.oniceconnectionstatechange = (_) => {
-      if (connection.iceConnectionState === 'disconnected') {
+      if (connection.iceConnectionState === 'failed') {
         this.peers.delete(id);
         eventBus.emit(BusEvent.BYE, { mateId: id });
       }
