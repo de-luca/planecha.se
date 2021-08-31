@@ -1,0 +1,1120 @@
+[
+  {
+    "id": "ed4f4210-9871-4cec-9b46-100c80f93cd4",
+    "oracleId": "15b979de-c8ee-4664-9ca7-6c4eb3346967",
+    "multiverseIds": [
+      423590
+    ],
+    "name": "Academy at Tolaria West",
+    "scryfallUri": "https://scryfall.com/card/opca/9/academy-at-tolaria-west?utm_source=api",
+    "typeLine": "Plane — Dominaria",
+    "oracleText": "At the beginning of your end step, if you have no cards in hand, draw seven cards.\nWhenever you roll {CHAOS}, discard your hand.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423590",
+    "rulingsUri": "https://api.scryfall.com/cards/ed4f4210-9871-4cec-9b46-100c80f93cd4/rulings"
+  },
+  {
+    "id": "6caf8b21-1807-442c-a461-c89c7591df70",
+    "oracleId": "38f84e55-049c-441e-b4e2-1e207ab5dbe5",
+    "multiverseIds": [
+      423592
+    ],
+    "name": "Agyrem",
+    "scryfallUri": "https://scryfall.com/card/opca/11/agyrem?utm_source=api",
+    "typeLine": "Plane — Ravnica",
+    "oracleText": "Whenever a white creature dies, return it to the battlefield under its owner's control at the beginning of the next end step.\nWhenever a nonwhite creature dies, return it to its owner's hand at the beginning of the next end step.\nWhenever you roll {CHAOS}, creatures can't attack you until a player planeswalks.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423592",
+    "rulingsUri": "https://api.scryfall.com/cards/6caf8b21-1807-442c-a461-c89c7591df70/rulings"
+  },
+  {
+    "id": "a1c7f2eb-0654-46f9-ae3d-11efcac837b8",
+    "oracleId": "25650a32-4014-4065-ad01-7357c3ad3995",
+    "multiverseIds": [
+      423593
+    ],
+    "name": "Akoum",
+    "scryfallUri": "https://scryfall.com/card/opca/12/akoum?utm_source=api",
+    "typeLine": "Plane — Zendikar",
+    "oracleText": "Players may cast enchantment spells as though they had flash.\nWhenever you roll {CHAOS}, destroy target creature that isn't enchanted.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423593",
+    "rulingsUri": "https://api.scryfall.com/cards/a1c7f2eb-0654-46f9-ae3d-11efcac837b8/rulings"
+  },
+  {
+    "id": "d6dc655e-d8ef-443a-bb3e-46c7ca1555ba",
+    "oracleId": "d6ab4159-e04e-4991-8a9b-9da302c98e9d",
+    "multiverseIds": [
+      423594
+    ],
+    "name": "Aretopolis",
+    "scryfallUri": "https://scryfall.com/card/opca/13/aretopolis?utm_source=api",
+    "typeLine": "Plane — Kephalai",
+    "oracleText": "When you planeswalk to Aretopolis or at the beginning of your upkeep, put a scroll counter on Aretopolis, then you gain life equal to the number of scroll counters on it.\nWhen Aretopolis has ten or more scroll counters on it, planeswalk.\nWhenever you roll {CHAOS}, put a scroll counter on Aretopolis, then draw cards equal to the number of scroll counters on it.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423594",
+    "rulingsUri": "https://api.scryfall.com/cards/d6dc655e-d8ef-443a-bb3e-46c7ca1555ba/rulings"
+  },
+  {
+    "id": "56c735c0-9346-431b-869f-3accfa193016",
+    "oracleId": "805f9dc2-e172-481d-bae7-9a136a3d1e49",
+    "multiverseIds": [
+      423595
+    ],
+    "name": "Astral Arena",
+    "scryfallUri": "https://scryfall.com/card/opca/14/astral-arena?utm_source=api",
+    "typeLine": "Plane — Kolbahan",
+    "oracleText": "No more than one creature can attack each combat.\nNo more than one creature can block each combat.\nWhenever you roll {CHAOS}, Astral Arena deals 2 damage to each creature.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423595",
+    "rulingsUri": "https://api.scryfall.com/cards/56c735c0-9346-431b-869f-3accfa193016/rulings"
+  },
+  {
+    "id": "434a2d09-5776-4168-b863-f3b0a736d19b",
+    "oracleId": "82e67c57-6d7a-44cc-ba63-77ce887ab075",
+    "multiverseIds": [
+      423596
+    ],
+    "name": "Bant",
+    "scryfallUri": "https://scryfall.com/card/opca/15/bant?utm_source=api",
+    "typeLine": "Plane — Alara",
+    "oracleText": "All creatures have exalted. (Whenever a creature attacks alone, it gets +1/+1 until end of turn for each instance of exalted among permanents its controller controls.)\nWhenever you roll {CHAOS}, put a divinity counter on target green, white, or blue creature. That creature has indestructible for as long as it has a divinity counter on it.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423596",
+    "rulingsUri": "https://api.scryfall.com/cards/434a2d09-5776-4168-b863-f3b0a736d19b/rulings"
+  },
+  {
+    "id": "27efe0cb-e3b9-4058-8c3e-aad8e693f077",
+    "oracleId": "ce8139b9-31f3-464d-86ea-7efbdbfce478",
+    "multiverseIds": [
+      423597
+    ],
+    "name": "Bloodhill Bastion",
+    "scryfallUri": "https://scryfall.com/card/opca/16/bloodhill-bastion?utm_source=api",
+    "typeLine": "Plane — Equilor",
+    "oracleText": "Whenever a creature enters the battlefield, it gains double strike and haste until end of turn.\nWhenever you roll {CHAOS}, exile target nontoken creature you control, then return it to the battlefield under your control.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423597",
+    "rulingsUri": "https://api.scryfall.com/cards/27efe0cb-e3b9-4058-8c3e-aad8e693f077/rulings"
+  },
+  {
+    "id": "0cf339cb-04c0-40e8-a64c-b80229a32cec",
+    "oracleId": "2979597d-c3cc-4585-a9b7-7fa15641b030",
+    "multiverseIds": [
+      423598
+    ],
+    "name": "Celestine Reef",
+    "scryfallUri": "https://scryfall.com/card/opca/17/celestine-reef?utm_source=api",
+    "typeLine": "Plane — Luvion",
+    "oracleText": "Creatures without flying or islandwalk can't attack.\nWhenever you roll {CHAOS}, until a player planeswalks, you can't lose the game and your opponents can't win the game.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423598",
+    "rulingsUri": "https://api.scryfall.com/cards/0cf339cb-04c0-40e8-a64c-b80229a32cec/rulings"
+  },
+  {
+    "id": "42ecb371-53aa-4368-8ddd-88ae8e90ae0c",
+    "oracleId": "6dc67a65-31bf-4535-9e02-8f6d6ecefde5",
+    "multiverseIds": [
+      423582
+    ],
+    "name": "Chaotic Aether",
+    "scryfallUri": "https://scryfall.com/card/opca/1/chaotic-aether?utm_source=api",
+    "typeLine": "Phenomenon",
+    "oracleText": "When you encounter Chaotic Aether, each blank roll of the planar die is a CHAOS roll until a player planeswalks away from a plane. (Then planeswalk away from this phenomenon.)",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423582",
+    "rulingsUri": "https://api.scryfall.com/cards/42ecb371-53aa-4368-8ddd-88ae8e90ae0c/rulings"
+  },
+  {
+    "id": "ff65643b-e8bb-49d6-8887-13a146ee5174",
+    "oracleId": "b21a71d7-f236-43e2-b576-0b5c9280f0cc",
+    "multiverseIds": [
+      423599
+    ],
+    "name": "Cliffside Market",
+    "scryfallUri": "https://scryfall.com/card/opca/18/cliffside-market?utm_source=api",
+    "typeLine": "Plane — Mercadia",
+    "oracleText": "When you planeswalk to Cliffside Market or at the beginning of your upkeep, you may exchange life totals with target player.\nWhenever you roll {CHAOS}, exchange control of two target permanents that share a card type.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423599",
+    "rulingsUri": "https://api.scryfall.com/cards/ff65643b-e8bb-49d6-8887-13a146ee5174/rulings"
+  },
+  {
+    "id": "ca4c429a-ca40-4656-aea5-86eb450e47b7",
+    "oracleId": "cb467901-a68d-4922-8ceb-867b582c8fe7",
+    "multiverseIds": [
+      423601
+    ],
+    "name": "Edge of Malacol",
+    "scryfallUri": "https://scryfall.com/card/opca/20/edge-of-malacol?utm_source=api",
+    "typeLine": "Plane — Belenon",
+    "oracleText": "If a creature you control would untap during your untap step, put two +1/+1 counters on it instead.\nWhenever you roll {CHAOS}, untap each creature you control.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423601",
+    "rulingsUri": "https://api.scryfall.com/cards/ca4c429a-ca40-4656-aea5-86eb450e47b7/rulings"
+  },
+  {
+    "id": "bec61f7a-cf02-4150-aff9-9465fa14c779",
+    "oracleId": "23fe1c21-c396-4ebf-a8b0-22d697952b34",
+    "multiverseIds": [
+      423602
+    ],
+    "name": "Eloren Wilds",
+    "scryfallUri": "https://scryfall.com/card/opca/21/eloren-wilds?utm_source=api",
+    "typeLine": "Plane — Shandalar",
+    "oracleText": "Whenever a player taps a permanent for mana, that player adds one mana of any type that permanent produced.\nWhenever you roll {CHAOS}, target player can't cast spells until a player planeswalks.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423602",
+    "rulingsUri": "https://api.scryfall.com/cards/bec61f7a-cf02-4150-aff9-9465fa14c779/rulings"
+  },
+  {
+    "id": "1dde33fa-f748-43c9-9ead-9461332e9e67",
+    "oracleId": "b1eff630-b56c-48a5-ac21-836a60157b35",
+    "multiverseIds": [
+      423604
+    ],
+    "name": "Feeding Grounds",
+    "scryfallUri": "https://scryfall.com/card/opca/23/feeding-grounds?utm_source=api",
+    "typeLine": "Plane — Muraganda",
+    "oracleText": "Red spells cost {1} less to cast.\nGreen spells cost {1} less to cast.\nWhenever you roll {CHAOS}, put X +1/+1 counters on target creature, where X is that creature's mana value.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423604",
+    "rulingsUri": "https://api.scryfall.com/cards/1dde33fa-f748-43c9-9ead-9461332e9e67/rulings"
+  },
+  {
+    "id": "b52a233b-cc51-4f3e-94d0-a4b75ecb248e",
+    "oracleId": "81a0d96a-7ac8-4947-8779-2102c9b33d38",
+    "multiverseIds": [
+      423605
+    ],
+    "name": "Fields of Summer",
+    "scryfallUri": "https://scryfall.com/card/opca/24/fields-of-summer?utm_source=api",
+    "typeLine": "Plane — Moag",
+    "oracleText": "Whenever a player casts a spell, that player may gain 2 life.\nWhenever you roll {CHAOS}, you may gain 10 life.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423605",
+    "rulingsUri": "https://api.scryfall.com/cards/b52a233b-cc51-4f3e-94d0-a4b75ecb248e/rulings"
+  },
+  {
+    "id": "d89133d1-06e7-4b8f-8f42-e0551fd93a5b",
+    "oracleId": "1799d361-85e7-4c04-aa04-6f83e6499573",
+    "multiverseIds": [
+      423607
+    ],
+    "name": "Furnace Layer",
+    "scryfallUri": "https://scryfall.com/card/opca/26/furnace-layer?utm_source=api",
+    "typeLine": "Plane — New Phyrexia",
+    "oracleText": "When you planeswalk to Furnace Layer or at the beginning of your upkeep, select target player at random. That player discards a card. If that player discards a land card this way, they lose 3 life.\nWhenever you roll {CHAOS}, you may destroy target nonland permanent.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423607",
+    "rulingsUri": "https://api.scryfall.com/cards/d89133d1-06e7-4b8f-8f42-e0551fd93a5b/rulings"
+  },
+  {
+    "id": "99ee3cd9-321e-4dfa-a144-65854d914d84",
+    "oracleId": "2387edac-765b-4502-bd3d-88be8ba7d0a4",
+    "multiverseIds": [
+      423608
+    ],
+    "name": "Gavony",
+    "scryfallUri": "https://scryfall.com/card/opca/27/gavony?utm_source=api",
+    "typeLine": "Plane — Innistrad",
+    "oracleText": "All creatures have vigilance.\nWhenever you roll {CHAOS}, creatures you control gain indestructible until end of turn.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423608",
+    "rulingsUri": "https://api.scryfall.com/cards/99ee3cd9-321e-4dfa-a144-65854d914d84/rulings"
+  },
+  {
+    "id": "fdaaef56-0c95-404a-8de5-e8f21e0282d3",
+    "oracleId": "662e5245-73e4-49ba-aece-c73f1bea7b6a",
+    "multiverseIds": [
+      423609
+    ],
+    "name": "Glen Elendra",
+    "scryfallUri": "https://scryfall.com/card/opca/28/glen-elendra?utm_source=api",
+    "typeLine": "Plane — Lorwyn",
+    "oracleText": "At end of combat, you may exchange control of target creature you control that dealt combat damage to a player this combat and target creature that player controls.\nWhenever you roll {CHAOS}, gain control of target creature you own.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423609",
+    "rulingsUri": "https://api.scryfall.com/cards/fdaaef56-0c95-404a-8de5-e8f21e0282d3/rulings"
+  },
+  {
+    "id": "56a1afab-782c-4f31-96f5-17b676852fea",
+    "oracleId": "43a23de7-0738-4b03-b87d-5a7d1144825c",
+    "multiverseIds": [
+      423610
+    ],
+    "name": "Glimmervoid Basin",
+    "scryfallUri": "https://scryfall.com/card/opca/29/glimmervoid-basin?utm_source=api",
+    "typeLine": "Plane — Mirrodin",
+    "oracleText": "Whenever a player casts an instant or sorcery spell with a single target, that player copies that spell for each other spell, permanent, card not on the battlefield, and/or player the spell could target. Each copy targets a different one of them.\nWhenever you roll {CHAOS}, choose target creature. Each player except that creature's controller creates a token that's a copy of that creature.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423610",
+    "rulingsUri": "https://api.scryfall.com/cards/56a1afab-782c-4f31-96f5-17b676852fea/rulings"
+  },
+  {
+    "id": "830c7c81-335e-4f0b-81b9-209732408093",
+    "oracleId": "f12400e5-8288-48e1-b3b7-0cc4f8d9ca67",
+    "multiverseIds": [
+      423611
+    ],
+    "name": "Goldmeadow",
+    "scryfallUri": "https://scryfall.com/card/opca/30/goldmeadow?utm_source=api",
+    "typeLine": "Plane — Lorwyn",
+    "oracleText": "Whenever a land enters the battlefield, that land's controller creates three 0/1 white Goat creature tokens.\nWhenever you roll {CHAOS}, create a 0/1 white Goat creature token.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423611",
+    "rulingsUri": "https://api.scryfall.com/cards/830c7c81-335e-4f0b-81b9-209732408093/rulings"
+  },
+  {
+    "id": "3dfccef2-4d55-423f-8375-4e349bbf615e",
+    "oracleId": "fb9651f5-1aec-4812-a044-3c1b60e6651f",
+    "multiverseIds": [
+      423612
+    ],
+    "name": "Grand Ossuary",
+    "scryfallUri": "https://scryfall.com/card/opca/31/grand-ossuary?utm_source=api",
+    "typeLine": "Plane — Ravnica",
+    "oracleText": "Whenever a creature dies, its controller distributes a number of +1/+1 counters equal to its power among any number of target creatures they control.\nWhenever you roll {CHAOS}, each player exiles all creatures they control and creates X 1/1 green Saproling creature tokens, where X is the total power of the creatures they exiled this way. Then planeswalk.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423612",
+    "rulingsUri": "https://api.scryfall.com/cards/3dfccef2-4d55-423f-8375-4e349bbf615e/rulings"
+  },
+  {
+    "id": "ecbe3339-2cd1-45e2-bac1-8ea995238c30",
+    "oracleId": "1aaa60e4-47a8-4255-8a09-5f00922ccf6d",
+    "multiverseIds": [
+      423614
+    ],
+    "name": "Grixis",
+    "scryfallUri": "https://scryfall.com/card/opca/33/grixis?utm_source=api",
+    "typeLine": "Plane — Alara",
+    "oracleText": "Blue, black, and/or red creature cards in your graveyard have unearth. The unearth cost is equal to the card's mana cost. (Pay the card's mana cost: Return it to the battlefield. The creature gains haste. Exile it at the beginning of the next end step or if it would leave the battlefield. Unearth only as a sorcery.)\nWhenever you roll {CHAOS}, put target creature card from a graveyard onto the battlefield under your control.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423614",
+    "rulingsUri": "https://api.scryfall.com/cards/ecbe3339-2cd1-45e2-bac1-8ea995238c30/rulings"
+  },
+  {
+    "id": "7e1e76f3-4a95-4bb1-bc21-22614b070711",
+    "oracleId": "3e553881-bac7-4830-b739-3b8c6aa0ded6",
+    "multiverseIds": [
+      423615
+    ],
+    "name": "Grove of the Dreampods",
+    "scryfallUri": "https://scryfall.com/card/opca/34/grove-of-the-dreampods?utm_source=api",
+    "typeLine": "Plane — Fabacin",
+    "oracleText": "When you planeswalk to Grove of the Dreampods or at the beginning of your upkeep, reveal cards from the top of your library until you reveal a creature card. Put that card onto the battlefield and the rest on the bottom of your library in a random order.\nWhenever you roll {CHAOS}, return target creature card from your graveyard to the battlefield.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423615",
+    "rulingsUri": "https://api.scryfall.com/cards/7e1e76f3-4a95-4bb1-bc21-22614b070711/rulings"
+  },
+  {
+    "id": "5d87893f-36e0-4621-a139-fedbc74ed4c5",
+    "oracleId": "1f7daaf2-3206-4f52-928a-f5116b782367",
+    "multiverseIds": [
+      423616
+    ],
+    "name": "Hedron Fields of Agadeem",
+    "scryfallUri": "https://scryfall.com/card/opca/35/hedron-fields-of-agadeem?utm_source=api",
+    "typeLine": "Plane — Zendikar",
+    "oracleText": "Creatures with power 7 or greater can't attack or block.\nWhenever you roll {CHAOS}, create a 7/7 colorless Eldrazi creature token with annihilator 1. (Whenever it attacks, defending player sacrifices a permanent.)",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423616",
+    "rulingsUri": "https://api.scryfall.com/cards/5d87893f-36e0-4621-a139-fedbc74ed4c5/rulings"
+  },
+  {
+    "id": "61471ab4-749a-40e4-b06b-153edec80daa",
+    "oracleId": "065346cd-cd81-478e-8a62-2c7ea421bdcd",
+    "multiverseIds": [
+      423618
+    ],
+    "name": "Horizon Boughs",
+    "scryfallUri": "https://scryfall.com/card/opca/37/horizon-boughs?utm_source=api",
+    "typeLine": "Plane — Pyrulea",
+    "oracleText": "All permanents untap during each player's untap step.\nWhenever you roll {CHAOS}, you may search your library for up to three basic land cards, put them onto the battlefield tapped, then shuffle.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423618",
+    "rulingsUri": "https://api.scryfall.com/cards/61471ab4-749a-40e4-b06b-153edec80daa/rulings"
+  },
+  {
+    "id": "d44a959c-7a04-4342-8827-882349f786fc",
+    "oracleId": "ece3b5ed-3c07-4586-bf99-72bc1aa6ccef",
+    "multiverseIds": [
+      423619
+    ],
+    "name": "Immersturm",
+    "scryfallUri": "https://scryfall.com/card/opca/38/immersturm?utm_source=api",
+    "typeLine": "Plane — Valla",
+    "oracleText": "Whenever a creature enters the battlefield, that creature's controller may have it deal damage equal to its power to any target of their choice.\nWhenever you roll {CHAOS}, exile target creature, then return it to the battlefield under its owner's control.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423619",
+    "rulingsUri": "https://api.scryfall.com/cards/d44a959c-7a04-4342-8827-882349f786fc/rulings"
+  },
+  {
+    "id": "56e4874c-9d3d-4a1c-a027-186a33ce0da7",
+    "oracleId": "7812174b-2dc1-43e8-b98f-639905e20ab7",
+    "multiverseIds": [
+      423583
+    ],
+    "name": "Interplanar Tunnel",
+    "scryfallUri": "https://scryfall.com/card/opca/2/interplanar-tunnel?utm_source=api",
+    "typeLine": "Phenomenon",
+    "oracleText": "When you encounter Interplanar Tunnel, reveal cards from the top of your planar deck until you reveal five plane cards. Put a plane card from among them on top of your planar deck, then put the rest of the revealed cards on the bottom in a random order. (Then planeswalk away from this phenomenon.)",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423583",
+    "rulingsUri": "https://api.scryfall.com/cards/56e4874c-9d3d-4a1c-a027-186a33ce0da7/rulings"
+  },
+  {
+    "id": "51bbbfd8-795f-4223-86f3-b3b3111d38c3",
+    "oracleId": "f017380f-97db-4a36-b111-b257aa17ebaf",
+    "multiverseIds": [
+      423620
+    ],
+    "name": "Isle of Vesuva",
+    "scryfallUri": "https://scryfall.com/card/opca/39/isle-of-vesuva?utm_source=api",
+    "typeLine": "Plane — Dominaria",
+    "oracleText": "Whenever a nontoken creature enters the battlefield, its controller creates a token that's a copy of that creature.\nWhenever you roll {CHAOS}, destroy target creature and all other creatures with the same name as that creature.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423620",
+    "rulingsUri": "https://api.scryfall.com/cards/51bbbfd8-795f-4223-86f3-b3b3111d38c3/rulings"
+  },
+  {
+    "id": "d01d1b4f-5ac5-40b0-b4ad-34ac70aeb488",
+    "oracleId": "e5f8b2bb-e9bb-4a0a-aa88-7fa0299f52a9",
+    "multiverseIds": [
+      423621
+    ],
+    "name": "Izzet Steam Maze",
+    "scryfallUri": "https://scryfall.com/card/opca/40/izzet-steam-maze?utm_source=api",
+    "typeLine": "Plane — Ravnica",
+    "oracleText": "Whenever a player casts an instant or sorcery spell, that player copies it. The player may choose new targets for the copy.\nWhenever you roll {CHAOS}, instant and sorcery spells you cast this turn cost {3} less to cast.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423621",
+    "rulingsUri": "https://api.scryfall.com/cards/d01d1b4f-5ac5-40b0-b4ad-34ac70aeb488/rulings"
+  },
+  {
+    "id": "dc91f536-b3e5-48d2-a306-003e1bdfe8ba",
+    "oracleId": "9aa94de8-b114-4479-a771-c7bc0297be58",
+    "multiverseIds": [
+      423622
+    ],
+    "name": "Jund",
+    "scryfallUri": "https://scryfall.com/card/opca/41/jund?utm_source=api",
+    "typeLine": "Plane — Alara",
+    "oracleText": "Whenever a player casts a black, red, or green creature spell, it gains devour 5. (As the creature enters the battlefield, its controller may sacrifice any number of creatures. The creature enters the battlefield with five times that many +1/+1 counters on it.)\nWhenever you roll {CHAOS}, create two 1/1 red Goblin creature tokens.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423622",
+    "rulingsUri": "https://api.scryfall.com/cards/dc91f536-b3e5-48d2-a306-003e1bdfe8ba/rulings"
+  },
+  {
+    "id": "5271d8fd-3657-45a3-8147-00cc1d19425f",
+    "oracleId": "b54d9a4a-1d55-4ceb-96fd-2b1d5e46de14",
+    "multiverseIds": [
+      423623
+    ],
+    "name": "Kessig",
+    "scryfallUri": "https://scryfall.com/card/opca/42/kessig?utm_source=api",
+    "typeLine": "Plane — Innistrad",
+    "oracleText": "Prevent all combat damage that would be dealt by non-Werewolf creatures.\nWhenever you roll {CHAOS}, each creature you control gets +2/+2, gains trample, and becomes a Werewolf in addition to its other types until end of turn.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423623",
+    "rulingsUri": "https://api.scryfall.com/cards/5271d8fd-3657-45a3-8147-00cc1d19425f/rulings"
+  },
+  {
+    "id": "0f05d1ae-d70b-474c-93fc-a5d2e3ac6b64",
+    "oracleId": "256770fe-c17d-45dd-bf05-36eeee240324",
+    "multiverseIds": [
+      423624
+    ],
+    "name": "Kharasha Foothills",
+    "scryfallUri": "https://scryfall.com/card/opca/43/kharasha-foothills?utm_source=api",
+    "typeLine": "Plane — Mongseng",
+    "oracleText": "Whenever a creature you control attacks a player, for each other opponent, you may create a token that's a copy of that creature, tapped and attacking that opponent. Exile those tokens at the beginning of the next end step.\nWhenever you roll {CHAOS}, you may sacrifice any number of creatures. If you do, Kharasha Foothills deals that much damage to target creature.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423624",
+    "rulingsUri": "https://api.scryfall.com/cards/0f05d1ae-d70b-474c-93fc-a5d2e3ac6b64/rulings"
+  },
+  {
+    "id": "93f386a5-08ce-4f76-944f-f38620a41027",
+    "oracleId": "fc650404-991c-4639-b311-c35df81a254a",
+    "multiverseIds": [
+      423625
+    ],
+    "name": "Kilnspire District",
+    "scryfallUri": "https://scryfall.com/card/opca/44/kilnspire-district?utm_source=api",
+    "typeLine": "Plane — Ravnica",
+    "oracleText": "When you planeswalk to Kilnspire District or at the beginning of your precombat main phase, put a charge counter on Kilnspire District, then add {R} for each charge counter on it.\nWhenever you roll {CHAOS}, you may pay {X}. If you do, Kilnspire District deals X damage to any target.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423625",
+    "rulingsUri": "https://api.scryfall.com/cards/93f386a5-08ce-4f76-944f-f38620a41027/rulings"
+  },
+  {
+    "id": "95d5c842-5768-49f8-8711-fdb7850b480d",
+    "oracleId": "2732b605-7c88-4995-b46e-62dc09e68919",
+    "multiverseIds": [
+      423626
+    ],
+    "name": "Krosa",
+    "scryfallUri": "https://scryfall.com/card/opca/45/krosa?utm_source=api",
+    "typeLine": "Plane — Dominaria",
+    "oracleText": "All creatures get +2/+2.\nWhenever you roll {CHAOS}, you may add {W}{U}{B}{R}{G}.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423626",
+    "rulingsUri": "https://api.scryfall.com/cards/95d5c842-5768-49f8-8711-fdb7850b480d/rulings"
+  },
+  {
+    "id": "b6078774-f681-46dd-a68e-1cefa8261d16",
+    "oracleId": "ac4fe2a2-76ff-49d9-b506-26a17b4bf892",
+    "multiverseIds": [
+      423627
+    ],
+    "name": "Lair of the Ashen Idol",
+    "scryfallUri": "https://scryfall.com/card/opca/46/lair-of-the-ashen-idol?utm_source=api",
+    "typeLine": "Plane — Azgol",
+    "oracleText": "At the beginning of your upkeep, sacrifice a creature. If you can't, planeswalk.\nWhenever you roll {CHAOS}, any number of target players each create a 2/2 black Zombie creature token.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423627",
+    "rulingsUri": "https://api.scryfall.com/cards/b6078774-f681-46dd-a68e-1cefa8261d16/rulings"
+  },
+  {
+    "id": "7a049235-2fda-48a7-b46e-d150a4893397",
+    "oracleId": "85592710-8637-4726-8b92-552b9be677c0",
+    "multiverseIds": [
+      423628
+    ],
+    "name": "Lethe Lake",
+    "scryfallUri": "https://scryfall.com/card/opca/47/lethe-lake?utm_source=api",
+    "typeLine": "Plane — Arkhos",
+    "oracleText": "At the beginning of your upkeep, mill ten cards.\nWhenever you roll {CHAOS}, target player mills ten cards.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423628",
+    "rulingsUri": "https://api.scryfall.com/cards/7a049235-2fda-48a7-b46e-d150a4893397/rulings"
+  },
+  {
+    "id": "00832a47-dec8-411e-9708-b3ebbd3a2dfc",
+    "oracleId": "11b3fcb2-0b66-4d8b-8e66-a21a5da1c1f5",
+    "multiverseIds": [
+      423629
+    ],
+    "name": "Llanowar",
+    "scryfallUri": "https://scryfall.com/card/opca/48/llanowar?utm_source=api",
+    "typeLine": "Plane — Dominaria",
+    "oracleText": "All creatures have \"{T}: Add {G}{G}.\"\nWhenever you roll {CHAOS}, untap all creatures you control.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423629",
+    "rulingsUri": "https://api.scryfall.com/cards/00832a47-dec8-411e-9708-b3ebbd3a2dfc/rulings"
+  },
+  {
+    "id": "9c155a59-afee-4821-9715-10dafb9f9d9a",
+    "oracleId": "6491f511-87e6-4504-84f5-fe5cf44768d7",
+    "multiverseIds": [
+      423631
+    ],
+    "name": "Minamo",
+    "scryfallUri": "https://scryfall.com/card/opca/50/minamo?utm_source=api",
+    "typeLine": "Plane — Kamigawa",
+    "oracleText": "Whenever a player casts a spell, that player may draw a card.\nWhenever you roll {CHAOS}, each player may return a blue card from their graveyard to their hand.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423631",
+    "rulingsUri": "https://api.scryfall.com/cards/9c155a59-afee-4821-9715-10dafb9f9d9a/rulings"
+  },
+  {
+    "id": "d7a2b02e-3ff2-4c71-9022-b08472f53664",
+    "oracleId": "b6329c2f-ea7f-4611-986c-f82bacf2a872",
+    "multiverseIds": [
+      423632
+    ],
+    "name": "Mirrored Depths",
+    "scryfallUri": "https://scryfall.com/card/opca/51/mirrored-depths?utm_source=api",
+    "typeLine": "Plane — Karsus",
+    "oracleText": "Whenever a player casts a spell, that player flips a coin. If the player loses the flip, counter that spell.\nWhenever you roll {CHAOS}, target player reveals the top card of their library. If it's a nonland card, you may cast it without paying its mana cost.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423632",
+    "rulingsUri": "https://api.scryfall.com/cards/d7a2b02e-3ff2-4c71-9022-b08472f53664/rulings"
+  },
+  {
+    "id": "54327aa2-319d-4430-a266-03cadeed6146",
+    "oracleId": "302e4ac2-522b-4a0a-850a-d856639ea2a4",
+    "multiverseIds": [
+      423584
+    ],
+    "name": "Morphic Tide",
+    "scryfallUri": "https://scryfall.com/card/opca/3/morphic-tide?utm_source=api",
+    "typeLine": "Phenomenon",
+    "oracleText": "When you encounter Morphic Tide, each player shuffles all permanents they own into their library, then reveals that many cards from the top of their library. Each player puts all artifact, creature, land, and planeswalker cards revealed this way onto the battlefield, then does the same for enchantment cards, then puts all cards revealed this way that weren't put onto the battlefield on the bottom of their library in any order. (Then planeswalk away from this phenomenon.)",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423584",
+    "rulingsUri": "https://api.scryfall.com/cards/54327aa2-319d-4430-a266-03cadeed6146/rulings"
+  },
+  {
+    "id": "a4d3edeb-4a78-4de3-a167-4565c494ba23",
+    "oracleId": "e0dc9986-1099-4189-bfff-8f41bab9019d",
+    "multiverseIds": [
+      423633
+    ],
+    "name": "Mount Keralia",
+    "scryfallUri": "https://scryfall.com/card/opca/52/mount-keralia?utm_source=api",
+    "typeLine": "Plane — Regatha",
+    "oracleText": "At the beginning of your end step, put a pressure counter on Mount Keralia.\nWhen you planeswalk away from Mount Keralia, it deals damage equal to the number of pressure counters on it to each creature and each planeswalker.\nWhenever you roll {CHAOS}, prevent all damage that planes named Mount Keralia would deal this game to permanents you control.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423633",
+    "rulingsUri": "https://api.scryfall.com/cards/a4d3edeb-4a78-4de3-a167-4565c494ba23/rulings"
+  },
+  {
+    "id": "46daa243-7c4e-4b0c-8ec2-e70cba8e72c3",
+    "oracleId": "07cc253d-e23c-450c-bfaf-5cb6a3a588ce",
+    "multiverseIds": [
+      423634
+    ],
+    "name": "Murasa",
+    "scryfallUri": "https://scryfall.com/card/opca/53/murasa?utm_source=api",
+    "typeLine": "Plane — Zendikar",
+    "oracleText": "Whenever a nontoken creature enters the battlefield, its controller may search their library for a basic land card, put it onto the battlefield tapped, then shuffle.\nWhenever you roll {CHAOS}, target land becomes a 4/4 creature that's still a land.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423634",
+    "rulingsUri": "https://api.scryfall.com/cards/46daa243-7c4e-4b0c-8ec2-e70cba8e72c3/rulings"
+  },
+  {
+    "id": "3205818c-c7a9-4b70-a403-854c2ad9456d",
+    "oracleId": "c871974e-54e6-411f-8408-3708823fa2df",
+    "multiverseIds": [
+      423585
+    ],
+    "name": "Mutual Epiphany",
+    "scryfallUri": "https://scryfall.com/card/opca/4/mutual-epiphany?utm_source=api",
+    "typeLine": "Phenomenon",
+    "oracleText": "When you encounter Mutual Epiphany, each player draws four cards. (Then planeswalk away from this phenomenon.)",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423585",
+    "rulingsUri": "https://api.scryfall.com/cards/3205818c-c7a9-4b70-a403-854c2ad9456d/rulings"
+  },
+  {
+    "id": "f63b82f9-ebc4-465c-b25e-5ee710525143",
+    "oracleId": "3e0bcf65-1eaf-440f-a59b-0b11e1106135",
+    "multiverseIds": [
+      423635
+    ],
+    "name": "Naar Isle",
+    "scryfallUri": "https://scryfall.com/card/opca/54/naar-isle?utm_source=api",
+    "typeLine": "Plane — Wildfire",
+    "oracleText": "At the beginning of your upkeep, put a flame counter on Naar Isle, then Naar Isle deals damage to you equal to the number of flame counters on it.\nWhenever you roll {CHAOS}, Naar Isle deals 3 damage to target player or planeswalker.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423635",
+    "rulingsUri": "https://api.scryfall.com/cards/f63b82f9-ebc4-465c-b25e-5ee710525143/rulings"
+  },
+  {
+    "id": "15611e29-6f96-4c5c-a919-c8fe590581b0",
+    "oracleId": "5ed6be01-af06-4f3d-8b43-ef8993c52c97",
+    "multiverseIds": [
+      423636
+    ],
+    "name": "Naya",
+    "scryfallUri": "https://scryfall.com/card/opca/55/naya?utm_source=api",
+    "typeLine": "Plane — Alara",
+    "oracleText": "You may play any number of lands on each of your turns.\nWhenever you roll {CHAOS}, target red, green, or white creature you control gets +1/+1 until end of turn for each land you control.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423636",
+    "rulingsUri": "https://api.scryfall.com/cards/15611e29-6f96-4c5c-a919-c8fe590581b0/rulings"
+  },
+  {
+    "id": "9f4b51ac-3e56-494f-aad7-ff5b0c3ed6ed",
+    "oracleId": "72af7529-75bb-488f-801d-7148631b9e9b",
+    "multiverseIds": [
+      423637
+    ],
+    "name": "Nephalia",
+    "scryfallUri": "https://scryfall.com/card/opca/56/nephalia?utm_source=api",
+    "typeLine": "Plane — Innistrad",
+    "oracleText": "At the beginning of your end step, mill seven cards. Then return a card at random from your graveyard to your hand.\nWhenever you roll {CHAOS}, return target card from your graveyard to your hand.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423637",
+    "rulingsUri": "https://api.scryfall.com/cards/9f4b51ac-3e56-494f-aad7-ff5b0c3ed6ed/rulings"
+  },
+  {
+    "id": "20d23638-74fb-481d-a3c4-d7f5fd666211",
+    "oracleId": "9d58f647-3f83-4f65-a944-c6236db7c422",
+    "multiverseIds": [
+      423638
+    ],
+    "name": "Norn's Dominion",
+    "scryfallUri": "https://scryfall.com/card/opca/57/norns-dominion?utm_source=api",
+    "typeLine": "Plane — New Phyrexia",
+    "oracleText": "When you planeswalk away from Norn's Dominion, destroy each nonland permanent without a fate counter on it, then remove all fate counters from all permanents.\nWhenever you roll {CHAOS}, you may put a fate counter on target permanent.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423638",
+    "rulingsUri": "https://api.scryfall.com/cards/20d23638-74fb-481d-a3c4-d7f5fd666211/rulings"
+  },
+  {
+    "id": "2eef332f-d47f-4bc3-b39d-572dce4997b2",
+    "oracleId": "69f06edb-dade-4e94-b563-e36a05e567f0",
+    "multiverseIds": [
+      423639
+    ],
+    "name": "Onakke Catacomb",
+    "scryfallUri": "https://scryfall.com/card/opca/58/onakke-catacomb?utm_source=api",
+    "typeLine": "Plane — Shandalar",
+    "oracleText": "All creatures are black and have deathtouch.\nWhenever you roll {CHAOS}, creatures you control get +1/+0 and gain first strike until end of turn.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423639",
+    "rulingsUri": "https://api.scryfall.com/cards/2eef332f-d47f-4bc3-b39d-572dce4997b2/rulings"
+  },
+  {
+    "id": "f9fc5e0d-e605-468b-98da-34101087b8c4",
+    "oracleId": "6e008fdc-48f2-40ef-95bd-80d014535ca3",
+    "multiverseIds": [
+      423640
+    ],
+    "name": "Orochi Colony",
+    "scryfallUri": "https://scryfall.com/card/opca/59/orochi-colony?utm_source=api",
+    "typeLine": "Plane — Kamigawa",
+    "oracleText": "Whenever a creature you control deals combat damage to a player, you may search your library for a basic land card, put it onto the battlefield tapped, then shuffle.\nWhenever you roll {CHAOS}, target creature can't be blocked this turn.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423640",
+    "rulingsUri": "https://api.scryfall.com/cards/f9fc5e0d-e605-468b-98da-34101087b8c4/rulings"
+  },
+  {
+    "id": "be92be0a-e10d-478b-bc09-9cd09bfb269e",
+    "oracleId": "c7241e4b-d2c7-4801-96a3-91bb998953a1",
+    "multiverseIds": [
+      423641
+    ],
+    "name": "Orzhova",
+    "scryfallUri": "https://scryfall.com/card/opca/60/orzhova?utm_source=api",
+    "typeLine": "Plane — Ravnica",
+    "oracleText": "When you planeswalk away from Orzhova, each player returns all creature cards from their graveyard to the battlefield.\nWhenever you roll {CHAOS}, for each opponent, exile up to one target creature card from that player's graveyard.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423641",
+    "rulingsUri": "https://api.scryfall.com/cards/be92be0a-e10d-478b-bc09-9cd09bfb269e/rulings"
+  },
+  {
+    "id": "35add85f-a70a-497d-9a11-593325a1a4ef",
+    "oracleId": "29e3371d-aa41-46a9-921a-96565be47eff",
+    "multiverseIds": [
+      423642
+    ],
+    "name": "Otaria",
+    "scryfallUri": "https://scryfall.com/card/opca/61/otaria?utm_source=api",
+    "typeLine": "Plane — Dominaria",
+    "oracleText": "Instant and sorcery cards in graveyards have flashback. The flashback cost is equal to the card's mana cost. (Its owner may cast the card from their graveyard for its mana cost. Then they exile it.)\nWhenever you roll {CHAOS}, take an extra turn after this one.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423642",
+    "rulingsUri": "https://api.scryfall.com/cards/35add85f-a70a-497d-9a11-593325a1a4ef/rulings"
+  },
+  {
+    "id": "74242a9e-4add-4140-847e-a296e46e6f94",
+    "oracleId": "cd8ce6f1-9753-40a7-a625-5ed63c15c29e",
+    "multiverseIds": [
+      423643
+    ],
+    "name": "Panopticon",
+    "scryfallUri": "https://scryfall.com/card/opca/62/panopticon?utm_source=api",
+    "typeLine": "Plane — Mirrodin",
+    "oracleText": "When you planeswalk to Panopticon, draw a card.\nAt the beginning of your draw step, draw an additional card.\nWhenever you roll {CHAOS}, draw a card.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423643",
+    "rulingsUri": "https://api.scryfall.com/cards/74242a9e-4add-4140-847e-a296e46e6f94/rulings"
+  },
+  {
+    "id": "10fc16b9-3913-400f-bd27-02fcd5c28147",
+    "oracleId": "a34b272b-084b-4ff1-8b02-d95116ccfeab",
+    "multiverseIds": [
+      423586
+    ],
+    "name": "Planewide Disaster",
+    "scryfallUri": "https://scryfall.com/card/opca/5/planewide-disaster?utm_source=api",
+    "typeLine": "Phenomenon",
+    "oracleText": "When you encounter Planewide Disaster, destroy all creatures. (Then planeswalk away from this phenomenon.)",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423586",
+    "rulingsUri": "https://api.scryfall.com/cards/10fc16b9-3913-400f-bd27-02fcd5c28147/rulings"
+  },
+  {
+    "id": "559007a6-c515-413a-8d3c-8ce1df0742ff",
+    "oracleId": "f133e42a-2962-4781-b413-ce2127f17c26",
+    "multiverseIds": [
+      423644
+    ],
+    "name": "Pools of Becoming",
+    "scryfallUri": "https://scryfall.com/card/opca/63/pools-of-becoming?utm_source=api",
+    "typeLine": "Plane — Bolas’s Meditation Realm",
+    "oracleText": "At the beginning of your end step, put the cards in your hand on the bottom of your library in any order, then draw that many cards.\nWhenever you roll {CHAOS}, reveal the top three cards of your planar deck. Each of the revealed cards' {CHAOS} abilities triggers. Then put the revealed cards on the bottom of your planar deck in any order.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423644",
+    "rulingsUri": "https://api.scryfall.com/cards/559007a6-c515-413a-8d3c-8ce1df0742ff/rulings"
+  },
+  {
+    "id": "86ff49dd-9845-459e-baaf-f65126ccb648",
+    "oracleId": "34a31865-b701-4ce1-8912-29fc41ecdda3",
+    "multiverseIds": [
+      423645
+    ],
+    "name": "Prahv",
+    "scryfallUri": "https://scryfall.com/card/opca/64/prahv?utm_source=api",
+    "typeLine": "Plane — Ravnica",
+    "oracleText": "If you cast a spell this turn, you can't attack with creatures.\nIf you attacked with creatures this turn, you can't cast spells.\nWhenever you roll {CHAOS}, you gain life equal to the number of cards in your hand.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423645",
+    "rulingsUri": "https://api.scryfall.com/cards/86ff49dd-9845-459e-baaf-f65126ccb648/rulings"
+  },
+  {
+    "id": "072c1a59-dbdc-469c-9743-e083e52b0b6d",
+    "oracleId": "53517dbf-7b32-423a-af76-afd39b876a1a",
+    "multiverseIds": [
+      423646
+    ],
+    "name": "Quicksilver Sea",
+    "scryfallUri": "https://scryfall.com/card/opca/65/quicksilver-sea?utm_source=api",
+    "typeLine": "Plane — Mirrodin",
+    "oracleText": "When you planeswalk to Quicksilver Sea or at the beginning of your upkeep, scry 4. (Look at the top four cards of your library, then put any number of them on the bottom of your library and the rest on top in any order.)\nWhenever you roll {CHAOS}, reveal the top card of your library. You may play it without paying its mana cost.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423646",
+    "rulingsUri": "https://api.scryfall.com/cards/072c1a59-dbdc-469c-9743-e083e52b0b6d/rulings"
+  },
+  {
+    "id": "de770524-9afc-4971-842a-6ee0b81176fb",
+    "oracleId": "b53e06af-be18-4f75-9dd0-7494ec867b13",
+    "multiverseIds": [
+      423647
+    ],
+    "name": "Raven's Run",
+    "scryfallUri": "https://scryfall.com/card/opca/66/ravens-run?utm_source=api",
+    "typeLine": "Plane — Shadowmoor",
+    "oracleText": "All creatures have wither. (They deal damage to creatures in the form of -1/-1 counters.)\nWhenever you roll {CHAOS}, put a -1/-1 counter on target creature, two -1/-1 counters on another target creature, and three -1/-1 counters on a third target creature.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423647",
+    "rulingsUri": "https://api.scryfall.com/cards/de770524-9afc-4971-842a-6ee0b81176fb/rulings"
+  },
+  {
+    "id": "211014b3-ad13-41b3-bfb6-b907108769fd",
+    "oracleId": "3fc15821-1add-4321-aecd-33f8a8c5f9a7",
+    "multiverseIds": [
+      423587
+    ],
+    "name": "Reality Shaping",
+    "scryfallUri": "https://scryfall.com/card/opca/6/reality-shaping?utm_source=api",
+    "typeLine": "Phenomenon",
+    "oracleText": "When you encounter Reality Shaping, starting with you, each player may put a permanent card from their hand onto the battlefield. (Then planeswalk away from this phenomenon.)",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423587",
+    "rulingsUri": "https://api.scryfall.com/cards/211014b3-ad13-41b3-bfb6-b907108769fd/rulings"
+  },
+  {
+    "id": "4c20e1cd-c541-4b44-8e20-adaa45a989a2",
+    "oracleId": "f0c8ce35-b627-485c-bd64-d7eae47b8efa",
+    "multiverseIds": [
+      423648
+    ],
+    "name": "Sanctum of Serra",
+    "scryfallUri": "https://scryfall.com/card/opca/67/sanctum-of-serra?utm_source=api",
+    "typeLine": "Plane — Serra’s Realm",
+    "oracleText": "When you planeswalk away from Sanctum of Serra, destroy all nonland permanents.\nWhenever you roll {CHAOS}, you may have your life total become 20.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423648",
+    "rulingsUri": "https://api.scryfall.com/cards/4c20e1cd-c541-4b44-8e20-adaa45a989a2/rulings"
+  },
+  {
+    "id": "0693024b-7eed-4aa5-a890-66c947db6b73",
+    "oracleId": "edd21d18-98d2-4e3f-8da1-1ba645b8f69c",
+    "multiverseIds": [
+      423649
+    ],
+    "name": "Sea of Sand",
+    "scryfallUri": "https://scryfall.com/card/opca/68/sea-of-sand?utm_source=api",
+    "typeLine": "Plane — Rabiah",
+    "oracleText": "Players reveal each card they draw.\nWhenever a player draws a land card, that player gains 3 life.\nWhenever a player draws a nonland card, that player loses 3 life.\nWhenever you roll {CHAOS}, put target permanent on top of its owner's library.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423649",
+    "rulingsUri": "https://api.scryfall.com/cards/0693024b-7eed-4aa5-a890-66c947db6b73/rulings"
+  },
+  {
+    "id": "94be33ca-0615-424a-9c4d-0fc91606af40",
+    "oracleId": "0a4bf88d-106a-413b-9d80-8775c1ff5ded",
+    "multiverseIds": [
+      423650
+    ],
+    "name": "Selesnya Loft Gardens",
+    "scryfallUri": "https://scryfall.com/card/opca/69/selesnya-loft-gardens?utm_source=api",
+    "typeLine": "Plane — Ravnica",
+    "oracleText": "If an effect would create one or more tokens, it creates twice that many of those tokens instead.\nIf an effect would put one or more counters on a permanent, it puts twice that many of those counters on that permanent instead.\nWhenever you roll {CHAOS}, until end of turn, whenever you tap a land for mana, add one mana of any type that land produced.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423650",
+    "rulingsUri": "https://api.scryfall.com/cards/94be33ca-0615-424a-9c4d-0fc91606af40/rulings"
+  },
+  {
+    "id": "8ce18193-76d6-4357-80e3-67ab453f47ac",
+    "oracleId": "70edae19-e278-401d-9772-508bd66320a6",
+    "multiverseIds": [
+      423651
+    ],
+    "name": "Shiv",
+    "scryfallUri": "https://scryfall.com/card/opca/70/shiv?utm_source=api",
+    "typeLine": "Plane — Dominaria",
+    "oracleText": "All creatures have \"{R}: This creature gets +1/+0 until end of turn.\"\nWhenever you roll {CHAOS}, create a 5/5 red Dragon creature token with flying.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423651",
+    "rulingsUri": "https://api.scryfall.com/cards/8ce18193-76d6-4357-80e3-67ab453f47ac/rulings"
+  },
+  {
+    "id": "24ad1b98-17ef-4c58-a947-384ef39f1193",
+    "oracleId": "61006acf-de38-420b-ab7a-685fbd64141c",
+    "multiverseIds": [
+      423652
+    ],
+    "name": "Skybreen",
+    "scryfallUri": "https://scryfall.com/card/opca/71/skybreen?utm_source=api",
+    "typeLine": "Plane — Kaldheim",
+    "oracleText": "Players play with the top card of their libraries revealed.\nSpells that share a card type with the top card of a library can't be cast.\nWhenever you roll {CHAOS}, target player loses life equal to the number of cards in their hand.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423652",
+    "rulingsUri": "https://api.scryfall.com/cards/24ad1b98-17ef-4c58-a947-384ef39f1193/rulings"
+  },
+  {
+    "id": "fd5cb6c4-2ad7-47db-848b-8f6f157f3529",
+    "oracleId": "c09d304a-87d0-4a2a-bcb2-e81341b2dbf2",
+    "multiverseIds": [
+      423653
+    ],
+    "name": "Sokenzan",
+    "scryfallUri": "https://scryfall.com/card/opca/72/sokenzan?utm_source=api",
+    "typeLine": "Plane — Kamigawa",
+    "oracleText": "All creatures get +1/+1 and have haste.\nWhenever you roll {CHAOS}, untap all creatures that attacked this turn. After this main phase, there is an additional combat phase followed by an additional main phase.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423653",
+    "rulingsUri": "https://api.scryfall.com/cards/fd5cb6c4-2ad7-47db-848b-8f6f157f3529/rulings"
+  },
+  {
+    "id": "de44957b-3dcb-45db-a6a7-b5c6e64b582a",
+    "oracleId": "aa166578-b13b-4adb-a78e-d5183e987112",
+    "multiverseIds": [
+      423588
+    ],
+    "name": "Spatial Merging",
+    "scryfallUri": "https://scryfall.com/card/opca/7/spatial-merging?utm_source=api",
+    "typeLine": "Phenomenon",
+    "oracleText": "When you encounter Spatial Merging, reveal cards from the top of your planar deck until you reveal two plane cards. Simultaneously planeswalk to both of them. Put all other cards revealed this way on the bottom of your planar deck in any order.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423588",
+    "rulingsUri": "https://api.scryfall.com/cards/de44957b-3dcb-45db-a6a7-b5c6e64b582a/rulings"
+  },
+  {
+    "id": "eceba6df-8821-499b-b3c2-4d54c6eab257",
+    "oracleId": "7a425df4-7010-462e-9cb5-20389bac721c",
+    "multiverseIds": [
+      423654
+    ],
+    "name": "Stairs to Infinity",
+    "scryfallUri": "https://scryfall.com/card/opca/73/stairs-to-infinity?utm_source=api",
+    "typeLine": "Plane — Xerex",
+    "oracleText": "Players have no maximum hand size.\nWhenever you roll the planar die, draw a card.\nWhenever you roll {CHAOS}, reveal the top card of your planar deck. You may put it on the bottom of your planar deck.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423654",
+    "rulingsUri": "https://api.scryfall.com/cards/eceba6df-8821-499b-b3c2-4d54c6eab257/rulings"
+  },
+  {
+    "id": "52906665-4acb-47d4-a443-b337503060d2",
+    "oracleId": "38bdd034-0375-403c-97ca-6f93a5e12e54",
+    "multiverseIds": [
+      423655
+    ],
+    "name": "Stensia",
+    "scryfallUri": "https://scryfall.com/card/opca/74/stensia?utm_source=api",
+    "typeLine": "Plane — Innistrad",
+    "oracleText": "Whenever a creature deals damage to one or more players for the first time each turn, put a +1/+1 counter on it.\nWhenever you roll {CHAOS}, each creature you control gains \"{T}: This creature deals 1 damage to target player or planeswalker\" until end of turn.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423655",
+    "rulingsUri": "https://api.scryfall.com/cards/52906665-4acb-47d4-a443-b337503060d2/rulings"
+  },
+  {
+    "id": "d5b7baf7-3d9a-4acf-8985-126cbee14248",
+    "oracleId": "ff76b576-8ad3-44f9-8043-80003a078e84",
+    "multiverseIds": [
+      423656
+    ],
+    "name": "Stronghold Furnace",
+    "scryfallUri": "https://scryfall.com/card/opca/75/stronghold-furnace?utm_source=api",
+    "typeLine": "Plane — Rath",
+    "oracleText": "If a source would deal damage to a permanent or player, it deals double that damage to that permanent or player instead.\nWhenever you roll {CHAOS}, Stronghold Furnace deals 1 damage to any target.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423656",
+    "rulingsUri": "https://api.scryfall.com/cards/d5b7baf7-3d9a-4acf-8985-126cbee14248/rulings"
+  },
+  {
+    "id": "0dadba2e-1d9a-4f04-b9d5-a3edff017662",
+    "oracleId": "de53c948-b371-4f79-a965-33c44d0b44de",
+    "multiverseIds": [
+      423657
+    ],
+    "name": "Takenuma",
+    "scryfallUri": "https://scryfall.com/card/opca/76/takenuma?utm_source=api",
+    "typeLine": "Plane — Kamigawa",
+    "oracleText": "Whenever a creature leaves the battlefield, its controller draws a card.\nWhenever you roll {CHAOS}, return target creature you control to its owner's hand.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423657",
+    "rulingsUri": "https://api.scryfall.com/cards/0dadba2e-1d9a-4f04-b9d5-a3edff017662/rulings"
+  },
+  {
+    "id": "09feed09-96de-4208-b6b9-cac0ec150e70",
+    "oracleId": "c85d3740-8c8d-4fef-ad33-a6f446b883ac",
+    "multiverseIds": [
+      423658
+    ],
+    "name": "Talon Gates",
+    "scryfallUri": "https://scryfall.com/card/opca/77/talon-gates?utm_source=api",
+    "typeLine": "Plane — Dominaria",
+    "oracleText": "Any time you could cast a sorcery, you may exile a nonland card from your hand with X time counters on it, where X is its mana value. If the exiled card doesn't have suspend, it gains suspend. (At the beginning of its owner's upkeep, they remove a time counter. When the last is removed, the player casts it without paying its mana cost. If it's a creature, it has haste.)\nWhenever you roll {CHAOS}, remove two time counters from each suspended card you own.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423658",
+    "rulingsUri": "https://api.scryfall.com/cards/09feed09-96de-4208-b6b9-cac0ec150e70/rulings"
+  },
+  {
+    "id": "18c94ada-d864-4e94-9d95-e796ab0d0cff",
+    "oracleId": "97f708de-9271-4137-a9fe-dda25b922900",
+    "multiverseIds": [
+      423659
+    ],
+    "name": "Tazeem",
+    "scryfallUri": "https://scryfall.com/card/opca/78/tazeem?utm_source=api",
+    "typeLine": "Plane — Zendikar",
+    "oracleText": "Creatures can't block.\nWhenever you roll {CHAOS}, draw a card for each land you control.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423659",
+    "rulingsUri": "https://api.scryfall.com/cards/18c94ada-d864-4e94-9d95-e796ab0d0cff/rulings"
+  },
+  {
+    "id": "ec65904f-c0dd-45ab-a85a-af4a6a631e11",
+    "oracleId": "bbb1d13c-a3ce-4151-883a-cce9bbd584d0",
+    "multiverseIds": [
+      423660
+    ],
+    "name": "Tember City",
+    "scryfallUri": "https://scryfall.com/card/opca/79/tember-city?utm_source=api",
+    "typeLine": "Plane — Kinshala",
+    "oracleText": "Whenever a player taps a land for mana, Tember City deals 1 damage to that player.\nWhenever you roll {CHAOS}, each other player sacrifices a nonland permanent.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423660",
+    "rulingsUri": "https://api.scryfall.com/cards/ec65904f-c0dd-45ab-a85a-af4a6a631e11/rulings"
+  },
+  {
+    "id": "3d8c9d69-be51-4ad4-9c2a-0ec1952e4f72",
+    "oracleId": "8eb442a9-5e61-4e2e-983d-b49b04be2575",
+    "multiverseIds": [
+      423591
+    ],
+    "name": "The Aether Flues",
+    "scryfallUri": "https://scryfall.com/card/opca/10/the-aether-flues?utm_source=api",
+    "typeLine": "Plane — Iquatana",
+    "oracleText": "When you planeswalk to The Aether Flues or at the beginning of your upkeep, you may sacrifice a creature. If you do, reveal cards from the top of your library until you reveal a creature card, put that card onto the battlefield, then shuffle all other cards revealed this way into your library.\nWhenever you roll {CHAOS}, you may put a creature card from your hand onto the battlefield.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423591",
+    "rulingsUri": "https://api.scryfall.com/cards/3d8c9d69-be51-4ad4-9c2a-0ec1952e4f72/rulings"
+  },
+  {
+    "id": "0b8a0cad-92df-45a1-a3cc-561be2f06778",
+    "oracleId": "5503c308-560d-4d5f-a86a-4b06d9947ddc",
+    "multiverseIds": [
+      423600
+    ],
+    "name": "The Dark Barony",
+    "scryfallUri": "https://scryfall.com/card/opca/19/the-dark-barony?utm_source=api",
+    "typeLine": "Plane — Ulgrotha",
+    "oracleText": "Whenever a nonblack card is put into a player's graveyard from anywhere, that player loses 1 life.\nWhenever you roll {CHAOS}, each opponent discards a card.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423600",
+    "rulingsUri": "https://api.scryfall.com/cards/0b8a0cad-92df-45a1-a3cc-561be2f06778/rulings"
+  },
+  {
+    "id": "501268b6-878b-4725-be1f-a64c90f79b87",
+    "oracleId": "a04d05ed-1b9b-4407-8780-c75c102a94dd",
+    "multiverseIds": [
+      423603
+    ],
+    "name": "The Eon Fog",
+    "scryfallUri": "https://scryfall.com/card/opca/22/the-eon-fog?utm_source=api",
+    "typeLine": "Plane — Equilor",
+    "oracleText": "Players skip their untap steps.\nWhenever you roll {CHAOS}, untap all permanents you control.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423603",
+    "rulingsUri": "https://api.scryfall.com/cards/501268b6-878b-4725-be1f-a64c90f79b87/rulings"
+  },
+  {
+    "id": "decef464-d1d3-4459-a1c4-fbad684d5d02",
+    "oracleId": "13e801cd-e537-4ea6-8c3d-21b142bdc026",
+    "multiverseIds": [
+      423606
+    ],
+    "name": "The Fourth Sphere",
+    "scryfallUri": "https://scryfall.com/card/opca/25/the-fourth-sphere?utm_source=api",
+    "typeLine": "Plane — Phyrexia",
+    "oracleText": "At the beginning of your upkeep, sacrifice a nonblack creature.\nWhenever you roll {CHAOS}, create a 2/2 black Zombie creature token.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423606",
+    "rulingsUri": "https://api.scryfall.com/cards/decef464-d1d3-4459-a1c4-fbad684d5d02/rulings"
+  },
+  {
+    "id": "8c08ca87-a485-4e4e-8f19-0da6a351142e",
+    "oracleId": "8c56bb41-a8d8-4b0f-bbb7-be8466dc9ed1",
+    "multiverseIds": [
+      423613
+    ],
+    "name": "The Great Forest",
+    "scryfallUri": "https://scryfall.com/card/opca/32/the-great-forest?utm_source=api",
+    "typeLine": "Plane — Lorwyn",
+    "oracleText": "Each creature assigns combat damage equal to its toughness rather than its power.\nWhenever you roll {CHAOS}, creatures you control get +0/+2 and gain trample until end of turn.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423613",
+    "rulingsUri": "https://api.scryfall.com/cards/8c08ca87-a485-4e4e-8f19-0da6a351142e/rulings"
+  },
+  {
+    "id": "4ba7ce8f-e11d-4e06-8cb6-668de2a43a4e",
+    "oracleId": "cde8d8c4-5e2b-452f-b3e9-bb9f2e745ec9",
+    "multiverseIds": [
+      423617
+    ],
+    "name": "The Hippodrome",
+    "scryfallUri": "https://scryfall.com/card/opca/36/the-hippodrome?utm_source=api",
+    "typeLine": "Plane — Segovia",
+    "oracleText": "All creatures get -5/-0.\nWhenever you roll {CHAOS}, you may destroy target creature if its power is 0 or less.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423617",
+    "rulingsUri": "https://api.scryfall.com/cards/4ba7ce8f-e11d-4e06-8cb6-668de2a43a4e/rulings"
+  },
+  {
+    "id": "6223caca-e993-4834-a673-3eee65b8afe1",
+    "oracleId": "e28deac5-d3c4-48e9-974c-093e3122f317",
+    "multiverseIds": [
+      423630
+    ],
+    "name": "The Maelstrom",
+    "scryfallUri": "https://scryfall.com/card/opca/49/the-maelstrom?utm_source=api",
+    "typeLine": "Plane — Alara",
+    "oracleText": "When you planeswalk to The Maelstrom or at the beginning of your upkeep, you may reveal the top card of your library. If it's a permanent card, you may put it onto the battlefield. If you revealed a card but didn't put it onto the battlefield, put it on the bottom of your library.\nWhenever you roll {CHAOS}, return target permanent card from your graveyard to the battlefield.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423630",
+    "rulingsUri": "https://api.scryfall.com/cards/6223caca-e993-4834-a673-3eee65b8afe1/rulings"
+  },
+  {
+    "id": "4c9dc306-92e9-46e1-a67c-d4f2a65ce339",
+    "oracleId": "2d84be6d-49a5-4200-8cd3-d8653dfd0899",
+    "multiverseIds": [
+      423667
+    ],
+    "name": "The Zephyr Maze",
+    "scryfallUri": "https://scryfall.com/card/opca/86/the-zephyr-maze?utm_source=api",
+    "typeLine": "Plane — Kyneth",
+    "oracleText": "Creatures with flying get +2/+0.\nCreatures without flying get -2/-0.\nWhenever you roll {CHAOS}, target creature gains flying until end of turn.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423667",
+    "rulingsUri": "https://api.scryfall.com/cards/4c9dc306-92e9-46e1-a67c-d4f2a65ce339/rulings"
+  },
+  {
+    "id": "ba38fb01-ea16-4a2d-964a-41f7b4d74024",
+    "oracleId": "e19e8895-f8a4-4995-8dd4-2821c6469126",
+    "multiverseIds": [
+      423589
+    ],
+    "name": "Time Distortion",
+    "scryfallUri": "https://scryfall.com/card/opca/8/time-distortion?utm_source=api",
+    "typeLine": "Phenomenon",
+    "oracleText": "When you encounter Time Distortion, reverse the game's turn order. (For example, if play had proceeded clockwise around the table, it now goes counterclockwise. Then planeswalk away from this phenomenon.)",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423589",
+    "rulingsUri": "https://api.scryfall.com/cards/ba38fb01-ea16-4a2d-964a-41f7b4d74024/rulings"
+  },
+  {
+    "id": "f5f307bf-80ac-46cb-9003-3e70a0703e71",
+    "oracleId": "b2c95c7a-a04c-46ef-a879-6eb08e444093",
+    "multiverseIds": [
+      423661
+    ],
+    "name": "Trail of the Mage-Rings",
+    "scryfallUri": "https://scryfall.com/card/opca/80/trail-of-the-mage-rings?utm_source=api",
+    "typeLine": "Plane — Vryn",
+    "oracleText": "Instant and sorcery spells have rebound. (The spell's controller exiles the spell as it resolves if they cast it from their hand. At the beginning of that player's next upkeep, they may cast that card from exile without paying its mana cost.)\nWhenever you roll {CHAOS}, you may search your library for an instant or sorcery card, reveal it, put it into your hand, then shuffle.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423661",
+    "rulingsUri": "https://api.scryfall.com/cards/f5f307bf-80ac-46cb-9003-3e70a0703e71/rulings"
+  },
+  {
+    "id": "93f94fb5-abf6-46f8-860c-e93446b8236a",
+    "oracleId": "d858e6db-9842-41d1-8006-574c8dcd98ed",
+    "multiverseIds": [
+      423662
+    ],
+    "name": "Truga Jungle",
+    "scryfallUri": "https://scryfall.com/card/opca/81/truga-jungle?utm_source=api",
+    "typeLine": "Plane — Ergamon",
+    "oracleText": "All lands have \"{T}: Add one mana of any color.\"\nWhenever you roll {CHAOS}, reveal the top three cards of your library. Put all land cards revealed this way into your hand and the rest on the bottom of your library in any order.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423662",
+    "rulingsUri": "https://api.scryfall.com/cards/93f94fb5-abf6-46f8-860c-e93446b8236a/rulings"
+  },
+  {
+    "id": "d212c626-3557-465a-bc1f-65faf3811755",
+    "oracleId": "1300b5e7-d741-4723-bb15-dabd04cb0c11",
+    "multiverseIds": [
+      423663
+    ],
+    "name": "Turri Island",
+    "scryfallUri": "https://scryfall.com/card/opca/82/turri-island?utm_source=api",
+    "typeLine": "Plane — Ir",
+    "oracleText": "Creature spells cost {2} less to cast.\nWhenever you roll {CHAOS}, reveal the top three cards of your library. Put all creature cards revealed this way into your hand and the rest into your graveyard.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423663",
+    "rulingsUri": "https://api.scryfall.com/cards/d212c626-3557-465a-bc1f-65faf3811755/rulings"
+  },
+  {
+    "id": "6a1b27bc-bb7e-47e1-add5-a9d3e1bfda8b",
+    "oracleId": "f3f5a033-d063-4250-9cfe-4c3c1a2725f1",
+    "multiverseIds": [
+      423664
+    ],
+    "name": "Undercity Reaches",
+    "scryfallUri": "https://scryfall.com/card/opca/83/undercity-reaches?utm_source=api",
+    "typeLine": "Plane — Ravnica",
+    "oracleText": "Whenever a creature deals combat damage to a player, its controller may draw a card.\nWhenever you roll {CHAOS}, you have no maximum hand size for the rest of the game.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423664",
+    "rulingsUri": "https://api.scryfall.com/cards/6a1b27bc-bb7e-47e1-add5-a9d3e1bfda8b/rulings"
+  },
+  {
+    "id": "621a8224-7ea2-4ca4-be74-e460d05ad12b",
+    "oracleId": "1c4e174e-19fb-4c0a-b762-ef6d927392c9",
+    "multiverseIds": [
+      423665
+    ],
+    "name": "Velis Vel",
+    "scryfallUri": "https://scryfall.com/card/opca/84/velis-vel?utm_source=api",
+    "typeLine": "Plane — Lorwyn",
+    "oracleText": "Each creature gets +1/+1 for each other creature on the battlefield that shares at least one creature type with it. (For example, if two Elemental Shamans and an Elemental Spirit are on the battlefield, each gets +2/+2.)\nWhenever you roll {CHAOS}, target creature gains all creature types until end of turn.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423665",
+    "rulingsUri": "https://api.scryfall.com/cards/621a8224-7ea2-4ca4-be74-e460d05ad12b/rulings"
+  },
+  {
+    "id": "27f3c16a-34f9-497d-835c-5942e395ded8",
+    "oracleId": "e4b941d1-60cb-4e14-89a4-62a9785f6eda",
+    "multiverseIds": [
+      423666
+    ],
+    "name": "Windriddle Palaces",
+    "scryfallUri": "https://scryfall.com/card/opca/85/windriddle-palaces?utm_source=api",
+    "typeLine": "Plane — Belenon",
+    "oracleText": "Players play with the top card of their libraries revealed.\nYou may play lands and cast spells from the top of any player's library.\nWhenever you roll {CHAOS}, each player mills a card.",
+    "gathererUri": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=423666",
+    "rulingsUri": "https://api.scryfall.com/cards/27f3c16a-34f9-497d-835c-5942e395ded8/rulings"
+  }
+]

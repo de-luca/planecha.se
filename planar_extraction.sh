@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
 TMP_RAW_JSON=".tmp.json"
-TMP_CARD_IDS=".card_ids"
-LOCK_FILE="cards.lock"
 BACK_IMG="public/cards/back.jpg"
 CARDS_JSON="src/assets/cards.json"
 CARDS_DIR="public/cards/"
@@ -14,43 +12,17 @@ function prepare {
 
 function clean {
   rm $TMP_RAW_JSON
-  rm $TMP_CARD_IDS
 }
 
 function build_all {
   rm $CARDS_JSON
-  rm $CARDS_DIR*.png
+  rm $CARDS_DIR*.jpg
 
   build_json
   build_back
   for id in $(jq -r '.data[].id' $TMP_RAW_JSON); do
     build_card "$id"
   done
-}
-
-function build_missing {
-  if ! test -f $CARDS_JSON; then
-    echo "$CARDS_JSON is missing."
-    build_json
-  fi
-
-  if ! test -f $BACK_IMG; then
-    echo "$BACK_IMG is missing"
-    build_back
-  fi
-
-  for id in $(
-    diff -u \
-      .card_ids \
-      <(find $CARDS_DIR ! -name 'back.png' -name '*.png' -exec basename -s .png {} \; | sort) \
-      | tail -n+2 \
-      | grep -E "^\-" \
-      | sed -E 's/^\-//'
-  ); do
-    echo "Card $id is missing"
-    build_card "$id"
-  done
-
 }
 
 function build_json {
@@ -88,15 +60,7 @@ function build_card {
 
 function main {
   prepare
-  if shasum -s -c $LOCK_FILE ; then
-    echo "CHECKSUM MATCH - BUILDING MISSING"
-    build_missing
-  else
-    echo "CHECKSUM DO NOT MATCH - BUILDING ALL"
-    build_all
-    shasum -a 256 $TMP_CARD_IDS > $LOCK_FILE
-    echo "Saved ${LOCK_FILE}"
-  fi
+  build_all
   clean
 }
 
