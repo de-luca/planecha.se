@@ -33,7 +33,9 @@ export abstract class EternitiesMap extends Map {
     this.deckType = props.deckType;
   }
 
-  public abstract override specs: EternitiesMapSpecs;
+  public override get specs(): EternitiesMapSpecs {
+    throw new Error('Method not implemented.');
+  }
 
   private initializeTiles(): Array<Tile> {
     const tiles: Array<Tile> = [{
