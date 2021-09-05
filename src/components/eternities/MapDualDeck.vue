@@ -100,8 +100,6 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
       return undefined;
     }
 
-    console.log(wall);
-
     return {
       ...wall,
       config: {

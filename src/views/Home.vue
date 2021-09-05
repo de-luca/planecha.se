@@ -61,6 +61,7 @@ export default class Home extends Vue {}
 
     .brand {
       text-align: center;
+      font-family: arial;
 
       div {
         position: relative;

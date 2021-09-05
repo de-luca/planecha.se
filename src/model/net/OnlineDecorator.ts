@@ -31,7 +31,6 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
         this.beacon.addEventListener('ready', _ => resolve());
     });
     this.peers = new PeerMap(this.beacon, name);
-    console.log(this.peers);
   }
 
   public get states(): MapStates {

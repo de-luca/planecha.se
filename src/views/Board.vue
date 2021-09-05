@@ -103,12 +103,13 @@ export default class Board extends Vue {
 
   .brand {
     flex-grow: 1;
+    font-family: arial;
 
     div {
       position: relative;
       z-index: 1;
       display: inline-block;
-      font-size: 2.5em;
+      font-size: 2.5rem;
       line-height: 3rem;
       width: 3rem;
       text-align: center;

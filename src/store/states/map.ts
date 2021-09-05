@@ -114,8 +114,6 @@ export const mutations: Mutations = {
 
     state = initState();
     eventBus.off('*');
-
-    console.log(state.mates);
   },
 
   [MutationTypes.HEY](state: State, payload) {
@@ -263,7 +261,6 @@ export const actions: ActionTree<State, State> & Actions = {
 
       if (payload.online) {
         await (state.map as OnlineInterface).create();
-        console.log(state.mates);
       }
     } catch (err) {
       console.error(err);
