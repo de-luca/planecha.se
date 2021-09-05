@@ -34,13 +34,13 @@ export class Beacon extends EventTarget {
   public constructor() {
     super();
 
-    this.socket = new WebSocket('ws://localhost:3030');
+    this.socket = new WebSocket(import.meta.env.VITE_BEACON_URL);
     this.socket.onopen = () => this.open();
   }
 
   public static check(): Promise<boolean> {
     return new Promise((resolve) => {
-      const socket = new WebSocket('ws://localhost:3030');
+      const socket = new WebSocket(import.meta.env.VITE_BEACON_URL);
       socket.onerror = () => {
         socket.close();
         resolve(false);

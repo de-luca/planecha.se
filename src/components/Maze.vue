@@ -49,7 +49,7 @@ export default class Maze extends Vue {
   color: #f9f9f9;
   display: block;
   position: fixed;
-  z-index: 0;
+  z-index: -1;
   top: 0;
   left: 0;
   margin: 0;

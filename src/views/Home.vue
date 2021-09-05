@@ -1,6 +1,7 @@
 <template>
-  <maze />
+
   <div class="container">
+    <maze />
     <div class="cta">
       <h1 class="title">
         <div class="brand">

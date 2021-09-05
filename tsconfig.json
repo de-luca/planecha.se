@@ -19,6 +19,7 @@
     "types": [
       "jest",
       "node",
+      "vite/client"
     ],
     "paths": {
       "@/*": [

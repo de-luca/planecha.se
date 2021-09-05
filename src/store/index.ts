@@ -19,7 +19,7 @@ export type {
 } from './states/map';
 
 const plugins = [ createFeeder() ];
-if (process.env.NODE_ENV !== 'production') {
+if (import.meta.env.MODE !== 'production') {
   plugins.push(createLogger());
 }
 

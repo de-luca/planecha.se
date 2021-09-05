@@ -33,7 +33,7 @@ export abstract class EternitiesMap extends Map {
     this.deckType = props.deckType;
   }
 
-  public abstract specs: EternitiesMapSpecs;
+  public abstract override specs: EternitiesMapSpecs;
 
   private initializeTiles(): Array<Tile> {
     const tiles: Array<Tile> = [{

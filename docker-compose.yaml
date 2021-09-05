@@ -8,6 +8,8 @@ services:
       - 8080:8080
     volumes:
       - ./:/scripts:rw
+    environment: 
+      VITE_BEACON_URL: wss://localhost:3030
     working_dir: /scripts
     entrypoint: ["yarn"]
     command: ["serve:docker"]
