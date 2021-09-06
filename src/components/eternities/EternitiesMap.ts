@@ -6,7 +6,7 @@ import { eventBus, EventType } from '@/services/EventBus';
 import { Phenomenon, Plane } from '@/model/card';
 import { PickedLeft, RevealConfig } from '../reveal/BaseReveal';
 import { RevealFactory } from '../reveal/RevealFactory';
-import { WallConfig } from '../wall/Wall';
+import { WallConfig } from '../Wall';
 import { Revealed, Tile } from '@/model/map';
 import {
   RevealerWallState,

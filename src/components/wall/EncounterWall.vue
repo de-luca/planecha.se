@@ -56,9 +56,9 @@
 </template>
 
 <script lang="ts">
-import { mixins, Options, prop, Vue } from 'vue-class-component';
+import { mixins, Options, prop } from 'vue-class-component';
 import { EncounterMechanic, TriggerConfig } from '@/model/map';
-import { Wall, WallProps } from './Wall';
+import { Wall, WallProps } from '../Wall';
 
 class Props extends WallProps {
   public coords = prop<Coordinates>({ required: true });

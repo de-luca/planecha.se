@@ -1,7 +1,7 @@
 import { prop } from 'vue-class-component';
 import { Card } from '@/model/card';
 import { Revealed } from '@/model/map/MapInterface';
-import { WallConfig } from '../wall/Wall';
+import { WallConfig } from '../Wall';
 
 export type PickedLeft = {
   picked: Array<Card>;

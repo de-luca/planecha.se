@@ -25,14 +25,15 @@
 <script lang="ts">
 import { Plane } from '@/model/card';
 import { ActionTypes, Store, useStore } from '@/store';
-import { Vue, prop } from 'vue-class-component';
+import { prop, mixins } from 'vue-class-component';
+import { Imgable } from '../Imgable';
 
 class Props {
   public card = prop<Plane>({ required: true });
   public current = prop<boolean>({ required: false, default: false });
 }
 
-export default class Card extends Vue.with(Props) {
+export default class Card extends mixins(Imgable).with(Props) {
   private store: Store;
 
   public created() {
@@ -40,7 +41,7 @@ export default class Card extends Vue.with(Props) {
   }
 
   public get imgSrc(): string {
-    return `/cards/${this.card.id}.jpg`;
+    return this.buildImgSrc(this.card);
   }
 
   public get hasCounters(): boolean {

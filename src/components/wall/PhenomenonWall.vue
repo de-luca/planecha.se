@@ -17,9 +17,9 @@
 </template>
 
 <script lang="ts">
-import { mixins, Options, prop, Vue } from 'vue-class-component';
+import { mixins, Options, prop } from 'vue-class-component';
 import { Phenomenon } from '@/model/card';
-import { Wall, WallProps } from './Wall';
+import { Wall, WallProps } from '../Wall';
 
 import PlaneswalkBtn from '@/components/PlaneswalkBtn.vue';
 
@@ -33,7 +33,7 @@ class Props extends WallProps {
 })
 export default class PhenomenonWall extends mixins(Wall).with(Props) {
   public get imgSrc(): string {
-    return `/cards/${this.phenomenon.id}.png`;
+    return this.buildImgSrc(this.phenomenon);
   }
 }
 </script>
@@ -55,6 +55,7 @@ export default class PhenomenonWall extends mixins(Wall).with(Props) {
   img {
     height: 65%;
     filter: drop-shadow(5px 5px 5px red) drop-shadow(-5px -5px 5px red);
+    border-radius: 3.5% / 4.7%;
   }
 
   .planeswalk-btn {

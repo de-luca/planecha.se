@@ -59,7 +59,7 @@ import {
   StateKey,
   StateOp,
 } from '@/model/states';
-import { WallConfig } from '../wall/Wall';
+import { WallConfig } from '../Wall';
 
 import ChaosBtn from '@/components/ChaosBtn.vue';
 import Tile from '@/components/eternities/Tile.vue';

@@ -67,8 +67,7 @@
 <script lang="ts">
 import { mixins, Options } from 'vue-class-component';
 import { BaseReveal, PickedLeft } from './BaseReveal';
-import { Card } from '@/model/card';
-import { Wall } from '../wall/Wall';
+import { Wall } from '../Wall';
 
 @Options({
   emits: ['done'],
@@ -83,10 +82,6 @@ export default class Scry extends mixins(Wall).with(BaseReveal) {
 
   public get allSet(): boolean {
     return this.revealed.relevant.every(c => this.picked[c.id] !== undefined);
-  }
-
-  public buildImgSrc(card: Card): string {
-    return `/cards/${card.id}.png`;
   }
 
   public confirm(): void {
@@ -153,6 +148,7 @@ input[type="radio"] {
 
     img {
       height: 30rem;
+      border-radius: 3.5% / 4.7%;
     }
   }
 }

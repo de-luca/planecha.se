@@ -1,4 +1,5 @@
-import { prop, Vue } from 'vue-class-component';
+import { prop } from 'vue-class-component';
+import { Imgable } from './Imgable';
 
 export interface WallConfig {
   passive: boolean;
@@ -10,7 +11,7 @@ export class WallProps {
 }
 
 
-export class Wall extends Vue {
+export class Wall extends Imgable {
   protected static readonly fallbackMate = 'Another player';
   public config: WallConfig;
 

@@ -52,10 +52,9 @@
 </template>
 
 <script lang="ts">
-import { mixins, Options, Vue } from 'vue-class-component';
+import { mixins, Options } from 'vue-class-component';
 import { BaseReveal } from './BaseReveal';
-import { Card } from '@/model/card';
-import { Wall } from '../wall/Wall';
+import { Wall } from '../Wall';
 
 @Options({
   emits: ['done'],
@@ -64,10 +63,6 @@ export default class Show extends mixins(Wall).with(BaseReveal) {
   private static readonly fanAngle = 5;
 
   private activeTab: string = 'relevant';
-
-  public buildImgSrc(card: Card): string {
-    return `/cards/${card.id}.png`;
-  }
 
   public cardAngle(i: number, total: number): string {
     const angle = (Show.fanAngle * i) - ((Show.fanAngle * (total - 1)) / 2);
@@ -138,6 +133,7 @@ export default class Show extends mixins(Wall).with(BaseReveal) {
 
     img {
       height: 20rem;
+      border-radius: 3.5% / 4.7%;
 
       &:hover {
         animation: scale-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
