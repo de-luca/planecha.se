@@ -1,5 +1,5 @@
 import _shuffle from 'lodash.shuffle';
-import { Card, Plane } from "../card";
+import { Card, Plane } from '../card';
 
 export interface DeckState {
   cards: Array<string>;

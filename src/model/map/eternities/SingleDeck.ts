@@ -1,5 +1,5 @@
-import { Phenomenon, Plane } from "@/model/card";
-import { EternitiesMap, EternitiesMapProps } from "./EternitiesMap";
+import { Phenomenon, Plane } from '@/model/card';
+import { EternitiesMap, EternitiesMapProps } from './EternitiesMap';
 import {
   EternitiesMapSpecs,
   EternitiesMapSubType,
@@ -7,7 +7,7 @@ import {
   Tile,
   TileStatus,
 } from '../MapInterface';
-import { StateKey } from "@/model/states";
+import { StateKey } from '@/model/states';
 
 export interface SingleDeckProps extends EternitiesMapProps {}
 

@@ -79,7 +79,7 @@ export default class EncounterWall extends mixins(Wall).with(Props) {
 
   public roll(): number {
     this.rolled = Math.floor(Math.random() * this.triggerConfig.ratio) + 1;
-    return this.rolled
+    return this.rolled;
   }
 
   public encounter(): void {

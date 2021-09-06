@@ -15,11 +15,11 @@ export default class Maze extends Vue {
   public created(): void {
     this.glyphs = Math.random().toString(36).substring(2, 6);
     this.$nextTick(this.computeCols);
-    window.addEventListener("resize", this.computeCols);
+    window.addEventListener('resize', this.computeCols);
   }
 
   public unmounted(): void {
-    window.removeEventListener("resize", this.computeCols);
+    window.removeEventListener('resize', this.computeCols);
   }
 
   private computeCols(): void {

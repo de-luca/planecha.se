@@ -1,6 +1,7 @@
 <template>
   <button
     class="open button is-medium is-outlined"
+    title="Toggle game logs"
     @click="toggle"
   >
     <span class="icon is-medium">
@@ -71,7 +72,7 @@ export default class Feed extends Vue.with(Props) {
   height: 50vh;
   width: 22rem;
   border: 1px solid #dbdbdb;
-  overflow: scroll;
+  overflow-x: scroll;
   transform: scale(0);
   margin-bottom: 0;
 

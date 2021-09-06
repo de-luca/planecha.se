@@ -4,7 +4,13 @@
     class="dropdown is-right"
   >
     <div class="dropdown-trigger">
-      <button @click="active = !active" class="button is-light" aria-haspopup="true" aria-controls="dropdown-menu">
+      <button
+        @click="active = !active"
+        class="button"
+        :class="{ 'is-outlined': active, 'is-light': !active }"
+        aria-haspopup="true"
+        aria-controls="dropdown-menu"
+      >
         <span>Online Controls</span>
       </button>
     </div>
@@ -90,9 +96,6 @@ export default class OnlineControls extends Vue {
       console.error(err);
     }
   }
-
-
-
 }
 </script>
 

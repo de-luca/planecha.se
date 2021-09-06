@@ -1,4 +1,4 @@
-import { prop, Vue } from "vue-class-component";
+import { prop, Vue } from 'vue-class-component';
 
 export interface WallConfig {
   passive: boolean;

@@ -1,5 +1,5 @@
-import { Card, Plane } from "../card";
-import { MapState, StateKey, StateOp } from "../states";
+import { Card, Plane } from '../card';
+import { MapState, StateKey, StateOp } from '../states';
 
 export interface Join {
   roomId: string;

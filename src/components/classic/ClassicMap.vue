@@ -41,7 +41,7 @@ import { RevealFactory } from '../reveal/RevealFactory';
 import {
   RevealerWallState,
   RevealerSource,
-  StateKey
+  StateKey,
 } from '@/model/states';
 
 import ChaosBtn from '@/components/ChaosBtn.vue';

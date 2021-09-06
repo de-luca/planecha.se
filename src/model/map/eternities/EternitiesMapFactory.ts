@@ -1,18 +1,18 @@
-import { Inject, Service } from "typedi";
+import { Inject, Service } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
-import { SingleDeck, SingleDeckProps } from "./SingleDeck";
-import { DualDeck, DualDeckExported } from "./DualDeck";
+import { SingleDeck, SingleDeckProps } from './SingleDeck';
+import { DualDeck, DualDeckExported } from './DualDeck';
 import {
   EncounterTriggers,
   EternitiesMapDeckType,
   EternitiesMapSpecs,
   EternitiesMapSubType,
   MapInterface,
-} from "../MapInterface";
-import { Card, Plane } from "@/model/card";
-import { Deck } from "@/model/deck/Deck";
-import { EternitiesMapExported } from "./EternitiesMap";
-import { MapStates } from "@/model/states";
+} from '../MapInterface';
+import { Card, Plane } from '@/model/card';
+import { Deck } from '@/model/deck/Deck';
+import { EternitiesMapExported } from './EternitiesMap';
+import { MapStates } from '@/model/states';
 
 @Service()
 export class EternitiesMapFactory {

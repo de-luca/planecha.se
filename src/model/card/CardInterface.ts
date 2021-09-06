@@ -1,4 +1,4 @@
-import { MapStates } from "../states";
+import { MapStates } from '../states';
 
 export interface ExportedCard {
   id: string;

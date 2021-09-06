@@ -1,15 +1,15 @@
-import { Phenomenon } from "@/model/card";
-import { Deck, DeckState } from "@/model/deck/Deck";
-import { SingleDeckProps, SingleDeck } from "./SingleDeck";
+import { Phenomenon } from '@/model/card';
+import { Deck, DeckState } from '@/model/deck/Deck';
+import { SingleDeckProps, SingleDeck } from './SingleDeck';
 import {
   EncounterTriggers,
   EternitiesMapDeckType,
   EternitiesMapSpecs,
   EternitiesMapSubType,
   MapType,
-} from "../MapInterface";
-import { EternitiesMapExported } from "./EternitiesMap";
-import { StateKey } from "@/model/states";
+} from '../MapInterface';
+import { EternitiesMapExported } from './EternitiesMap';
+import { StateKey } from '@/model/states';
 
 export interface DualDeckExported extends EternitiesMapExported {
   phenomenaDeck: DeckState;

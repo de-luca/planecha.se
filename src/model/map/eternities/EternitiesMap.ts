@@ -1,12 +1,12 @@
-import { Plane } from "@/model/card";
-import { Map, MapProps } from "../Map";
+import { Plane } from '@/model/card';
+import { Map, MapProps } from '../Map';
 import {
   EternitiesMapDeckType,
   EternitiesMapSpecs,
   Exported,
   Tile,
-  TileStatus
-} from "../MapInterface";
+  TileStatus,
+} from '../MapInterface';
 
 export interface EternitiesMapExported extends Exported {
   specs: EternitiesMapSpecs;

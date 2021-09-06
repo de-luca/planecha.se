@@ -29,6 +29,6 @@ export abstract class Card implements CardInterface {
   public abstract leave(): void;
 
   public export(): ExportedCard {
-    return { id: this.id }
+    return { id: this.id };
   }
 }

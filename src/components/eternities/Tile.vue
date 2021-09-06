@@ -192,7 +192,6 @@ export default class Tile extends Vue.with(Props) {
   }
 }
 
-
 .preparation:hover {
   cursor: pointer;
 }

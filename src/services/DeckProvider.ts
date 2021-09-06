@@ -64,7 +64,7 @@ export class DeckProvider {
 
   public getSpecificDeck(cards: Array<string>): Deck<Card> {
     return new Deck<Card>(
-      _shuffle(this.getOrderedPile<Card>([...cards]))
+      _shuffle(this.getOrderedPile<Card>([...cards])),
     );
   }
 

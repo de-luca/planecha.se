@@ -31,7 +31,7 @@ export class MapStates extends Map<StateKey, MapState> {
         this.set(key, val as MapState);
         break;
       case StateOp.DELETE:
-        this.delete(key)
+        this.delete(key);
         break;
     }
   }

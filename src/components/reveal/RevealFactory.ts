@@ -1,5 +1,5 @@
-import { Component } from "vue";
-import { RevealerMode } from "@/model/states"
+import { Component } from 'vue';
+import { RevealerMode } from '@/model/states';
 
 import Pick from './Pick.vue';
 import Scry from './Scry.vue';

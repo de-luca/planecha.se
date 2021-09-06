@@ -1,4 +1,4 @@
-import { MapState } from "./MapStates";
+import { MapState } from './MapStates';
 
 export enum RevealerMode {
   SCRY = 'SCRY',
