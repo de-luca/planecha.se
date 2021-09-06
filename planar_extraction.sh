@@ -47,13 +47,13 @@ function build_json {
 }
 
 function build_back {
-  curl -sL 'https://c1.scryfall.com/file/scryfall-card-backs/large/78/7840c131-f96b-4700-9347-2215c43156e6.jpg' | \
+  curl -sL 'https://c1.scryfall.com/file/scryfall-card-backs/normal/78/7840c131-f96b-4700-9347-2215c43156e6.jpg' | \
     convert - -rotate 90 $BACK_IMG
   echo "Built back img"
 }
 
 function build_card {
-  curl -sL "https://api.scryfall.com/cards/$1?format=image&version=large" | \
+  curl -sL "https://api.scryfall.com/cards/$1?format=image&version=normal" | \
     convert - -rotate 90 "$CARDS_DIR$1.jpg"
   echo "Built card ${id}"
 }
