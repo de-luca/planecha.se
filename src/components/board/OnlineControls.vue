@@ -16,9 +16,7 @@
     </div>
 
     <div class="dropdown-menu" id="dropdown-menu" role="menu">
-
       <div class="dropdown-content">
-
         <div class="dropdown-item">
           <div class="field">
             <label class="label">
@@ -49,11 +47,8 @@
             <p>{{ name }}</p>
           </template>
         </div>
-
       </div>
-
     </div>
-
   </div>
 </template>
 

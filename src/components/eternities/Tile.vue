@@ -127,30 +127,26 @@ export default class Tile extends Vue.with(Props) {
 
 <style lang="scss" scoped>
 @keyframes scale-center {
-  0% {
-    transform: scale(1);
-  }
+  0% {}
   100% {
-    transform: scale(2.5);
+    transform: scale(3);
   }
 }
 @keyframes scale-up-br {
   0% {
-    transform: scale(1);
     transform-origin: 100% 100%;
   }
   100% {
-    transform: scale(2.5);
+    transform: scale(3);
     transform-origin: 100% 100%;
   }
 }
 @keyframes scale-up-tl {
   0% {
-    transform: scale(1);
     transform-origin: 0% 0%;
   }
   100% {
-    transform: scale(2.5);
+    transform: scale(3);
     transform-origin: 0% 0%;
   }
 }
@@ -202,8 +198,7 @@ export default class Tile extends Vue.with(Props) {
 
 .current, .preparation {
   z-index: 2;
-  filter: drop-shadow(5px 5px 5px red)
-          drop-shadow(-5px -5px 5px red);
+  transform: scale(1.5);
 
   &:not(.multi):hover {
     z-index: 3;
@@ -213,19 +208,15 @@ export default class Tile extends Vue.with(Props) {
 }
 
 .planeswalkable {
-  filter: drop-shadow(2px 2px 2px grey)
-          drop-shadow(-2px -2px 2px grey);
-
   &:not(.multi):hover {
     z-index: 3;
     cursor: pointer;
-    filter: none;
     animation: scale-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
   }
 }
 
 .unreachable {
-  filter: grayscale(1);
+  filter: grayscale(90%);
 
   &:not(.multi):hover {
     z-index: 3;
