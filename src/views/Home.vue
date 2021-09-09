@@ -1,27 +1,67 @@
 <template>
-
-  <div class="container">
+  <div>
     <maze />
-    <div class="cta">
-      <h1 class="title">
-        <div class="brand">
-          <div>⟁</div>
-          <div>⟁</div>
-          <div>⟁</div>
+
+    <section class="hero is-fullheight">
+      <div class="hero-body container">
+        <div class="cta">
+          <h1 class="title">
+            <div class="brand">
+              <div>⟁</div>
+              <div>⟁</div>
+              <div>⟁</div>
+            </div>
+            <div class="name">
+              Planecha<span class="dot">.</span>se
+            </div>
+          </h1>
+          <div class="btn-grp">
+            <router-link class="button is-light" to="/join">
+              Join game
+            </router-link>
+            <router-link class="button is-dark" to="/create">
+              Create game
+            </router-link>
+          </div>
         </div>
-        <div class="name">
-          Planecha<span class="dot">.</span>se
-        </div>
-      </h1>
-      <div class="btn-grp">
-        <router-link class="button is-light" to="/join">
-          Join game
-        </router-link>
-        <router-link class="button is-dark" to="/create">
-          Create game
-        </router-link>
       </div>
-    </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container content">
+        <p>
+          Planecha.se is unofficial Fan Content permitted under the
+          <a
+            href="https://company.wizards.com/en/legal/fancontentpolicy"
+            rel="noopener noreferrer"
+            target="_blank"
+          >Fan Content Policy</a>. Not approved/endorsed by Wizards.<br>
+          Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC.
+        </p>
+        <p>
+          Card data are provided by
+          <a
+            href="https://scryfall.com"
+            rel="noopener noreferrer"
+            target="_blank"
+          >Scryfall</a>.
+        </p>
+        <p>
+          Planecha.se uses icons provided by
+          <a
+            href="https://fontawesome.com"
+            rel="noopener noreferrer"
+            target="_blank"
+          >Font Awesome</a>
+          according to the
+          <a
+            href="https://fontawesome.com/license"
+            rel="noopener noreferrer"
+            target="_blank"
+          >Font Awesome License</a>.
+        </p>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -34,7 +74,7 @@ export default class Home extends Vue {}
 </script>
 
 <style lang="scss" scoped>
-.container {
+.hero-body.container {
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -88,6 +128,15 @@ export default class Home extends Vue {}
         }
       }
     }
+  }
+}
+
+.footer {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+
+  .container {
+    max-width: 64rem;
   }
 }
 </style>
