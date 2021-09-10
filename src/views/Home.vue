@@ -60,6 +60,9 @@
             target="_blank"
           >Font Awesome License</a>.
         </p>
+        <p>
+          Build version: {{ sha }}
+        </p>
       </div>
     </footer>
   </div>
@@ -70,7 +73,11 @@ import { Options, Vue } from 'vue-class-component';
 import Maze from '@/components/Maze.vue';
 
 @Options({ components: { Maze } })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  public get sha(): string {
+    return import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA;
+  }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -10,6 +10,7 @@ services:
       - ./:/scripts:rw
     environment: 
       VITE_BEACON_URL: wss://localhost:3030
+      VITE_VERCEL_GIT_COMMIT_SHA: HEAD
     working_dir: /scripts
     entrypoint: ["yarn"]
     command: ["serve:docker"]
