@@ -84,6 +84,6 @@ export default class JoinGame extends Vue {
 }
 
 .field.join-game button {
-  width: 150px;
+  width: var(--form-btn-width);
 }
 </style>

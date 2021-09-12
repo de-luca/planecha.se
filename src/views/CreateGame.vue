@@ -238,6 +238,6 @@ export default class CreateGame extends Vue {
 }
 
 .field.create-game button {
-  width: 250px;
+  width: var(--form-btn-width);
 }
 </style>

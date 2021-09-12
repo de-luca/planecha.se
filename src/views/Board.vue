@@ -104,6 +104,7 @@ export default class Board extends Vue {
   .brand {
     flex-grow: 1;
     font-family: arial;
+    color: var(--brand-color-primary);
 
     div {
       position: relative;
@@ -116,7 +117,7 @@ export default class Board extends Vue {
 
       &:hover {
         cursor: pointer;
-        color: gray;
+        color: var(--brand-color-secondary);
       }
 
       &:nth-child(1) {

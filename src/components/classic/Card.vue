@@ -59,7 +59,7 @@ img {
   width:100%;
   max-width:1000px;
   filter: drop-shadow(1px 1px 1px #585858);
-  border-radius: 3.5% / 4.7%;
+  border-radius: var(--card-radius);
 
   &.phenomenon {
     filter: drop-shadow(5px 5px 5px red) drop-shadow(-5px -5px 5px red);

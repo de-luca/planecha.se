@@ -79,7 +79,7 @@ export default class OnlinePicker extends Vue.with(Props) {
 <style lang="scss" scoped>
 .field {
   button {
-    width: 250px;
+    width: var(--form-btn-width);
   }
 
   .control {
@@ -87,7 +87,7 @@ export default class OnlinePicker extends Vue.with(Props) {
     gap: 1rem;
 
     label {
-      width: 250px;
+      width: var(--form-btn-width);
     }
   }
 }
@@ -100,8 +100,8 @@ input[type="radio"] {
     color: #363636;
   }
   &:disabled+label {
-    background-color: white;
-    border-color: #dbdbdb;
+    background-color: var(--picker-bg-color);
+    border-color: var(--picker-checked-border-color);
     box-shadow: none;
     opacity: 0.5;
     cursor: not-allowed;

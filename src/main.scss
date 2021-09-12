@@ -1,9 +1,52 @@
+$lgt-bg-color: #fff;
+
+$lgt-btn-bg-color-primary: #363636;
+$lgt-btn-text-color-primary: #fff;;
+$lgt-btn-bg-color-secondary: whitesmoke;
+$lgt-btn-text-color-secondary: rgba(0, 0, 0, 0.7);
+
+$lgt-text-color-contrast: whitesmoke;
+
+$lgt-brand-color-primary: #4a4a4a;
+$lgt-brand-color-secondary: grey;
+
+$lgt-maze-color: #f9f9f9;
+
+$lgt-picker-bg-color: white;
+$lgt-picker-text-color: #363636;
+$lgt-picker-border-color: #dbdbdb;
+$lgt-picker-checked-border-color: #4a4a4a;
+
+
+:root {
+  --card-radius: 3.5% / 4.7%;
+  --form-btn-width: 250px;
+
+  --text-color-contrast: #{$lgt-text-color-contrast};
+
+  --brand-color-primary: #{$lgt-brand-color-primary};
+  --brand-color-secondary: #{$lgt-brand-color-secondary};
+
+  --maze-color: #{$lgt-maze-color};
+
+  --picker-bg-color: #{$lgt-picker-bg-color};
+  --picker-text-color: #{$lgt-picker-text-color};
+  --picker-border-color: #{$lgt-picker-border-color};
+  --picker-checked-border-color: #{$lgt-picker-checked-border-color};
+
+  // --primary-color: #302AE6;
+  // --secondary-color: #536390;
+  // --font-color: #424242;
+  // --bg-color: #fff;
+  // --heading-color: #292922;
+}
+
 @import "../node_modules/bulma/bulma.sass";
 
 @font-face {
   font-family: 'MazeletterUtopia';
   src:  url('/fonts/mazeletter-utopia.woff2') format('woff2'),
-        url('/fonts/mazeletter-utopia.woff') format('woff');
+        url('/fonts/mazeletter-utopia.woff')  format('woff');
 }
 
 html, body, #app {

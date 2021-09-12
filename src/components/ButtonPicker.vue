@@ -60,7 +60,7 @@ export default class ButtonPicker extends Vue.with(Props) {
 <style lang="scss" scoped>
 .field {
   button {
-    width: 250px;
+    width: var(--form-btn-width);
   }
 
   .control {
@@ -68,7 +68,7 @@ export default class ButtonPicker extends Vue.with(Props) {
     gap: 1rem;
 
     label {
-      width: 250px;
+      width: var(--form-btn-width);
     }
   }
 }
@@ -77,8 +77,7 @@ input[type="radio"] {
   display: none;
 
   &:checked+label {
-    border-color: #4a4a4a;
-    color: #363636;
+    border-color: var(--picker-checked-border-color);
   }
 }
 </style>

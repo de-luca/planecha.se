@@ -102,13 +102,18 @@ export default class Home extends Vue {
       }
     }
 
-    .name .dot {
-      color: gray;
+    .name {
+      color: var(--brand-color-primary);
+
+      .dot {
+        color: var(--brand-color-secondary);
+      }
     }
 
     .brand {
       text-align: center;
       font-family: arial;
+      color: var(--brand-color-primary);
 
       div {
         position: relative;
@@ -121,7 +126,7 @@ export default class Home extends Vue {
 
         &:hover {
           cursor: pointer;
-          color: gray;
+          color: var(--brand-color-secondary);
         }
 
         &:nth-child(1) {

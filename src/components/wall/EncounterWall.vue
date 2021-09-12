@@ -107,7 +107,7 @@ export default class EncounterWall extends mixins(Wall).with(Props) {
   gap: 8rem;
 
   .title {
-    color: whitesmoke;
+    color: var(--text-color-contrast);
   }
 
   .roll-placeholder {
@@ -131,7 +131,7 @@ export default class EncounterWall extends mixins(Wall).with(Props) {
       transform: translateY(-45%) translateX(-50%);
       font-weight: bold;
       font-size: 3em;
-      color: white;
+      color: var(--text-color-contrast);
 
       &.one {
         filter: drop-shadow(5px 5px 5px red) drop-shadow(-5px -5px 5px red);
