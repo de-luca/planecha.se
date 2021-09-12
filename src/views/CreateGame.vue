@@ -17,7 +17,6 @@
         <p class="help">The name people in the game will see you as.</p>
       </div>
 
-
       <button-picker
         label="Game mode:"
         :options="mapTypeOptions"
@@ -40,22 +39,33 @@
 
       <encounter-setup v-model="encounterConfig" v-if="showDualDeckConfig" />
 
+        <div class="field">
+          <button class="button is-light" @click.prevent="toggleDeckBuilder">
+            Open deck customization
+          </button>
+          <p class="help is-danger" v-if="!hasRequiredCards.valid">
+            <font-awesome-icon icon="exclamation" fixed-width />
+            Your deck does not have the minimum required
+            <b>Planes</b> cards: <b>{{ hasRequiredCards.minCards }}</b>.<br>
+            <em>(In order not to explode)</em>
+          </p>
+        </div>
+
+      <deck-builder
+        v-if="openDeckBuilder"
+        :base-deck="deck"
+        :group="group"
+        :map-type="mapType"
+        @done="setDeck"
+      />
+
       <div class="field">
-        <a @click.prevent="toggleAdvanced">
-          <font-awesome-icon :icon="showAdvanced ? 'angle-down' : 'angle-right'" fixed-width />
-          Customize deck list
-        </a>
-      </div>
-
-      <card-picker v-if="showAdvanced" v-model="cards" :group="group" />
-
-      <div class="field create-game">
         <div class="control">
           <button
             class="button is-dark"
             :class="{ 'is-loading': creating }"
             type="submit"
-            :disabled="!hasRequiredCards"
+            :disabled="!hasRequiredCards.valid"
           >
             Create game
           </button>
@@ -78,14 +88,16 @@ import {
 } from '@/model/map';
 import { Card, Plane } from '@/model/card';
 import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';
-import CardPicker, { Group } from '@/components/create/CardPicker.vue';
+import DeckBuilder, { Group } from '@/components/create/DeckBuilder.vue';
 import OnlinePicker from '@/components/create/OnlinePicker.vue';
 import EncounterSetup from '@/components/create/EncounterSetup.vue';
 
 @Options({
   components: {
-    ButtonPicker, CardPicker,
-    OnlinePicker, EncounterSetup,
+    ButtonPicker,
+    OnlinePicker,
+    EncounterSetup,
+    DeckBuilder,
   },
 })
 export default class CreateGame extends Vue {
@@ -117,7 +129,8 @@ export default class CreateGame extends Vue {
     help: 'Planes and Phenomnena mixed in the same deck. Phenomena are encountered when drawn.',
   }];
 
-  private showAdvanced: boolean = false;
+  private store: Store;
+  private openDeckBuilder: boolean = false;
   private creating: boolean = false;
 
   private online: boolean = false;
@@ -139,9 +152,7 @@ export default class CreateGame extends Vue {
   };
 
   private name: string = '';
-  private cards: Array<Card> = [];
-
-  private store: Store;
+  private deck: Array<Card> = [];
 
   public created() {
     this.store = useStore();
@@ -166,33 +177,42 @@ export default class CreateGame extends Vue {
   }
 
   public get group(): Group {
-    if (
-         this.mapType === MapType.ETERNITIES
-      && this.deckType === EternitiesMapDeckType.PLANES
-    ) {
-      return Group.PLANES;
-    }
-
-    return Group.ALL;
+    return (
+      this.mapType === MapType.ETERNITIES &&
+      this.deckType === EternitiesMapDeckType.PLANES
+    )
+      ? Group.PLANES
+      : Group.ALL;
   }
 
-  public get hasRequiredCards(): boolean {
-    if (!this.showAdvanced && this.cards.length === 0) {
-      return true;
+  public get hasRequiredCards(): { valid: boolean, minCards?: number } {
+    if (!this.openDeckBuilder && this.deck.length === 0) {
+      return { valid: true };
     }
 
     switch (this.mapType) {
       case MapType.CLASSIC:
-        return this.cards.filter(c => c instanceof Plane).length >= 5;
+        return {
+          valid: this.deck.filter(c => c instanceof Plane).length >= 5,
+          minCards: 5,
+        };
       case MapType.ETERNITIES:
-        return this.cards.filter(c => c instanceof Plane).length >= 25;
+        return {
+          valid: this.deck.filter(c => c instanceof Plane).length >= 25,
+          minCards: 25,
+        };
       default:
-        return true;
+        return { valid: true };
     }
   }
 
-  public toggleAdvanced(): void {
-    this.showAdvanced = !this.showAdvanced;
+  public toggleDeckBuilder(): void {
+    this.openDeckBuilder = !this.openDeckBuilder;
+  }
+
+  public setDeck(deck: Array<Card>): void {
+    this.openDeckBuilder = false;
+    this.deck = deck;
   }
 
   public async create() {
@@ -203,7 +223,7 @@ export default class CreateGame extends Vue {
       online: this.online,
       advanced: {
         name: this.name,
-        cards: this.cards.length !== 0 ? this.cards.map(c => c.id) : undefined,
+        cards: this.deck.length !== 0 ? this.deck.map(c => c.id) : undefined,
         encounterTriggers: this.encounterConfig,
         specs: {
           subType: this.subType,
@@ -237,7 +257,13 @@ export default class CreateGame extends Vue {
   }
 }
 
-.field.create-game button {
+.field button {
   width: var(--form-btn-width);
+}
+
+.deck-custom {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 </style>

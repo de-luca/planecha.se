@@ -4,6 +4,7 @@ import {
   faAngleRight,
   faBars,
   faDiceD20,
+  faExclamation,
   faUserPlus,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
@@ -13,6 +14,7 @@ library.add(
   faAngleRight,
   faBars,
   faDiceD20,
+  faExclamation,
   faUserPlus,
   faUsers,
 );

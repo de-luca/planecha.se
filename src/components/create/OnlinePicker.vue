@@ -55,12 +55,12 @@ export default class OnlinePicker extends Vue.with(Props) {
   }
 
   public get helpText(): string {
-    if (!this.available) {
-      return 'Online unavailable. 🔥 Server is dead 🔥';
-    }
-
     if (this.loading) {
       return 'Checking the Planar Beacon...';
+    }
+
+    if (!this.available) {
+      return 'Online unavailable. 🔥 Server is dead 🔥';
     }
 
     return '';
