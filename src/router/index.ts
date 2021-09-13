@@ -1,16 +1,23 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
+import { useStore } from '@/store';
+import { EmptyMap } from '@/model/map';
+
 import Home from '../views/Home.vue';
+import About from '../views/About.vue';
 import JoinGame from '../views/JoinGame.vue';
 import CreateGame from '../views/CreateGame.vue';
 import Board from '../views/Board.vue';
-import { useStore } from '@/store';
-import { EmptyMap } from '@/model/map';
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
     component: Home,
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: About,
   },
   {
     path: '/join/:roomId?',

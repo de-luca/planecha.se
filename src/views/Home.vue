@@ -4,26 +4,37 @@
 
     <section class="hero is-fullheight">
       <div class="hero-body container">
-        <div class="cta">
-          <h1 class="title">
-            <div class="brand">
-              <div>⟁</div>
-              <div>⟁</div>
-              <div>⟁</div>
-            </div>
-            <div class="name">
-              Planecha<span class="dot">.</span>se
-            </div>
-          </h1>
-          <div class="btn-grp">
-            <router-link class="button is-light" to="/join">
-              Join game
-            </router-link>
-            <router-link class="button is-dark" to="/create">
-              Create game
-            </router-link>
+        <h1 class="title">
+          <div class="brand">
+            <div>⟁</div>
+            <div>⟁</div>
+            <div>⟁</div>
           </div>
+          <div class="name">
+            Planecha<span class="dot">.</span>se
+          </div>
+        </h1>
+        <h2 class="subtitle">
+          A Planechase companion app for people playing remotely (or locally)
+        </h2>
+        <div class="btn-grp">
+          <router-link class="button is-light" to="/join">
+            Join game
+          </router-link>
+          <router-link class="button is-dark" to="/create">
+            Create game
+          </router-link>
         </div>
+      </div>
+
+      <div class="hero-foot">
+        <nav class="tabs is-right">
+          <div class="container">
+            <ul>
+              <li><router-link to="/about">About</router-link></li>
+            </ul>
+          </div>
+        </nav>
       </div>
     </section>
 
@@ -61,6 +72,14 @@
           >Font Awesome License</a>.
         </p>
         <p>
+          Planecha.se uses the font from
+          <a
+            href=" http://mazeletter.xyz/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >Mazeletter</a>.
+        </p>
+        <p>
           Build version: {{ sha }}
         </p>
       </div>
@@ -81,65 +100,69 @@ export default class Home extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.navbar {
+  .is-ghost {
+    color: var(--brand-color-secondary);
+  }
+}
 .hero-body.container {
   height: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
+  text-align: center;
 
-  .cta {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
+  .btn-grp {
+    display: inline-flex;
+    gap: 1rem;
     justify-content: center;
 
-    .btn-grp {
-      display: inline-flex;
-      gap: 1rem;
-
-      .button {
-        width: 150px;
-      }
+    .button {
+      width: 150px;
     }
+  }
 
-    .name {
-      color: var(--brand-color-primary);
+  .name {
+    color: var(--brand-color-primary);
 
-      .dot {
+    .dot {
+      color: var(--brand-color-secondary);
+    }
+  }
+
+  .brand {
+    text-align: center;
+    font-family: arial;
+    color: var(--brand-color-primary);
+
+    div {
+      position: relative;
+      z-index: 1;
+      display: inline-block;
+      font-size: 4.5rem;
+      width: 5rem;
+      line-height: 5rem;
+      text-align: center;
+
+      &:hover {
+        cursor: pointer;
         color: var(--brand-color-secondary);
       }
-    }
 
-    .brand {
-      text-align: center;
-      font-family: arial;
-      color: var(--brand-color-primary);
-
-      div {
-        position: relative;
-        z-index: 1;
-        display: inline-block;
-        font-size: 2.5rem;
-        width: 3rem;
-        line-height: 3rem;
-        text-align: center;
-
-        &:hover {
-          cursor: pointer;
-          color: var(--brand-color-secondary);
-        }
-
-        &:nth-child(1) {
-          transform: rotate(180deg) translateX(-1.5rem);
-        }
-        &:nth-child(2) {
-          z-index: 2;
-        }
-        &:nth-child(3) {
-          transform: rotate(180deg) translateX(1.5rem);
-        }
+      &:nth-child(1) {
+        transform: rotate(180deg) translateX(-2.5rem);
+      }
+      &:nth-child(2) {
+        z-index: 2;
+      }
+      &:nth-child(3) {
+        transform: rotate(180deg) translateX(2rem);
       }
     }
+  }
+
+  .subtitle {
+    color: var(--brand-color-secondary);
   }
 }
 
