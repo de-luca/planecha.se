@@ -139,8 +139,8 @@ export default class Home extends Vue {
       position: relative;
       z-index: 1;
       display: inline-block;
-      font-size: 4.5rem;
-      width: 5rem;
+      font-size: 5rem;
+      width: 6rem;
       line-height: 5rem;
       text-align: center;
 
@@ -150,13 +150,13 @@ export default class Home extends Vue {
       }
 
       &:nth-child(1) {
-        transform: rotate(180deg) translateX(-2.5rem);
+        transform: rotate(180deg) translateX(-3rem);
       }
       &:nth-child(2) {
         z-index: 2;
       }
       &:nth-child(3) {
-        transform: rotate(180deg) translateX(2rem);
+        transform: rotate(180deg) translateX(3rem);
       }
     }
   }
