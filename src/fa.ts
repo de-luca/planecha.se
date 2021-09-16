@@ -5,6 +5,7 @@ import {
   faBars,
   faDiceD20,
   faExclamation,
+  faPlayCircle,
   faUserPlus,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
@@ -15,6 +16,7 @@ library.add(
   faBars,
   faDiceD20,
   faExclamation,
+  faPlayCircle,
   faUserPlus,
   faUsers,
 );

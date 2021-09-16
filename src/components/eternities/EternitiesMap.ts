@@ -32,6 +32,7 @@ type LocalPhenomenonWallConfig = {
 export class EternitiesMap extends Vue {
   protected readonly off: number = 4;
   protected store: Store;
+  protected shownTile: Tile | null = null;
 
   protected setUp(): void {
     this.store = useStore();
@@ -135,11 +136,20 @@ export class EternitiesMap extends Vue {
     this.store.dispatch(ActionTypes.RESOLVE_REVEAL, payload);
   }
 
+  public showTile(tile: Tile): void {
+    this.shownTile = tile;
+  }
+
+  public closeTile(): void {
+    this.shownTile = null;
+  }
+
   public start(): void {
     this.store.dispatch(ActionTypes.START_GAME);
   }
 
   public planeswalk(coords: Coordinates): void {
+    this.closeTile();
     this.store.dispatch(ActionTypes.PLANESWALK, { coords });
   }
 

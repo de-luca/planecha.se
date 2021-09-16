@@ -44,8 +44,8 @@ import {
   StateKey,
 } from '@/model/states';
 
-import ChaosBtn from '@/components/ChaosBtn.vue';
-import PlaneswalkBtn from '@/components/PlaneswalkBtn.vue';
+import ChaosBtn from '@/components/btn/ChaosBtn.vue';
+import PlaneswalkBtn from '@/components/btn/PlaneswalkBtn.vue';
 import Card from '@/components/classic/Card.vue';
 import Feed from '@/components/board/Feed.vue';
 import Pick from '@/components/reveal/Pick.vue';

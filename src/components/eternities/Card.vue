@@ -1,24 +1,22 @@
 <template>
   <div class="card-container">
-
     <div
       v-if="hasCounters && current"
       class="counters active tags has-addons"
     >
-      <span class="tag minus" @click="update(-1)">-</span>
-      <span class="tag value">{{ card.counter.value }}</span>
-      <span class="tag plus" @click="update(1)">+</span>
+      <span class="tag is-dark minus" @click.stop="update(-1)">-</span>
+      <span class="tag is-dark value">{{ card.counter.value }}</span>
+      <span class="tag is-dark plus" @click.stop="update(1)">+</span>
     </div>
 
-    <span
+    <div
       v-if="hasCounters && !current"
-      class="counters inactive tag"
+      class="counters inactive tag is-dark"
     >
       {{ card.counter.value }}
-    </span>
+    </div>
 
     <img :src="imgSrc">
-
   </div>
 </template>
 
@@ -57,6 +55,7 @@ export default class Card extends mixins(Imgable).with(Props) {
 <style lang="scss" scoped>
 .card-container {
   position: relative;
+  display: flex;
 }
 
 img {

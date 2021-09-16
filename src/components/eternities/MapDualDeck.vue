@@ -61,7 +61,7 @@ import {
 } from '@/model/states';
 import { WallConfig } from '../Wall';
 
-import ChaosBtn from '@/components/ChaosBtn.vue';
+import ChaosBtn from '@/components/btn/ChaosBtn.vue';
 import Tile from '@/components/eternities/Tile.vue';
 import PhenomenonWall from '@/components/wall/PhenomenonWall.vue';
 import EncounterWall from '@/components/wall/EncounterWall.vue';

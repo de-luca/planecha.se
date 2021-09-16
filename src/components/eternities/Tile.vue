@@ -1,78 +1,25 @@
 <template>
-  <div class="tile">
-    <div
-      title="Planeswalk"
-      v-if="tile && state === 'planeswalkable'"
-      :class="[ { multi: tile.plane.length > 1 }, state ]"
-      @click="planeswalk"
-    >
-      <template v-for="p in tile.plane" :key="p">
-        <card :card="p" />
-      </template>
-    </div>
-
-    <div
-      v-if="tile && state === 'hidden'"
-      :class="state"
-    >
-      <img v-if="hidden" src="/cards/back.jpg">
-    </div>
-
-    <div
-      title="Start game"
-      v-if="tile && state === 'preparation'"
-      :class="state"
-      @click="start"
-    >
-      <card :card="tile.plane[0]" :current="state === 'current'" />
-    </div>
-
-    <div
-      v-if="tile && state === 'current'"
-      :class="[ { multi: tile.plane.length > 1 }, state ]"
-      title="You are here ;)"
-    >
-      <template v-for="p in tile.plane" :key="p">
-        <card :card="p" :current="state === 'current'" />
-      </template>
-    </div>
-
-    <div
-      v-if="tile && state === 'unreachable'"
-      :class="[ { multi: tile.plane.length > 1 }, state ]"
-    >
-      <template v-for="p in tile.plane" :key="p">
-        <card :card="p" :current="state === 'current'" />
-      </template>
-    </div>
-
-    <div
-      title="Hellride"
-      v-if="!tile && !hidden && state === 'hellrideable'"
-      :class="state"
-      @click="hellride"
-    >
-      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 54 100'>
-        <path d='M0 50.247l.156-1.969h-.061l.061-.032 2.059-26.239s1.026 18.147 4.085 23.392c1.313-.519 2.647-.984 4.002-1.403 3.306-8.657 4.467-34.379 4.467-34.379s.772 23.434 3.681 32.529c1.595-.239 3.218-.407 4.872-.51 3.007-11.188 3.824-41.636 3.824-41.636s.991 30.521 3.953 41.673c1.576.114 3.127.292 4.653.528 2.873-9.06 4.024-32.597 4.024-32.597s.931 25.864 3.941 34.449c1.319.409 2.617.871 3.89 1.376 3.338-5.179 4.513-23.388 4.513-23.388l1.592 26.224.067.034h-.063l.118 1.947s-26.689 8.691-26.689 49.485c0-40.601-27.146-49.485-27.146-49.485' fill='#000'/>
-      </svg>
-    </div>
-  </div>
+  <component
+    v-if="tileComponent"
+    class="tile"
+    :is="tileComponent"
+    :tile="tile"
+    :hidden="hidden"
+    @hellride="hellride"
+    @show="show"
+  />
+  <div v-else></div>
 </template>
 
 <script lang="ts">
+import { Component } from 'vue';
 import { Options, prop, Vue } from 'vue-class-component';
 import { Tile as TileModel } from '@/model/map/MapInterface';
 
-import Card from '@/components/eternities/Card.vue';
-
-enum State {
-  PLANESWALKABLE = 'planeswalkable',
-  HELLRIDEABLE = 'hellrideable',
-  CURRENT = 'current',
-  UNREACHABLE = 'unreachable',
-  HIDDEN = 'hidden',
-  PREPARATION = 'preparation',
-}
+import Current from './tile/Current.vue';
+import Hellrideable from './tile/Hellrideable.vue';
+import Planewalkable from './tile/Planewalkable.vue';
+import Unreachable from './tile/Unreachable.vue';
 
 class Props {
   public tile = prop<TileModel>({ required: false });
@@ -82,31 +29,41 @@ class Props {
 }
 
 @Options({
-  emits: [ 'start', 'planeswalk', 'hellride' ],
-  components: { Card },
+  emits: [ 'show', 'hellride' ],
+  components: {
+    Current,
+    Hellrideable,
+    Planewalkable,
+    Unreachable,
+  },
 })
 export default class Tile extends Vue.with(Props) {
-  public get state(): State {
+  public get tileComponent(): Component | undefined {
     if (this.tile) {
       if (Math.abs(this.x) + Math.abs(this.y) === 0) {
-        return this.hidden ? State.PREPARATION : State.CURRENT;
+        return Current;
       }
 
       if (Math.abs(this.x) + Math.abs(this.y) === 1) {
-        return this.hidden ? State.HIDDEN : State.PLANESWALKABLE;
+        return Planewalkable;
+      }
+
+      if (!this.hidden) {
+        return Unreachable;
       }
     }
 
     if (
-      !this.tile
+      !this.hidden
+      && !this.tile
       && Math.abs(this.x) + Math.abs(this.y) === 2
       && Math.abs(this.x) === 1
       && Math.abs(this.y) === 1
     ) {
-      return State.HELLRIDEABLE;
+      return Hellrideable;
     }
 
-    return State.UNREACHABLE;
+    return undefined;
   }
 
   public hellride(): void {
@@ -114,41 +71,15 @@ export default class Tile extends Vue.with(Props) {
     this.$emit('hellride', coords);
   }
 
-  public planeswalk(): void {
-    const coords: Coordinates = { x: this.x, y: this.y };
-    this.$emit('planeswalk', coords);
-  }
-
-  public start(): void {
-    this.$emit('start');
+  public show(): void {
+    this.$emit('show', this.tile);
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@keyframes scale-center {
-  0% {}
-  100% {
-    transform: scale(3);
-  }
-}
-@keyframes scale-up-br {
-  0% {
-    transform-origin: 100% 100%;
-  }
-  100% {
-    transform: scale(3);
-    transform-origin: 100% 100%;
-  }
-}
-@keyframes scale-up-tl {
-  0% {
-    transform-origin: 0% 0%;
-  }
-  100% {
-    transform: scale(3);
-    transform-origin: 0% 0%;
-  }
+.tile:hover {
+  cursor: pointer;
 }
 
 .multi {
@@ -166,88 +97,6 @@ export default class Tile extends Vue.with(Props) {
     bottom: -.75rem;
     right: -.75rem;
   }
-
-  &:hover {
-    z-index: 3;
-
-    div:first-child {
-      animation: scale-up-br 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-
-      &:hover {
-        z-index: 4;
-      }
-    }
-
-    div:last-child {
-      animation: scale-up-tl 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-
-      &:hover {
-        z-index: 4;
-      }
-    }
-  }
 }
-
-.preparation:hover {
-  cursor: pointer;
-}
-
-.hidden img {
-  border-radius: 3.5% / 4.7%;
-}
-
-.current, .preparation {
-  z-index: 2;
-  transform: scale(1.5);
-
-  &:not(.multi):hover {
-    z-index: 3;
-    filter: none;
-    animation: scale-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-  }
-}
-
-.planeswalkable {
-  &:not(.multi):hover {
-    z-index: 3;
-    cursor: pointer;
-    animation: scale-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-  }
-}
-
-.unreachable {
-  filter: grayscale(90%);
-
-  &:not(.multi):hover {
-    z-index: 3;
-    animation: scale-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-  }
-}
-
-.hellrideable {
-  width: 100%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex-wrap: wrap;
-  align-items: center;
-
-  svg {
-    max-height: 7rem;
-
-    path {
-      fill: darkgrey;
-    }
-  }
-
-  &:hover {
-    cursor: pointer;
-
-    svg path {
-      fill: grey;
-    }
-  }
-}
-
 </style>
+
