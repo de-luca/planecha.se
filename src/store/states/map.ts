@@ -36,18 +36,18 @@ export type State = {
   wasShuffled: boolean;
 };
 
-function initState(): State {
-  return {
-    map: new EmptyMap(),
-    feed: [],
-    online: false,
-    mates: new Map(),
-    wasShuffled: false,
-  };
+function resetState(state: Record<string, unknown>): State {
+  state.map = new EmptyMap();
+  state.feed = [];
+  state.online = false;
+  state.mates = new Map();
+  state.wasShuffled = false;
+
+  return state as State;
 }
 
 // Init state
-export const state: State = initState();
+export const state: State = resetState({});
 
 // mutations enums
 export enum MutationTypes {
@@ -112,7 +112,7 @@ export const mutations: Mutations = {
       (state.map as OnlineInterface).leave();
     }
 
-    state = initState();
+    resetState(state);
     eventBus.off('*');
   },
 
