@@ -18,6 +18,7 @@ import {
 export class InterplanarTunnel extends Phenomenon {
   public enter(states: MapStates, { passive = false, initiator }: Passivity = {}): void {
     const revealer: RevealerWallState = {
+      title: this.name,
       source: RevealerSource.INTERPLANAR_TUNNEL,
       component: RevealerMode.PICK,
       sendShownTo: 'top',

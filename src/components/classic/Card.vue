@@ -1,10 +1,10 @@
 <template>
   <div class="card-container">
 
-    <div v-if="hasCounters" class="counters buttons has-addons">
-      <button @click="update(-1)" class="button is-light is-rounded">-</button>
-      <div class="button is-light">{{ card.counter.value }}</div>
-      <button @click="update(1)" class="button is-light is-rounded">+</button>
+    <div v-if="hasCounters" class="counters tags has-addons">
+      <span class="tag is-dark is-large minus" @click="update(-1)">-</span>
+      <span class="tag is-dark is-large value">{{ card.counter.value }}</span>
+      <span class="tag is-dark is-large plus" @click="update(1)">+</span>
     </div>
 
     <img :class="{ phenomenon: isPhenomenon }" :src="imgSrc">
@@ -69,7 +69,18 @@ img {
 .counters {
   position: absolute;
   right: 0;
-  top: -1.5rem;
+  top: calc(-40px - .5rem);
   z-index: 2;
+
+  .tag {
+    &.minus, &.plus {
+      cursor: pointer;
+      width: 3rem;
+    }
+
+    &.value {
+      width: 4rem;
+    }
+  }
 }
 </style>

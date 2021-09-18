@@ -19,6 +19,7 @@ import {
 export class StairsToInfinity extends Plane {
   public chaos(states: MapStates, { passive = false, initiator }: Passivity = {}): void {
     const revealer: RevealerWallState = {
+      title: this.name,
       source: RevealerSource.STAIRS_TO_INFINITY,
       component: RevealerMode.SCRY,
       sendShownTo: 'bottom',

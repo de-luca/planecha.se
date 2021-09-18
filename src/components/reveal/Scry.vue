@@ -2,7 +2,7 @@
   <div class="modal" style="display: block">
     <div class="modal-background"></div>
     <div class="modal-content">
-      <h1 class="title" v-if="title" v-html="title"></h1>
+      <h1 class="title" v-if="config.title" v-html="config.title"></h1>
       <div class="revealed">
         <template v-for="(c, index) in revealed.relevant" :key="c.id">
           <div class="card-wrapper">
@@ -125,6 +125,10 @@ input[type="radio"] {
   justify-content: center;
   align-items: center;
   gap: .5rem;
+
+  .title {
+    color: var(--text-color-contrast);
+  }
 }
 
 .revealed {

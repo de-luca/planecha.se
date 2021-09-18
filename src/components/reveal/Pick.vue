@@ -2,7 +2,7 @@
   <div class="modal" style="display: block">
     <div class="modal-background"></div>
     <div class="modal-content">
-      <h1 class="title" v-if="title" v-html="title"></h1>
+      <h1 class="title" v-if="config.title" v-html="config.title"></h1>
       <div v-if="revealed.others.length > 0" class="tabs is-centered is-medium">
         <ul>
           <li :class="{ 'is-active': activeTab === 'relevant' }">
@@ -111,6 +111,10 @@ export default class Pick extends mixins(Wall).with(BaseReveal) {
   justify-content: center;
   align-items: center;
   gap: .5rem;
+
+  .title {
+    color: var(--text-color-contrast);
+  }
 }
 
 .relevant, .others {

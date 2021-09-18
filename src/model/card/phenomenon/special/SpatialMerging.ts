@@ -18,6 +18,7 @@ import {
 export class SpatialMerging extends Phenomenon {
   public enter(states: MapStates, { passive = false, initiator }: Passivity = {}): void {
     const revealer: RevealerWallState = {
+      title: this.name,
       source: RevealerSource.SPACIAL_MERGING,
       component: RevealerMode.SHOW,
       sendShownTo: 'top',

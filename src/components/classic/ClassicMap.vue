@@ -9,10 +9,11 @@
     </div>
 
     <div class="controls">
-      <chaos-btn v-if="canChaos" />
+      <chaos-btn v-if="isPlane" />
       <planeswalk-btn
-        :resolver="revealer?.seeder"
+        :title="isPlane ? 'Planeswalk' : 'Resolve'"
         :disabled="revealer && revealer.passive"
+        @click="(revealer?.seeder ?? planeswalk)()"
       />
     </div>
   </div>
@@ -89,7 +90,7 @@ export default class ClassicMap extends Vue {
     return this.store.getters.revealed;
   }
 
-  public get canChaos(): boolean {
+  public get isPlane(): boolean {
     return this.store.getters.active[0].type === 'plane';
   }
 
@@ -105,6 +106,7 @@ export default class ClassicMap extends Vue {
       passive: revealer.passive,
       component: RevealFactory.get(revealer.component),
       config: {
+        title: revealer.title,
         sendShownTo: revealer.sendShownTo,
         passive: revealer.passive,
         mateName: revealer.initiator
@@ -134,6 +136,10 @@ export default class ClassicMap extends Vue {
           resolver: this.customPlaneswalk,
         };
     }
+  }
+
+  public planeswalk(): void {
+    this.store.dispatch(ActionTypes.PLANESWALK);
   }
 
   public customPlaneswalk(choices: PickedLeft): void {

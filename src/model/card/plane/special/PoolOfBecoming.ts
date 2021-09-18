@@ -19,6 +19,7 @@ import {
 export class PoolOfBecoming extends Plane {
   public chaos(states: MapStates, { passive = false, initiator }: Passivity = {}): void {
     const revealer: RevealerWallState = {
+      title: this.name,
       source: RevealerSource.POOL_OF_BECOMING,
       component: RevealerMode.SHOW,
       sendShownTo: 'bottom',
