@@ -15,8 +15,11 @@ import {
   PhenomenonWallState,
 } from '@/model/states';
 
+import ChaosBtn from '@/components/btn/ChaosBtn.vue';
+import StartBtn from '@/components/btn/StartBtn.vue';
 
-type LocalRevealerConfig = {
+
+interface LocalRevealerConfig {
   passive: boolean;
   component: Component;
   seeder: () => void;
@@ -24,7 +27,7 @@ type LocalRevealerConfig = {
   config: RevealConfig;
 }
 
-type LocalPhenomenonWallConfig = {
+interface LocalPhenomenonWallConfig {
   config: WallConfig;
   phenomenon: Phenomenon;
 }
@@ -32,7 +35,7 @@ type LocalPhenomenonWallConfig = {
 export class EternitiesMap extends Vue {
   protected readonly off: number = 4;
   protected store: Store;
-  protected shownTile: Tile | null = null;
+  protected displayedTile: Tile | null = null;
 
   protected setUp(): void {
     this.store = useStore();
@@ -116,6 +119,10 @@ export class EternitiesMap extends Vue {
     return this.store.getters.map.hasStarted;
   }
 
+  public get btnComponent(): Component {
+    return this.hasStarted ? ChaosBtn : StartBtn;
+  }
+
   public unreachable(x: number, y: number): boolean {
     return Math.abs(x - this.off) + Math.abs(y - this.off) > 3;
   }
@@ -136,21 +143,16 @@ export class EternitiesMap extends Vue {
     this.store.dispatch(ActionTypes.RESOLVE_REVEAL, payload);
   }
 
-  public showTile(tile: Tile): void {
-    this.shownTile = tile;
+  public showTileDetails(tile: Tile): void {
+    this.displayedTile = tile;
   }
 
-  public closeTile(): void {
-    this.shownTile = null;
+  public hideTileDetails(): void {
+    this.displayedTile = null;
   }
 
-  public start(): void {
-    this.store.dispatch(ActionTypes.START_GAME);
-  }
-
-  public planeswalk(coords: Coordinates): void {
-    this.closeTile();
-    this.store.dispatch(ActionTypes.PLANESWALK, { coords });
+  public resolve(): void {
+    this.store.dispatch(ActionTypes.RESOLVE);
   }
 
   public customPlaneswalk(choices: PickedLeft): void {

@@ -9,12 +9,18 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Vue } from 'vue-class-component';
+import { ActionTypes, Store, useStore } from '@/store';
 
-@Options({ emits: [ 'start' ] })
 export default class StartBtn extends Vue {
-  public start(): void {
-    this.$emit('start');
+  private store: Store;
+
+  public created() {
+    this.store = useStore();
+  }
+
+  public start() {
+    this.store.dispatch(ActionTypes.START_GAME);
   }
 }
 </script>

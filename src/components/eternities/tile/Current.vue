@@ -32,4 +32,21 @@ export default class Current extends Vue.with(Props) {}
   z-index: 2;
   // box-shadow: -2px 3px 3px black;
 }
+
+.multi {
+  width: 100%;
+  position: relative;
+
+  > div:first-child {
+    position: absolute;
+    top: -.75rem;
+    left: -.75rem;
+  }
+
+  > div:last-child {
+    position: absolute;
+    bottom: -.75rem;
+    right: -.75rem;
+  }
+}
 </style>

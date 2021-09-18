@@ -27,4 +27,21 @@ export default class Unreachable extends Vue.with(Props) {}
 .unreachable {
   filter: grayscale(90%);
 }
+
+.multi {
+  width: 100%;
+  position: relative;
+
+  > div:first-child {
+    position: absolute;
+    top: -.75rem;
+    left: -.75rem;
+  }
+
+  > div:last-child {
+    position: absolute;
+    bottom: -.75rem;
+    right: -.75rem;
+  }
+}
 </style>

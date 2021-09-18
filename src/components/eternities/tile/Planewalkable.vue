@@ -34,4 +34,21 @@ export default class Planeswalkable extends Vue.with(Props) {}
 .planeswalkable:hover {
   z-index: 3;
 }
+
+.multi {
+  width: 100%;
+  position: relative;
+
+  > div:first-child {
+    position: absolute;
+    top: -.75rem;
+    left: -.75rem;
+  }
+
+  > div:last-child {
+    position: absolute;
+    bottom: -.75rem;
+    right: -.75rem;
+  }
+}
 </style>

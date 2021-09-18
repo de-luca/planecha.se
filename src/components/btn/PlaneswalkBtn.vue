@@ -20,6 +20,3 @@ class Props {
 
 export default class PlaneswalkBtn extends Vue.with(Props) {}
 </script>
-
-<style lang="scss" scoped>
-</style>

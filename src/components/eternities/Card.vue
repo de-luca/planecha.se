@@ -46,7 +46,7 @@ export default class Card extends mixins(Imgable).with(Props) {
     return this.card.counter !== undefined;
   }
 
-  public update(change: number) {
+  public update(change: number): void {
     this.store.dispatch(ActionTypes.COUNTERS, { planeId: this.card.id, change });
   }
 }
@@ -67,7 +67,7 @@ img {
   z-index: 2;
 
   &.active {
-    top: -.75rem;
+    top: -.5rem;
     right: -.5rem;
 
     .tag {
@@ -84,8 +84,8 @@ img {
 
   &.inactive {
     width: 2rem;
+    top: -.5rem;
     right: -.5rem;
-    top: -.75rem;
   }
 }
 </style>

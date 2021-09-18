@@ -10,7 +10,7 @@
       <planeswalk-btn
         v-else
         class="planeswalk-btn"
-        :resolver="resolver"
+        @click="$emit('resolve')"
       />
     </div>
   </div>
@@ -29,6 +29,7 @@ class Props extends WallProps {
 }
 
 @Options({
+  emits: [ 'resolve' ],
   components: { PlaneswalkBtn },
 })
 export default class PhenomenonWall extends mixins(Wall).with(Props) {

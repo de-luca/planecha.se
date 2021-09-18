@@ -8,22 +8,28 @@
         :x="x - off"
         :y="y - off"
         :hidden="!hasStarted"
-        @start="start"
-        @planeswalk="prePlaneswalk"
         @hellride="preHellride"
+        @show="showTileDetails"
       />
     </template>
 
-    <chaos-btn class="chaos" />
+    <component class="action-btn" :is="btnComponent" />
   </div>
 
   <feed :defaultShow="false" />
+
+  <tile-details
+    v-if="displayedTile"
+    :tile="displayedTile"
+    @close="hideTileDetails"
+    @planeswalk="prePlaneswalk"
+  />
 
   <phenomenon-wall
     v-if="phenomenonWall"
     :config="phenomenonWall.config"
     :phenomenon="phenomenonWall.phenomenon"
-    :resolver="revealer?.seeder"
+    @resolve="(revealer?.seeder ?? resolve)()"
   />
 
   <encounter-wall
@@ -62,16 +68,18 @@ import {
 import { WallConfig } from '../Wall';
 
 import ChaosBtn from '@/components/btn/ChaosBtn.vue';
+import StartBtn from '@/components/btn/StartBtn.vue';
 import Tile from '@/components/eternities/Tile.vue';
-import PhenomenonWall from '@/components/wall/PhenomenonWall.vue';
-import EncounterWall from '@/components/wall/EncounterWall.vue';
 import Scry from '@/components/reveal/Scry.vue';
 import Pick from '@/components/reveal/Pick.vue';
 import Show from '@/components/reveal/Show.vue';
 import Feed from '@/components/board/Feed.vue';
+import PhenomenonWall from '@/components/wall/PhenomenonWall.vue';
+import EncounterWall from '@/components/wall/EncounterWall.vue';
+import TileDetails from '@/components/eternities/TileDetails.vue';
 
 
-type LocalEncounterWallConfig = {
+interface LocalEncounterWallConfig {
   config: WallConfig;
   coords: Coordinates;
   triggerConfig: TriggerConfig;
@@ -79,9 +87,10 @@ type LocalEncounterWallConfig = {
 
 @Options({
   components: {
-    Tile, ChaosBtn, Feed,
+    Tile, ChaosBtn, StartBtn, Feed,
     PhenomenonWall, EncounterWall,
     Scry, Pick, Show,
+    TileDetails,
   },
 })
 export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
@@ -119,6 +128,7 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
   }
 
   public prePlaneswalk(coords: Coordinates): void {
+    this.hideTileDetails();
     this.handleTrigger(
       coords,
       this.getTriggerConfig(EncounterTrigger.ON_PLANESWALK),
@@ -185,11 +195,11 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
   align-content: center;
 }
 
-.chaos {
+.action-btn {
   position: absolute;
   top: 0;
   right: 0;
-  height: 10rem;
-  width: 10rem;
+  height: 8rem;
+  width: 8rem;
 }
 </style>

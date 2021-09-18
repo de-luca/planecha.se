@@ -7,8 +7,8 @@
 </template>
 
 <script lang="ts">
-import { ActionTypes, Store, useStore } from '@/store';
 import { Vue } from 'vue-class-component';
+import { ActionTypes, Store, useStore } from '@/store';
 
 export default class ChaosBtn extends Vue {
   private store: Store;
@@ -22,6 +22,3 @@ export default class ChaosBtn extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-</style>

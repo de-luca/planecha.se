@@ -9,27 +9,19 @@
         :y="y - off"
         :hidden="!hasStarted"
         @hellride="planeswalk"
-        @show="showTile"
+        @show="showTileDetails"
       />
     </template>
 
-    <chaos-btn
-      v-if="hasStarted"
-      class="chaos"
-    />
-    <start-btn
-      v-else
-      class="start"
-      @start="start"
-    />
+    <component class="action-btn" :is="btnComponent" />
   </div>
 
   <feed :defaultShow="false" />
 
-  <plane-display
-    v-if="shownTile"
-    :tile="shownTile"
-    @close="closeTile"
+  <tile-details
+    v-if="displayedTile"
+    :tile="displayedTile"
+    @close="hideTileDetails"
     @planeswalk="planeswalk"
   />
 
@@ -37,7 +29,7 @@
     v-if="phenomenonWall"
     :config="phenomenonWall.config"
     :phenomenon="phenomenonWall.phenomenon"
-    :resolver="revealer?.seeder"
+    @resolve="(revealer?.seeder ?? resolve)()"
   />
 
   <component
@@ -51,6 +43,7 @@
 
 <script lang="ts">
 import { mixins, Options } from 'vue-class-component';
+import { ActionTypes } from '@/store';
 import { EternitiesMap } from '@/components/eternities/EternitiesMap';
 
 import ChaosBtn from '@/components/btn/ChaosBtn.vue';
@@ -61,20 +54,25 @@ import Pick from '@/components/reveal/Pick.vue';
 import Show from '@/components/reveal/Show.vue';
 import Feed from '@/components/board/Feed.vue';
 import PhenomenonWall from '@/components/wall/PhenomenonWall.vue';
-import PlaneDisplay from '@/components/eternities/PlaneDisplay.vue';
+import TileDetails from '@/components/eternities/TileDetails.vue';
 
 @Options({
   inheritAttrs: false,
   components: {
-    Tile, ChaosBtn, StartBtn, PhenomenonWall,
+    ChaosBtn, StartBtn,
+    Tile, TileDetails, PhenomenonWall,
     Scry, Pick, Show,
     Feed,
-    PlaneDisplay,
   },
 })
 export default class EternitiesMapSingleDeck extends mixins(EternitiesMap) {
   public created(): void {
     this.setUp();
+  }
+
+  public planeswalk(coords: Coordinates): void {
+    this.hideTileDetails();
+    this.store.dispatch(ActionTypes.PLANESWALK, { coords });
   }
 }
 </script>
@@ -85,19 +83,19 @@ export default class EternitiesMapSingleDeck extends mixins(EternitiesMap) {
 
   @media (max-aspect-ratio: 85/61) {
     & {
-      grid-template-columns: repeat(7, calc(  (100vw - 5rem)  / 7) );
+      grid-template-columns: repeat(7, calc( ((100vw - 2rem) - (6 * 1rem)) / 7) );
     }
   }
   @media (min-aspect-ratio: 85/61) {
     & {
-      grid-template-columns: repeat(7, calc( ( (100vw - 5rem) / (85 / 61) ) / 7) );
+      grid-template-columns: repeat(7, calc( (((100vw - 2rem) - (6 * 1rem)) / (85 / 61)) / 7) );
     }
   }
 
   display: grid;
 
-  grid-template-rows: repeat(7, calc(((100vh - 6.5rem) - (6 * .5rem)) / 7));
-  gap: .5rem;
+  grid-template-rows: repeat(7, calc( ((100vh - 6.5rem) - (6 * 1rem)) / 7) );
+  gap: 1rem;
   align-content: center;
 
   .tile {
@@ -107,11 +105,11 @@ export default class EternitiesMapSingleDeck extends mixins(EternitiesMap) {
   }
 }
 
-.chaos, .start {
+.action-btn {
   position: absolute;
   top: 0;
   right: 0;
-  height: 10rem;
-  width: 10rem;
+  height: 8rem;
+  width: 8rem;
 }
 </style>
