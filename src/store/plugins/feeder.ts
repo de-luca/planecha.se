@@ -1,4 +1,5 @@
 import { MutationPayload } from 'vuex';
+import { BuildProps } from '@/model/map';
 import { Plane } from '@/model/card';
 import {
   MutationTypes,
@@ -6,6 +7,9 @@ import {
   Store,
 } from '..';
 import { Payload } from '../states/map';
+
+const chaos = '<abbr class="symbol chaos" title="chaos">{CHAOS}</abbr>';
+const plnwlk = '<abbr class="symbol planeswalk" title="planeswalk">{CHAOS}</abbr>';
 
 function name(state: State, id?: string): string {
   if (id) {
@@ -15,12 +19,19 @@ function name(state: State, id?: string): string {
 }
 
 function handler(mutation: MutationPayload, state: State): void {
+  console.log(mutation);
+
   switch (mutation.type) {
     case MutationTypes.INIT: {
-      if ((state.map?.active?.length ?? 0) > 0) {
-        state.feed.push('<b>You</b> created new game <b>Classic</b>');
-        state.feed.push(`Game starts on <b>${state.map?.active[0].name}</b>`);
-      }
+      const payload = mutation.payload as BuildProps;
+      const type = payload.type === 'classic'
+        ? 'Classic'
+        : 'Eternities Map';
+      state.feed.push(`<b>You</b> created new game <b>${type}</b>`);
+      break;
+    }
+    case MutationTypes.START_GAME: {
+      state.feed.push(`Game starts on <b>${state.map.active[0].name}</b>`);
       break;
     }
     case MutationTypes.HEY: {
@@ -31,29 +42,32 @@ function handler(mutation: MutationPayload, state: State): void {
     case MutationTypes.PLANESWALK: {
       const payload = mutation.payload as Payload.Planeswalk;
       const message = `<b>${name(state, payload?.passivity?.initiator)}</b> ` +
-        (state.map?.active[0].type === 'plane' ? 'planeswalked to ' : 'encountered ') +
-        `<b>${state.map?.active[0].name}</b>`;
+        (state.map?.active[0].type === 'plane' ? `${plnwlk} to` : 'encountered') +
+        ` <b>${state.map?.active[0].name}</b>`;
       state.feed.push(message);
       break;
     }
     case MutationTypes.CUSTOM_PLANESWALK: {
       const payload = mutation.payload as Payload.CustomPlaneswalk;
-      const message = `<b>${name(state, payload?.passivity?.initiator)}</b> planeswalked to ` +
+      const message = `<b>${name(state, payload?.passivity?.initiator)}</b> ${plnwlk} to ` +
         `<b>${state.map?.active.map(c => c.name).join('</b> and <b>')}</b>`;
       state.feed.push(message);
       break;
     }
     case MutationTypes.CHAOS: {
       const payload = mutation.payload as Payload.Chaos;
-      state.feed.push(`<b>${name(state, payload?.passivity?.initiator)}</b> triggered <b>Chaos</b>`);
+      const message = `<b>${name(state, payload?.passivity?.initiator)}</b> triggered ${chaos} ` +
+        `on <b>${state.map?.active.map(c => c.name).join('</b> and <b>')}</b>`;
+      state.feed.push(message);
       break;
     }
     case MutationTypes.COUNTERS: {
       const payload = mutation.payload as Payload.Counters;
       const plane = state.map.active.find(c => c.id === payload.planeId) as Plane;
       const message = `<b>${name(state, payload?.initiator)}</b> ` +
-        `${payload.change > 0 ? 'added ' : 'removed '} <b>${Math.abs(payload.change)}</b> counter on ` +
-        `<b>${plane.name}</b> (<b>${plane.counter?.value}</b>)`;
+        `${payload.change > 0 ? 'added ' : 'removed '} <b>${Math.abs(payload.change)}</b> `+
+        `(<b>${plane.counter?.value}</b>) counter on ` +
+        `<b>${plane.name}</b>`;
       state.feed.push(message);
       break;
     }
