@@ -42,6 +42,7 @@
       <button
         v-if="!config.passive"
         class="button is-dark is-medium"
+        :disabled="selected === null"
         @click="confirm"
       >
         Confirm choice

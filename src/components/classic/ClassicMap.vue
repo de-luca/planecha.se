@@ -223,8 +223,8 @@ export default class ClassicMap extends Vue {
   gap: .5rem;
 
   & > button {
-    height: 10rem;
-    width: 10rem;
+    height: 8rem;
+    width: 8rem;
   }
 }
 </style>
