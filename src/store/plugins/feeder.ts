@@ -19,8 +19,6 @@ function name(state: State, id?: string): string {
 }
 
 function handler(mutation: MutationPayload, state: State): void {
-  console.log(mutation);
-
   switch (mutation.type) {
     case MutationTypes.INIT: {
       const payload = mutation.payload as BuildProps;
