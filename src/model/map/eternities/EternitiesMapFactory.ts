@@ -31,7 +31,6 @@ export class EternitiesMapFactory {
       return new SingleDeck({
         deck,
         states: state,
-        hasStarted: false,
         deckType: specs.deckType,
       });
     }
@@ -39,7 +38,6 @@ export class EternitiesMapFactory {
     return new DualDeck({
       deck,
       states: state,
-      hasStarted: false,
       deckType: EternitiesMapDeckType.PLANES,
       phenomenaDeck: this.deckProvider.getPhenomenonDeck(),
       encounterTriggers: encounterTriggers as EncounterTriggers,

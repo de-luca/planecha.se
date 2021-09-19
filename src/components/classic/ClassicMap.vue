@@ -3,18 +3,21 @@
     <div class="active">
       <div :class="{ double: active.length > 1 }">
         <template v-for="a in active" :key="a.id">
-          <card :card="a" />
+          <card :card="a" :hidden="!hasStarted" />
         </template>
       </div>
     </div>
 
-    <div class="controls">
+    <div v-if="hasStarted" class="controls">
       <chaos-btn v-if="isPlane" />
       <planeswalk-btn
         :title="isPlane ? 'Planeswalk' : 'Resolve'"
         :disabled="revealer && revealer.passive"
         @click="(revealer?.seeder ?? planeswalk)()"
       />
+    </div>
+    <div v-else class="controls">
+      <start-btn />
     </div>
   </div>
 
@@ -46,6 +49,7 @@ import {
 } from '@/model/states';
 
 import ChaosBtn from '@/components/btn/ChaosBtn.vue';
+import StartBtn from '@/components/btn/StartBtn.vue';
 import PlaneswalkBtn from '@/components/btn/PlaneswalkBtn.vue';
 import Card from '@/components/classic/Card.vue';
 import Feed from '@/components/board/Feed.vue';
@@ -64,7 +68,7 @@ type LocalRevealerConfig = {
 @Options({
   components: {
     Card, Feed,
-    ChaosBtn, PlaneswalkBtn,
+    ChaosBtn, StartBtn, PlaneswalkBtn,
     Pick, Scry, Show,
   },
 })
@@ -92,6 +96,10 @@ export default class ClassicMap extends Vue {
 
   public get isPlane(): boolean {
     return this.store.getters.active[0].type === 'plane';
+  }
+
+  public get hasStarted(): boolean {
+    return this.store.getters.map.hasStarted;
   }
 
   public get revealer(): LocalRevealerConfig | undefined {

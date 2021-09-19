@@ -43,11 +43,10 @@ export class MapFactory {
         break;
       case MapType.CLASSIC:
         map = new Classic({
+          states: new MapStates(),
           deck: advanced.cards
             ? this.deckProvider.getSpecificDeck(advanced.cards)
             : this.deckProvider.getDeck(),
-          states: new MapStates(),
-          hasStarted: true,
         });
         break;
       case MapType.ETERNITIES:

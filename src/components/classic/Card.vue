@@ -1,5 +1,5 @@
 <template>
-  <div class="card-container">
+  <div v-if="!hidden" class="card-container">
 
     <div v-if="hasCounters" class="counters tags has-addons">
       <span class="tag is-dark is-large minus" @click="update(-1)">-</span>
@@ -9,6 +9,9 @@
 
     <img :class="{ phenomenon: isPhenomenon }" :src="imgSrc">
 
+  </div>
+  <div v-else class="hidden">
+    <img src="/cards/back.jpg">
   </div>
 </template>
 
@@ -20,6 +23,7 @@ import { Imgable } from '../Imgable';
 
 class Props {
   public card = prop<ModelCard>({ required: true });
+  public hidden = prop<boolean>({ required: false, default: false });
 }
 
 export default class Card extends mixins(Imgable).with(Props) {

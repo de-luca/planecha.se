@@ -3,11 +3,8 @@ import { Map, MapProps } from './Map';
 import { MapSpecs, MapType } from './MapInterface';
 
 export class Classic extends Map {
-  public hasStarted = true;
-
   public constructor(props: MapProps) {
     super(props);
-
     this.active = props.active ?? [this.deck.drawPlane().card];
   }
 
