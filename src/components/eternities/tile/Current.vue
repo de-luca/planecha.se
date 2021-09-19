@@ -5,6 +5,11 @@
     :class="{ multi: tile.plane.length > 1 }"
     @click="$emit('show')"
   >
+    <fa
+      class="marker"
+      icon="map-marker-alt"
+      size="5x"
+    />
     <card
       v-for="p in tile.plane"
       :key="p"
@@ -29,8 +34,20 @@ export default class Current extends Vue.with(Props) {}
 
 <style lang="scss" scoped>
 .current {
+  position: relative;
   z-index: 2;
-  // box-shadow: -2px 3px 3px black;
+
+  .marker {
+    z-index: 3;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    color: darkgrey;
+  }
+
+  &:hover .marker {
+    color: grey;
+  }
 }
 
 .multi {
