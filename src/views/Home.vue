@@ -72,9 +72,9 @@
           >Font Awesome License</a>.
         </p>
         <p>
-          Planecha.se uses the font from
+          The "maze" background font is from
           <a
-            href=" http://mazeletter.xyz/"
+            href="http://mazeletter.xyz/"
             rel="noopener noreferrer"
             target="_blank"
           >Mazeletter</a>.

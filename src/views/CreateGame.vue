@@ -1,9 +1,14 @@
 <template>
   <div class="container">
-    <h1 class="title">CREATE GAME</h1>
-    <h2 class="subtitle">
-      or <router-link to="/join">Join a game</router-link>
-    </h2>
+    <div class="title">
+      <router-link class="brand" to="/">⟁</router-link>
+      <div>
+        <h1>CREATE GAME</h1>
+        <h2 class="subtitle">
+          or <router-link to="/join">Join a game</router-link>
+        </h2>
+      </div>
+    </div>
 
     <form @submit.prevent="create">
 
@@ -44,7 +49,7 @@
             Open deck customization
           </button>
           <p class="help is-danger" v-if="!hasRequiredCards.valid">
-            <font-awesome-icon icon="exclamation" fixed-width />
+            <fa icon="exclamation" fixed-width />
             Your deck does not have the minimum required
             <b>Planes</b> cards: <b>{{ hasRequiredCards.minCards }}</b>.<br>
             <em>(In order not to explode)</em>
@@ -240,6 +245,21 @@ export default class CreateGame extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.title {
+  display: flex;
+
+ .brand {
+    align-self: center;
+    margin-right: 1rem;
+    transform: rotate(180deg);
+    color: var(--brand-color-primary);
+
+    &:hover {
+      color: var(--brand-color-secondary);
+    }
+  }
+}
+
 .container {
   width: 800px;
   padding-top: 2rem;

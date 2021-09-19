@@ -1,9 +1,14 @@
 <template>
   <div class="container">
-    <h1 class="title">JOIN GAME</h1>
-    <h2 class="subtitle">
-      or <router-link to="/create">Create a game</router-link>
-    </h2>
+    <div class="title">
+      <router-link class="brand" to="/">⟁</router-link>
+      <div>
+        <h1>JOIN GAME</h1>
+        <h2 class="subtitle">
+          or <router-link to="/create">Create a game</router-link>
+        </h2>
+      </div>
+    </div>
 
     <form @submit.prevent="join">
       <div class="field">
@@ -77,6 +82,20 @@ export default class JoinGame extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.title {
+  display: flex;
+
+ .brand {
+    align-self: center;
+    margin-right: 1rem;
+    color: var(--brand-color-primary);
+
+    &:hover {
+      color: var(--brand-color-secondary);
+    }
+  }
+}
+
 .container {
   width: 800px;
   padding-top: 2rem;
