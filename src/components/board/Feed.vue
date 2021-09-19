@@ -5,7 +5,7 @@
     @click="toggle"
   >
     <span class="icon is-medium">
-      <font-awesome-icon icon="bars" fixed-width />
+      <fa icon="bars" fixed-width />
     </span>
   </button>
 

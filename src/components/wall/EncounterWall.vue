@@ -5,7 +5,7 @@
       <h1 class="title" v-html="title"></h1>
 
       <div class="roll-placeholder">
-        <font-awesome-icon class="dice" icon="dice-d20" />
+        <fa class="dice" icon="dice-d20" />
         <div v-if="rolled !== 0" class="roll" :class="{one: rolled === 1}">
           {{ rolled }}
         </div>

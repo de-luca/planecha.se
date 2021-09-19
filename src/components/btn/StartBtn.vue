@@ -4,7 +4,7 @@
     title="Start Game"
     @click="start"
   >
-    <font-awesome-icon icon="play-circle" size="6x" />
+    <fa icon="play-circle" size="6x" />
   </button>
 </template>
 

@@ -20,7 +20,7 @@
         <div class="dropdown-item">
           <div class="field">
             <label class="label">
-              <font-awesome-icon icon="user-plus" fixed-width />
+              <fa icon="user-plus" fixed-width />
               Invite players
             </label>
             <div class="field has-addons">
@@ -39,7 +39,7 @@
 
         <div class="dropdown-item">
           <p class="label">
-            <font-awesome-icon icon="users" fixed-width />
+            <fa icon="users" fixed-width />
             Current Players
           </p>
           <p>{{ yourName }}</p>
