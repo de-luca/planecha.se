@@ -1,38 +1,97 @@
 $lgt-bg-color: #fff;
 
-$lgt-btn-bg-color-primary: #363636;
-$lgt-btn-text-color-primary: #fff;;
-$lgt-btn-bg-color-secondary: whitesmoke;
-$lgt-btn-text-color-secondary: rgba(0, 0, 0, 0.7);
+$lgt-primary: #363636;
+$lgt-secondary: whitesmoke;
 
-$lgt-text-color-contrast: whitesmoke;
+$lgt-input-color: $lgt-primary;
+$lgt-input-placeholder: rgba(54, 54, 54, 0.3);
 
+$lgt-brand-maze-color: #f9f9f9;
 $lgt-brand-color-primary: #4a4a4a;
 $lgt-brand-color-secondary: grey;
 
-$lgt-maze-color: #f9f9f9;
+$lgt-btn-bg-color-primary: $lgt-primary;
+$lgt-btn-text-color-primary: #fff;
+$lgt-btn-bg-color-secondary: $lgt-secondary;
+$lgt-btn-text-color-secondary: rgba(0, 0, 0, 0.7);
 
-$lgt-picker-bg-color: white;
+$lgt-picker-bg-color: #fff;
 $lgt-picker-text-color: #363636;
 $lgt-picker-border-color: #dbdbdb;
 $lgt-picker-checked-border-color: #4a4a4a;
+
+
+$drk-bg-color: #111111;
+
+$drk-primary: whitesmoke;
+$drk-secondary: #363636;
+
+$drk-input-color: $drk-primary;
+$drk-input-placeholder: rgba(245, 245, 245, 0.3);
+
+$drk-btn-bg-color-primary: #363636;
+$drk-btn-text-color-primary: #fff;
+$drk-btn-bg-color-secondary: whitesmoke;
+$drk-btn-text-color-secondary: rgba(0, 0, 0, 0.7);
+
+$drk-text-color-contrast: whitesmoke;
+
+$drk-brand-color-primary: whitesmoke;
+$drk-brand-color-secondary: #dbdbdb;
+
+$drk-maze-color: #363636;
+
+$drk-picker-bg-color: transparent;
+$drk-picker-text-color: whitesmoke;
+$drk-picker-border-color: #3a3a3a;
+$drk-picker-checked-border-color: whitesmoke;
 
 
 :root {
   --card-radius: 3.5% / 4.7%;
   --form-btn-width: 250px;
 
-  --text-color-contrast: #{$lgt-text-color-contrast};
+  --bg-color: #{$lgt-bg-color};
+  --text-color: #{$lgt-primary};
 
+  --input-color: #{$lgt-input-color};
+  --input-placeholder: #{$lgt-input-placeholder};
+
+  --btn-bg-color-primary: #{$lgt-btn-bg-color-primary};
+  --btn-text-color-primary: #{$lgt-btn-text-color-primary};
+  --btn-bg-color-secondary: #{$lgt-btn-bg-color-secondary};
+  --btn-text-color-secondary: #{$lgt-btn-text-color-secondary};
+
+  --brand-maze-color: #{$lgt-brand-maze-color};
   --brand-color-primary: #{$lgt-brand-color-primary};
   --brand-color-secondary: #{$lgt-brand-color-secondary};
-
-  --maze-color: #{$lgt-maze-color};
 
   --picker-bg-color: #{$lgt-picker-bg-color};
   --picker-text-color: #{$lgt-picker-text-color};
   --picker-border-color: #{$lgt-picker-border-color};
   --picker-checked-border-color: #{$lgt-picker-checked-border-color};
+}
+
+[data-theme="dark"] {
+  --bg-color: #{$drk-bg-color};
+  --text-color: #{$drk-primary};
+
+  --input-color: #{$drk-input-color};
+  --input-placeholder: #{$drk-input-placeholder};
+
+  --btn-bg-color-primary: #{$drk-btn-bg-color-primary};
+  --btn-text-color-primary: #{$drk-btn-text-color-primary};
+  --btn-bg-color-secondary: #{$drk-btn-bg-color-secondary};
+  --btn-text-color-secondary: #{$drk-btn-text-color-secondary};
+
+  --brand-maze-color: #{$drk-maze-color};
+  --brand-color-primary: #{$drk-brand-color-primary};
+  --brand-color-secondary: #{$drk-brand-color-secondary};
+
+  --picker-bg-color: #{$drk-picker-bg-color};
+  --picker-text-color: #{$drk-picker-text-color};
+  --picker-border-color: #{$drk-picker-border-color};
+  --picker-checked-border-color: #{$drk-picker-checked-border-color};
 }
 
 @import "../node_modules/bulma/bulma.sass";
@@ -45,6 +104,14 @@ $lgt-picker-checked-border-color: #4a4a4a;
 
 html, body, #app {
   height: 100%;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  
+  .title,
+  .subtitle,
+  .label {
+    color: var(--text-color);
+  }
 }
 
 svg.control {
@@ -52,6 +119,29 @@ svg.control {
   max-height: 100%;
   height: 100%;
   width: 100%;
+}
+
+.input {
+  background-color: transparent;
+  color: var(--input-color);
+
+  &::placeholder {
+    color: var(--input-placeholder);
+  }
+}
+
+button, a {
+  &.button {
+    &.is-dark, &.is-static {
+      background-color: var(--btn-bg-color-primary);
+      color: var(--btn-text-color-primary);
+    }
+
+    &.is-light {
+      background-color: var(--btn-bg-color-secondary);
+      color: var(--btn-text-color-secondary);
+    }
+  }
 }
 
 .symbol {

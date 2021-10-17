@@ -46,10 +46,10 @@ export default class Maze extends Vue {
 <style lang="scss" scoped>
 .maze {
   font-family: 'MazeletterUtopia';
-  color: var(--maze-color);
+  color: var(--brand-maze-color);
   display: block;
   position: absolute;
-  z-index: -1;
+  z-index: 0;
   top: 0;
   left: 0;
   margin: 0;

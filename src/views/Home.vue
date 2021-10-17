@@ -139,9 +139,9 @@ export default class Home extends Vue {
       position: relative;
       z-index: 1;
       display: inline-block;
-      font-size: 5rem;
-      width: 6rem;
-      line-height: 5rem;
+      font-size: 4rem;
+      width: 5rem;
+      line-height: 4rem;
       text-align: center;
 
       &:hover {
@@ -150,13 +150,13 @@ export default class Home extends Vue {
       }
 
       &:nth-child(1) {
-        transform: rotate(180deg) translateX(-3rem);
+        transform: rotate(180deg) translateX(-2.5rem);
       }
       &:nth-child(2) {
         z-index: 2;
       }
       &:nth-child(3) {
-        transform: rotate(180deg) translateX(3rem);
+        transform: rotate(180deg) translateX(2.5rem);
       }
     }
   }
@@ -169,6 +169,8 @@ export default class Home extends Vue {
 .footer {
   padding-top: 3rem;
   padding-bottom: 3rem;
+
+  background-color: var(--bg-color);
 
   .container {
     max-width: 64rem;

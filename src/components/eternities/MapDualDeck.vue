@@ -193,6 +193,12 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
   grid-template-rows: repeat(7, auto);
   gap: 1rem;
   align-content: center;
+
+  .tile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 
 .action-btn {

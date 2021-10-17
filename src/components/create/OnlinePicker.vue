@@ -88,6 +88,9 @@ export default class OnlinePicker extends Vue.with(Props) {
 
     label {
       width: var(--form-btn-width);
+      color: var(--picker-text-color);
+      background-color: var(--picker-bg-color);
+      border-color: var(--picker-border-color);
     }
   }
 }
@@ -96,12 +99,10 @@ input[type="radio"] {
   display: none;
 
   &:checked+label {
-    border-color: #4a4a4a;
-    color: #363636;
-  }
-  &:disabled+label {
-    background-color: var(--picker-bg-color);
     border-color: var(--picker-checked-border-color);
+  }
+
+  &:disabled+label {
     box-shadow: none;
     opacity: 0.5;
     cursor: not-allowed;

@@ -69,6 +69,9 @@ export default class ButtonPicker extends Vue.with(Props) {
 
     label {
       width: var(--form-btn-width);
+      color: var(--picker-text-color);
+      background-color: var(--picker-bg-color);
+      border-color: var(--picker-border-color);
     }
   }
 }
