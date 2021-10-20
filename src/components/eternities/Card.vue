@@ -4,14 +4,14 @@
       v-if="hasCounters && current"
       class="counters active tags has-addons"
     >
-      <span class="tag is-dark minus" @click.stop="update(-1)">-</span>
-      <span class="tag is-dark value">{{ card.counter.value }}</span>
-      <span class="tag is-dark plus" @click.stop="update(1)">+</span>
+      <span class="tag is-primary minus" @click.stop="update(-1)">-</span>
+      <span class="tag is-primary value">{{ card.counter.value }}</span>
+      <span class="tag is-primary plus" @click.stop="update(1)">+</span>
     </div>
 
     <div
       v-if="hasCounters && !current"
-      class="counters inactive tag is-dark"
+      class="counters inactive tag is-primary"
     >
       {{ card.counter.value }}
     </div>
@@ -59,7 +59,7 @@ export default class Card extends mixins(Imgable).with(Props) {
 }
 
 img {
-  border-radius: 3.5% / 4.7%;
+  border-radius: var(--card-radius);
 }
 
 .counters {

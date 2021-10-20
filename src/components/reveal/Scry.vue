@@ -17,14 +17,7 @@
                 :value="true"
                 v-model="picked[c.id]"
               >
-              <label
-                class="button"
-                :class="{
-                  'is-focused is-dark': picked[c.id] === true,
-                  'is-light': !picked[c.id],
-                }"
-                :for="id + index + 'top'"
-              >
+              <label class="button" :for="id + index + 'top'">
                 Keep on top
               </label>
 
@@ -35,14 +28,7 @@
                 :value="false"
                 v-model="picked[c.id]"
               >
-              <label
-                class="button"
-                :class="{
-                  'is-focused is-dark': picked[c.id] === false,
-                  'is-light': picked[c.id],
-                }"
-                :for="id + index + 'bottom'"
-              >
+              <label class="button" :for="id + index + 'bottom'">
                 Put at the bottom
               </label>
             </div>
@@ -53,7 +39,7 @@
 
       <button
         v-if="!config.passive"
-        class="button is-dark is-medium"
+        class="button is-primary is-medium"
         @click="confirm"
         :disabled="!allSet"
       >
@@ -103,14 +89,19 @@ export default class Scry extends mixins(Wall).with(BaseReveal) {
   gap: 1rem;
 
   label {
-    width: 250px;
+    width: var(--form-btn-width);
+    color: var(--modal-picker-color);
+    background-color: var(--modal-picker-bg);
+    border-color: var(--modal-picker-border);
   }
 }
-
 
 input[type="radio"] {
   display: none;
 
+  &:checked+label {
+    border-color: var(--modal-picker-checked-border);
+  }
 }
 
 .modal-content {
@@ -125,10 +116,6 @@ input[type="radio"] {
   justify-content: center;
   align-items: center;
   gap: .5rem;
-
-  .title {
-    color: var(--text-color-contrast);
-  }
 }
 
 .revealed {
@@ -152,7 +139,7 @@ input[type="radio"] {
 
     img {
       height: 30rem;
-      border-radius: 3.5% / 4.7%;
+      border-radius: var(--card-radius);
     }
   }
 }

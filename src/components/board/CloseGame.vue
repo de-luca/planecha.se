@@ -1,5 +1,5 @@
 <template>
-  <button class="button is-light is-warning" @click="opened = true">
+  <button class="button is-warn" @click="opened = true">
     {{ online ? 'Leave' : 'Close' }} Game
   </button>
 
@@ -49,6 +49,22 @@ export default class CloseGame extends Vue {
 <style lang="scss" scoped>
 button {
   height: 100%;
+
+  &.is-warn {
+    color: var(--btn-warn-color);
+    background-color: var(--btn-warn-bg);
+    border-color: var(--btn-warn-border);
+
+    &:hover {
+      color: var(--btn-warn-color);
+      background-color: var(--btn-warn-hover-bg);
+    }
+
+    &:active {
+      color: var(--btn-warn-color);
+      background-color: var(--btn-warn-active-bg);
+    }
+  }
 }
 
 .modal {

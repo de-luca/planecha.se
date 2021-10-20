@@ -137,15 +137,15 @@ export default class EncounterSetup extends Vue.with(Props) {
 .control.box {
   box-shadow: unset;
   color: var(--text-color);
-  border: 1px solid var(--picker-border-color);
-  background-color: var(--picker-bg-color);
+  border: 1px solid var(--picker-border);
+  background-color: var(--picker-bg);
 
   .radio {
     color: var(--text-color);
   }
 
   &.active {
-    border-color: var(--picker-checked-border-color);
+    border-color: var(--picker-checked-border);
   }
 }
 

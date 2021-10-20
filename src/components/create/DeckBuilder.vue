@@ -33,7 +33,7 @@
       </nav>
 
       <button
-        class="button is-dark"
+        class="button is-primary"
         @click.prevent="done"
       >
         Use this Deck
@@ -46,15 +46,13 @@
       @click.prevent="cancel"
     ></button>
   </div>
-
 </template>
 
 <script lang="ts">
 import { Container } from 'typedi';
 import { Options, prop, Vue } from 'vue-class-component';
 import { DeckProvider } from '@/services/DeckProvider';
-import { Card, Plane } from '@/model/card';
-import { MapType } from '@/model/map';
+import { Card } from '@/model/card';
 
 export enum Group {
   ALL = 'all',
@@ -133,12 +131,12 @@ export default class DeckBuilder extends Vue.with(Props) {
 
   h1.title {
     text-align: center;
-    color: var(--text-color-contrast);
+    color: whitesmoke;
   }
 }
 
 .panel {
-  background-color: white;
+   background-color: white;
 
   .panel-tabs {
     font-size: 1em;

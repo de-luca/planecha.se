@@ -1,0 +1,43 @@
+@import './btn';
+
+$lgt-bg-color: #ffffff;
+
+$lgt-primary: #363636;
+$lgt-secondary: whitesmoke;
+
+$lgt-input-color: $lgt-primary;
+$lgt-input-placeholder: rgba(54, 54, 54, 0.3);
+
+$lgt-brand-maze-color: #f9f9f9;
+$lgt-brand-color-primary: #4a4a4a;
+$lgt-brand-color-secondary: grey;
+
+$lgt-btn-primary-color: $btn-dark-color;
+$lgt-btn-primary-border: $btn-dark-border;
+$lgt-btn-primary-background: $btn-dark-background;
+$lgt-btn-primary-hover-background: $btn-dark-hover-background;
+$lgt-btn-primary-active-background: $btn-dark-active-background;
+
+$lgt-btn-secondary-color: $btn-light-color;
+$lgt-btn-secondary-border: $btn-light-border;
+$lgt-btn-secondary-background: $btn-light-background;
+$lgt-btn-secondary-hover-background: $btn-light-hover-background;
+$lgt-btn-secondary-active-background: $btn-light-active-background;
+
+$lgt-btn-warn-color: #946c00;
+$lgt-btn-warn-border: transparent;
+$lgt-btn-warn-background: #fffaeb;
+$lgt-btn-warn-hover-background: #fff6de;
+$lgt-btn-warn-active-background: #fff3d1;
+
+$lgt-btn-bordered-color: #363636;
+$lgt-btn-bordered-border: #dbdbdb;
+$lgt-btn-bordered-background: #ffffff;
+$lgt-btn-bordered-hover-border: #b5b5b5;
+$lgt-btn-bordered-focus-border: #485fc7;
+$lgt-btn-bordered-focus-box-shadow: 0 0 0 .125em rgba(72,95,199,.25);
+
+$lgt-picker-color: #363636;
+$lgt-picker-border: #dbdbdb;
+$lgt-picker-background: #ffffff;
+$lgt-picker-checked-border: #4a4a4a;

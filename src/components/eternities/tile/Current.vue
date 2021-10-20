@@ -33,6 +33,10 @@ export default class Current extends Vue.with(Props) {}
 </script>
 
 <style lang="scss" scoped>
+img {
+  border-radius: var(--card-radius);
+}
+
 .current {
   position: relative;
   z-index: 2;

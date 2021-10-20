@@ -41,7 +41,7 @@
 
       <button
         v-if="!config.passive"
-        class="button is-dark is-medium"
+        class="button is-primary is-medium"
         :disabled="selected === null"
         @click="confirm"
       >
@@ -112,10 +112,6 @@ export default class Pick extends mixins(Wall).with(BaseReveal) {
   justify-content: center;
   align-items: center;
   gap: .5rem;
-
-  .title {
-    color: var(--text-color-contrast);
-  }
 }
 
 .relevant, .others {
@@ -139,7 +135,7 @@ export default class Pick extends mixins(Wall).with(BaseReveal) {
 
     img {
       height: 20rem;
-      border-radius: 3.5% / 4.7%;
+      border-radius: var(--card-radius);
 
       &:hover {
         animation: scale-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;

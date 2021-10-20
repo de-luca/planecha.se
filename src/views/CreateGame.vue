@@ -45,7 +45,7 @@
       <encounter-setup v-model="encounterConfig" v-if="showDualDeckConfig" />
 
         <div class="field">
-          <button class="button is-light" @click.prevent="toggleDeckBuilder">
+          <button class="button is-secondary" @click.prevent="toggleDeckBuilder">
             Open deck customization
           </button>
           <p class="help is-danger" v-if="!hasRequiredCards.valid">
@@ -67,7 +67,7 @@
       <div class="field">
         <div class="control">
           <button
-            class="button is-dark"
+            class="button is-primary"
             :class="{ 'is-loading': creating }"
             type="submit"
             :disabled="!hasRequiredCards.valid"

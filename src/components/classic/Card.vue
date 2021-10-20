@@ -2,9 +2,9 @@
   <div v-if="!hidden" class="card-container">
 
     <div v-if="hasCounters" class="counters tags has-addons">
-      <span class="tag is-dark is-large minus" @click="update(-1)">-</span>
-      <span class="tag is-dark is-large value">{{ card.counter.value }}</span>
-      <span class="tag is-dark is-large plus" @click="update(1)">+</span>
+      <span class="tag is-primary is-large minus" @click="update(-1)">-</span>
+      <span class="tag is-primary is-large value">{{ card.counter.value }}</span>
+      <span class="tag is-primary is-large plus" @click="update(1)">+</span>
     </div>
 
     <img :class="{ phenomenon: isPhenomenon }" :src="imgSrc">

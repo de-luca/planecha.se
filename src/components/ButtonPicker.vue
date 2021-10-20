@@ -69,9 +69,9 @@ export default class ButtonPicker extends Vue.with(Props) {
 
     label {
       width: var(--form-btn-width);
-      color: var(--picker-text-color);
-      background-color: var(--picker-bg-color);
-      border-color: var(--picker-border-color);
+      color: var(--picker-color);
+      background-color: var(--picker-bg);
+      border-color: var(--picker-border);
     }
   }
 }
@@ -80,7 +80,7 @@ input[type="radio"] {
   display: none;
 
   &:checked+label {
-    border-color: var(--picker-checked-border-color);
+    border-color: var(--picker-checked-border);
   }
 }
 </style>

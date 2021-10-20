@@ -31,6 +31,10 @@ export default class Planeswalkable extends Vue.with(Props) {}
 </script>
 
 <style lang="scss" scoped>
+img {
+  border-radius: var(--card-radius);
+}
+
 .planeswalkable:hover {
   z-index: 3;
 }

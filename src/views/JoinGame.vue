@@ -43,7 +43,7 @@
       <div class="field join-game">
         <div class="control">
           <button
-            class="button is-dark"
+            class="button is-primary"
             :class="{ 'is-loading': joining }"
             type="submit"
           >

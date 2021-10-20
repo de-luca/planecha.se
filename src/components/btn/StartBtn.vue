@@ -1,6 +1,6 @@
 <template>
   <button
-    class="button is-light is-rounded"
+    class="button is-secondary is-rounded"
     title="Start Game"
     @click="start"
   >
