@@ -8,7 +8,6 @@
         url('/fonts/mazeletter-utopia.woff')  format('woff');
 }
 
-
 :root {
   --card-radius: 3.5% / 4.7%;
   --form-btn-width: 250px;
@@ -18,90 +17,18 @@
   --modal-picker-border: #{$drk-picker-border};
   --modal-picker-checked-border: #{$drk-picker-checked-border};
 
-
-  --bg-color: #{$lgt-bg-color};
-  --text-color: #{$lgt-primary};
-
-  --input-color: #{$lgt-input-color};
-  --input-placeholder: #{$lgt-input-placeholder};
-
-  --brand-maze-color: #{$lgt-brand-maze-color};
-  --brand-color-primary: #{$lgt-brand-color-primary};
-  --brand-color-secondary: #{$lgt-brand-color-secondary};
-
-  --btn-primary-color: #{$lgt-btn-primary-color};
-  --btn-primary-bg: #{$lgt-btn-primary-background};
-  --btn-primary-border: #{$lgt-btn-primary-border};
-  --btn-primary-hover-bg: #{$lgt-btn-primary-hover-background};
-  --btn-primary-active-bg: #{$lgt-btn-primary-active-background};
-
-  --btn-secondary-color: #{$lgt-btn-secondary-color};
-  --btn-secondary-bg: #{$lgt-btn-secondary-background};
-  --btn-secondary-border: #{$lgt-btn-secondary-border};
-  --btn-secondary-hover-bg: #{$lgt-btn-secondary-hover-background};
-  --btn-secondary-active-bg: #{$lgt-btn-secondary-active-background};
-
-  --btn-warn-color: #{$lgt-btn-warn-color};
-  --btn-warn-bg: #{$lgt-btn-warn-background};
-  --btn-warn-border: #{$lgt-btn-warn-border};
-  --btn-warn-hover-bg: #{$lgt-btn-warn-hover-background};
-  --btn-warn-active-bg: #{$lgt-btn-warn-active-background};
-
-  --btn-bordered-color: #{$lgt-btn-bordered-color};
-  --btn-bordered-bg: #{$lgt-btn-bordered-background};
-  --btn-bordered-border: #{$lgt-btn-bordered-border};
-  --btn-bordered-hover-border: #{$lgt-btn-bordered-hover-border};
-  --btn-bordered-focus-border: #{$lgt-btn-bordered-focus-border};
-  --btn-bordered-focus-box-shadow: #{$lgt-btn-bordered-focus-box-shadow};
-
-  --picker-color: #{$lgt-picker-color};
-  --picker-bg: #{$lgt-picker-background};
-  --picker-border: #{$lgt-picker-border};
-  --picker-checked-border: #{$lgt-picker-checked-border};
+  @include lgt;
 }
 
-[data-theme="dark"] {
-  --bg-color: #{$drk-bg-color};
-  --text-color: #{$drk-primary};
-
-  --input-color: #{$drk-input-color};
-  --input-placeholder: #{$drk-input-placeholder};
-
-  --brand-maze-color: #{$drk-brand-maze-color};
-  --brand-color-primary: #{$drk-brand-color-primary};
-  --brand-color-secondary: #{$drk-brand-color-secondary};
-
-  --btn-primary-color: #{$drk-btn-primary-color};
-  --btn-primary-bg: #{$drk-btn-primary-background};
-  --btn-primary-border: #{$drk-btn-primary-border};
-  --btn-primary-hover-bg: #{$drk-btn-primary-hover-background};
-  --btn-primary-active-bg: #{$drk-btn-primary-active-background};
-
-  --btn-secondary-color: #{$drk-btn-secondary-color};
-  --btn-secondary-bg: #{$drk-btn-secondary-background};
-  --btn-secondary-border: #{$drk-btn-secondary-border};
-  --btn-secondary-hover-bg: #{$drk-btn-secondary-hover-background};
-  --btn-secondary-active-bg: #{$drk-btn-secondary-active-background};
-
-  --btn-warn-color: #{$drk-btn-warn-color};
-  --btn-warn-bg: #{$drk-btn-warn-background};
-  --btn-warn-border: #{$drk-btn-warn-border};
-  --btn-warn-hover-bg: #{$drk-btn-warn-hover-background};
-  --btn-warn-active-bg: #{$drk-btn-warn-active-background};
-
-  --btn-bordered-color: #{$drk-btn-bordered-color};
-  --btn-bordered-bg: #{$drk-btn-bordered-background};
-  --btn-bordered-border: #{$drk-btn-bordered-border};
-  --btn-bordered-hover-border: #{$drk-btn-bordered-hover-border};
-  --btn-bordered-focus-border: #{$drk-btn-bordered-focus-border};
-  --btn-bordered-focus-box-shadow: #{$drk-btn-bordered-focus-box-shadow};
-
-  --picker-color: #{$drk-picker-color};
-  --picker-bg: #{$drk-picker-background};
-  --picker-border: #{$drk-picker-border};
-  --picker-checked-border: #{$drk-picker-checked-border};
+[data-theme="drk"] {
+  @include drk;
 }
 
+[data-theme="sys"] {
+  @media (prefers-color-scheme: dark) {
+    @include drk;
+  }
+}
 
 html, body, #app {
   height: 100%;
@@ -141,9 +68,8 @@ svg.control {
 
 button, a, span, div {
   &.button, &.tag {
-    border-color: transparent;
-
     &.is-primary {
+      border-color: transparent;
       color: var(--btn-primary-color);
       background-color: var(--btn-primary-bg);
       border-color: var(--btn-primary-border);
@@ -164,6 +90,7 @@ button, a, span, div {
     }
 
     &.is-secondary {
+      border-color: transparent;
       color: var(--btn-secondary-color);
       background-color: var(--btn-secondary-bg);
       border-color: var(--btn-secondary-border);

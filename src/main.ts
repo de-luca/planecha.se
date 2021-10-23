@@ -7,6 +7,11 @@ import App from './App.vue';
 import { store } from './store';
 import { router } from './router';
 
+document.documentElement.setAttribute(
+  'data-theme',
+  localStorage.getItem('theme') ?? 'sys',
+);
+
 createApp(App, { store })
   .component('fa', FontAwesomeIcon)
   .use(router)

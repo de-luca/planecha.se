@@ -7,6 +7,7 @@
         <div title="D">⟁</div>
         <div title="F">⟁</div>
       </div>
+      <theme-selector class="is-full-height" />
       <online-controls v-if="online"/>
       <close-game />
     </div>
@@ -31,12 +32,14 @@ import MapDualDeck from '@/components/eternities/MapDualDeck.vue';
 import OnlineControls from '@/components/board/OnlineControls.vue';
 import NotifCenter from '@/components/board/NotifCenter.vue';
 import CloseGame from '@/components/board/CloseGame.vue';
+import ThemeSelector from '@/components/ThemeSelector.vue';
 
 
 @Options({
   components: {
     ClassicMap, MapSingleDeck, MapDualDeck,
     OnlineControls, NotifCenter, CloseGame,
+    ThemeSelector,
   },
 })
 export default class Board extends Vue {

@@ -63,17 +63,17 @@ export default class Feed extends Vue.with(Props) {
   right: 1rem;
   z-index: 2;
 
-  color: var(--btn-bordered-color);
-  background-color: var(--btn-bordered-bg);
-  border-color: var(--btn-bordered-border);
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  border-color: var(--border-color);
 
   &:hover {
-    border-color: var(--btn-bordered-hover-border);
+    border-color: #b5b5b5;
   }
 
   &:focus {
-    border-color: var(--btn-bordered-focus-border);
-    box-shadow: var(--btn-bordered-focus-box-shadow);
+    border-color: #485fc7;;
+    box-shadow: 0 0 0 .125em rgba(72,95,199,.25);
   }
 }
 
@@ -84,13 +84,13 @@ export default class Feed extends Vue.with(Props) {
   z-index: 1;
   height: 50vh;
   width: 22rem;
-  border: 1px solid var(--btn-bordered-border);
+  border: 1px solid var(--border-color);
   overflow-x: scroll;
   transform: scale(0);
   margin-bottom: 0;
 
-  color: var(--btn-bordered-color);
-  background-color: var(--btn-bordered-bg);
+  color: var(--text-color);
+  background-color: var(--bg-color);
 
   &.shown {
 	  animation: scale .25s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards;

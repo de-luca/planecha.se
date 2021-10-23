@@ -11,7 +11,7 @@
           Do you wish to {{ online ? 'leave' : 'close' }} the game?
         </p>
         <div class="buttons">
-          <button class="button is-danger is-light" @click="close">
+          <button class="button is-danger" @click="close">
             {{ online ? 'Leave' : 'Close' }} Game
           </button>
           <button class="button is-light" @click="opened = false">
@@ -65,6 +65,22 @@ button {
       background-color: var(--btn-warn-active-bg);
     }
   }
+
+  &.is-danger {
+    color: var(--btn-danger-color);
+    background-color: var(--btn-danger-bg);
+    border-color: var(--btn-danger-border);
+
+    &:hover {
+      color: var(--btn-danger-color);
+      background-color: var(--btn-danger-hover-bg);
+    }
+
+    &:active {
+      color: var(--btn-danger-color);
+      background-color: var(--btn-danger-active-bg);
+    }
+  }
 }
 
 .modal {
@@ -80,6 +96,9 @@ button {
 
   .box {
     text-align: center;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
   }
 
   & > * {
@@ -93,8 +112,9 @@ button {
     align-items: center;
     gap: .5rem;
 
-    button {
-      flex-grow: 1;
+    button.button {
+      margin-right: 0;
+      flex: 1 1 0px;
     }
   }
 }

@@ -82,6 +82,9 @@
         <p>
           Build version: {{ sha }}
         </p>
+        <div class="theme-container">
+          <theme-selector />
+        </div>
       </div>
     </footer>
   </div>
@@ -89,9 +92,11 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import Maze from '@/components/Maze.vue';
 
-@Options({ components: { Maze } })
+import Maze from '@/components/Maze.vue';
+import ThemeSelector from '@/components/ThemeSelector.vue';
+
+@Options({ components: { Maze, ThemeSelector } })
 export default class Home extends Vue {
   public get sha(): string {
     return import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA;
@@ -105,6 +110,7 @@ export default class Home extends Vue {
     color: var(--brand-color-secondary);
   }
 }
+
 .hero-body.container {
   height: 100%;
   display: flex;
@@ -174,6 +180,11 @@ export default class Home extends Vue {
 
   .container {
     max-width: 64rem;
+  }
+
+  .theme-container {
+    display: flex;
+    justify-content: flex-end;
   }
 }
 </style>

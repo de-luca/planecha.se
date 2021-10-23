@@ -8,6 +8,7 @@
           or <router-link to="/join">Join a game</router-link>
         </h2>
       </div>
+      <theme-selector />
     </div>
 
     <form @submit.prevent="create">
@@ -96,6 +97,7 @@ import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';
 import DeckBuilder, { Group } from '@/components/create/DeckBuilder.vue';
 import OnlinePicker from '@/components/create/OnlinePicker.vue';
 import EncounterSetup from '@/components/create/EncounterSetup.vue';
+import ThemeSelector from '@/components/ThemeSelector.vue';
 
 @Options({
   components: {
@@ -103,6 +105,7 @@ import EncounterSetup from '@/components/create/EncounterSetup.vue';
     OnlinePicker,
     EncounterSetup,
     DeckBuilder,
+    ThemeSelector,
   },
 })
 export default class CreateGame extends Vue {
@@ -257,6 +260,14 @@ export default class CreateGame extends Vue {
     &:hover {
       color: var(--brand-color-secondary);
     }
+  }
+
+  div:first-of-type {
+    flex-grow: 1;
+  }
+
+  .theme-selector {
+    align-self: flex-start;
   }
 }
 

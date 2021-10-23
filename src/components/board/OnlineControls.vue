@@ -6,8 +6,8 @@
     <div class="dropdown-trigger">
       <button
         @click="active = !active"
-        class="button"
-        :class="{ 'is-outlined': active, 'is-light': !active }"
+        :class="{ 'is-outlined': active }"
+        class="button is-info"
         aria-haspopup="true"
         aria-controls="dropdown-menu"
       >
@@ -97,6 +97,8 @@ export default class OnlineControls extends Vue {
 <style lang="scss" scoped>
 #copy {
   width: 5rem;
+  background-color: transparent;
+  color: var(--text-color);
 }
 
 .dropdown-trigger {
@@ -104,10 +106,46 @@ export default class OnlineControls extends Vue {
 
   button {
     height: 100%;
+
+    &.is-info {
+      color: var(--btn-info-color);
+      background-color: var(--btn-info-bg);
+      border-color: var(--btn-info-border);
+
+      &.is-outlined {
+        color: var(--btn-info-color);
+        background-color: transparent;
+        border-color: var(--btn-info-color);
+      }
+
+      &:hover {
+        color: var(--btn-info-color);
+        background-color: var(--btn-info-hover-bg);
+      }
+
+      &:active {
+        color: var(--btn-info-color);
+        background-color: var(--btn-info-active-bg);
+      }
+    }
   }
 }
 
 .dropdown-menu {
   width: 30rem;
+
+  .dropdown-content {
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+
+    .dropdown-divider {
+      background-color: var(--border-color);
+    }
+
+    .dropdown-item {
+      color: var(--text-color);
+    }
+  }
 }
 </style>

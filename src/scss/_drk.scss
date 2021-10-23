@@ -1,43 +1,57 @@
 @import './btn';
 
-$drk-bg-color: #111111;
-
 $drk-primary: whitesmoke;
 $drk-secondary: #363636;
-
-$drk-input-color: $drk-primary;
-$drk-input-placeholder: rgba(245, 245, 245, 0.3);
-
-$drk-brand-maze-color: #1a1a1a;
-$drk-brand-color-primary: whitesmoke;
-$drk-brand-color-secondary: #dbdbdb;
-
-$drk-btn-primary-color: $btn-light-color;
-$drk-btn-primary-border: $btn-light-border;
-$drk-btn-primary-background: $btn-light-background;
-$drk-btn-primary-hover-background: $btn-light-hover-background;
-$drk-btn-primary-active-background: $btn-light-active-background;
-
-$drk-btn-secondary-color: $btn-dark-color;
-$drk-btn-secondary-border: $btn-dark-border;
-$drk-btn-secondary-background: $btn-dark-background;
-$drk-btn-secondary-hover-background: $btn-dark-hover-background;
-$drk-btn-secondary-active-background: $btn-dark-active-background;
-
-$drk-btn-warn-color: rgba(0, 0, 0, 0.7);
-$drk-btn-warn-border: transparent;
-$drk-btn-warn-background: #ffe08a;
-$drk-btn-warn-hover-background: #ffdc7d;
-$drk-btn-warn-active-background: #ffd970;
-
-$drk-btn-bordered-color: #ffffff;
-$drk-btn-bordered-border: transparent;
-$drk-btn-bordered-background: #363636;
-$drk-btn-bordered-hover-border: #2f2f2f;
-$drk-btn-bordered-focus-border: #485fc7;
-$drk-btn-bordered-focus-box-shadow: 0 0 0 .125em rgba(72,95,199,.25);
 
 $drk-picker-color: whitesmoke;
 $drk-picker-border: #3a3a3a;
 $drk-picker-background: transparent;
 $drk-picker-checked-border: whitesmoke;
+
+@mixin drk {
+  --bg-color: #111111;
+  --text-color: #{$drk-primary};
+  --border-color: #2f2f2f;
+
+  --input-color: #{$drk-primary};
+  --input-placeholder: rgba(245, 245, 245, 0.3);
+
+  --brand-maze-color: #1a1a1a;
+  --brand-color-primary: whitesmoke;
+  --brand-color-secondary: #dbdbdb;
+
+  --btn-primary-color: #{$btn-light-color};
+  --btn-primary-bg: #{$btn-light-background};
+  --btn-primary-border: #{$btn-light-border};
+  --btn-primary-hover-bg: #{$btn-light-hover-background};
+  --btn-primary-active-bg: #{$btn-light-active-background};
+
+  --btn-secondary-color: #{$btn-dark-color};
+  --btn-secondary-bg: #{$btn-dark-background};
+  --btn-secondary-border: #{$btn-dark-border};
+  --btn-secondary-hover-bg: #{$btn-dark-hover-background};
+  --btn-secondary-active-bg: #{$btn-dark-active-background};
+
+  --btn-info-color: #ffffff;
+  --btn-info-bg: #3e8ed0;
+  --btn-info-border: transparent;
+  --btn-info-hover-bg: #3488ce;
+  --btn-info-active-bg: #3082c5;
+  
+  --btn-warn-color: rgba(0, 0, 0, 0.7);
+  --btn-warn-bg: #ffe08a;
+  --btn-warn-border: transparent;
+  --btn-warn-hover-bg: #ffdc7d;
+  --btn-warn-active-bg: #ffd970;
+
+  --btn-danger-color: #ffffff;
+  --btn-danger-bg: #f14668;
+  --btn-danger-border: transparent;
+  --btn-danger-hover-bg: #f03a5f;
+  --btn-danger-active-bg: #ef2e55;
+
+  --picker-color: #{$drk-picker-color};
+  --picker-bg: #{$drk-picker-background};
+  --picker-border: #{$drk-picker-border};
+  --picker-checked-border: #{$drk-picker-checked-border};
+}

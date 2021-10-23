@@ -8,6 +8,7 @@
           or <router-link to="/create">Create a game</router-link>
         </h2>
       </div>
+      <theme-selector />
     </div>
 
     <form @submit.prevent="join">
@@ -57,8 +58,11 @@
 
 <script lang="ts">
 import { ActionTypes, Store, useStore } from '@/store';
-import { Vue } from 'vue-class-component';
+import { Options, Vue } from 'vue-class-component';
 
+import ThemeSelector from '@/components/ThemeSelector.vue';
+
+@Options({ components: { ThemeSelector } })
 export default class JoinGame extends Vue {
   private store: Store;
   private roomId: string;
@@ -94,10 +98,19 @@ export default class JoinGame extends Vue {
       color: var(--brand-color-secondary);
     }
   }
+
+  div:first-of-type {
+    flex-grow: 1;
+  }
+
+  .theme-selector {
+    align-self: flex-start;
+  }
 }
 
 .container {
   width: 800px;
+  height: 100vh;
   padding-top: 2rem;
   padding-bottom: 2rem;
 }
