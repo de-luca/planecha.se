@@ -60,8 +60,8 @@ export default class Card extends mixins(Imgable).with(Props) {
 }
 
 img {
-  width:100%;
-  max-width:1000px;
+  width: 100%;
+  max-width: 1000px;
   filter: drop-shadow(1px 1px 1px #585858);
   border-radius: var(--card-radius);
 

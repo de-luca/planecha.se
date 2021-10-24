@@ -80,7 +80,7 @@
           >Mazeletter</a>.
         </p>
         <p>
-          Build version: {{ sha }}
+          Build version: <code>{{ sha }}</code>
         </p>
         <div class="theme-container">
           <theme-selector />
@@ -105,9 +105,10 @@ export default class Home extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.navbar {
-  .is-ghost {
-    color: var(--brand-color-secondary);
+.tabs a {
+  color: var(--brand-color-secondary);
+  &:hover {
+    color: var(--brand-color-primary);
   }
 }
 

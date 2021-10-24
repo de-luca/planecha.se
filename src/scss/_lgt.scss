@@ -4,6 +4,9 @@ $lgt-primary: #363636;
 $lgt-secondary: whitesmoke;
 
 @mixin lgt {
+  --primary: #{$lgt-primary};
+  --secondary: #{$lgt-secondary};
+
   --bg-color: #ffffff;
   --text-color: #{$lgt-primary};
   --border-color: #ededed;

@@ -9,6 +9,9 @@ $drk-picker-background: transparent;
 $drk-picker-checked-border: whitesmoke;
 
 @mixin drk {
+  --primary: #{$drk-primary};
+  --secondary: #{$drk-secondary};
+
   --bg-color: #111111;
   --text-color: #{$drk-primary};
   --border-color: #2f2f2f;
@@ -18,7 +21,7 @@ $drk-picker-checked-border: whitesmoke;
 
   --brand-maze-color: #1a1a1a;
   --brand-color-primary: whitesmoke;
-  --brand-color-secondary: #dbdbdb;
+  --brand-color-secondary: #969696;
 
   --btn-primary-color: #{$btn-light-color};
   --btn-primary-bg: #{$btn-light-background};

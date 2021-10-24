@@ -16,13 +16,13 @@
       </div>
       <div v-else-if="triggerConfig.mechanic === 'MANUAL'" class="control">
         <button
-          class="button is-outlined is-danger is-medium"
+          class="button is-danger is-medium"
           @click="encounter"
         >
           Encounter Phenomenon
         </button>
         <button
-          class="button is-outlined is-light is-medium"
+          class="button is-secondary is-medium"
           @click="planeswalk"
         >
           Planeswalk
@@ -31,7 +31,7 @@
       <div v-else class="control">
         <button
           v-if="rolled === 0"
-          class="button is-outlined is-light is-medium"
+          class="button is-secondary is-medium"
           @click="roll"
         >
           Roll!
@@ -45,7 +45,7 @@
         </button>
         <button
           v-else
-          class="button is-outlined is-light is-medium"
+          class="button is-secondary is-medium"
           @click="planeswalk"
         >
           Planeswalk
@@ -107,7 +107,7 @@ export default class EncounterWall extends mixins(Wall).with(Props) {
   gap: 8rem;
 
   .title {
-    color: var(--text-color-contrast);
+    color: var(--text-color);
   }
 
   .roll-placeholder {
@@ -118,10 +118,7 @@ export default class EncounterWall extends mixins(Wall).with(Props) {
     .dice {
       height: 100%;
       width: unset;
-
-      path {
-        fill: darkgrey;
-      }
+      color: var(--brand-color-primary);
     }
 
     .roll {
@@ -131,7 +128,7 @@ export default class EncounterWall extends mixins(Wall).with(Props) {
       transform: translateY(-45%) translateX(-50%);
       font-weight: bold;
       font-size: 3em;
-      color: var(--text-color-contrast);
+      color: var(--secondary);
 
       &.one {
         filter: drop-shadow(5px 5px 5px red) drop-shadow(-5px -5px 5px red);
@@ -146,6 +143,26 @@ export default class EncounterWall extends mixins(Wall).with(Props) {
 
     button {
       width: 300px;
+    }
+  }
+
+  button {
+    height: 100%;
+
+    &.is-danger {
+      color: var(--btn-danger-color);
+      background-color: var(--btn-danger-bg);
+      border-color: var(--btn-danger-border);
+
+      &:hover {
+        color: var(--btn-danger-color);
+        background-color: var(--btn-danger-hover-bg);
+      }
+
+      &:active {
+        color: var(--btn-danger-color);
+        background-color: var(--btn-danger-active-bg);
+      }
     }
   }
 }

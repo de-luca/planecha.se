@@ -39,7 +39,7 @@
 
       <button
         v-if="!config.passive"
-        class="button is-primary is-medium"
+        class="button is-secondary is-medium"
         @click="confirm"
         :disabled="!allSet"
       >

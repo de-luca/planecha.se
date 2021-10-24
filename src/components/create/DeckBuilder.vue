@@ -11,8 +11,8 @@
           <a @click="selectedGroup = 'phenomenon'" :class="{'is-active': selectedGroup === 'phenomenon'}">Phenomenon</a>
         </p>
         <div class="panel-block">
-          <a @click="all" class="button">All</a>
-          <a @click="none" class="button">None</a>
+          <a @click="all" class="button all">All</a>
+          <a @click="none" class="button none">None</a>
           <p class="control has-icons-right">
             <input @keypress.enter.prevent class="input" type="text" placeholder="Search" v-model="search">
             <span class="icon is-right">
@@ -33,7 +33,7 @@
       </nav>
 
       <button
-        class="button is-primary"
+        class="button is-secondary"
         @click.prevent="done"
       >
         Use this Deck
@@ -135,14 +135,52 @@ export default class DeckBuilder extends Vue.with(Props) {
   }
 }
 
+.button.all, .button.none {
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  border-color: var(--border-color);
+
+  &:hover {
+    border-color: #b5b5b5;
+  }
+
+  &:focus {
+    border-color: #485fc7;
+    box-shadow: 0 0 0 .125em rgba(72,95,199,.25);
+  }
+}
+
 .panel {
-   background-color: white;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+
+  .panel-tabs:not(:last-child), .panel-block:not(:last-child) {
+    border-bottom-color: var(--border-color);
+  }
 
   .panel-tabs {
     font-size: 1em;
+
+    a {
+      border-bottom-color: var(--border-color);
+
+      &.is-active {
+        color: var(--text-color);
+        border-bottom-color: var(--primary);
+      }
+    }
   }
   .panel-block {
+    color: var(--text-color);
     gap: 5px;
+
+    input {
+      border-color: var(--border-color);
+    }
+
+    &:hover {
+      background-color: var(--secondary);
+    }
   }
   .card-list {
     height: 60vh;

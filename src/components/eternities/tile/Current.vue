@@ -46,11 +46,11 @@ img {
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
-    color: darkgrey;
+    color: var(--brand-color-secondary);
   }
 
   &:hover .marker {
-    color: grey;
+    color: var(--brand-color-primary);
   }
 }
 

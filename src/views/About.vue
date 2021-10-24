@@ -92,11 +92,18 @@
         It's the unicode caracter <code>x27c1</code> with some CSS to make it look <em>"cool"</em>.
       </p>
     </div>
+
+    <div class="theme-container">
+      <theme-selector />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component';
+import { Options, Vue } from 'vue-class-component';
+import ThemeSelector from '@/components/ThemeSelector.vue';
+
+@Options({ components: { ThemeSelector } })
 export default class About extends Vue {}
 </script>
 
@@ -109,6 +116,10 @@ export default class About extends Vue {}
 
 .content {
   text-align: justify;
+
+  h2 {
+    color: var(--primary);
+  }
 }
 
 .title {
@@ -143,5 +154,10 @@ export default class About extends Vue {}
       }
     }
   }
+}
+
+.theme-container {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

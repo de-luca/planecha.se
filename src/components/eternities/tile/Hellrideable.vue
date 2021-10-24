@@ -33,13 +33,13 @@ export default class Hellrideable extends Vue.with(Props) {}
     max-height: calc((((100vh - 6.5rem) - (6 * .5rem)) / 7) - 1rem);
 
     path {
-      fill: darkgrey;
+      fill: var(--brand-color-secondary);
     }
   }
 
   &:hover {
     svg path {
-      fill: grey;
+      fill: var(--brand-color-primary);
     }
   }
 }

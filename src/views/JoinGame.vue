@@ -110,7 +110,6 @@ export default class JoinGame extends Vue {
 
 .container {
   width: 800px;
-  height: 100vh;
   padding-top: 2rem;
   padding-bottom: 2rem;
 }
