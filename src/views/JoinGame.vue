@@ -38,6 +38,9 @@
             required
           >
         </div>
+        <label class="checkbox">
+          <input type="checkbox" v-model="saveName"> Save name for future online games
+        </label>
         <p class="help">The name people in the game will see you as.</p>
       </div>
 
@@ -66,18 +69,28 @@ import ThemeSelector from '@/components/ThemeSelector.vue';
 export default class JoinGame extends Vue {
   private store: Store;
   private roomId: string;
-  private name: string;
+  private name: string = '';
+  private saveName: boolean = false;
   private joining: boolean = false;
 
   public created() {
     this.store = useStore();
     this.roomId = this.$route.params.roomId as string ?? '';
-    this.name = '';
+    this.name = localStorage.getItem('name') ?? '';
+    this.saveName = this.name !== '';
   }
 
   public async join() {
     this.joining = true;
+
+    if (this.saveName) {
+      localStorage.setItem('name', this.name);
+    } else {
+      localStorage.removeItem('name');
+    }
+
     await this.store.dispatch(ActionTypes.JOIN, { roomId: this.roomId, name: this.name });
+
     this.joining = false;
 
     this.$router.push('/board');

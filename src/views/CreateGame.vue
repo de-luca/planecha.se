@@ -20,6 +20,9 @@
         <div class="control">
           <input v-model="name" class="input" type="text" placeholder="Super Cake" required>
         </div>
+        <label class="checkbox">
+          <input type="checkbox" v-model="saveName"> Save name for future online games
+        </label>
         <p class="help">The name people in the game will see you as.</p>
       </div>
 
@@ -160,10 +163,14 @@ export default class CreateGame extends Vue {
   };
 
   private name: string = '';
+  private saveName: boolean = false;
   private deck: Array<Card> = [];
 
   public created() {
     this.store = useStore();
+
+    this.name = localStorage.getItem('name') ?? '';
+    this.saveName = this.name !== '';
   }
 
   public get requireName(): boolean {
@@ -225,6 +232,14 @@ export default class CreateGame extends Vue {
 
   public async create() {
     this.creating = true;
+
+    if (this.online && this.name && this.saveName) {
+      localStorage.setItem('name', this.name);
+    }
+
+    if (this.online && this.name && !this.saveName) {
+      localStorage.removeItem('name');
+    }
 
     await this.store.dispatch(ActionTypes.INIT, {
       type: this.mapType,
