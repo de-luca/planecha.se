@@ -60,36 +60,36 @@
 </template>
 
 <script lang="ts">
-import { ActionTypes, Store, useStore } from '@/store';
 import { Options, Vue } from 'vue-class-component';
+import { useMain } from '@/store/main';
+import { useConfig } from '@/store/config';
 
 import ThemeSelector from '@/components/ThemeSelector.vue';
 
 @Options({ components: { ThemeSelector } })
 export default class JoinGame extends Vue {
-  private store: Store;
+  private mainStore = useMain();
+  private configStore = useConfig();
+
   private roomId: string;
   private name: string = '';
   private saveName: boolean = false;
   private joining: boolean = false;
 
   public created() {
-    this.store = useStore();
     this.roomId = this.$route.params.roomId as string ?? '';
-    this.name = localStorage.getItem('name') ?? '';
+    this.name = this.configStore.name ?? '';
     this.saveName = this.name !== '';
   }
 
   public async join() {
     this.joining = true;
 
-    if (this.saveName) {
-      localStorage.setItem('name', this.name);
-    } else {
-      localStorage.removeItem('name');
-    }
+    this.saveName
+      ? this.configStore.setName(this.name)
+      : this.configStore.removeName();
 
-    await this.store.dispatch(ActionTypes.JOIN, { roomId: this.roomId, name: this.name });
+    await this.mainStore.join({ roomId: this.roomId, name: this.name });
 
     this.joining = false;
 

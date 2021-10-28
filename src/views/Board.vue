@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { MutationTypes, Store, useStore } from '@/store';
+import { useMain } from '@/store/main';
 import { Component } from '@vue/runtime-core';
 import { MapType, EternitiesMapSpecs, EternitiesMapSubType } from '@/model/map';
 import { eventBus, EventType } from '@/services/EventBus';
@@ -43,23 +43,21 @@ import ThemeSelector from '@/components/ThemeSelector.vue';
   },
 })
 export default class Board extends Vue {
-  public store: Store;
+  private store = useMain();
 
   public created() {
-    this.store = useStore();
-
     eventBus.on(EventType.BYE, (payload) => {
       eventBus.emit(EventType.NOTIF, {
-        text: `<b>${this.store.getters.mates.get(payload.mateId)}</b> has left the game`,
+        text: `<b>${this.store.mates.get(payload.mateId)}</b> has left the game`,
         className: 'is-warning',
       });
 
-      this.store.commit(MutationTypes.BYE, { id: payload.mateId });
+      this.store.bye({ id: payload.mateId });
     });
   }
 
   public get mapComponent(): Component {
-    const specs = this.store.getters.specs;
+    const specs = this.store.map.specs;
 
     switch (specs.type) {
       case MapType.CLASSIC:
@@ -74,7 +72,7 @@ export default class Board extends Vue {
   }
 
   public get online(): boolean {
-    return this.store.getters.online;
+    return this.store.online;
   }
 
   public thaNav(): void {

@@ -14,12 +14,12 @@
     "bulma": "^0.9.2",
     "lodash.shuffle": "^4.2.0",
     "mitt": "^2.1.0",
+    "pinia": "^2.0.0-rc.15",
     "reflect-metadata": "^0.1.13",
     "typedi": "^0.10.0",
     "vue": "^3.0.11",
     "vue-class-component": "^8.0.0-rc.1",
-    "vue-router": "^4.0.11",
-    "vuex": "^4.0.0"
+    "vue-router": "^4.0.11"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",

@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import { Plane } from '@/model/card';
-import { ActionTypes, Store, useStore } from '@/store';
+import { useMain } from '@/store/main';
 import { prop, mixins } from 'vue-class-component';
 import { Imgable } from '../Imgable';
 
@@ -32,11 +32,7 @@ class Props {
 }
 
 export default class Card extends mixins(Imgable).with(Props) {
-  private store: Store;
-
-  public created() {
-    this.store = useStore();
-  }
+  private store = useMain();
 
   public get imgSrc(): string {
     return this.buildImgSrc(this.card);
@@ -47,7 +43,7 @@ export default class Card extends mixins(Imgable).with(Props) {
   }
 
   public update(change: number): void {
-    this.store.dispatch(ActionTypes.COUNTERS, { planeId: this.card.id, change });
+    this.store.updateCounters({ planeId: this.card.id, change });
   }
 }
 </script>

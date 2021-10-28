@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { Store, useStore } from '@/store';
+import { useMain } from '@/store/main';
 import { Vue } from 'vue-class-component';
 
 enum BtnText {
@@ -62,24 +62,20 @@ enum BtnText {
 }
 
 export default class OnlineControls extends Vue {
-  private store: Store;
+  private store = useMain();
   private active: boolean = true;
   private copyBtnText: BtnText = BtnText.IDLE;
 
-  public created() {
-    this.store = useStore();
-  }
-
   public get yourName(): string {
-    return this.store.getters.yourName;
+    return this.store.yourName;
   }
 
   public get roomUrl(): string {
-    return `${window.location.origin}/#/join/${this.store.getters.gameId}`;
+    return `${window.location.origin}/#/join/${this.store.gameId}`;
   }
 
   public get mates(): Map<string, string> {
-    return this.store.getters.mates;
+    return this.store.mates;
   }
 
   public async copy(): Promise<void> {

@@ -18,42 +18,32 @@
 
 <script lang="ts">
 import { Vue } from 'vue-class-component';
-
-type theme = 'sys' | 'drk' | 'lgt';
+import { useConfig } from '@/store/config';
 
 export default class ThemeSelector extends Vue {
-  private static readonly icons: Record<theme, string> = {
+  private static readonly icons: Record<Theme, string> = {
     sys: 'cog',
     drk: 'moon',
     lgt: 'sun',
   };
 
-  private currentTheme: theme = 'sys';
-
-  public created() {
-    this.currentTheme = localStorage.getItem('theme') as theme ?? 'sys';
-  }
+  private store = useConfig();
 
   public get icon(): string {
-    return ThemeSelector.icons[this.currentTheme];
+    return ThemeSelector.icons[this.theme];
   }
 
-  public get theme(): theme {
-    return this.currentTheme;
+  public get theme(): Theme {
+    return this.store.theme;
   }
 
-  public set theme(theme: theme) {
-    this.currentTheme = theme;
-    this.storeTheme();
+  public set theme(theme: Theme) {
+    this.store.setTheme(theme);
     this.applyTheme();
   }
 
-  private storeTheme(): void {
-    localStorage.setItem('theme', this.currentTheme);
-  }
-
   private applyTheme(): void {
-    document.documentElement.setAttribute('data-theme', this.currentTheme);
+    document.documentElement.setAttribute('data-theme', this.theme);
   }
 }
 </script>

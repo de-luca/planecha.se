@@ -1,7 +1,7 @@
 import * as ActPayload from './payloads';
-import { MutationTypes, useStore } from '@/store';
 import { Card, Phenomenon, Plane } from '../card';
 import { Exported } from '../map';
+import { useMain } from '@/store/main';
 
 export enum Event {
   REQUEST_INIT = 'REQUEST_INIT',
@@ -42,7 +42,7 @@ export function stringify(event: Event, data: any = {}): string {
 export function getHandler(
   myName: string,
 ): (this: RTCDataChannel, event: MessageEvent<string>) => any {
-  const store = useStore();
+  const store = useMain();
 
   return function(this: RTCDataChannel, event: MessageEvent<string>) {
     const payload = parse(event.data);
@@ -50,62 +50,64 @@ export function getHandler(
 
     switch (payload.event) {
       case Event.REQUEST_INIT: {
-        this.send(stringify(Event.INIT, store.getters.map.export()));
+        this.send(stringify(Event.INIT, store.map.export()));
         break;
       }
 
       case Event.SHUFFLE: {
         const data = payload.data as Exported;
-        store.commit(MutationTypes.SHUFFLE, data);
+        store.shuffle(data);
         break;
       }
 
       case Event.CHAOS: {
-        store.commit(MutationTypes.CHAOS, { passivity });
+        store.chaos({ passivity });
         break;
       }
 
       case Event.RESOLVE: {
-        store.commit(MutationTypes.RESOLVE, { passivity });
+        store.resolve({ passivity });
         break;
       }
 
       case Event.ENCOUNTER: {
         const data = payload.data as ActPayload.Encounter;
-        store.commit(MutationTypes.ENCOUNTER, { ...data, passivity });
+        store.encounter({ ...data, passivity });
         break;
       }
 
       case Event.PLANESWALK:{
         const data = payload.data as ActPayload.Planeswalk;
-        store.commit(MutationTypes.PLANESWALK, { ...data, passivity });
+        store.planeswalk({ ...data, passivity });
         break;
       }
 
       case Event.CUSTOM_PLANESWALK: {
         const data = payload.data as ActPayload.CustomPlaneswalkWire;
         const allCards = Array<Card>().concat(
-          store.getters.revealed?.relevant ?? [],
-          store.getters.revealed?.others ?? [],
+          store.map.revealed?.relevant ?? [],
+          store.map.revealed?.others ?? [],
         );
 
-        store.commit(MutationTypes.CUSTOM_PLANESWALK, {
+        store.customPlaneswalk({
           planes: data.planes.map(id => allCards.find(c => c.id === id) as Plane),
+          passivity,
         });
         break;
       }
 
       case Event.COUNTERS: {
         const data = payload.data as ActPayload.Counters;
-        store.commit(MutationTypes.COUNTERS, { ...data, initiator: this.label });
+        store.updateCounters({ ...data, passivity });
         break;
       }
 
       case Event.REVEAL: {
         const data = payload.data as ActPayload.RevealWire;
-        store.commit(MutationTypes.REVEAL, {
+        store.reveal({
           count: data.count,
           type: data.type ? cardTypeMap[data.type] : undefined,
+          passivity,
         });
         break;
       }
@@ -113,14 +115,14 @@ export function getHandler(
       case Event.RESOLVE_REVEAL: {
         const data = payload.data as ActPayload.ResolveRevealWire;
         const allCards = Array<Card>().concat(
-          store.getters.revealed?.relevant ?? [],
-          store.getters.revealed?.others ?? [],
+          store.map.revealed?.relevant ?? [],
+          store.map.revealed?.others ?? [],
         );
 
-        store.commit(MutationTypes.RESOLVE_REVEAL, {
+        store.resolveReveal({
           top: data.top.map((id) => allCards.find(c => c.id === id) as Card),
           bottom: data.bottom.map((id) => allCards.find(c => c.id === id) as Card),
-          initiator: this.label,
+          passivity,
         });
         break;
       }
@@ -130,19 +132,19 @@ export function getHandler(
         if (data.val) {
           data.val = { ...data.val, initiator: this.label };
         }
-        store.commit(MutationTypes.UPDATE_STATE, data);
+        store.updateState(data);
         break;
       }
 
       case Event.START_GAME: {
-        store.commit(MutationTypes.START_GAME);
+        store.startGame({ passivity });
         break;
       }
 
       case Event.HEY: {
-        if (!store.getters.mates.get(this.label)) {
+        if (!store.mates.get(this.label)) {
           const data = payload.data as ActPayload.NameWire;
-          store.commit(MutationTypes.HEY, { ...data, id: this.label });
+          store.hey({ ...data, id: this.label });
           this.send(stringify(Event.HEY, { name: myName }));
         }
         break;

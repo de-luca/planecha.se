@@ -10,17 +10,13 @@
 
 <script lang="ts">
 import { Vue } from 'vue-class-component';
-import { ActionTypes, Store, useStore } from '@/store';
+import { useMain } from '@/store/main';
 
 export default class StartBtn extends Vue {
-  private store: Store;
-
-  public created() {
-    this.store = useStore();
-  }
+  private store = useMain();
 
   public start() {
-    this.store.dispatch(ActionTypes.START_GAME);
+    this.store.startGame();
   }
 }
 </script>

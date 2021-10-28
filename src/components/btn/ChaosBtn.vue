@@ -12,17 +12,13 @@
 
 <script lang="ts">
 import { Vue } from 'vue-class-component';
-import { ActionTypes, Store, useStore } from '@/store';
+import { useMain } from '@/store/main';
 
 export default class ChaosBtn extends Vue {
-  private store: Store;
-
-  public created() {
-    this.store = useStore();
-  }
+  private store = useMain();
 
   public chaos() {
-    this.store.dispatch(ActionTypes.CHAOS);
+    this.store.chaos();
   }
 }
 </script>

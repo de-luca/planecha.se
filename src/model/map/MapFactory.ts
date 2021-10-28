@@ -13,6 +13,7 @@ import {
 } from '.';
 import { EternitiesMapExported, EternitiesMapFactory } from './eternities';
 import { MapStates } from '../states';
+import { OnlineInterface } from '../net/OnlineInterface';
 
 export interface AdvancedOptions {
   name?: string;
@@ -34,7 +35,9 @@ export class MapFactory {
   @Inject(() => EternitiesMapFactory)
   private eternitiesMapFactory: EternitiesMapFactory;
 
-  public build({ type, online, advanced }: BuildProps): MapInterface {
+  public build(
+    { type, online, advanced }: BuildProps,
+  ): MapInterface | MapInterface & OnlineInterface {
     let map: MapInterface;
 
     switch (type) {

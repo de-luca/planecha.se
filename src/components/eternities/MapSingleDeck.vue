@@ -43,7 +43,6 @@
 
 <script lang="ts">
 import { mixins, Options } from 'vue-class-component';
-import { ActionTypes } from '@/store';
 import { EternitiesMap } from '@/components/eternities/EternitiesMap';
 
 import ChaosBtn from '@/components/btn/ChaosBtn.vue';
@@ -72,7 +71,7 @@ export default class EternitiesMapSingleDeck extends mixins(EternitiesMap) {
 
   public planeswalk(coords: Coordinates): void {
     this.hideTileDetails();
-    this.store.dispatch(ActionTypes.PLANESWALK, { coords });
+    this.store.planeswalk({ coords });
   }
 }
 </script>

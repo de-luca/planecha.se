@@ -24,24 +24,20 @@
 </template>
 
 <script lang="ts">
-import { MutationTypes, Store, useStore } from '@/store';
+import { useMain } from '@/store/main';
 import { Vue } from 'vue-class-component';
 
 export default class CloseGame extends Vue {
-  private store: Store;
+  private store = useMain();
   private opened = false;
 
-  public created(): void {
-    this.store = useStore();
-  }
-
   public get online(): boolean {
-    return this.store.getters.online;
+    return this.store.online;
   }
 
   public async close(): Promise<void> {
     await this.$router.push('/');
-    this.store.commit(MutationTypes.LEAVE);
+    this.store.leave();
   }
 }
 </script>

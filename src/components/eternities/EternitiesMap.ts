@@ -1,7 +1,7 @@
 import _shuffle from 'lodash.shuffle';
 import { Component } from 'vue';
 import { Vue } from 'vue-class-component';
-import { ActionTypes, Store, useStore } from '@/store';
+import { useMain } from '@/store/main';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Phenomenon, Plane } from '@/model/card';
 import { PickedLeft, RevealConfig } from '../reveal/BaseReveal';
@@ -34,27 +34,25 @@ interface LocalPhenomenonWallConfig {
 
 export class EternitiesMap extends Vue {
   protected readonly off: number = 4;
-  protected store: Store;
+  protected store = useMain();
   protected displayedTile: Tile | null = null;
 
   protected setUp(): void {
-    this.store = useStore();
-
     eventBus.on(EventType.STAIRS_TO_INFINITY, (): void => {
-      this.store.dispatch(ActionTypes.REVEAL, { count: 1 });
+      this.store.reveal({ count: 1 });
     });
     eventBus.on(EventType.POOL_OF_BECOMING, (): void => {
-      this.store.dispatch(ActionTypes.REVEAL, { count: 3 });
+      this.store.reveal({ count: 3 });
     });
   }
 
   public get revealed(): Revealed | undefined {
-    return this.store.getters.revealed;
+    return this.store.map.revealed;
   }
 
   public get revealer(): LocalRevealerConfig | undefined {
     const revealer =
-      this.store.getters.map.states.get<RevealerWallState>(StateKey.REVEALER);
+      this.store.map.states.get<RevealerWallState>(StateKey.REVEALER);
 
     if (!revealer) {
       return undefined;
@@ -67,7 +65,7 @@ export class EternitiesMap extends Vue {
         sendShownTo: revealer.sendShownTo,
         passive: revealer.passive,
         mateName: revealer.initiator
-          ? this.store.getters.mates.get(revealer.initiator)
+          ? this.store.mates.get(revealer.initiator)
           : undefined,
       },
     };
@@ -83,21 +81,21 @@ export class EternitiesMap extends Vue {
       case RevealerSource.INTERPLANAR_TUNNEL:
         return {
           ...config,
-          seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 5, type: Plane }),
+          seeder: () => this.store.reveal({ count: 5, type: Plane }),
           resolver: this.customPlaneswalk,
         };
       case RevealerSource.SPACIAL_MERGING:
         return {
           ...config,
-          seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 2, type: Plane }),
+          seeder: () => this.store.reveal({ count: 2, type: Plane }),
           resolver: this.customPlaneswalk,
         };
     }
   }
 
   public get phenomenonWall(): LocalPhenomenonWallConfig | undefined {
-    if (this.store.getters.map.destination) {
-      const wall = this.store.getters.map.states.get<PhenomenonWallState>(
+    if (this.store.map.destination) {
+      const wall = this.store.map.states.get<PhenomenonWallState>(
         StateKey.PHENOMENON_WALL,
       );
 
@@ -105,10 +103,10 @@ export class EternitiesMap extends Vue {
         config: {
           passive: wall?.passive ?? false,
           mateName: wall?.initiator
-            ? this.store.getters.mates.get(wall.initiator)
+            ? this.store.mates.get(wall.initiator)
             : undefined,
         },
-        phenomenon: this.store.getters.map.active[0] as Phenomenon,
+        phenomenon: this.store.map.active[0] as Phenomenon,
       };
     }
 
@@ -116,7 +114,7 @@ export class EternitiesMap extends Vue {
   }
 
   public get hasStarted(): boolean {
-    return this.store.getters.map.hasStarted;
+    return this.store.map.hasStarted;
   }
 
   public get btnComponent(): Component {
@@ -128,7 +126,7 @@ export class EternitiesMap extends Vue {
   }
 
   public getTile(x: number, y: number): Tile | undefined {
-    return this.store.getters.tiles.find((tile) => {
+    return this.store.map.tiles.find((tile) => {
       return tile.coords.x === x - this.off
         && tile.coords.y === y - this.off;
     });
@@ -140,7 +138,7 @@ export class EternitiesMap extends Vue {
       bottom: _shuffle(choices.left),
     };
 
-    this.store.dispatch(ActionTypes.RESOLVE_REVEAL, payload);
+    this.store.resolveReveal(payload);
   }
 
   public showTileDetails(tile: Tile): void {
@@ -152,15 +150,15 @@ export class EternitiesMap extends Vue {
   }
 
   public resolve(): void {
-    this.store.dispatch(ActionTypes.RESOLVE);
+    this.store.resolve({});
   }
 
   public customPlaneswalk(choices: PickedLeft): void {
-    this.store.dispatch(ActionTypes.CUSTOM_PLANESWALK, {
+    this.store.customPlaneswalk({
       planes: choices.picked as Array<Plane>,
     });
 
     this.putBack({ picked: [], left: choices.left });
-    this.store.dispatch(ActionTypes.RESOLVE);
+    this.store.resolve();
   }
 }

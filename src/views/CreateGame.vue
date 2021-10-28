@@ -86,7 +86,8 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { useStore, Store, ActionTypes } from '@/store';
+import { useMain } from '@/store/main';
+import { useConfig } from '@/store/config';
 import {
   EncounterMechanic,
   EncounterTrigger,
@@ -140,7 +141,9 @@ export default class CreateGame extends Vue {
     help: 'Planes and Phenomnena mixed in the same deck. Phenomena are encountered when drawn.',
   }];
 
-  private store: Store;
+  private mainStore = useMain();
+  private configStore = useConfig();
+
   private openDeckBuilder: boolean = false;
   private creating: boolean = false;
 
@@ -167,9 +170,7 @@ export default class CreateGame extends Vue {
   private deck: Array<Card> = [];
 
   public created() {
-    this.store = useStore();
-
-    this.name = localStorage.getItem('name') ?? '';
+    this.name = this.configStore.name ?? '';
     this.saveName = this.name !== '';
   }
 
@@ -234,14 +235,13 @@ export default class CreateGame extends Vue {
     this.creating = true;
 
     if (this.online && this.name && this.saveName) {
-      localStorage.setItem('name', this.name);
+      this.configStore.setName(this.name);
     }
-
     if (this.online && this.name && !this.saveName) {
-      localStorage.removeItem('name');
+      this.configStore.removeName();
     }
 
-    await this.store.dispatch(ActionTypes.INIT, {
+    await this.mainStore.init({
       type: this.mapType,
       online: this.online,
       advanced: {

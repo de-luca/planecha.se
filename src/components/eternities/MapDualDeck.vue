@@ -52,7 +52,6 @@
 
 <script lang="ts">
 import { mixins, Options } from 'vue-class-component';
-import { ActionTypes } from '@/store';
 import { EternitiesMap } from '@/components/eternities/EternitiesMap';
 import {
   EncounterMechanic,
@@ -98,12 +97,12 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
 
   public created(): void {
     this.setUp();
-    this.triggers = this.store.getters.map.encounterTriggers;
+    this.triggers = this.store.map.encounterTriggers;
   }
 
   public get encounterWallConfig(): LocalEncounterWallConfig | undefined {
     const wall =
-      this.store.getters.map.states.get<EncounterWallState>(StateKey.ENCOUNTER_WALL);
+      this.store.map.states.get<EncounterWallState>(StateKey.ENCOUNTER_WALL);
 
     if (!wall) {
       return undefined;
@@ -114,7 +113,7 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
       config: {
         passive: wall?.passive ?? false,
         mateName: wall?.initiator
-          ? this.store.getters.mates.get(wall.initiator)
+          ? this.store.mates.get(wall.initiator)
           : undefined,
       },
     };
@@ -136,19 +135,19 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
   }
 
   public planeswalk(coords: Coordinates): void {
-    this.store.dispatch(ActionTypes.UPDATE_STATE, {
+    this.store.updateState({
       key: StateKey.ENCOUNTER_WALL,
       op: StateOp.DELETE,
     });
-    this.store.dispatch(ActionTypes.PLANESWALK, { coords });
+    this.store.planeswalk({ coords });
   }
 
   public encounter(coords: Coordinates): void {
-    this.store.dispatch(ActionTypes.UPDATE_STATE, {
+    this.store.updateState({
       key: StateKey.ENCOUNTER_WALL,
       op: StateOp.DELETE,
     });
-    this.store.dispatch(ActionTypes.ENCOUNTER, { coords });
+    this.store.encounter({ coords });
   }
 
   private getTriggerConfig(trigger: EncounterTrigger): TriggerConfig | undefined {
@@ -168,7 +167,7 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
       ) {
         this.encounter(coords);
       } else {
-        this.store.dispatch(ActionTypes.UPDATE_STATE, {
+        this.store.updateState({
           key: StateKey.ENCOUNTER_WALL,
           op: StateOp.SET,
           val: {

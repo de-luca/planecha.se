@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import { mixins, Options, prop } from 'vue-class-component';
-import { ActionTypes, Store, useStore } from '@/store';
+import { useMain } from '@/store/main';
 import { Tile } from '@/model/map';
 import { Plane } from '@/model/card';
 import { Imgable } from '../Imgable';
@@ -58,18 +58,14 @@ class Props {
   components: { PlaneswalkBtn },
 })
 export default class TileDetails extends mixins(Imgable).with(Props) {
-  private store: Store;
-
-  public created() {
-    this.store = useStore();
-  }
+  private store = useMain();
 
   public get current(): boolean {
     return this.tile.coords.x === 0 && this.tile.coords.y === 0;
   }
 
   public update(plane: Plane, change: number): void {
-    this.store.dispatch(ActionTypes.COUNTERS, { planeId: plane.id, change });
+    this.store.updateCounters({ planeId: plane.id, change });
   }
 
   public imgSrc(plane: Plane): string {

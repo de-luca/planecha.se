@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
-import { useStore } from '@/store';
+
+import { useMain } from '@/store/main';
 import { EmptyMap } from '@/model/map';
 
 import Home from '../views/Home.vue';
@@ -34,7 +35,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Board',
     component: Board,
     beforeEnter: () => {
-      if (useStore().getters.map instanceof EmptyMap) {
+      if (useMain().map instanceof EmptyMap) {
         console.log('NO MAP STATE => /CREATE');
         return '/create';
       }

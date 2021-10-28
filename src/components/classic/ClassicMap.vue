@@ -36,7 +36,7 @@
 import _shuffle from 'lodash.shuffle';
 import { Options, Vue } from 'vue-class-component';
 import { Component } from '@vue/runtime-core';
-import { ActionTypes, Store, useStore } from '@/store';
+import { useMain } from '@/store/main';
 import { Card as ModelCard, Plane } from '@/model/card';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Revealed } from '@/model/map';
@@ -73,38 +73,36 @@ type LocalRevealerConfig = {
   },
 })
 export default class ClassicMap extends Vue {
-  private store: Store;
+  private store = useMain();
 
   public created() {
-    this.store = useStore();
-
     eventBus.on(EventType.STAIRS_TO_INFINITY, (): void => {
-      this.store.dispatch(ActionTypes.REVEAL, { count: 1 });
+      this.store.reveal({ count: 1 });
     });
     eventBus.on(EventType.POOL_OF_BECOMING, (): void => {
-      this.store.dispatch(ActionTypes.REVEAL, { count: 3 });
+      this.store.reveal({ count: 3 });
     });
   }
 
   public get active(): Array<ModelCard> {
-    return this.store.getters.active;
+    return this.store.map.active;
   }
 
   public get revealed(): Revealed | undefined {
-    return this.store.getters.revealed;
+    return this.store.map.revealed;
   }
 
   public get isPlane(): boolean {
-    return this.store.getters.active[0].type === 'plane';
+    return this.store.map.active[0].type === 'plane';
   }
 
   public get hasStarted(): boolean {
-    return this.store.getters.map.hasStarted;
+    return this.store.map.hasStarted;
   }
 
   public get revealer(): LocalRevealerConfig | undefined {
     const revealer =
-      this.store.getters.map.states.get<RevealerWallState>(StateKey.REVEALER);
+      this.store.map.states.get<RevealerWallState>(StateKey.REVEALER);
 
     if (!revealer) {
       return undefined;
@@ -118,7 +116,7 @@ export default class ClassicMap extends Vue {
         sendShownTo: revealer.sendShownTo,
         passive: revealer.passive,
         mateName: revealer.initiator
-          ? this.store.getters.mates.get(revealer.initiator)
+          ? this.store.mates.get(revealer.initiator)
           : undefined,
       },
     };
@@ -134,24 +132,24 @@ export default class ClassicMap extends Vue {
       case RevealerSource.INTERPLANAR_TUNNEL:
         return {
           ...config,
-          seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 5, type: Plane }),
+          seeder: () => this.store.reveal({ count: 5, type: Plane }),
           resolver: this.customPlaneswalk,
         };
       case RevealerSource.SPACIAL_MERGING:
         return {
           ...config,
-          seeder: () => this.store.dispatch(ActionTypes.REVEAL, { count: 2, type: Plane }),
+          seeder: () => this.store.reveal({ count: 2, type: Plane }),
           resolver: this.customPlaneswalk,
         };
     }
   }
 
   public planeswalk(): void {
-    this.store.dispatch(ActionTypes.PLANESWALK);
+    this.store.planeswalk();
   }
 
   public customPlaneswalk(choices: PickedLeft): void {
-    this.store.dispatch(ActionTypes.CUSTOM_PLANESWALK, {
+    this.store.customPlaneswalk({
       planes: choices.picked as Array<Plane>,
     });
 
@@ -164,7 +162,7 @@ export default class ClassicMap extends Vue {
       bottom: _shuffle(choices.left),
     };
 
-    this.store.dispatch(ActionTypes.RESOLVE_REVEAL, payload);
+    this.store.resolveReveal(payload);
   }
 }
 </script>

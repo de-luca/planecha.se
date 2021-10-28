@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { Store, useStore } from '@/store';
+import { useMain } from '@/store/main';
 import { prop, Vue } from 'vue-class-component';
 
 class Props {
@@ -25,16 +25,15 @@ class Props {
 }
 
 export default class Feed extends Vue.with(Props) {
-  private store: Store;
+  private store = useMain();
   private show = true;
 
   public created() {
-    this.store = useStore();
     this.show = this.defaultShow;
   }
 
   public get messages(): Array<string> {
-    return this.store.getters.feed;
+    return this.store.feed;
   }
 
   public toggle(): void {
