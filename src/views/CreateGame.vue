@@ -20,10 +20,10 @@
         <div class="control">
           <input v-model="name" class="input" type="text" placeholder="Super Cake" required>
         </div>
+        <p class="help">The name people in the game will see you as.</p>
         <label class="checkbox">
           <input type="checkbox" v-model="saveName"> Save name for future online games
         </label>
-        <p class="help">The name people in the game will see you as.</p>
       </div>
 
       <button-picker
@@ -63,7 +63,7 @@
       <deck-builder
         v-if="openDeckBuilder"
         :base-deck="deck"
-        :group="group"
+        :scope="scope"
         :map-type="mapType"
         @done="setDeck"
       />
@@ -97,8 +97,9 @@ import {
   MapType,
 } from '@/model/map';
 import { Card, Plane } from '@/model/card';
+import { Scope } from '@/components/create/builder/types';
 import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';
-import DeckBuilder, { Group } from '@/components/create/DeckBuilder.vue';
+import DeckBuilder from '@/components/create/DeckBuilder.vue';
 import OnlinePicker from '@/components/create/OnlinePicker.vue';
 import EncounterSetup from '@/components/create/EncounterSetup.vue';
 import ThemeSelector from '@/components/ThemeSelector.vue';
@@ -192,13 +193,13 @@ export default class CreateGame extends Vue {
       && this.subType === EternitiesMapSubType.DUAL_DECK;
   }
 
-  public get group(): Group {
+  public get scope(): Scope {
     return (
       this.mapType === MapType.ETERNITIES &&
       this.deckType === EternitiesMapDeckType.PLANES
     )
-      ? Group.PLANES
-      : Group.ALL;
+      ? Scope.PLANES
+      : Scope.ALL;
   }
 
   public get hasRequiredCards(): { valid: boolean, minCards?: number } {

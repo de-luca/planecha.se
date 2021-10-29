@@ -1,15 +1,21 @@
+import { SavedDeck } from '@/components/create/builder/types';
 import { defineStore } from 'pinia'
 
 type State = {
   theme: Theme;
-  decks: Record<string, Array<string>>;
-  name ?: string;
+  decks: Map<string, SavedDeck>;
+  name?: string;
 };
 
 function getState(): State {
+  const serializedDecks = localStorage.getItem('decks');
+
   return {
     theme: localStorage.getItem('theme') as Theme ?? 'sys',
-    decks: {},
+    decks: serializedDecks !== null
+      ? new Map(JSON.parse(serializedDecks) as Array<[string, SavedDeck]>)
+      : new Map(),
+    name: localStorage.getItem('name') ?? undefined,
   };
 }
 
@@ -29,6 +35,21 @@ export const useConfig = defineStore('config', {
     removeName(): void {
       this.name = undefined;
       localStorage.removeItem('name');
+    },
+
+    addDeck(name: string, deck: SavedDeck): void {
+      this.decks.set(name, deck);
+      localStorage.setItem(
+        'decks',
+        JSON.stringify(Array.from(this.decks.entries())),
+      );
+    },
+    removeDeck(name: string): void {
+      this.decks.delete(name);
+      localStorage.setItem(
+        'decks',
+        JSON.stringify(Array.from(this.decks.entries())),
+      );
     },
   },
 });

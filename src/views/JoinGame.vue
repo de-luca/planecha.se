@@ -38,10 +38,10 @@
             required
           >
         </div>
+        <p class="help">The name people in the game will see you as.</p>
         <label class="checkbox">
           <input type="checkbox" v-model="saveName"> Save name for future online games
         </label>
-        <p class="help">The name people in the game will see you as.</p>
       </div>
 
       <div class="field join-game">
