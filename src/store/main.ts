@@ -98,7 +98,6 @@ export const useMain = defineStore('main', {
 
     async join(payload: ActPayload.Join) {
       try {
-        console.log(payload);
         this.map = Container.get(MapFactory).build({
           type: MapType.EMPTY,
           online: true,
@@ -107,7 +106,7 @@ export const useMain = defineStore('main', {
         this.online = true;
 
         await this.map.ready;
-        (this.map as OnlineInterface).join(payload.roomId);
+        await (this.map as OnlineInterface).join(payload.roomId);
       } catch (err) {
         // some error handling logic
       }

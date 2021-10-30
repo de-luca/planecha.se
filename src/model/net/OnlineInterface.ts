@@ -5,7 +5,7 @@ export interface OnlineInterface {
   yourName: string;
 
   create(): Promise<string>;
-  join(gameId: string): void;
+  join(gameId: string): Promise<void>;
   leave(): void;
 
   requestChaos(): void;
