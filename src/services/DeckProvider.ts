@@ -1,5 +1,4 @@
 import { Container, Service } from 'typedi';
-import _shuffle from 'lodash.shuffle';
 import {
   CardFactory,
   Card,
@@ -9,6 +8,7 @@ import {
   ExportedCard,
 } from '../model/card';
 import { Deck, DeckState } from '@/model/deck/Deck';
+import { shuffle } from './shuffle';
 
 import cards from '../assets/cards.json';
 
@@ -64,7 +64,7 @@ export class DeckProvider {
 
   public getSpecificDeck(cards: Array<string>): Deck<Card> {
     return new Deck<Card>(
-      _shuffle(this.getOrderedPile<Card>([...cards])),
+      shuffle(this.getOrderedPile<Card>([...cards])),
     );
   }
 
@@ -80,6 +80,6 @@ export class DeckProvider {
   }
 
   private buildShuffledPile(): Array<Card> {
-    return _shuffle(this.cards);
+    return shuffle(this.cards);
   }
 }

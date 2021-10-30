@@ -1,4 +1,4 @@
-import _shuffle from 'lodash.shuffle';
+import { shuffle as _shuffle } from '@/services/shuffle';
 import { Card, Plane } from '../card';
 
 export interface DeckState {
