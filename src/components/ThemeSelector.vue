@@ -89,6 +89,8 @@ export default class ThemeSelector extends Vue {
   }
 
   select {
+    -webkit-appearance: none;
+
     color: var(--btn-secondary-color);
     background-color: var(--btn-secondary-bg);
     border-color: var(--btn-secondary-border);

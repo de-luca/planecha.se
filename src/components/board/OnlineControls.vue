@@ -15,6 +15,8 @@
       </button>
     </div>
 
+    <div id="click-trap" @click="active = false"></div>
+
     <div class="dropdown-menu" id="dropdown-menu" role="menu">
       <div class="dropdown-content">
         <div class="dropdown-item">
@@ -28,7 +30,14 @@
                 <input class="input" type="text" :value="roomUrl" readonly>
               </div>
               <div class="control">
-                <a @click="copy" id="copy" class="button">{{ copyBtnText }}</a>
+                <feedback-button
+                  @click="copy"
+                  id="copy"
+                  class="button"
+                  idleText="Copy"
+                  actionText="Copied!"
+                  timeout="5000"
+                />
               </div>
             </div>
             <p class="help">Give this thing to people!</p>
@@ -54,13 +63,16 @@
 
 <script lang="ts">
 import { useMain } from '@/store/main';
-import { Vue } from 'vue-class-component';
+import { Options, Vue } from 'vue-class-component';
+
+import FeedbackButton from '../FeedbackButton.vue';
 
 enum BtnText {
   IDLE = 'Copy',
   SUCCESS = 'Copied!',
 }
 
+@Options({ components: { FeedbackButton } })
 export default class OnlineControls extends Vue {
   private store = useMain();
   private active: boolean = true;
@@ -81,8 +93,6 @@ export default class OnlineControls extends Vue {
   public async copy(): Promise<void> {
     try {
       await navigator.clipboard.writeText(this.roomUrl);
-      this.copyBtnText = BtnText.SUCCESS;
-      setTimeout(() => this.copyBtnText = BtnText.IDLE, 5000);
     } catch (err) {
       console.error(err);
     }
@@ -95,6 +105,21 @@ export default class OnlineControls extends Vue {
   width: 5rem;
   background-color: transparent;
   color: var(--text-color);
+}
+
+#click-trap {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+  z-index: 3;
+}
+
+.dropdown.is-active #click-trap {
+  display: block;
 }
 
 .dropdown-trigger {

@@ -84,8 +84,17 @@ button, a, span, div {
         background-color: var(--btn-primary-active-bg);
       }
 
+      &:focus {
+        color: var(--btn-primary-color);
+        background-color: var(--btn-primary-bg);
+      }
+
       &[disabled] {
         background-color: var(--btn-primary-bg);
+      }
+      
+      &.is-loading::after {
+        border-color: transparent transparent var(--secondary) var(--secondary) !important
       }
     }
 
@@ -105,8 +114,17 @@ button, a, span, div {
         background-color: var(--btn-secondary-active-bg);
       }
 
+      &:focus {
+        color: var(--btn-secondary-color);
+        background-color: var(--btn-secondary-bg);
+      }
+
       &[disabled] {
         background-color: var(--btn-secondary-bg);
+      }
+
+      &.is-loading::after {
+        border-color: transparent transparent var(--primary) var(--primary) !important
       }
     }
   }
