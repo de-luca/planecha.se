@@ -44,6 +44,7 @@ export default class NotifCenter extends Vue {
 
   .notification {
     margin: 0;
+    z-index: 2;
   }
 }
 </style>

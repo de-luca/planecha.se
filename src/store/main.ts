@@ -82,34 +82,30 @@ export const useMain = defineStore('main', {
     },
 
     async init(payload: BuildProps) {
-      try {
-        this.map = Container.get(MapFactory).build(payload);
-        this.online = payload.online;
+      this.leave();
 
-        await this.map.ready;
+      this.map = Container.get(MapFactory).build(payload);
+      this.online = payload.online;
 
-        if (payload.online) {
-          await (this.map as OnlineInterface).create();
-        }
-      } catch (err) {
-        console.error(err);
+      await this.map.ready;
+
+      if (payload.online) {
+        await (this.map as OnlineInterface).create();
       }
     },
 
     async join(payload: ActPayload.Join) {
-      try {
-        this.map = Container.get(MapFactory).build({
-          type: MapType.EMPTY,
-          online: true,
-          advanced: { name: payload.name },
-        });
-        this.online = true;
+      this.leave();
 
-        await this.map.ready;
-        await (this.map as OnlineInterface).join(payload.roomId);
-      } catch (err) {
-        // some error handling logic
-      }
+      this.map = Container.get(MapFactory).build({
+        type: MapType.EMPTY,
+        online: true,
+        advanced: { name: payload.name },
+      });
+      this.online = true;
+
+      await this.map.ready;
+      await (this.map as OnlineInterface).join(payload.roomId);
     },
     leave(): void {
       if (this.online) {

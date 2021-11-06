@@ -13,7 +13,14 @@ interface Peer {
 export class PeerMap {
   private static readonly channelConfig = { negotiated: true, id: 0 };
   private static readonly RTCConfig = {
-    iceServers: [{ urls: 'stun:stun.1.google.com:19302' }],
+    iceServers: [
+      { urls: 'stun:stun.1.google.com:19302' },
+      {
+        urls: import.meta.env.VITE_TURN_URL,
+        username: import.meta.env.VITE_TURN_USER,
+        credential: import.meta.env.VITE_TURN_CRED,
+      },
+    ],
   };
 
   private peers: Map<string, Peer>;

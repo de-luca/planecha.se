@@ -14,6 +14,7 @@ function name(state: StoreGeneric, id?: string): string {
 
 export function createFeeder(context: PiniaPluginContext) {
   if (context.store.$id === 'main') {
+    console.log('REGISTERING');
     context.store.$onAction(({ after, name: action, args, store }) => {
       after(() => {
         switch (action) {
