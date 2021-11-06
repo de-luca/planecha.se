@@ -142,11 +142,20 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     const peers = new Promise<Array<string>>((resolve) => {
       this.beacon.addEventListener('joined', ((event: CustomEvent<Array<string>>) => {
         this.gameId = gameId;
+        console.log('RESOLVED JOINED EVENT', event);
         resolve(event.detail);
       }) as EventListener);
     });
     this.beacon.join(gameId);
-    await this.peers.addPeer(...await peers);
+
+    const prs = await peers;
+
+    console.log('RESOLVED PEERS', prs);
+
+    await this.peers.addPeer(...prs);
+
+    console.log('JOIN', this.peers);
+
     this.map = await this.peers.requestInit();
   }
 
