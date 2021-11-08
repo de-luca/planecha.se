@@ -1,4 +1,4 @@
-import { PiniaPluginContext, StoreGeneric } from "pinia";
+import { PiniaPluginContext, StoreGeneric, StoreOnActionListener, StoreOnActionListenerContext } from "pinia";
 import { Payload } from '@/store/main';
 import { BuildProps } from '@/model/map';
 import { Card, Plane } from '@/model/card';
@@ -14,7 +14,6 @@ function name(state: StoreGeneric, id?: string): string {
 
 export function createFeeder(context: PiniaPluginContext) {
   if (context.store.$id === 'main') {
-    console.log('REGISTERING');
     context.store.$onAction(({ after, name: action, args, store }) => {
       after(() => {
         switch (action) {
@@ -85,6 +84,6 @@ export function createFeeder(context: PiniaPluginContext) {
           }
         }
       });
-    });
+    }, true);
   }
 }

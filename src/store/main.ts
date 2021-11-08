@@ -107,6 +107,7 @@ export const useMain = defineStore('main', {
       await this.map.ready;
       await (this.map as OnlineInterface).join(payload.roomId);
     },
+
     leave(): void {
       if (this.online) {
         (this.map as OnlineInterface).leave();
@@ -136,7 +137,6 @@ export const useMain = defineStore('main', {
       requestIfOnline(this.$state, 'requestPlaneswalk', payload);
     },
     customPlaneswalk(payload: Payload.CustomPlaneswalk) {
-      console.log(payload);
       this.map.customPlaneswalk(payload.planes);
       requestIfOnline(this.$state, 'requestCustomPlaneswalk', payload);
     },
