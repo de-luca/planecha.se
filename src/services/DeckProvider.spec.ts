@@ -30,6 +30,20 @@ describe('DeckProvider.getOrderedPile', () => {
   });
 });
 
+describe('DeckProvider.getPileWithState', () => {
+  it('returns an array with only requested cards in order and state', () => {
+    const state = [
+      { id: '56a1afab-782c-4f31-96f5-17b676852fea' },
+      { id: 'd6dc655e-d8ef-443a-bb3e-46c7ca1555ba', counters: 42 },
+    ];
+    const cards = provider.getPileWithState(state);
+    expect(cards).toHaveLength(2);
+    expect(cards[0].id).toEqual(state[0].id);
+    expect(cards[1].id).toEqual(state[1].id);
+    expect((cards[1] as Plane).counter?.value).toEqual(state[1].counters);
+  });
+});
+
 describe('DeckProvider.getDeck', () => {
   it('returns a shuffled deck with all cards available', () => {
     expect(provider.getDeck().remaining).toEqual(86);
@@ -40,8 +54,8 @@ describe('DeckProvider.getPlaneDeck', () => {
   it('returns a deck with only planes', () => {
     const planeDeck = provider.getPlaneDeck();
     expect(planeDeck.remaining).toEqual(78);
-    for (const card of planeDeck['cards']) {
-      expect(card).toBeInstanceOf(Plane);
+    while (planeDeck.remaining > 0) {
+      expect(planeDeck.draw().card).toBeInstanceOf(Plane);
     }
   });
 });
@@ -50,8 +64,8 @@ describe('DeckProvider.getPhenomenonDeck', () => {
   it('returns a deck with only phenomena', () => {
     const planeDeck = provider.getPhenomenonDeck();
     expect(planeDeck.remaining).toEqual(8);
-    for (const card of planeDeck['cards']) {
-      expect(card).toBeInstanceOf(Phenomenon);
+    while (planeDeck.remaining > 0) {
+      expect(planeDeck.draw().card).toBeInstanceOf(Phenomenon);
     }
   });
 });
@@ -64,8 +78,8 @@ describe('DeckProvider.getSpecificDeck', () => {
     ];
     const deck = provider.getSpecificDeck(ids);
     expect(deck.remaining).toEqual(2);
-    for (const card of deck['cards']) {
-      expect(ids).toContain(card.id);
+    while (deck.remaining > 0) {
+      expect(ids).toContain(deck.draw().card.id);
     }
   });
 });
@@ -78,9 +92,21 @@ describe('DeckProvider.getOrderedDeck', () => {
     ];
     const deck = provider.getOrderedDeck(ids);
     expect(deck.remaining).toEqual(2);
-    expect(deck['cards'][0].id).toEqual(ids[0]);
-    expect(deck['cards'][1].id).toEqual(ids[1]);
+    expect(deck.draw().card.id).toEqual(ids[0]);
+    expect(deck.draw().card.id).toEqual(ids[1]);
   });
 });
 
+describe('DeckProvider.getDeckFromExport', () => {
+  it('returns a Deck from a DeckState', () => {
+    const deck = provider.getDeckFromExport({
+      cards: ['56a1afab-782c-4f31-96f5-17b676852fea'],
+      played: ['5d87893f-36e0-4621-a139-fedbc74ed4c5'],
+    });
+    expect(deck.remaining).toEqual(1);
+    expect(deck.played).toHaveLength(1);
+    expect(deck.played[0].id).toEqual('5d87893f-36e0-4621-a139-fedbc74ed4c5');
+    expect(deck.draw().card.id).toEqual('56a1afab-782c-4f31-96f5-17b676852fea');
+  });
+});
 

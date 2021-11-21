@@ -3,12 +3,14 @@ import WS from 'jest-websocket-mock';
 
 let srv: WS;
 
+jest.mock('@/services/getEnv');
+
 beforeEach(() => {
-    srv = new WS('ws://localhost:3030', { jsonProtocol: true });
+  srv = new WS('ws://localhost:3030', { jsonProtocol: true });
 });
 
 afterEach(() => {
-    srv.close();
+  srv.close();
 });
 
 describe('Beacon.constructor', () => {

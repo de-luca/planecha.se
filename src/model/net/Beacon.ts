@@ -1,3 +1,5 @@
+import { getEnv } from '@/services/getEnv';
+
 enum Method {
   CREATE = 'create',
   JOIN = 'join',
@@ -34,13 +36,13 @@ export class Beacon extends EventTarget {
   public constructor() {
     super();
 
-    this.socket = new WebSocket(import.meta.env.VITE_BEACON_URL);
+    this.socket = new WebSocket(getEnv('VITE_BEACON_URL') as string);
     this.socket.onopen = () => this.open();
   }
 
   public static check(): Promise<boolean> {
     return new Promise((resolve) => {
-      const socket = new WebSocket(import.meta.env.VITE_BEACON_URL);
+      const socket = new WebSocket(getEnv('VITE_BEACON_URL') as string);
       socket.onerror = () => {
         socket.close();
         resolve(false);

@@ -6,12 +6,16 @@ import {
   EternitiesMapDeckType,
   EternitiesMapSubType,
 } from '..';
+import { MapStates } from '@/model/states';
+
+jest.mock('@/services/getEnv');
 
 describe('EternitiesMap.type', () => {
   it('returns the type', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
+      states: new MapStates(),
     });
     expect(map.specs.type).toEqual(MapType.ETERNITIES);
     expect(map.specs.subType).toEqual(EternitiesMapSubType.SINGLE_DECK);
@@ -25,6 +29,7 @@ describe('EternitiesMap.initializeTiles', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
+      states: new MapStates(),
     });
     expect(map.tiles).toHaveLength(5);
   });
@@ -35,6 +40,7 @@ describe('EternitiesMap.planeswalk', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
+      states: new MapStates(),
     });
     const currentActive = map.active;
     map.planeswalk({ x: 1, y: 0 });
@@ -45,6 +51,7 @@ describe('EternitiesMap.planeswalk', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
+      states: new MapStates(),
     });
     map.planeswalk({ x: 1, y: 0 });
     expect(map.tiles).toHaveLength(8);
@@ -61,6 +68,7 @@ describe('EternitiesMap.planeswalk', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
+      states: new MapStates(),
     });
     map.planeswalk({ x: -1, y: 0 });
     expect(map.tiles).toHaveLength(8);
@@ -77,6 +85,7 @@ describe('EternitiesMap.planeswalk', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
+      states: new MapStates(),
     });
     map.planeswalk({ x: 0, y: 1 });
     expect(map.tiles).toHaveLength(8);
@@ -93,6 +102,7 @@ describe('EternitiesMap.planeswalk', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
+      states: new MapStates(),
     });
     map.planeswalk({ x: 0, y: -1 });
     expect(map.tiles).toHaveLength(8);
@@ -109,6 +119,7 @@ describe('EternitiesMap.planeswalk', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
+      states: new MapStates(),
     });
 
     map.planeswalk({ x: 0, y: -1 });
@@ -142,6 +153,7 @@ describe('EternitiesMap.export', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
+      states: new MapStates(),
     });
     const exported = map.export();
     expect(exported.specs.type).toEqual(MapType.ETERNITIES);
@@ -150,8 +162,9 @@ describe('EternitiesMap.export', () => {
     expect(exported.deck.cards).toHaveLength(map.remaining);
     expect(exported.deck.played).toHaveLength(map.played.length);
     expect(exported.active).toHaveLength(map.active.length);
+    const exportedIds = exported.active.map(exported => exported.id);
     for (const card of map.active) {
-      expect(exported.active).toContain(card.id);
+      expect(exportedIds).toContain(card.id);
     }
   });
 });

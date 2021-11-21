@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import './main.scss';
 import './fa';
 import { createApp } from 'vue';
-import { createPinia } from 'pinia'
+import { createPinia } from 'pinia';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { router } from './router';
 import { createFeeder } from './store/plugins/feeder';

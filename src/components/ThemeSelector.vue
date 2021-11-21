@@ -1,6 +1,6 @@
 <template>
   <div class="theme-selector">
-    <label>
+    <label title="Select color theme">
       <span class="pre">
         <fa :icon="icon" fixed-width />
       </span>

@@ -3,10 +3,14 @@ import { DeckProvider } from '@/services/DeckProvider';
 import { eventBus } from '@/services/EventBus';
 import { Card, Plane } from '../card';
 import { Map, MapSpecs, MapType } from '.';
+import { MapStates } from '../states';
 
 class TestMap extends Map {
   public get specs(): MapSpecs {
     return { type: MapType.EMPTY };
+  }
+  public testActive(): void {
+    this.active = [ this.deck.draw().card ];
   }
   public planeswalk(): boolean {
     throw new Error('Method not implemented.');
@@ -19,10 +23,13 @@ class TestMap extends Map {
   }
 }
 
+jest.mock('@/services/getEnv');
+
 describe('Map.ready', () => {
   it('resolves', async() => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
+      states: new MapStates(),
     });
 
     let ready = false;
@@ -39,6 +46,7 @@ describe('Map.chaos', () => {
   it('triggers chaos', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
+      states: new MapStates(),
     });
     map.active.forEach(card => card.chaos = jest.fn());
     map.chaos();
@@ -50,8 +58,9 @@ describe('Map.updateCounter', () => {
   it('updates card counters', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getPlaneDeck(),
+      states: new MapStates(),
     });
-    map.active = [ map['deck'].draw().card ];
+    map.testActive();
     map.active.forEach((card) => {
       if (card instanceof Plane) {
         card.updateCounter = jest.fn();
@@ -66,6 +75,7 @@ describe('Map.revealUntil', () => {
   it('reveals a given number of requested Card', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
+      states: new MapStates(),
     });
     map.revealUntil(2);
     expect(map.revealed?.relevant).toHaveLength(2);
@@ -80,6 +90,7 @@ describe('Map.resolveReveal', () => {
   it('puts back cards on top and bottom', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
+      states: new MapStates(),
     });
 
     const putOnTop = jest.spyOn(map['deck'], 'putOnTop');
@@ -90,11 +101,10 @@ describe('Map.resolveReveal', () => {
     map.revealUntil(2);
     const top = map.revealed?.relevant[0] as Card;
     const bottom = map.revealed?.relevant[1] as Card;
-    map.resolveReveal([top], [bottom]);
+    map.resolveReveal([ top ], [ bottom ]);
     expect(putOnTop).toHaveBeenCalled();
     expect(putOnTheBottom).toHaveBeenCalled();
     expect(clearRevealed).toHaveBeenCalled();
-    expect(eventBus.emit).toHaveBeenCalled();
 
     expect(map['deck']['cards'][0]).toEqual(top);
     expect(map['deck']['cards'][map.remaining - 1]).toEqual(bottom);
@@ -106,6 +116,7 @@ describe('Map.clearRevealed', () => {
   it('sets revealed to nothing', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
+      states: new MapStates(),
     });
     map.revealUntil(5);
     expect(map.revealed).not.toBeUndefined();
@@ -118,6 +129,7 @@ describe('Map.export', () => {
   it('exports the state of the map', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
+      states: new MapStates(),
     });
     const exported = map.export();
     expect(exported.specs.type).toEqual(MapType.EMPTY);

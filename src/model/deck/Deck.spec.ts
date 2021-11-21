@@ -7,6 +7,7 @@ const provider = Container.get(DeckProvider);
 describe('Deck.draw', () => {
   it('draws a card', () => {
     const deck = provider.getDeck();
+    expect(deck.remaining).toEqual(86);
     const drawn = deck.draw();
     expect(drawn.card).toBeInstanceOf(Card);
     expect(drawn.shuffled).toEqual(false);
@@ -15,11 +16,12 @@ describe('Deck.draw', () => {
 
   it('reshuffle and draws a card', () => {
     const deck = provider.getDeck();
-    deck.played = deck['cards'];
-    deck['cards'] = [];
-
+    while(deck.remaining > 0) {
+      deck.setPlayed(deck.draw().card);
+    }
+    expect(deck.played).toHaveLength(86);
+    expect(deck.remaining).toEqual(0);
     const drawn = deck.draw();
-
     expect(drawn.card).toBeInstanceOf(Card);
     expect(drawn.shuffled).toEqual(true);
     expect(deck.remaining).toEqual(85);
@@ -27,7 +29,7 @@ describe('Deck.draw', () => {
   });
 });
 
-describe('Deck.play', () => {
+describe('Deck.setPlayed', () => {
   it('sets a played card in the played pile', () => {
     const deck = provider.getDeck();
     const drawn = deck.draw();
@@ -50,9 +52,11 @@ describe('Deck.drawPlane', () => {
 describe('Deck.shuffle', () => {
   it('shuffled played cards back', () => {
     const deck = provider.getDeck();
-    deck.played = deck['cards'];
-    deck['cards'] = [];
-
+    while(deck.remaining > 0) {
+      deck.setPlayed(deck.draw().card);
+    }
+    expect(deck.played).toHaveLength(86);
+    expect(deck.remaining).toEqual(0);
     deck.shuffle();
     expect(deck.remaining).toEqual(86);
     expect(deck.played).toHaveLength(0);
@@ -87,25 +91,23 @@ describe('Deck.revealUntil', () => {
 describe('Deck.putOnTop', () => {
   it('puts given cards on top of the deck', () => {
     const deck = provider.getDeck();
-    // pick a card from the deck
-    const card = deck['cards'][1];
-
+    const card = deck.draw().card;
     deck.putOnTop([ card ]);
-    // we actually copied the card in that test
-    expect(deck.remaining).toEqual(87);
-    expect(deck['cards'][0]).toEqual(card);
+    expect(deck.remaining).toEqual(86);
+    expect(deck.draw().card).toEqual(card);
   });
 });
 
 describe('Deck.putOnTheBottom', () => {
   it('puts given cards on the bottom of the deck', () => {
     const deck = provider.getDeck();
-    // pick a card from the deck
-    const card = deck['cards'][1];
-
+    const card = deck.draw().card;
     deck.putOnTheBottom([ card ]);
-    // we actually copied the card in that test
-    expect(deck.remaining).toEqual(87);
-    expect(deck['cards'][deck.remaining - 1]).toEqual(card);
+    expect(deck.remaining).toEqual(86);
+    while (deck.remaining > 1) {
+      deck.draw();
+    }
+    expect(deck.remaining).toEqual(1);
+    expect(deck.draw().card).toEqual(card);
   });
 });

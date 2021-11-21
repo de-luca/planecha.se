@@ -1,5 +1,5 @@
 import Container from 'typedi';
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
 import {
   BuildProps,
@@ -164,5 +164,5 @@ export const useMain = defineStore('main', {
       this.map.resolveReveal(payload.top, payload.bottom);
       requestIfOnline(this.$state, 'requestResolveReveal', payload);
     },
-  }
+  },
 });

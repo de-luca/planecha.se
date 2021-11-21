@@ -1,4 +1,4 @@
-import { PiniaPluginContext, StoreGeneric, StoreOnActionListener, StoreOnActionListenerContext } from "pinia";
+import { PiniaPluginContext, StoreGeneric, StoreOnActionListener, StoreOnActionListenerContext } from 'pinia';
 import { Payload } from '@/store/main';
 import { BuildProps } from '@/model/map';
 import { Card, Plane } from '@/model/card';

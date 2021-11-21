@@ -4,6 +4,7 @@ import { Exported, MapFactory, MapInterface } from '../map';
 import { Beacon, SignalData, SignalPayload } from './Beacon';
 import * as Handler from './Handler';
 import * as Payload from './payloads';
+import { getEnv } from '@/services/getEnv';
 
 interface Peer {
   connection: RTCPeerConnection;
@@ -16,9 +17,9 @@ export class PeerMap {
     iceServers: [
       { urls: 'stun:stun.1.google.com:19302' },
       {
-        urls: import.meta.env.VITE_TURN_URL,
-        username: import.meta.env.VITE_TURN_USER,
-        credential: import.meta.env.VITE_TURN_CRED,
+        urls: getEnv('VITE_TURN_URL') as string,
+        username: getEnv('VITE_TURN_USER') as string,
+        credential: getEnv('VITE_TURN_CRED') as string,
       },
     ],
   };

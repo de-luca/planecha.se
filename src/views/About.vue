@@ -24,36 +24,36 @@
       <h2>What does it do?</h2>
       <p>
         Two game modes are supported:
-        <dl>
-          <dt><b>Classic Planechase</b></dt>
-          <dd>
-            The "Single Planar Deck Option" described in
-            <a href="https://magic.wizards.com/en/game-info/gameplay/rules-and-formats/rulesrule " rel="noopener noreferrer" target="_blank">rule</a>
-            901.15.
-          </dd>
-          <dt><b>Eternities Map</b></dt>
-          <dd>
-            The Planechase variant described
-            <a href="https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19" rel="noopener noreferrer" target="_blank">here</a>
-            or in the <a href="https://youtu.be/TGJaJ29Zs6o" rel="noopener noreferrer" target="_blank">Professor's video</a>.<br>
-            Multiple variants and configurations are also availables such as Phenomena encountering and dedicated Phenomena deck.
-          </dd>
-        </dl>
       </p>
+      <dl>
+        <dt><b>Classic Planechase</b></dt>
+        <dd>
+          The "Single Planar Deck Option" described in
+          <a href="https://magic.wizards.com/en/game-info/gameplay/rules-and-formats/rules" rel="noopener noreferrer" target="_blank">rule</a>
+          901.15.
+        </dd>
+        <dt><b>Eternities Map</b></dt>
+        <dd>
+          The Planechase variant described
+          <a href="https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19" rel="noopener noreferrer" target="_blank">here</a>
+          or in the <a href="https://youtu.be/TGJaJ29Zs6o" rel="noopener noreferrer" target="_blank">Professor's video</a>.<br>
+          Multiple variants and configurations are also availables such as Phenomena encountering and dedicated Phenomena deck.
+        </dd>
+      </dl>
       <p>
         The app also offers two ways to play Planechase:
-        <dl>
-          <dt><b>Locally</b></dt>
-          <dd>
-            Use this app from your computer as a Planechase deck for your MtG game.
-          </dd>
-          <dt><b>Remotely</b></dt>
-          <dd>
-            Use this app to create a game which you can then share the link with other players and
-            have a synchronized Planar deck that you can use during your remote MtG game.
-          </dd>
-        </dl>
       </p>
+      <dl>
+        <dt><b>Locally</b></dt>
+        <dd>
+          Use this app from your computer as a Planechase deck for your MtG game.
+        </dd>
+        <dt><b>Remotely</b></dt>
+        <dd>
+          Use this app to create a game which you can then share the link with other players and
+          have a synchronized Planar deck that you can use during your remote MtG game.
+        </dd>
+      </dl>
 
       <h2>How does that work?</h2>
       <p>
