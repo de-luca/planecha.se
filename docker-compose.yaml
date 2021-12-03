@@ -9,8 +9,17 @@ services:
     volumes:
       - ./:/scripts:rw
     environment: 
-      VITE_BEACON_URL: wss://localhost:3030
+      VITE_BEACON_URL: ws://localhost:7878
       VITE_VERCEL_GIT_COMMIT_SHA: HEAD
     working_dir: /scripts
+    depends_on:
+      - beacon
     entrypoint: ["yarn"]
     command: ["serve:docker"]
+  
+  beacon:
+    image: ghcr.io/de-luca/beacon:v0.4.0
+    init: true
+    ports:
+      - 7878:7878
+    command: ["0.0.0.0:7878"]

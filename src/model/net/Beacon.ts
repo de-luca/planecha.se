@@ -11,6 +11,7 @@ enum EventType {
   CREATED = 'created',
   JOINED = 'joined',
   SIGNAL = 'signal',
+  ERROR = 'error',
 }
 
 interface Response<T> {
@@ -95,10 +96,15 @@ export class Beacon extends EventTarget {
         }));
         break;
       case EventType.SIGNAL:
-        this.dispatchEvent(new CustomEvent<SignalData>(EventType.SIGNAL, {
-          detail: data.data as SignalData,
+        this.dispatchEvent(new CustomEvent<SignalPayload>(EventType.SIGNAL, {
+          detail: data.data as SignalPayload,
         }));
         break;
+      case EventType.ERROR:
+      default:
+        this.dispatchEvent(new CustomEvent<string>(EventType.ERROR, {
+          detail: data.data as string,
+        }));
     }
   }
 }

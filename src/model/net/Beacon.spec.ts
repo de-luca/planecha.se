@@ -1,95 +1,80 @@
-import { Beacon } from './Beacon';
-import WS from 'jest-websocket-mock';
-
-let srv: WS;
+import { promisify } from '../../../tests/promisify';
+import { getEnv } from '@/services/getEnv';
+import { Beacon, SignalData, SignalPayload } from './Beacon';
 
 jest.mock('@/services/getEnv');
 
-beforeEach(() => {
-  srv = new WS('ws://localhost:3030', { jsonProtocol: true });
-});
-
-afterEach(() => {
-  srv.close();
-});
-
 describe('Beacon.constructor', () => {
   it('starts a websocket and emit ready event', async() => {
-    const beacon = await new Promise<Beacon>((resolve) => {
+    await expect(new Promise<Beacon>((resolve) => {
       const beacon = new Beacon();
-      beacon.addEventListener('ready', (_ev) => {
-        resolve(beacon);
-      });
-    });
-    expect(beacon['socket'].readyState).toEqual(1);
+      beacon.addEventListener('ready', () => resolve(beacon));
+    })).resolves.not.toThrow();
   });
 });
 
-describe('Beacon.send', () => {
-  it('sends a create/join/signal payload', async () => {
-    const beacon = new Beacon();
-    await srv.connected;
+describe('Beacon.check', () => {
+  it('returns true if server is available', async() => {
+    expect(await Beacon.check()).toEqual(true);
+  });
 
+  it('returns false if server is unavailable', async() => {
+    (getEnv as jest.Mock).mockImplementationOnce(() => 'ws://DEAD');
+    expect(await Beacon.check()).toEqual(false);
+  });
+});
+
+describe('Beacon.create', () => {
+  it('sends a create payload and receive back a payload', async() => {
+    const beacon = new Beacon();
+    await promisify<void>(beacon, 'ready');
     beacon.create();
-    await expect(srv).toReceiveMessage({
-      method: 'create',
-      params: {},
-    });
-
-    beacon.join('00000000-0000-0000-0000-000000000000');
-    await expect(srv).toReceiveMessage({
-      method: 'join',
-      params: { roomId: '00000000-0000-0000-0000-000000000000' },
-    });
-
-    beacon.signal(
-      '00000000-0000-0000-0000-000000000000',
-      { type: 'offer', data: { foo: 'bar' } },
-    );
-    await expect(srv).toReceiveMessage({
-      method: 'signal',
-      params: {
-        peerId: '00000000-0000-0000-0000-000000000000',
-        data: { type: 'offer', data: { foo: 'bar' } },
-      },
-    });
+    const room = await promisify<string>(beacon, 'created') as string;
+    expect(room).toEqual(expect.any(String));
   });
 });
 
-
-describe('Beacon.handle', () => {
-  it('receives events', async () => {
+describe('Beacon.join', () => {
+  it('sends a join event and receive back a payload', async() => {
     const beacon = new Beacon();
-    await srv.connected;
+    await promisify<void>(beacon, 'ready');
+    beacon.create();
+    const room = await promisify<string>(beacon, 'created') as string;
+    beacon.join(room);
+    const peers = await promisify(beacon, 'joined');
+    expect(peers).toEqual(expect.any(Array));
+  });
 
-    const createdData = new Promise((resolve) => {
-      beacon.addEventListener('created', (ev) => {
-        resolve((ev as CustomEvent).detail);
-      });
-    });
-    srv.send({ event: 'created', data: '00000000-0000-0000-0000-000000000000' });
-    expect(await createdData).toEqual('00000000-0000-0000-0000-000000000000');
+  it('sends an unknown join event and receive back an error', async() => {
+    const beacon = new Beacon();
+    await promisify<void>(beacon, 'ready');
+    beacon.join('00000000-0000-0000-0000-000000000000');
+    const error = await promisify(beacon, 'error');
+    expect(error).toEqual('ROOM_DOES_NOT_EXISTS');
+  });
+});
 
-    const joinedData = new Promise((resolve) => {
-      beacon.addEventListener('joined', (ev) => {
-        resolve((ev as CustomEvent).detail);
-      });
-    });
-    srv.send({ event: 'joined', data: ['00000000-0000-0000-0000-000000000000'] });
-    expect(await joinedData).toEqual(['00000000-0000-0000-0000-000000000000']);
+describe('Beacon.signal', () => {
+  it('sends a signal event and receive signal payload', async() => {
+    const b1 = new Beacon();
+    const b2 = new Beacon();
+    await Promise.all([
+      promisify<void>(b1, 'ready'),
+      promisify<void>(b2, 'ready'),
+    ]);
 
-    const signalData = new Promise((resolve) => {
-      beacon.addEventListener('signal', (ev) => {
-        resolve((ev as CustomEvent).detail);
-      });
-    });
-    srv.send({ event: 'signal', data: {
-      peerId: '00000000-0000-0000-0000-000000000000',
+    b1.create();
+    const room = await promisify<string>(b1, 'created') as string;
+    b2.join(room);
+    const peers = await promisify<Array<string>>(b2, 'joined') as Array<string>;
+
+    const signal: SignalData = {
+      type: 'offer',
       data: { foo: 'bar' },
-    }});
-    expect(await signalData).toEqual({
-      peerId: '00000000-0000-0000-0000-000000000000',
-      data: { foo: 'bar' },
-    });
+    };
+
+    b2.signal(peers[0], signal);
+    const payload = await promisify<SignalPayload>(b1, 'signal') as SignalPayload;
+    expect(payload.data).toEqual(signal);
   });
 });
