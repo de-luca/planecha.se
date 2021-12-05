@@ -49,25 +49,31 @@
           <button
             class="button is-primary"
             :class="{ 'is-loading': joining }"
+            :disabled="!available"
             type="submit"
           >
             Join game
           </button>
         </div>
+        <p class="help" v-html="helpText"></p>
       </div>
     </form>
+
+    <error-modal v-if="error" :error="error" @dismiss="error = null" />
   </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { mixins, Options } from 'vue-class-component';
 import { useMain } from '@/store/main';
 import { useConfig } from '@/store/config';
+import { Onlineable } from '@/components/Onlineable';
 
 import ThemeSelector from '@/components/ThemeSelector.vue';
+import ErrorModal from '@/components/ErrorModal.vue';
 
-@Options({ components: { ThemeSelector } })
-export default class JoinGame extends Vue {
+@Options({ components: { ThemeSelector, ErrorModal } })
+export default class JoinGame extends mixins(Onlineable) {
   private mainStore = useMain();
   private configStore = useConfig();
 
@@ -76,10 +82,17 @@ export default class JoinGame extends Vue {
   private saveName: boolean = false;
   private joining: boolean = false;
 
+  private error: Error | null = null;
+
   public created() {
     this.roomId = this.$route.params.roomId as string ?? '';
     this.name = this.configStore.name ?? '';
     this.saveName = this.name !== '';
+    this.registerOnlineListener();
+  }
+
+  public unmounted(): void {
+    this.removeOnlineListener();
   }
 
   public async join() {
@@ -89,11 +102,14 @@ export default class JoinGame extends Vue {
       ? this.configStore.setName(this.name)
       : this.configStore.removeName();
 
-    await this.mainStore.join({ roomId: this.roomId, name: this.name });
+    try {
+      await this.mainStore.join({ roomId: this.roomId, name: this.name });
+      this.$router.push('/board');
+    } catch (err) {
+      this.error = err as Error;
+    }
 
     this.joining = false;
-
-    this.$router.push('/board');
   }
 }
 </script>

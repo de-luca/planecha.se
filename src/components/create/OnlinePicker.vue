@@ -32,8 +32,8 @@
 </template>
 
 <script lang="ts">
-import { Beacon } from '@/model/net/Beacon';
-import { Options, Vue, prop } from 'vue-class-component';
+import { Onlineable } from '@/components/Onlineable';
+import { Options, prop, mixins } from 'vue-class-component';
 
 class Props {
   public modelValue = prop<boolean>({ required: true });
@@ -42,28 +42,16 @@ class Props {
 @Options({
   emits: ['update:modelValue'],
 })
-export default class OnlinePicker extends Vue.with(Props) {
+export default class OnlinePicker extends mixins(Onlineable).with(Props) {
   private id: string = '';
-  private loading = true;
-  private available = false;
 
   public created(): void {
     this.id = Math.random().toString(36).substring(2, 15);
-    Beacon.check()
-      .then(state => this.available = state)
-      .finally(() => this.loading = false);
+    this.registerOnlineListener();
   }
 
-  public get helpText(): string {
-    if (this.loading) {
-      return 'Checking the Planar Beacon...';
-    }
-
-    if (!this.available) {
-      return 'Online unavailable. 🔥 Server is dead 🔥';
-    }
-
-    return '';
+  public unmounted(): void {
+    this.removeOnlineListener();
   }
 
   public get selected(): boolean {

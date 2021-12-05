@@ -38,7 +38,12 @@ export class Beacon extends EventTarget {
     super();
 
     this.socket = new WebSocket(getEnv('VITE_BEACON_URL') as string);
-    this.socket.onopen = () => this.open();
+    this.socket.onopen = _ => this.open();
+    this.socket.onerror = (_) => {
+      this.dispatchEvent(new CustomEvent<string>(EventType.ERROR, {
+        detail: 'CONNECTION_FAILED',
+      }));
+    };
   }
 
   public static check(): Promise<boolean> {
@@ -72,13 +77,13 @@ export class Beacon extends EventTarget {
   }
 
   private send(method: Method, params: Param = {}): void {
-    this.socket.send(
-      JSON.stringify({ method, params }),
-    );
+    this.socket.send(JSON.stringify({ method, params }));
   }
 
   private open(): void {
-    this.socket.onmessage = (ev) => this.handle(ev);
+    this.socket.onopen = null;
+    this.socket.onerror = null;
+    this.socket.onmessage = event => this.handle(event);
     this.dispatchEvent(new Event(EventType.READY));
   }
 
@@ -86,25 +91,18 @@ export class Beacon extends EventTarget {
     const data = JSON.parse(event.data) as Response<any>;
     switch(data.event) {
       case EventType.CREATED:
-        this.dispatchEvent(new CustomEvent<string>(EventType.CREATED, {
-          detail: data.data as string,
-        }));
-        break;
+        return this.dispatch<string>(EventType.CREATED, data.data);
       case EventType.JOINED:
-        this.dispatchEvent(new CustomEvent<string>(EventType.JOINED, {
-          detail: data.data as string,
-        }));
-        break;
+        return this.dispatch<Array<string>>(EventType.JOINED, data.data);
       case EventType.SIGNAL:
-        this.dispatchEvent(new CustomEvent<SignalPayload>(EventType.SIGNAL, {
-          detail: data.data as SignalPayload,
-        }));
-        break;
+        return this.dispatch<SignalPayload>(EventType.SIGNAL, data.data);
       case EventType.ERROR:
       default:
-        this.dispatchEvent(new CustomEvent<string>(EventType.ERROR, {
-          detail: data.data as string,
-        }));
+        return this.dispatch<string>(EventType.ERROR, data.data);
     }
+  }
+
+  private dispatch<T>(event: EventType, data: T): void {
+    this.dispatchEvent(new CustomEvent<T>(event, { detail: data as T }));
   }
 }

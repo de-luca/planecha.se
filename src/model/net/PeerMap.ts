@@ -1,10 +1,11 @@
 import { Container } from 'typedi';
+import { getEnv } from '@/services/getEnv';
 import { eventBus, EventType as BusEvent } from '@/services/EventBus';
 import { Exported, MapFactory, MapInterface } from '../map';
 import { Beacon, SignalData, SignalPayload } from './Beacon';
+import { PeerICEError } from './error/PeerICEError';
 import * as Handler from './Handler';
 import * as Payload from './payloads';
-import { getEnv } from '@/services/getEnv';
 
 interface Peer {
   connection: RTCPeerConnection;
@@ -16,17 +17,18 @@ export class PeerMap {
   private static readonly RTCConfig = {
     iceServers: [
       { urls: 'stun:stun.1.google.com:19302' },
-      {
-        urls: getEnv('VITE_TURN_URL') as string,
-        username: getEnv('VITE_TURN_USER') as string,
-        credential: getEnv('VITE_TURN_CRED') as string,
-      },
+      // {
+      //   urls: getEnv('VITE_TURN_URL') as string,
+      //   username: getEnv('VITE_TURN_USER') as string,
+      //   credential: getEnv('VITE_TURN_CRED') as string,
+      // },
     ],
   };
 
   private peers: Map<string, Peer>;
   private beacon: Beacon;
-  public yourName: string;
+
+  public readonly yourName: string;
 
   public constructor(beacon: Beacon, yourName: string) {
     this.peers = new Map();
@@ -71,6 +73,7 @@ export class PeerMap {
     const initRequest = new Promise<MapInterface>((resolve) => {
       const handler = (event: MessageEvent<string>) => {
         const payload = Handler.parse<Exported>(event.data);
+
         if (payload.event === Handler.Event.INIT) {
           const map = Container.get(MapFactory).restore(payload.data);
           p.channel.removeEventListener('message', handler);
@@ -90,13 +93,23 @@ export class PeerMap {
     for (const id of ids) {
       const peer = this.buildPeer(id);
 
-      channelOpen.push(new Promise((resolve) => {
-        peer.channel.onopen = (_) => {
-          peer.channel.send(
-            Handler.stringify(Handler.Event.HEY, { name: this.yourName }),
-          );
-          resolve();
-        };
+      channelOpen.push(new Promise((resolve, reject) => {
+        peer.connection.addEventListener('iceconnectionstatechange', () => {
+          if (peer.connection.iceConnectionState === 'failed') {
+            reject(new PeerICEError());
+          }
+        });
+
+        peer.channel.addEventListener(
+          'open',
+          () => {
+            peer.channel.send(
+              Handler.stringify(Handler.Event.HEY, { name: this.yourName }),
+            );
+            resolve();
+          },
+          { once: true },
+        );
       }));
 
       const offer = await peer.connection.createOffer();
@@ -113,22 +126,24 @@ export class PeerMap {
     const connection = new RTCPeerConnection(PeerMap.RTCConfig);
     const channel = connection.createDataChannel(id, PeerMap.channelConfig);
 
-    channel.onmessage = Handler.getHandler(this.yourName);
-    connection.oniceconnectionstatechange = (_) => {
+    channel.addEventListener('message', Handler.getHandler(this.yourName));
+
+    connection.addEventListener('iceconnectionstatechange', () => {
       if (connection.iceConnectionState === 'failed') {
         this.peers.delete(id);
         eventBus.emit(BusEvent.BYE, { mateId: id });
       }
-      console.log(`[oniceconnectionstatechange][${id}]`, connection.iceConnectionState);
-    };
-    connection.onicecandidate = ({ candidate }) => {
+      console.log(`[iceConnectionStateChange][${id}]`, connection.iceConnectionState);
+    });
+
+    connection.addEventListener('icecandidate', ({ candidate }) => {
       if (candidate) {
         this.beacon.signal(id, {
           type: 'icecandidate',
           candidate: candidate.toJSON() as unknown,
         });
       }
-    };
+    });
 
     return { connection, channel };
   }

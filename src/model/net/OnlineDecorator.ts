@@ -13,6 +13,7 @@ import {
   Revealed,
   Tile,
 } from '../map';
+import { ErrorFactory } from './error/beacon/ErrorFactory';
 
 export class OnlineDecorator implements MapInterface, OnlineInterface {
   private beacon: Beacon;
@@ -27,8 +28,11 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     this.map = map;
 
     this.beacon = new Beacon();
-    this.readyState = new Promise<void>((resolve) => {
-        this.beacon.addEventListener('ready', _ => resolve());
+    this.readyState = new Promise<void>((resolve, reject) => {
+      this.beacon.addEventListener('ready', _ => resolve(), { once: true });
+      this.beacon.addEventListener('error', ((event: CustomEvent<string>) => {
+        reject(ErrorFactory.fromCode(event.detail));
+      }) as EventListener, { once: true });
     });
     this.peers = new PeerMap(this.beacon, name);
   }
@@ -130,7 +134,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
       this.beacon.addEventListener('created', ((event: CustomEvent<string>) => {
         this.gameId = event.detail;
         resolve(event.detail);
-      }) as EventListener);
+      }) as EventListener, { once: true });
     });
 
     this.beacon.create();
@@ -139,11 +143,15 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
   }
 
   public async join(gameId: string): Promise<void> {
-    const peers = new Promise<Array<string>>((resolve) => {
+    const peers = new Promise<Array<string>>((resolve, reject) => {
       this.beacon.addEventListener('joined', ((event: CustomEvent<Array<string>>) => {
         this.gameId = gameId;
         resolve(event.detail);
-      }) as EventListener);
+      }) as EventListener, { once: true });
+
+      this.beacon.addEventListener('error', ((event: CustomEvent<string>) => {
+        reject(ErrorFactory.fromCode(event.detail));
+      }) as EventListener, { once: true });
     });
     this.beacon.join(gameId);
 

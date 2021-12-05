@@ -7,12 +7,12 @@ export function promisify<T>(
     (resolve, reject) => {
       target.addEventListener(resolveEvent, ((event: Event | CustomEvent<T>) => {
         event instanceof CustomEvent ? resolve(event.detail) : resolve();
-      }) as EventListener);
+      }) as EventListener, { once: true });
 
       if (errorEvent) {
         target.addEventListener(errorEvent, ((event: Event | CustomEvent<T>) => {
           event instanceof CustomEvent ? reject(event.detail) : reject();
-        }) as EventListener);
+        }) as EventListener, { once: true });
       }
     }
   );
