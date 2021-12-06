@@ -133,7 +133,7 @@ export class PeerMap {
         this.peers.delete(id);
         eventBus.emit(BusEvent.BYE, { mateId: id });
       }
-      console.log(`[iceConnectionStateChange][${id}]`, connection.iceConnectionState);
+      console.log(`[iceConnectionState][${id}]`, connection.iceConnectionState);
     });
 
     connection.addEventListener('icecandidate', ({ candidate }) => {
@@ -144,6 +144,13 @@ export class PeerMap {
         });
       }
     });
+
+    connection.onconnectionstatechange = _ =>
+      console.log(`[connectionState][${id}]`, connection.connectionState);
+    connection.onicegatheringstatechange = _ =>
+      console.log(`[iceGatheringState][${id}]`, connection.iceGatheringState);
+    connection.onsignalingstatechange = _ =>
+      console.log(`[signalingState][${id}]`, connection.signalingState);
 
     return { connection, channel };
   }
