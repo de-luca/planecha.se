@@ -88,17 +88,21 @@ export class Beacon extends EventTarget {
   }
 
   private handle(event: MessageEvent<string>): void {
-    const data = JSON.parse(event.data) as Response<any>;
-    switch(data.event) {
-      case EventType.CREATED:
-        return this.dispatch<string>(EventType.CREATED, data.data);
-      case EventType.JOINED:
-        return this.dispatch<Array<string>>(EventType.JOINED, data.data);
-      case EventType.SIGNAL:
-        return this.dispatch<SignalPayload>(EventType.SIGNAL, data.data);
-      case EventType.ERROR:
-      default:
-        return this.dispatch<string>(EventType.ERROR, data.data);
+    try {
+      const data = JSON.parse(event.data) as Response<any>;
+      switch(data.event) {
+        case EventType.CREATED:
+          return this.dispatch<string>(EventType.CREATED, data.data);
+        case EventType.JOINED:
+          return this.dispatch<Array<string>>(EventType.JOINED, data.data);
+        case EventType.SIGNAL:
+          return this.dispatch<SignalPayload>(EventType.SIGNAL, data.data);
+        case EventType.ERROR:
+        default:
+          return this.dispatch<string>(EventType.ERROR, data.data);
+      }
+    } catch(err) {
+      this.dispatch<string>(EventType.ERROR, 'UNPROCESSABLE SERVER MESSAGE');
     }
   }
 

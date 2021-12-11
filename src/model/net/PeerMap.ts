@@ -3,6 +3,7 @@ import { getEnv } from '@/services/getEnv';
 import { eventBus, EventType as BusEvent } from '@/services/EventBus';
 import { Exported, MapFactory, MapInterface } from '../map';
 import { Beacon, SignalData, SignalPayload } from './Beacon';
+import { PeerLogs } from './PeerLogs';
 import { PeerICEError } from './error/PeerICEError';
 import * as Handler from './Handler';
 import * as Payload from './payloads';
@@ -10,6 +11,7 @@ import * as Payload from './payloads';
 interface Peer {
   connection: RTCPeerConnection;
   channel: RTCDataChannel;
+  logs: PeerLogs;
 }
 
 export class PeerMap {
@@ -17,11 +19,11 @@ export class PeerMap {
   private static readonly RTCConfig = {
     iceServers: [
       { urls: 'stun:stun.1.google.com:19302' },
-      // {
-      //   urls: getEnv('VITE_TURN_URL') as string,
-      //   username: getEnv('VITE_TURN_USER') as string,
-      //   credential: getEnv('VITE_TURN_CRED') as string,
-      // },
+      {
+        urls: getEnv('VITE_TURN_URL') as string,
+        username: getEnv('VITE_TURN_USER') as string,
+        credential: getEnv('VITE_TURN_CRED') as string,
+      },
     ],
   };
 
@@ -96,7 +98,7 @@ export class PeerMap {
       channelOpen.push(new Promise((resolve, reject) => {
         peer.connection.addEventListener('iceconnectionstatechange', () => {
           if (peer.connection.iceConnectionState === 'failed') {
-            reject(new PeerICEError());
+            reject(new PeerICEError(peer.logs));
           }
         });
 
@@ -106,7 +108,9 @@ export class PeerMap {
             peer.channel.send(
               Handler.stringify(Handler.Event.HEY, { name: this.yourName }),
             );
+
             resolve();
+            setTimeout(_ => {reject(new PeerICEError(peer.logs));}, 30000);
           },
           { once: true },
         );
@@ -125,16 +129,9 @@ export class PeerMap {
   private buildPeer(id: string): Peer {
     const connection = new RTCPeerConnection(PeerMap.RTCConfig);
     const channel = connection.createDataChannel(id, PeerMap.channelConfig);
+    const logs = new PeerLogs();
 
     channel.addEventListener('message', Handler.getHandler(this.yourName));
-
-    connection.addEventListener('iceconnectionstatechange', () => {
-      if (connection.iceConnectionState === 'failed') {
-        this.peers.delete(id);
-        eventBus.emit(BusEvent.BYE, { mateId: id });
-      }
-      console.log(`[iceConnectionState][${id}]`, connection.iceConnectionState);
-    });
 
     connection.addEventListener('icecandidate', ({ candidate }) => {
       if (candidate) {
@@ -145,14 +142,20 @@ export class PeerMap {
       }
     });
 
-    connection.onconnectionstatechange = _ =>
-      console.log(`[connectionState][${id}]`, connection.connectionState);
-    connection.onicegatheringstatechange = _ =>
-      console.log(`[iceGatheringState][${id}]`, connection.iceGatheringState);
-    connection.onsignalingstatechange = _ =>
-      console.log(`[signalingState][${id}]`, connection.signalingState);
+    connection.addEventListener('iceconnectionstatechange', () => {
+      if (connection.iceConnectionState === 'failed') {
+        this.peers.delete(id);
+        eventBus.emit(BusEvent.BYE, { mateId: id });
+      }
 
-    return { connection, channel };
+      logs.push('iceConnectionState', connection.iceConnectionState);
+    });
+
+    connection.onconnectionstatechange = _ => logs.push('connectionState', connection.connectionState);
+    connection.onicegatheringstatechange = _ => logs.push('iceGatheringState', connection.iceGatheringState);
+    connection.onsignalingstatechange = _ => logs.push('signalingState', connection.signalingState);
+
+    return { connection, channel, logs };
   }
 
   private async signal(data: SignalPayload): Promise<void> {

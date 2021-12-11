@@ -8,6 +8,16 @@
         </h1>
         <h2 class="subtitle">{{ error.name }}</h2>
         <p class="content" v-html="error.message"></p>
+        <div class="content" v-if="helpHash">
+          <feedback-button
+            @click="copy"
+            id="copy"
+            class="button"
+            idleText="Copy some unreadable debug info to clipboard"
+            actionText="Copied!"
+            timeout="5000"
+          />
+        </div>
         <button class="button is-secondary" @click="$emit('dismiss')">
           Okay
         </button>
@@ -17,17 +27,43 @@
 </template>
 
 <script lang="ts">
+import { PeerICEError } from '@/model/net/error/PeerICEError';
 import { Options, prop, Vue } from 'vue-class-component';
+
+import FeedbackButton from './FeedbackButton.vue';
 
 class Props {
   public error = prop<Error>({ required: true });
 }
 
-@Options({ emits: ['dismiss'] })
-export default class ErrorModal extends Vue.with(Props) {}
+@Options({
+  emits: ['dismiss'],
+  components: { FeedbackButton },
+})
+export default class ErrorModal extends Vue.with(Props) {
+  public get helpHash(): string | undefined {
+    return this.error instanceof PeerICEError
+      ? this.error.logs.hash()
+      : undefined;
+  }
+
+  public async copy(): Promise<void> {
+    try {
+      await navigator.clipboard.writeText(this.helpHash as string);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
+#copy {
+  background-color: transparent;
+  color: var(--text-color);
+  width: 25rem;
+}
+
 .modal {
   display: block;
 }
@@ -44,6 +80,14 @@ export default class ErrorModal extends Vue.with(Props) {}
     color: var(--text-color);
     background-color: var(--bg-color);
     border: 1px solid var(--border-color);
+
+    .hash {
+      word-wrap: anywhere;
+      text-align: left;
+      font-family: monospace;
+      font-size: x-small;
+      opacity: .5;
+    }
   }
 
   & > * {
