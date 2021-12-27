@@ -1,13 +1,17 @@
 <template>
-  <button
-    class="open button is-medium is-outlined"
-    title="Toggle game logs"
-    @click="toggle"
-  >
-    <span class="icon is-medium">
-      <fa icon="bars" fixed-width />
-    </span>
-  </button>
+  <div class="status-bar" :class="{ shown: show, hidden: !show }">
+    <deck-status class="part" />
+
+    <button
+      class="part button is-outlined"
+      title="Toggle game logs"
+      @click="toggle"
+    >
+      <span class="icon is-medium">
+        <fa icon="bars" fixed-width />
+      </span>
+    </button>
+  </div>
 
   <div class="feed box" :class="{ shown: show, hidden: !show }">
     <template v-for="m in messages.slice().reverse()" :key="m">
@@ -18,12 +22,16 @@
 
 <script lang="ts">
 import { useMain } from '@/store/main';
-import { prop, Vue } from 'vue-class-component';
+import { Options, prop, Vue } from 'vue-class-component';
+import DeckStatus from './DeckStatus.vue';
 
 class Props {
   public defaultShow = prop<boolean>({ required: true });
 }
 
+@Options({
+  components: { DeckStatus },
+})
 export default class Feed extends Vue.with(Props) {
   private store = useMain();
   private show = true;
@@ -45,34 +53,63 @@ export default class Feed extends Vue.with(Props) {
 <style lang="scss" scoped>
 @keyframes scale {
   0% {
-    transform: scale(0);
-    transform-origin: 100% 100%;
+    transform: scaleY(0);
+    transform-origin: 0% 100%;
     opacity: 1;
   }
   100% {
-    transform: scale(1);
-    transform-origin: 100% 100%;
+    transform: scaleY(1);
+    transform-origin: 0% 100%;
     opacity: 1;
   }
 }
 
-.open {
+.status-bar {
   position: absolute;
   bottom: 1rem;
   right: 1rem;
   z-index: 2;
 
-  color: var(--text-color);
-  background-color: var(--bg-color);
-  border-color: var(--border-color);
+  display: flex;
+  flex-flow: row;
 
-  &:hover {
-    border-color: #b5b5b5;
+  width: 22rem;
+
+  &.hidden .part {
+    &:first-child {
+      border-top-left-radius: 6px;
+    }
+
+    &:last-child {
+      border-top-right-radius: 6px;
+    }
   }
 
-  &:focus {
-    border-color: #485fc7;;
-    box-shadow: 0 0 0 .125em rgba(72,95,199,.25);
+  .part {
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    border-color: var(--border-color);
+
+    border-radius: 0;
+
+    &:first-child {
+      border-bottom-left-radius: 6px;
+    }
+
+    &:last-child {
+      border-bottom-right-radius: 6px;
+    }
+
+    &.button {
+      &:hover {
+        border-color: #b5b5b5;
+      }
+
+      &:focus {
+        border-color: #485fc7;;
+        box-shadow: 0 0 0 .125em rgba(72,95,199,.25);
+      }
+    }
   }
 }
 
@@ -83,10 +120,13 @@ export default class Feed extends Vue.with(Props) {
   z-index: 1;
   height: 50vh;
   width: 22rem;
+  margin-bottom: 2.5rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
   border: 1px solid var(--border-color);
+  border-bottom: none;
   overflow-x: scroll;
   transform: scale(0);
-  margin-bottom: 0;
 
   color: var(--text-color);
   background-color: var(--bg-color);

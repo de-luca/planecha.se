@@ -56,6 +56,8 @@ export default class ThemeSelector extends Vue {
   line-height: 1.5;
 
   &.is-full-height {
+    height: 2.5rem;
+
     span, select {
       height: 100%;
       font-size: 1rem;
