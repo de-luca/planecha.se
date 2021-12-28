@@ -46,13 +46,5 @@ export default class DeckStatus extends Vue {
     text-align: center;
     display: inline-block;
   }
-
-  &:not(:last-child) {
-    border-right: none;
-
-    &:not(:first-child) {
-      border-left: none;
-    }
-  }
 }
 </style>

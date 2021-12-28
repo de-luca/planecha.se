@@ -118,7 +118,7 @@ export default class Feed extends Vue.with(Props) {
   bottom: 1rem;
   right: 1rem;
   z-index: 1;
-  height: 50vh;
+  height: calc(50vh - 2.5rem);
   width: 22rem;
   margin-bottom: 2.5rem;
   border-bottom-left-radius: 0;
