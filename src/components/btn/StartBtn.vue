@@ -3,6 +3,7 @@
     class="button is-secondary is-rounded"
     title="Start Game"
     @click="start"
+    @keyup.space.prevent
   >
     <fa icon="play-circle" size="6x" />
   </button>
