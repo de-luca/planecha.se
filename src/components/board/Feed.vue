@@ -51,7 +51,7 @@ export default class Feed extends Vue.with(Props) {
 </script>
 
 <style lang="scss" scoped>
-@keyframes scale {
+@keyframes open {
   0% {
     transform: scaleY(0);
     transform-origin: 0% 100%;
@@ -59,6 +59,19 @@ export default class Feed extends Vue.with(Props) {
   }
   100% {
     transform: scaleY(1);
+    transform-origin: 0% 100%;
+    opacity: 1;
+  }
+}
+
+@keyframes close {
+  0% {
+    transform: scaleY(1);
+    transform-origin: 0% 100%;
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(0);
     transform-origin: 0% 100%;
     opacity: 1;
   }
@@ -131,8 +144,10 @@ export default class Feed extends Vue.with(Props) {
   color: var(--text-color);
   background-color: var(--bg-color);
 
+  animation: close .10s ease-in forwards;
+
   &.shown {
-	  animation: scale .25s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards;
+	  animation: open .10s ease-in forwards;
   }
 }
 </style>
