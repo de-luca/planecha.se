@@ -1,42 +1,16 @@
 <template>
   <div class="board">
 
-    <nav class="navbar">
-
-      <div class="navbar-brand">
-        <div class="brand navbar-item" @click="thaNav">
-          <div title="F">⟁</div>
-          <div title="D">⟁</div>
-          <div title="F">⟁</div>
-        </div>
+    <div class="nav">
+      <div class="brand" @click="thaNav">
+        <div title="F">⟁</div>
+        <div title="D">⟁</div>
+        <div title="F">⟁</div>
       </div>
-
-      <div class="navbar-menu">
-        <div class="navbar-start">
-          <div class="navbar-item">
-            <div class="field is-grouped">
-              <div class="control">
-                <theme-selector class="is-full-height" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="navbar-end">
-          <div class="navbar-item">
-            <div class="field is-grouped">
-              <p class="control">
-                <online-controls v-if="online"/>
-              </p>
-              <p class="control">
-                <close-game />
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </nav>
+      <theme-selector class="is-full-height" />
+      <online-controls v-if="online"/>
+      <close-game />
+    </div>
 
     <component :is="mapComponent" />
 
@@ -121,26 +95,13 @@ export default class Board extends Vue {
   ;
 }
 
-.navbar {
+.nav {
   grid-area: nav;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   gap: .5rem;
-  background-color: transparent;
-
-  .navbar-brand {
-    width: 95px;
-    margin-right: .5rem;
-  }
-
-  .navbar-item {
-    padding: 0;
-  }
-
-  .field.is-grouped > .control:not(:last-child) {
-    margin-right: .25rem;
-  }
 
   .brand {
     flex-grow: 1;
@@ -172,10 +133,6 @@ export default class Board extends Vue {
         transform: rotate(180deg) translateX(3rem);
       }
     }
-  }
-
-  button {
-    height: 100%;
   }
 }
 

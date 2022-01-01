@@ -44,8 +44,6 @@ export default class CloseGame extends Vue {
 
 <style lang="scss" scoped>
 button {
-  height: 100%;
-
   &.is-warn {
     color: var(--btn-warn-color);
     background-color: var(--btn-warn-bg);
