@@ -19,6 +19,7 @@ export type State = {
   online: boolean;
   mates: Map<string, string>;
   wasShuffled: boolean;
+  versionBuffer?: Exported;
 };
 
 function getState(): State {
@@ -28,6 +29,7 @@ function getState(): State {
     online: false,
     mates: new Map(),
     wasShuffled: false,
+    versionBuffer: undefined,
   };
 }
 
@@ -59,6 +61,7 @@ export namespace Payload {
   export type UpdateState = Passiveable & ActPayload.UpdateState;
   export type Reveal = Passiveable & ActPayload.Reveal;
   export type ResolveReveal = Passiveable & ActPayload.ResolveReveal;
+  export type Undo = Passiveable & ActPayload.Undo;
 }
 
 export const useMain = defineStore('main', {
@@ -116,17 +119,23 @@ export const useMain = defineStore('main', {
       eventBus.off('*');
     },
 
-    shuffle(payload: Exported) {
+    undo(payload: Payload.Undo): void {
+      this.map.applyUndo(payload.version);
+      this.versionBuffer = undefined;
+      requestIfOnline(this.$state, 'requestUndo', payload);
+    },
+
+    shuffle(payload: Exported): void {
       this.map.applyShuffle(payload);
     },
 
-    startGame(payload: Payload.Passiveable = {}) {
+    startGame(payload: Payload.Passiveable = {}): void {
       this.map.hasStarted = true;
       requestIfOnline(this.$state, 'requestStartGame', payload);
     },
 
     chaos(payload: Payload.Passiveable = {}): void {
-      this.map.chaos();
+      this.map.chaos(payload.passivity);
       requestIfOnline(this.$state, 'requestChaos', payload);
     },
     planeswalk(payload: Payload.Planeswalk = {}): void {

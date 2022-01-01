@@ -14,6 +14,7 @@ import {
   faPlayCircle,
   faSort,
   faSun,
+  faUndoAlt,
   faUserPlus,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
@@ -33,6 +34,7 @@ library.add(
   faPlayCircle,
   faSort,
   faSun,
+  faUndoAlt,
   faUserPlus,
   faUsers,
 );

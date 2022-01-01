@@ -1,3 +1,4 @@
+import { Exported } from '../map';
 import * as Payload from './payloads';
 
 export interface OnlineInterface {
@@ -24,6 +25,8 @@ export interface OnlineInterface {
   requestUpdateState(payload: Payload.UpdateState): void;
 
   requestStartGame(): void;
+
+  requestUndo(state: Payload.Undo): void;
 
   requestShuffling(): void;
 }

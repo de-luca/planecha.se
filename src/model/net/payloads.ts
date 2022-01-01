@@ -1,4 +1,5 @@
 import { Card, Plane } from '../card';
+import { Exported } from '../map';
 import { MapState, StateKey, StateOp } from '../states';
 
 export interface Join {
@@ -50,4 +51,8 @@ export interface ResolveRevealWire {
 }
 export interface NameWire {
   name: string;
+}
+
+export interface Undo {
+  version: Exported;
 }

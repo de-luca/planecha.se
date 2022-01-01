@@ -6,10 +6,13 @@ import {
   EternitiesMapDeckType,
   EternitiesMapSpecs,
   EternitiesMapSubType,
+  Exported,
   MapType,
 } from '../MapInterface';
 import { EternitiesMapExported } from './EternitiesMap';
 import { StateKey } from '@/model/states';
+import { DeckProvider } from '@/services/DeckProvider';
+import { Container } from 'typedi';
 
 export interface DualDeckExported extends EternitiesMapExported {
   phenomenaDeck: DeckState;
@@ -69,5 +72,10 @@ export class DualDeck extends SingleDeck {
       phenomenaDeck: this.phenomenaDeck.export(),
       encounterTriggers: this.encounterTriggers,
     };
+  }
+
+  public override applyUndo(state: DualDeckExported): void {
+    this.phenomenaDeck = Container.get(DeckProvider).getDeckFromExport(state.phenomenaDeck);
+    super.applyUndo(state);
   }
 }

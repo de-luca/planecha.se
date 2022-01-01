@@ -17,6 +17,10 @@ export function createFeeder(context: PiniaPluginContext) {
     context.store.$onAction(({ after, name: action, args, store }) => {
       after(() => {
         switch (action) {
+          case 'undo':
+            const payload = args[0] as Payload.Undo;
+            store.feed.push(`<b>${name(store, payload?.passivity?.initiator)}</b> undone last action`);
+            break;
           case 'init': {
             const payload = args[0] as BuildProps;
             const type = payload.type === 'classic'

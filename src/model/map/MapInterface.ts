@@ -1,23 +1,7 @@
 import { ExportedMapState, MapStates } from '../states';
 import { Card, ExportedCard, Plane } from '../card';
 import { DeckState } from '../deck/Deck';
-
-export enum TileStatus {
-  ACTIVE = 'active',
-  VISIBLE = 'visible',
-}
-
-export interface Tile {
-  coords: Coordinates;
-  state: TileStatus;
-  plane: Array<Plane>;
-}
-
-export interface ExportedTile {
-  coords: Coordinates;
-  state: TileStatus;
-  plane: Array<ExportedCard>;
-}
+import { ExportedTile, Tile } from './Tile';
 
 export enum EncounterTrigger {
   ON_PLANESWALK = 'ON_PLANESWALK',
@@ -108,5 +92,6 @@ export interface MapInterface {
   updateCounter(planeId: string, change: number): void;
 
   export(): Exported;
+  applyUndo(state: Exported): void;
   applyShuffle(state: Exported): void;
 }

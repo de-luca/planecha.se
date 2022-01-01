@@ -6,6 +6,7 @@ import { createPinia } from 'pinia';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { router } from './router';
 import { createFeeder } from './store/plugins/feeder';
+import { createVersionizer } from './store/plugins/versionizer';
 import App from './App.vue';
 
 document.documentElement.setAttribute(
@@ -15,6 +16,10 @@ document.documentElement.setAttribute(
 
 createApp(App)
   .component('fa', FontAwesomeIcon)
-  .use(createPinia().use(createFeeder))
+  .use(
+    createPinia()
+      .use(createFeeder)
+      .use(createVersionizer),
+  )
   .use(router)
   .mount('#app');

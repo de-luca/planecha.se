@@ -4,12 +4,12 @@ import { DeckProvider } from '@/services/DeckProvider';
 import { Card, Plane } from '../card';
 import { Deck } from '../deck/Deck';
 import { MapStates, StateKey } from '../states';
+import { Tile } from './Tile';
 import {
   Exported,
   MapSpecs,
   MapInterface,
   Revealed,
-  Tile,
   EncounterTriggers,
 } from './MapInterface';
 
@@ -116,6 +116,12 @@ export abstract class Map implements MapInterface {
         },
       destination: this.destination,
     };
+  }
+
+  public applyUndo(state: Exported): void {
+    this.applyShuffle(state);
+    this.hasStarted = state.hasStarted;
+    this.active.forEach(c => c.enter(this.states));
   }
 
   public applyShuffle(state: Exported): void {

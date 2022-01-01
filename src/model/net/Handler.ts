@@ -15,6 +15,7 @@ export enum Event {
   COUNTERS = 'COUNTERS',
   REVEAL = 'REVEAL',
   RESOLVE_REVEAL = 'RESOLVE_REVEAL',
+  UNDO = 'UNDO',
   SHUFFLE = 'SHUFFLE',
   START_GAME = 'START_GAME',
   UPDATE_STATE = 'UPDATE_STATE',
@@ -51,6 +52,12 @@ export function getHandler(
     switch (payload.event) {
       case Event.REQUEST_INIT: {
         this.send(stringify(Event.INIT, store.map.export()));
+        break;
+      }
+
+      case Event.UNDO: {
+        const data = payload.data as ActPayload.Undo;
+        store.undo({ ...data, passivity });
         break;
       }
 

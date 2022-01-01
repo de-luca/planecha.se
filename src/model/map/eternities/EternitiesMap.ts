@@ -1,11 +1,11 @@
 import { Plane } from '@/model/card';
+import { Container } from 'typedi';
 import { Map, MapProps } from '../Map';
+import { Tile, TileStatus, ExportedTile } from '../Tile';
 import {
   EternitiesMapDeckType,
   EternitiesMapSpecs,
   Exported,
-  Tile,
-  TileStatus,
 } from '../MapInterface';
 
 export interface EternitiesMapExported extends Exported {
@@ -38,11 +38,13 @@ export abstract class EternitiesMap extends Map {
   }
 
   private initializeTiles(): Array<Tile> {
-    const tiles: Array<Tile> = [{
-      state: TileStatus.ACTIVE,
-      coords: { ...EternitiesMap.center },
-      plane: this.active as Array<Plane>,
-    }];
+    const tiles: Array<Tile> = [
+      new Tile(
+        { ...EternitiesMap.center },
+        TileStatus.ACTIVE,
+        this.active as Array<Plane>,
+      ),
+    ];
 
     for (let y = EternitiesMap.activeRange * -1; y <= EternitiesMap.activeRange; y++) {
       for (let x = EternitiesMap.activeRange * -1; x <= EternitiesMap.activeRange; x++) {
@@ -50,11 +52,11 @@ export abstract class EternitiesMap extends Map {
           Math.abs(x) + Math.abs(y) <= EternitiesMap.activeRange
           && Math.abs(x) + Math.abs(y) !== 0
         ) {
-          tiles.push({
-            coords: { x, y },
-            state: TileStatus.VISIBLE,
-            plane: [this.deck.drawPlane().card],
-          });
+          tiles.push(new Tile(
+            { x, y },
+            TileStatus.VISIBLE,
+            [this.deck.drawPlane().card],
+          ));
         }
       }
     }
@@ -70,11 +72,12 @@ export abstract class EternitiesMap extends Map {
     return {
       ...super.export(),
       specs: this.specs,
-      tiles: this.tiles.map(t => ({
-        coords: t.coords,
-        state: t.state,
-        plane: t.plane.map(p => p.export()),
-      })),
+      tiles: this.tiles.map(t => t.export()),
     };
+  }
+
+  public override applyUndo(state: EternitiesMapExported): void {
+    this.tiles = (state.tiles as Array<ExportedTile>).map(Tile.fromExport);
+    super.applyUndo(state);
   }
 }

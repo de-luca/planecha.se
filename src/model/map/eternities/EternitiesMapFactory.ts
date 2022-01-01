@@ -9,6 +9,7 @@ import {
   EternitiesMapSubType,
   MapInterface,
 } from '../MapInterface';
+import { Tile } from '../Tile';
 import { Card, Plane } from '@/model/card';
 import { Deck } from '@/model/deck/Deck';
 import { EternitiesMapExported } from './EternitiesMap';
@@ -71,11 +72,7 @@ export class EternitiesMapFactory {
           others: this.deckProvider.getOrderedPile<Card>(payload.revealed.others),
         }
         : undefined,
-      tiles: payload.tiles?.map(t => ({
-        coords: t.coords,
-        state: t.state,
-        plane: this.deckProvider.getPileWithState(t.plane),
-      })),
+      tiles: payload.tiles?.map(Tile.fromExport),
       destination: payload.destination,
     };
 

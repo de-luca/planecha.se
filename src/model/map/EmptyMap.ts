@@ -1,11 +1,11 @@
 import { Card } from '../card';
 import { MapStates } from '../states';
+import { Tile } from './Tile';
 import {
   Exported,
   MapSpecs,
   MapInterface,
   Revealed,
-  Tile,
   EncounterTriggers,
 } from './MapInterface';
 
@@ -49,6 +49,9 @@ export class EmptyMap implements MapInterface {
     throw new Error('Method not implemented.');
   }
   export(): Exported {
+    throw new Error('Method not implemented.');
+  }
+  applyUndo(): void {
     throw new Error('Method not implemented.');
   }
   applyShuffle(): void {

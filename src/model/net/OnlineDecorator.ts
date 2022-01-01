@@ -124,6 +124,10 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     return this.map.export();
   }
 
+  public applyUndo(state: Exported): void {
+    return this.map.applyUndo(state);
+  }
+
   public applyShuffle(state: Exported): void {
     return this.map.applyShuffle(state);
   }
@@ -215,6 +219,10 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
 
   public requestStartGame(): void {
     this.peers.broadcast(Event.START_GAME);
+  }
+
+  public requestUndo(payload: Payload.Undo): void {
+    this.peers.broadcast(Event.UNDO, payload);
   }
 
   public requestShuffling(): void {

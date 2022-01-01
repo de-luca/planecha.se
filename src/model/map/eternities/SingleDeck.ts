@@ -4,10 +4,9 @@ import {
   EternitiesMapSpecs,
   EternitiesMapSubType,
   MapType,
-  Tile,
-  TileStatus,
 } from '../MapInterface';
 import { StateKey } from '@/model/states';
+import { Tile, TileStatus } from '../Tile';
 
 export interface SingleDeckProps extends EternitiesMapProps {}
 
@@ -79,14 +78,11 @@ export class SingleDeck extends EternitiesMap {
 
       // This is a Plane
       // We add the new tile with the drawn plane
-      newActiveTile = {
-        coords: {
-          x: xOffset,
-          y: yOffset,
-        },
-        state: TileStatus.ACTIVE,
-        plane: [drawn.card as Plane],
-      };
+      newActiveTile = new Tile(
+        { x: xOffset, y: yOffset },
+        TileStatus.ACTIVE,
+        [ drawn.card as Plane ],
+      );
 
       this.tiles.push(newActiveTile);
     }
@@ -127,11 +123,11 @@ export class SingleDeck extends EternitiesMap {
               return shuffled;
             }
 
-            this.tiles.push({
-              coords: { x, y },
-              state: TileStatus.VISIBLE,
-              plane: [drawn.card as Plane],
-            });
+            this.tiles.push(new Tile(
+              { x, y },
+              TileStatus.VISIBLE,
+              [ drawn.card as Plane ],
+            ));
           }
         }
       }
@@ -170,14 +166,11 @@ export class SingleDeck extends EternitiesMap {
     if (destinationTile) {
       destinationTile.plane = planes;
     } else {
-      destinationTile = {
-        coords: {
-          x: xOffset,
-          y: yOffset,
-        },
-        state: TileStatus.ACTIVE,
-        plane: planes,
-      };
+      destinationTile = new Tile(
+        { x: xOffset, y: yOffset },
+        TileStatus.ACTIVE,
+        planes,
+      );
       this.tiles.push(destinationTile);
     }
   }

@@ -1,9 +1,11 @@
 <template>
   <div class="status-bar" :class="{ shown: show, hidden: !show }">
+    <undo-button class="part button" />
+
     <deck-status class="part" />
 
     <button
-      class="part button is-outlined"
+      class="part button"
       title="Toggle game logs"
       @click="toggle"
     >
@@ -24,13 +26,14 @@
 import { useMain } from '@/store/main';
 import { Options, prop, Vue } from 'vue-class-component';
 import DeckStatus from './DeckStatus.vue';
+import UndoButton from './UndoButton.vue';
 
 class Props {
   public defaultShow = prop<boolean>({ required: true });
 }
 
 @Options({
-  components: { DeckStatus },
+  components: { DeckStatus, UndoButton },
 })
 export default class Feed extends Vue.with(Props) {
   private store = useMain();
