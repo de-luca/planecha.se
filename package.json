@@ -1,7 +1,7 @@
 {
   "name": "planecha.se",
   "version": "0.0.1",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "private": true,
   "scripts": {
     "serve": "vite",
