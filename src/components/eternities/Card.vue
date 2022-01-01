@@ -1,7 +1,7 @@
 <template>
   <div class="card-container">
     <div
-      v-if="hasCounters && current"
+      v-if="hasCounters && current && hasStarted"
       class="counters active tags has-addons"
     >
       <span class="tag is-primary minus" @click.stop="update(-1)">-</span>
@@ -29,6 +29,7 @@ import { Imgable } from '../Imgable';
 class Props {
   public card = prop<Plane>({ required: true });
   public current = prop<boolean>({ required: false, default: false });
+  public hasStarted = prop<boolean>({ required: false, default: true });
 }
 
 export default class Card extends mixins(Imgable).with(Props) {
@@ -60,7 +61,7 @@ img {
 
 .counters {
   position: absolute;
-  z-index: 2;
+  z-index: 3;
 
   &.active {
     top: -.5rem;

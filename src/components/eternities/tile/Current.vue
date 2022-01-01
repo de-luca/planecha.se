@@ -15,6 +15,7 @@
       :key="p"
       :card="p"
       :current="true"
+      :hasStarted="!hidden"
     />
   </div>
 </template>

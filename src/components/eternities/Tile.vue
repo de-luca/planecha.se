@@ -14,7 +14,7 @@
 <script lang="ts">
 import { Component } from 'vue';
 import { Options, prop, Vue } from 'vue-class-component';
-import { Tile as TileModel } from '@/model/map/MapInterface';
+import { Tile as TileModel } from '@/model/map';
 
 import Current from './tile/Current.vue';
 import Hellrideable from './tile/Hellrideable.vue';

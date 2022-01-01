@@ -9,7 +9,7 @@
           :key="plane.id"
         >
           <div
-            v-if="plane.counter !== undefined && current"
+            v-if="plane.counter !== undefined && current && hasStarted"
             class="counters active tags has-addons"
           >
             <span class="tag is-light is-large minus" @click.stop="update(plane, -1)">-</span>
@@ -18,7 +18,7 @@
           </div>
 
           <div
-            v-if="plane.counter !== undefined && !current"
+            v-if="plane.counter !== undefined && (!current || !hasStarted)"
             class="counters inactive tag is-large is-light"
           >
             {{ plane.counter.value }}
@@ -62,6 +62,10 @@ export default class TileDetails extends mixins(Imgable).with(Props) {
 
   public get current(): boolean {
     return this.tile.coords.x === 0 && this.tile.coords.y === 0;
+  }
+
+  public get hasStarted(): boolean {
+    return this.store.map.hasStarted;
   }
 
   public update(plane: Plane, change: number): void {
