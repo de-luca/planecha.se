@@ -80,7 +80,14 @@
           >Mazeletter</a>.
         </p>
         <p>
-          Build version: <code>{{ sha }}</code>
+          Build version:
+          <a
+            :href="'https://github.com/de-luca/planecha.se/tree/' + sha"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <code>{{ sha }}</code>
+          </a>
         </p>
         <div class="theme-container">
           <theme-selector />

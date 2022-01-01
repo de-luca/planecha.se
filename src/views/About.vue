@@ -20,6 +20,10 @@
         for fully remote game or locally when you don't have a deck or
         when you need that precious space on your table.
       </p>
+      <p>
+        <em>Planecha.se</em> is open source and its code can be found
+        <a href="https://github.com/de-luca/planecha.se" rel="noopener noreferrer" target="_blank">here</a>.
+      </p>
 
       <h2>What does it do?</h2>
       <p>
