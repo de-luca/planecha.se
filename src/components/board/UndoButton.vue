@@ -3,6 +3,7 @@
     title="Undo last action"
     :disabled="!canUndo"
     @click="undo"
+    @keyup.space.prevent
   >
     <span class="icon is-medium">
       <fa icon="undo-alt" fixed-width />

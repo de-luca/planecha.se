@@ -8,6 +8,7 @@
       class="part button"
       title="Toggle game logs"
       @click="toggle"
+      @keyup.space.prevent
     >
       <span class="icon is-medium">
         <fa icon="bars" fixed-width />
