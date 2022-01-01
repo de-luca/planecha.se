@@ -136,6 +136,7 @@ export default class Feed extends Vue.with(Props) {
   z-index: 1;
   height: calc(50vh - 2.5rem);
   width: 22rem;
+  padding: 0;
   margin-bottom: 2.5rem;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -151,6 +152,11 @@ export default class Feed extends Vue.with(Props) {
 
   &.shown {
 	  animation: open .10s ease-in forwards;
+  }
+
+  p {
+    padding: .10rem 1.25rem;
+    border-bottom: 1px solid var(--border-color);
   }
 }
 </style>

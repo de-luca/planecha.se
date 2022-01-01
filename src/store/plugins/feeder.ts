@@ -19,7 +19,7 @@ export function createFeeder(context: PiniaPluginContext) {
         switch (action) {
           case 'undo':
             const payload = args[0] as Payload.Undo;
-            store.feed.push(`<b>${name(store, payload?.passivity?.initiator)}</b> undone last action`);
+            store.feed.push(`<b>${name(store, payload?.passivity?.initiator)}</b> undid last action`);
             break;
           case 'init': {
             const payload = args[0] as BuildProps;
