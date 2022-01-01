@@ -1,4 +1,5 @@
 import { Container, Service } from 'typedi';
+import _cloneDeep from 'lodash.clonedeep';
 import {
   CardFactory,
   Card,
@@ -14,11 +15,15 @@ import cards from '../assets/cards.json';
 
 @Service()
 export class DeckProvider {
-  private cards: Array<Card>;
+  #cards: Array<Card>;
 
   public constructor() {
     const factory = Container.get(CardFactory);
-    this.cards = (cards as Array<Props>).map((c) => factory.build(c));
+    this.#cards = (cards as Array<Props>).map((c) => factory.build(c));
+  }
+
+  private get cards(): Array<Card> {
+    return _cloneDeep(this.#cards);
   }
 
   public getAllCards(): Array<Card> {
@@ -26,7 +31,7 @@ export class DeckProvider {
   }
 
   public getCard<T extends Card>(id: string): T {
-    return this.cards.find(c => c.id === id) as T;
+    return _cloneDeep(this.#cards.find(c => c.id === id) as T);
   }
 
   public getOrderedPile<T extends Card>(cards: Array<string>): Array<T> {

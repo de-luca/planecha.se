@@ -4,7 +4,7 @@ import { Card } from '@/model/card';
 const loops = 10;
 
 export function shuffle<T extends Card>(cards: Array<T>): Array<T> {
-  let shuffled =[...cards];
+  let shuffled = [ ...cards ];
     for(let i = 0; i< loops; i++) {
     shuffled = _shuffle(shuffled);
   }

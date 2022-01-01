@@ -38,6 +38,10 @@ export interface ResolveReveal {
   bottom: Array<Card>;
 }
 
+export interface Undo {
+  version: Exported;
+}
+
 export interface CustomPlaneswalkWire {
   planes: Array<string>;
 }
@@ -51,8 +55,4 @@ export interface ResolveRevealWire {
 }
 export interface NameWire {
   name: string;
-}
-
-export interface Undo {
-  version: Exported;
 }
