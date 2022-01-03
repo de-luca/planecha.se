@@ -183,7 +183,7 @@ export default class ClassicMap extends Vue {
   row-gap: .5rem;
   grid-template-areas:
     "active active controls "
-    "active active toolbox  "
+    "active active .        "
     "active active .        "
   ;
 }
