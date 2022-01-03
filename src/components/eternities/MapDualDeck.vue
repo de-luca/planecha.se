@@ -197,6 +197,7 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
   }
 }
 

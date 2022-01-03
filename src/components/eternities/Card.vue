@@ -53,10 +53,15 @@ export default class Card extends mixins(Imgable).with(Props) {
 .card-container {
   position: relative;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 img {
   border-radius: var(--card-radius);
+  height: 100%;
 }
 
 .counters {

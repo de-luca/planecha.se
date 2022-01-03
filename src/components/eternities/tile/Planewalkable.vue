@@ -33,6 +33,7 @@ export default class Planeswalkable extends Vue.with(Props) {}
 <style lang="scss" scoped>
 img {
   border-radius: var(--card-radius);
+  height: 100%;
 }
 
 .planeswalkable:hover {
@@ -43,16 +44,16 @@ img {
   width: 100%;
   position: relative;
 
-  > div:first-child {
+  div:first-of-type {
     position: absolute;
-    top: -.75rem;
-    left: -.75rem;
+    top: -.5rem;
+    left: -1rem;
   }
 
-  > div:last-child {
+  div:last-of-type {
     position: absolute;
-    bottom: -.75rem;
-    right: -.75rem;
+    bottom: -.5rem;
+    right: -1rem;
   }
 }
 </style>
