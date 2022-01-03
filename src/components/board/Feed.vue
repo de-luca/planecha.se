@@ -156,8 +156,11 @@ export default class Feed extends Vue.with(Props) {
   }
 
   p {
-    padding: .10rem 1.25rem;
-    border-bottom: 1px solid var(--border-color);
+    padding: .3rem .75rem;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--border-color);
+    }
   }
 }
 </style>
