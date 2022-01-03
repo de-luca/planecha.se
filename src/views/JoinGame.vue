@@ -22,6 +22,7 @@
             placeholder="00000000-0000-0000-0000-000000000000"
             required
             pattern="[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+            @blur="parse"
           >
         </div>
         <p class="help">That's the part your friend should give you.</p>
@@ -74,10 +75,13 @@ import ErrorModal from '@/components/ErrorModal.vue';
 
 @Options({ components: { ThemeSelector, ErrorModal } })
 export default class JoinGame extends mixins(Onlineable) {
+  private static readonly urlRegex =
+    /https?:\/\/.+\/#\/join\/(?<room>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/;
+
   private mainStore = useMain();
   private configStore = useConfig();
 
-  private roomId: string;
+  private roomId: string = '';
   private name: string = '';
   private saveName: boolean = false;
   private joining: boolean = false;
@@ -93,6 +97,13 @@ export default class JoinGame extends mixins(Onlineable) {
 
   public unmounted(): void {
     this.removeOnlineListener();
+  }
+
+  public parse(): void {
+    const match = this.roomId.match(JoinGame.urlRegex);
+    if (match && match.groups?.room) {
+      this.roomId = match.groups?.room;
+    }
   }
 
   public async join() {
