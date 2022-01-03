@@ -8,16 +8,21 @@
       </div>
     </div>
 
-    <div v-if="hasStarted" class="controls">
-      <chaos-btn v-if="isPlane" />
-      <planeswalk-btn
-        :title="isPlane ? 'Planeswalk' : 'Resolve'"
-        :disabled="revealer && revealer.passive"
-        @click="(revealer?.seeder ?? planeswalk)()"
-      />
-    </div>
-    <div v-else class="controls">
-      <start-btn />
+    <div class="controls">
+      <template v-if="hasStarted">
+        <chaos-btn v-if="isPlane" />
+        <planeswalk-btn
+          :title="isPlane ? 'Planeswalk' : 'Resolve'"
+          :disabled="revealer && revealer.passive"
+          @click="(revealer?.seeder ?? planeswalk)()"
+        />
+      </template>
+
+      <template v-else>
+        <start-btn />
+      </template>
+
+      <dice-tray />
     </div>
   </div>
 
@@ -56,6 +61,8 @@ import Feed from '@/components/board/Feed.vue';
 import Pick from '@/components/reveal/Pick.vue';
 import Scry from '@/components/reveal/Scry.vue';
 import Show from '@/components/reveal/Show.vue';
+import DiceTray from '@/components/dices/DiceTray.vue';
+
 
 type LocalRevealerConfig = {
   passive: boolean;
@@ -67,7 +74,7 @@ type LocalRevealerConfig = {
 
 @Options({
   components: {
-    Card, Feed,
+    Card, Feed, DiceTray,
     ChaosBtn, StartBtn, PlaneswalkBtn,
     Pick, Scry, Show,
   },
@@ -176,7 +183,7 @@ export default class ClassicMap extends Vue {
   row-gap: .5rem;
   grid-template-areas:
     "active active controls "
-    "active active .        "
+    "active active toolbox  "
     "active active .        "
   ;
 }
@@ -213,6 +220,8 @@ export default class ClassicMap extends Vue {
 
 .controls {
   grid-area: controls;
+
+  position: relative;
 
   display: flex;
   flex-direction: row;
