@@ -205,7 +205,7 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
   position: absolute;
   top: 0;
   right: 0;
-  height: 8rem;
-  width: 8rem;
+  height: 6rem;
+  width: 6rem;
 }
 </style>

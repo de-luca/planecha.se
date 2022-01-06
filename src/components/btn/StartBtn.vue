@@ -5,7 +5,7 @@
     @click="start"
     @keyup.space.prevent
   >
-    <fa icon="play-circle" size="6x" />
+    <fa icon="play-circle" size="4x" />
   </button>
 </template>
 

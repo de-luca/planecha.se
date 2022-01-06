@@ -175,7 +175,7 @@ export default class ClassicMap extends Vue {
 .map {
   display: grid;
   grid-template-columns: 1fr 1fr 22rem;
-  grid-template-rows: 10rem auto 50vh;
+  grid-template-rows: 8rem auto 50vh;
   column-gap: 3rem;
   row-gap: .5rem;
   grid-template-areas:
@@ -224,11 +224,10 @@ export default class ClassicMap extends Vue {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  gap: .5rem;
 
-  & > button {
-    height: 8rem;
-    width: 8rem;
+  button {
+    height: 6rem;
+    width: 6rem;
   }
 }
 </style>
