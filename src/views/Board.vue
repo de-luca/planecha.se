@@ -7,9 +7,11 @@
         <div title="D">⟁</div>
         <div title="F">⟁</div>
       </div>
-      <theme-selector class="is-full-height" />
-      <online-controls v-if="online"/>
-      <close-game />
+
+      <div class="spacer"></div>
+
+      <online-controls v-if="online" />
+      <main-menu />
     </div>
 
     <component :is="mapComponent" />
@@ -29,17 +31,18 @@ import { eventBus, EventType } from '@/services/EventBus';
 import ClassicMap from '@/components/classic/ClassicMap.vue';
 import MapSingleDeck from '@/components/eternities/MapSingleDeck.vue';
 import MapDualDeck from '@/components/eternities/MapDualDeck.vue';
-import OnlineControls from '@/components/board/OnlineControls.vue';
 import NotifCenter from '@/components/board/NotifCenter.vue';
-import CloseGame from '@/components/board/CloseGame.vue';
 import ThemeSelector from '@/components/ThemeSelector.vue';
+
+import MainMenu from '@/components/board/MainMenu.vue';
+import OnlineControls from '@/components/board/OnlineControls.vue';
 
 
 @Options({
   components: {
     ClassicMap, MapSingleDeck, MapDualDeck,
-    OnlineControls, NotifCenter, CloseGame,
-    ThemeSelector,
+    NotifCenter,
+    ThemeSelector, MainMenu, OnlineControls,
   },
 })
 export default class Board extends Vue {
@@ -103,8 +106,11 @@ export default class Board extends Vue {
   align-items: center;
   gap: .5rem;
 
-  .brand {
+  .spacer {
     flex-grow: 1;
+  }
+
+  .brand {
     font-family: arial;
     color: var(--brand-color-primary);
 
@@ -131,6 +137,7 @@ export default class Board extends Vue {
       }
       &:nth-child(3) {
         transform: rotate(180deg) translateX(3rem);
+        position: absolute;
       }
     }
   }

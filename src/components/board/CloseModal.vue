@@ -1,9 +1,5 @@
 <template>
-  <button class="button is-warn" @click="opened = true">
-    {{ online ? 'Leave' : 'Close' }} Game
-  </button>
-
-  <div class="modal" :style="{ display: (opened ? 'block' : 'none' ) }">
+  <div class="modal">
     <div class="modal-background"></div>
     <div class="modal-content">
       <div class="box">
@@ -11,10 +7,10 @@
           Do you wish to {{ online ? 'leave' : 'close' }} the game?
         </p>
         <div class="buttons">
-          <button class="button is-danger" @click="close">
+          <button class="button is-danger" @click="$emit('close')">
             {{ online ? 'Leave' : 'Close' }} Game
           </button>
-          <button class="button is-light" @click="opened = false">
+          <button class="button is-light" @click="$emit('dismiss')">
             Cancel
           </button>
         </div>
@@ -24,21 +20,14 @@
 </template>
 
 <script lang="ts">
-import { useMain } from '@/store/main';
-import { Vue } from 'vue-class-component';
+import { Options, prop, Vue } from 'vue-class-component';
 
-export default class CloseGame extends Vue {
-  private store = useMain();
-  private opened = false;
+class Props {
+  public online = prop<boolean>({ required: true });
+}
 
-  public get online(): boolean {
-    return this.store.online;
-  }
-
-  public async close(): Promise<void> {
-    await this.$router.push('/');
-    this.store.leave();
-  }
+@Options({ emits: ['dismiss', 'close'] })
+export default class CloseModal extends Vue.with(Props) {
 }
 </script>
 
@@ -75,10 +64,6 @@ button {
       background-color: var(--btn-danger-active-bg);
     }
   }
-}
-
-.modal {
-  display: block;
 }
 
 .modal-content {

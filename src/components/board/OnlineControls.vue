@@ -7,11 +7,13 @@
       <button
         @click="active = !active"
         :class="{ 'is-outlined': active }"
-        class="button is-info"
+        class="button"
         aria-haspopup="true"
         aria-controls="dropdown-menu"
       >
-        <span>Online Controls</span>
+        <span class="icon is-medium">
+          <fa icon="user-plus" fixed-width />
+        </span>
       </button>
     </div>
 
@@ -128,26 +130,12 @@ export default class OnlineControls extends Vue {
   button {
     height: 100%;
 
-    &.is-info {
-      color: var(--btn-info-color);
-      background-color: var(--btn-info-bg);
-      border-color: var(--btn-info-border);
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    border-color: var(--border-color);
 
-      &.is-outlined {
-        color: var(--btn-info-color);
-        background-color: transparent;
-        border-color: var(--btn-info-color);
-      }
-
-      &:hover {
-        color: var(--btn-info-color);
-        background-color: var(--btn-info-hover-bg);
-      }
-
-      &:active {
-        color: var(--btn-info-color);
-        background-color: var(--btn-info-active-bg);
-      }
+    &:hover {
+      border-color: #b5b5b5;
     }
   }
 }
