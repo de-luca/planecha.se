@@ -3,7 +3,10 @@ import './main.scss';
 import './fa';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import {
+  FontAwesomeIcon,
+  FontAwesomeLayers,
+} from '@fortawesome/vue-fontawesome';
 import { router } from './router';
 import { createFeeder } from './store/plugins/feeder';
 import { createVersionizer } from './store/plugins/versionizer';
@@ -16,6 +19,7 @@ document.documentElement.setAttribute(
 
 createApp(App)
   .component('fa', FontAwesomeIcon)
+  .component('fal', FontAwesomeLayers)
   .use(
     createPinia()
       .use(createFeeder)

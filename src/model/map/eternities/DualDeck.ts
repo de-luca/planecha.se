@@ -44,6 +44,14 @@ export class DualDeck extends SingleDeck {
     };
   }
 
+  public get remainingPhenomena(): number {
+    return this.phenomenaDeck.remaining;
+  }
+
+  public get playedPhenomena(): Array<Phenomenon> {
+    return this.phenomenaDeck.played;
+  }
+
   public resolve(passivity?: Passivity): boolean {
     this.phenomenaDeck.setPlayed(...this.active as Array<Phenomenon>);
     this.states.delete(StateKey.PHENOMENON_WALL);
