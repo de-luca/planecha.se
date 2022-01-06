@@ -63,8 +63,8 @@ button {
       align-self: flex-start;
 
       &.outcome {
-        width: 4.5rem;
-        height: 4.5rem;
+        width: 3.5rem;
+        height: 3.5rem;
       }
     }
     &.planeswalk {

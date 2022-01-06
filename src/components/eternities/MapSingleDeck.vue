@@ -13,10 +13,7 @@
       />
     </template>
 
-    <div class="actions">
-      <component :is="btnComponent" />
-      <dice-tray />
-    </div>
+    <component class="action" :is="btnComponent" />
   </div>
 
   <feed :defaultShow="false" />
@@ -109,22 +106,11 @@ export default class EternitiesMapSingleDeck extends mixins(EternitiesMap) {
   }
 }
 
-.actions {
+.action {
   position: absolute;
   top: 0;
   right: 0;
-
-  height: 10rem;
-  width: 22rem;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-
-  button {
-    height: 8rem;
-    width: 8rem;
-  }
+  height: 8rem;
+  width: 8rem;
 }
 </style>

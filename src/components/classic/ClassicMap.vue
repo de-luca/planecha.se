@@ -21,8 +21,6 @@
       <template v-else>
         <start-btn />
       </template>
-
-      <dice-tray />
     </div>
   </div>
 
@@ -61,7 +59,6 @@ import Feed from '@/components/board/Feed.vue';
 import Pick from '@/components/reveal/Pick.vue';
 import Scry from '@/components/reveal/Scry.vue';
 import Show from '@/components/reveal/Show.vue';
-import DiceTray from '@/components/dices/DiceTray.vue';
 
 
 type LocalRevealerConfig = {
@@ -74,7 +71,7 @@ type LocalRevealerConfig = {
 
 @Options({
   components: {
-    Card, Feed, DiceTray,
+    Card, Feed,
     ChaosBtn, StartBtn, PlaneswalkBtn,
     Pick, Scry, Show,
   },

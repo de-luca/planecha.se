@@ -17,7 +17,7 @@
       </button>
     </div>
 
-    <div id="click-trap" @click="active = false"></div>
+    <div class="click-trap" @click="active = false"></div>
 
     <div class="dropdown-menu" id="dropdown-menu" role="menu">
       <div class="dropdown-content">
@@ -109,7 +109,7 @@ export default class OnlineControls extends Vue {
   color: var(--text-color);
 }
 
-#click-trap {
+.click-trap {
   display: none;
   position: fixed;
   left: 0;
@@ -120,7 +120,7 @@ export default class OnlineControls extends Vue {
   z-index: 3;
 }
 
-.dropdown.is-active #click-trap {
+.dropdown.is-active .click-trap {
   display: block;
 }
 

@@ -13,10 +13,7 @@
       />
     </template>
 
-    <div class="actions">
-      <component :is="btnComponent" />
-      <dice-tray />
-    </div>
+    <component class="action" :is="btnComponent" />
   </div>
 
   <feed :defaultShow="false" />
@@ -79,7 +76,6 @@ import Feed from '@/components/board/Feed.vue';
 import PhenomenonWall from '@/components/wall/PhenomenonWall.vue';
 import EncounterWall from '@/components/wall/EncounterWall.vue';
 import TileDetails from '@/components/eternities/TileDetails.vue';
-import DiceTray from '@/components/dices/DiceTray.vue';
 
 
 interface LocalEncounterWallConfig {
@@ -94,7 +90,6 @@ interface LocalEncounterWallConfig {
     PhenomenonWall, EncounterWall,
     Scry, Pick, Show,
     TileDetails,
-    DiceTray,
   },
 })
 export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
@@ -206,22 +201,11 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
   }
 }
 
-.actions {
+.action {
   position: absolute;
   top: 0;
   right: 0;
-
-  height: 10rem;
-  width: 22rem;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-
-  button {
-    height: 8rem;
-    width: 8rem;
-  }
+  height: 8rem;
+  width: 8rem;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="modal tile-display">
-    <div class="modal-background" @click="$emit('close')"></div>
+    <div class="modal-background" title="Close" @click="$emit('close')"></div>
     <div class="modal-content">
       <div :class="{ 'multi': tile.plane.length > 1 }">
         <div
@@ -35,6 +35,7 @@
     <button
       class="modal-close is-large"
       aria-label="close"
+      title="Close"
       @click="$emit('close')"
     ></button>
   </div>
@@ -82,6 +83,10 @@ export default class TileDetails extends mixins(Imgable).with(Props) {
 .modal {
   display: flex;
   flex-direction: row;
+
+  .modal-close {
+    top: calc(20px + 1rem + 3rem);
+  }
 
   .modal-background {
     cursor: pointer;

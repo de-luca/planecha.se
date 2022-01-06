@@ -11,6 +11,7 @@
       <div class="spacer"></div>
 
       <online-controls v-if="online" />
+      <dice-tray />
       <main-menu />
     </div>
 
@@ -36,6 +37,7 @@ import ThemeSelector from '@/components/ThemeSelector.vue';
 
 import MainMenu from '@/components/board/MainMenu.vue';
 import OnlineControls from '@/components/board/OnlineControls.vue';
+import DiceTray from '@/components/board/DiceTray.vue';
 
 
 @Options({
@@ -43,6 +45,7 @@ import OnlineControls from '@/components/board/OnlineControls.vue';
     ClassicMap, MapSingleDeck, MapDualDeck,
     NotifCenter,
     ThemeSelector, MainMenu, OnlineControls,
+    DiceTray,
   },
 })
 export default class Board extends Vue {
@@ -105,6 +108,7 @@ export default class Board extends Vue {
   justify-content: space-between;
   align-items: center;
   gap: .5rem;
+  z-index: 420;
 
   .spacer {
     flex-grow: 1;
