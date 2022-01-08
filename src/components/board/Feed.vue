@@ -1,25 +1,25 @@
 <template>
-  <div class="status-bar" :class="{ shown: show, hidden: !show }">
-    <undo-button class="part button" />
+  <div class="wrapper">
+    <div class="logs box" :class="{ shown: show, hidden: !show }">
+      <template v-for="m in messages.slice().reverse()" :key="m">
+        <p v-html="m"></p>
+      </template>
+    </div>
 
-    <deck-status class="part" />
-
-    <button
-      class="part button"
-      title="Toggle game logs"
-      @click="toggle"
-      @keyup.space.prevent
-    >
-      <span class="icon is-medium">
-        <fa icon="bars" fixed-width />
-      </span>
-    </button>
-  </div>
-
-  <div class="feed box" :class="{ shown: show, hidden: !show }">
-    <template v-for="m in messages.slice().reverse()" :key="m">
-      <p v-html="m"></p>
-    </template>
+    <div class="status-bar" :class="{ shown: show, hidden: !show }">
+      <undo-button class="part button" />
+      <deck-status class="part" />
+      <button
+        class="part button"
+        title="Toggle game logs"
+        @click="toggle"
+        @keyup.space.prevent
+      >
+        <span class="icon is-medium">
+          <fa icon="bars" fixed-width />
+        </span>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -81,16 +81,17 @@ export default class Feed extends Vue.with(Props) {
   }
 }
 
-.status-bar {
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
-  z-index: 2;
-
+.wrapper {
+  height: 100%;
+  width: 100%;
   display: flex;
-  flex-flow: row;
+  flex-direction: column;
+}
 
-  width: 22rem;
+.status-bar {
+  z-index: 2;
+  display: flex;
+  flex-direction: row;
 
   &.hidden .part {
     &:first-child {
@@ -130,15 +131,11 @@ export default class Feed extends Vue.with(Props) {
   }
 }
 
-.feed {
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
+.logs {
   z-index: 1;
-  height: calc(50vh - 2.5rem);
-  width: 22rem;
+  height: 100%;
   padding: 0;
-  margin-bottom: 2.5rem;
+  margin: 0;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border: 1px solid var(--border-color);

@@ -13,10 +13,12 @@
       />
     </template>
 
-    <component class="action" :is="btnComponent" />
-  </div>
+    <div class="controls">
+      <component :is="btnComponent" />
+    </div>
 
-  <feed :defaultShow="false" />
+    <feed class="feed" :defaultShow="false" />
+  </div>
 
   <tile-details
     v-if="displayedTile"
@@ -93,7 +95,6 @@ export default class EternitiesMapSingleDeck extends mixins(EternitiesMap) {
   }
 
   display: grid;
-
   grid-template-rows: repeat(7, calc( ((100vh - 6.5rem) - (6 * 1rem)) / 7) );
   gap: 1rem;
   align-content: center;
@@ -106,11 +107,31 @@ export default class EternitiesMapSingleDeck extends mixins(EternitiesMap) {
   }
 }
 
-.action {
+.controls {
   position: absolute;
   top: 0;
   right: 0;
-  height: 6rem;
-  width: 6rem;
+
+  width: 22rem;
+  height: 8rem;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+
+  button {
+    height: 6rem;
+    width: 6rem;
+  }
+}
+
+.feed {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  width: 22rem;
+  height: 50vh;
 }
 </style>

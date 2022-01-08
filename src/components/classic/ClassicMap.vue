@@ -22,9 +22,11 @@
         <start-btn />
       </template>
     </div>
+
+    <feed class="feed" :defaultShow="true" />
   </div>
 
-  <feed :defaultShow="true" />
+
 
   <component
     v-if="revealer && revealed"
@@ -181,7 +183,7 @@ export default class ClassicMap extends Vue {
   grid-template-areas:
     "active active controls "
     "active active .        "
-    "active active .        "
+    "active active feed     "
   ;
 }
 
@@ -217,9 +219,7 @@ export default class ClassicMap extends Vue {
 
 .controls {
   grid-area: controls;
-
   position: relative;
-
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -229,5 +229,9 @@ export default class ClassicMap extends Vue {
     height: 6rem;
     width: 6rem;
   }
+}
+
+.feed {
+  grid-area: feed;
 }
 </style>
