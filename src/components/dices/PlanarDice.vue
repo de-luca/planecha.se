@@ -58,8 +58,8 @@ button {
 
   svg {
     &.chaos {
-      width: 20px;
-      height: 20px;
+      width: 25px;
+      height: 25px;
       align-self: flex-start;
 
       &.outcome {
@@ -68,8 +68,8 @@ button {
       }
     }
     &.planeswalk {
-      width: 25px;
-      height: 25px;
+      width: 35px;
+      height: 35px;
       align-self: flex-end;
 
      &.outcome {

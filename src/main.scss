@@ -127,6 +127,16 @@ button, a, span, div {
         border-color: transparent transparent var(--primary) var(--primary) !important
       }
     }
+
+    &.is-outlined{
+      color: var(--text-color);
+      background-color: var(--bg-color);
+      border-color: var(--border-color);
+
+      &:hover, &:active, &:focus {
+        border-color: #b5b5b5;
+      }
+    }
   }
 }
 

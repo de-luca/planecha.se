@@ -5,8 +5,7 @@
       <button
         @click="active = !active"
         @keyup.space.prevent
-        :class="{ 'is-outlined': active }"
-        class="button"
+        class="button is-outlined"
         aria-haspopup="true"
         aria-controls="main-menu"
       >
@@ -84,22 +83,6 @@ export default class MainMenu extends Vue {
 
 .dropdown.is-active #click-trap {
   display: block;
-}
-
-.dropdown-trigger {
-  height: 100%;
-
-  button {
-    height: 100%;
-
-    color: var(--text-color);
-    background-color: var(--bg-color);
-    border-color: var(--border-color);
-
-    &:hover {
-      border-color: #b5b5b5;
-    }
-  }
 }
 
 .dropdown-menu {

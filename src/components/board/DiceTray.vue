@@ -6,9 +6,8 @@
     <div class="dropdown-trigger">
       <button
         @click="active = !active"
-        @keyup.down="active = !active"
-        :class="{ 'is-outlined': active }"
-        class="button"
+        @keyup.space.prevent
+        class="button is-outlined"
         aria-haspopup="true"
         aria-controls="dropdown-menu"
       >
@@ -58,22 +57,6 @@ export default class DiceTray extends Vue {
 
 .dropdown.is-active .click-trap {
   display: block;
-}
-
-.dropdown-trigger {
-  height: 100%;
-
-  button {
-    height: 100%;
-
-    color: var(--text-color);
-    background-color: var(--bg-color);
-    border-color: var(--border-color);
-
-    &:hover {
-      border-color: #b5b5b5;
-    }
-  }
 }
 
 .dropdown-menu {
