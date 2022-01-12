@@ -35,6 +35,10 @@
     "import/no-cycle": ["error"],
     "import/no-useless-path-segments": ["error"],
     "import/order": ["warn"],
+    "import/no-unresolved": [
+      "error",
+      { "ignore": ["^virtual:"] }
+    ],
     "@typescript-eslint/no-non-null-assertion": ["off"],
     "@typescript-eslint/no-unused-vars": [
       "warn",

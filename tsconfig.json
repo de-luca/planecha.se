@@ -19,7 +19,8 @@
     "types": [
       "node",
       "vite/client",
-      "vitest/globals"
+      "vite-plugin-pwa/client",
+      "vitest/globals",
     ],
     "paths": {
       "#/*": ["src/*"],
@@ -37,6 +38,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
+    ,"src/sw.ts"
   ],
   "exclude": [
     "node_modules"

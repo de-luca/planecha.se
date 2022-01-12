@@ -8,11 +8,15 @@ import {
   FontAwesomeIcon,
   FontAwesomeLayers,
 } from '@fortawesome/vue-fontawesome';
+import { registerSW } from 'virtual:pwa-register';
 import { router } from './router';
 import { createFeeder } from './store/plugins/feeder';
 import { versionizer } from './store/plugins/versionizer';
 import Link from './components/controls/Link.vue';
 import App from './App.vue';
+
+
+registerSW();
 
 document.documentElement.setAttribute(
   'data-theme',
