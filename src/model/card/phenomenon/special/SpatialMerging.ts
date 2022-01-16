@@ -1,11 +1,11 @@
 import { Phenomenon } from '../Phenomenon';
 import {
-  MapStates,
+  WallStates,
   RevealerMode,
   RevealerSource,
   RevealerWallState,
   StateKey,
-} from '@/model/states';
+} from '@/model/wall';
 
 /**
  * When you encounter Spatial Merging,
@@ -16,7 +16,7 @@ import {
  * bottom of your planar deck in any order.
  */
 export class SpatialMerging extends Phenomenon {
-  public enter(states: MapStates, { passive = false, initiator }: Passivity = {}): void {
+  public enter(walls: WallStates, { passive = false, initiator }: Passivity = {}): void {
     const revealer: RevealerWallState = {
       title: this.name,
       source: RevealerSource.SPACIAL_MERGING,
@@ -26,6 +26,6 @@ export class SpatialMerging extends Phenomenon {
       initiator,
     };
 
-    states.set(StateKey.REVEALER, revealer);
+    walls.set(StateKey.REVEALER, revealer);
   }
 }

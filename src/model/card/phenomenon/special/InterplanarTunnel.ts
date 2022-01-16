@@ -1,11 +1,11 @@
 import { Phenomenon } from '../Phenomenon';
 import {
-  MapStates,
+  WallStates,
   RevealerMode,
   RevealerSource,
   RevealerWallState,
   StateKey,
-} from '@/model/states';
+} from '@/model/wall';
 
 /**
  * When you encounter Interplanar Tunnel,
@@ -16,7 +16,7 @@ import {
  * in a random order.
  */
 export class InterplanarTunnel extends Phenomenon {
-  public enter(states: MapStates, { passive = false, initiator }: Passivity = {}): void {
+  public enter(walls: WallStates, { passive = false, initiator }: Passivity = {}): void {
     const revealer: RevealerWallState = {
       title: this.name,
       source: RevealerSource.INTERPLANAR_TUNNEL,
@@ -26,6 +26,6 @@ export class InterplanarTunnel extends Phenomenon {
       initiator,
     };
 
-    states.set(StateKey.REVEALER, revealer);
+    walls.set(StateKey.REVEALER, revealer);
   }
 }

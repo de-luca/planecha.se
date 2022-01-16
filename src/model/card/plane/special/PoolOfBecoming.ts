@@ -1,12 +1,12 @@
 import { eventBus, EventType } from '@/services/EventBus';
 import { Plane } from '../Plane';
 import {
-  MapStates,
+  WallStates,
   RevealerMode,
   RevealerSource,
   RevealerWallState,
   StateKey,
-} from '@/model/states';
+} from '@/model/wall';
 
 /**
  * At the beginning of your end step, put the cards in your hand
@@ -17,7 +17,7 @@ import {
  * Then put the revealed cards on the bottom of your planar deck in any order.
  */
 export class PoolOfBecoming extends Plane {
-  public chaos(states: MapStates, { passive = false, initiator }: Passivity = {}): void {
+  public chaos(walls: WallStates, { passive = false, initiator }: Passivity = {}): void {
     const revealer: RevealerWallState = {
       title: this.name,
       source: RevealerSource.POOL_OF_BECOMING,
@@ -27,7 +27,7 @@ export class PoolOfBecoming extends Plane {
       initiator,
     };
 
-    states.set(StateKey.REVEALER, revealer);
+    walls.set(StateKey.REVEALER, revealer);
 
     if (!passive) {
       eventBus.emit(EventType.POOL_OF_BECOMING);

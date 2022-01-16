@@ -45,22 +45,22 @@ import { useMain } from '@/store/main';
 import { Card as ModelCard, Plane } from '@/model/card';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Revealed } from '@/model/map';
-import { PickedLeft, RevealConfig } from '../reveal/BaseReveal';
-import { RevealFactory } from '../reveal/RevealFactory';
+import { RevealFactory } from '@/components/wall/reveal/RevealFactory';
+import { PickedLeft, RevealConfig } from '@/components/wall/reveal/BaseReveal';
 import {
   RevealerWallState,
   RevealerSource,
   StateKey,
-} from '@/model/states';
+} from '@/model/wall';
 
 import ChaosBtn from '@/components/btn/ChaosBtn.vue';
 import StartBtn from '@/components/btn/StartBtn.vue';
 import PlaneswalkBtn from '@/components/btn/PlaneswalkBtn.vue';
 import Card from '@/components/classic/Card.vue';
 import Feed from '@/components/board/Feed.vue';
-import Pick from '@/components/reveal/Pick.vue';
-import Scry from '@/components/reveal/Scry.vue';
-import Show from '@/components/reveal/Show.vue';
+import Pick from '@/components/wall/reveal/Pick.vue';
+import Scry from '@/components/wall/reveal/Scry.vue';
+import Show from '@/components/wall/reveal/Show.vue';
 
 
 type LocalRevealerConfig = {
@@ -108,7 +108,7 @@ export default class ClassicMap extends Vue {
 
   public get revealer(): LocalRevealerConfig | undefined {
     const revealer =
-      this.store.map.states.get<RevealerWallState>(StateKey.REVEALER);
+      this.store.map.walls.get<RevealerWallState>(StateKey.REVEALER);
 
     if (!revealer) {
       return undefined;

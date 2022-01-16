@@ -9,15 +9,15 @@ export enum StateOp {
   DELETE = 'delete',
 }
 
-export interface MapState {
+export interface WallState {
   passive: boolean;
   initiator?: string;
 }
 
-export type ExportedMapState = Array<[StateKey, MapState]>;
+export type ExportedWallStates = Array<[StateKey, WallState]>;
 
-export class MapStates extends Map<StateKey, MapState> {
-  public constructor(states?: Array<[StateKey, MapState]>) {
+export class WallStates extends Map<StateKey, WallState> {
+  public constructor(states?: Array<[StateKey, WallState]>) {
     super(states);
   }
 
@@ -25,10 +25,10 @@ export class MapStates extends Map<StateKey, MapState> {
     return super.get(key) as T | undefined;
   }
 
-  public apply(key: StateKey, op: StateOp, val?: MapState): void {
+  public apply(key: StateKey, op: StateOp, val?: WallState): void {
     switch(op) {
       case StateOp.SET:
-        this.set(key, val as MapState);
+        this.set(key, val as WallState);
         break;
       case StateOp.DELETE:
         this.delete(key);
@@ -36,7 +36,7 @@ export class MapStates extends Map<StateKey, MapState> {
     }
   }
 
-  public export(): ExportedMapState {
+  public export(): ExportedWallStates {
     return Array.from(this);
   }
 }

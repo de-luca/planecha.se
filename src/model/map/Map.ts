@@ -3,7 +3,7 @@ import { Container } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
 import { Card, Plane } from '../card';
 import { Deck } from '../deck/Deck';
-import { MapStates, StateKey } from '../states';
+import { WallStates, StateKey } from '../wall';
 import { Tile } from './Tile';
 import {
   Exported,
@@ -14,7 +14,7 @@ import {
 } from './MapInterface';
 
 export interface MapProps {
-  states: MapStates;
+  states: WallStates;
   hasStarted?: boolean;
   deck: Deck<Card>;
   active?: Array<Card>;
@@ -24,7 +24,7 @@ export interface MapProps {
 
 export abstract class Map implements MapInterface {
   protected deck: Deck<Card>;
-  public readonly states: MapStates;
+  public readonly walls: WallStates;
   public hasStarted: boolean;
 
   public active: Array<Card>;
@@ -36,7 +36,7 @@ export abstract class Map implements MapInterface {
 
   public constructor(props: MapProps) {
     this.deck = props.deck;
-    this.states = props.states;
+    this.walls = props.states;
     this.hasStarted = props.hasStarted ?? false;
     this.active = props.active ?? [];
     this.revealed = props.revealed;
@@ -58,7 +58,7 @@ export abstract class Map implements MapInterface {
   }
 
   public chaos(passivity?: Passivity): void {
-    this.active.forEach(c => c.chaos(this.states, passivity));
+    this.active.forEach(c => c.chaos(this.walls, passivity));
   }
 
   public abstract planeswalk(
@@ -94,7 +94,7 @@ export abstract class Map implements MapInterface {
     this.deck.putOnTheBottom(bottom);
 
     this.clearRevealed();
-    this.states.delete(StateKey.REVEALER);
+    this.walls.delete(StateKey.REVEALER);
   }
 
   public clearRevealed(): void {
@@ -103,7 +103,7 @@ export abstract class Map implements MapInterface {
 
   public export(): Exported {
     return {
-      states: this.states.export(),
+      states: this.walls.export(),
       hasStarted: this.hasStarted,
       specs: this.specs,
       deck: this.deck.export(),
@@ -121,7 +121,7 @@ export abstract class Map implements MapInterface {
   public applyUndo(state: Exported): void {
     this.applyShuffle(state);
     this.hasStarted = state.hasStarted;
-    this.active.forEach(c => c.enter(this.states));
+    this.active.forEach(c => c.enter(this.walls));
   }
 
   public applyShuffle(state: Exported): void {

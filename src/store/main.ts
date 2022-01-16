@@ -162,7 +162,7 @@ export const useMain = defineStore('main', {
       requestIfOnline(this.$state, 'requestCounterUpdate', payload);
     },
     updateState(payload: Payload.UpdateState) {
-      this.map.states.apply(payload.key, payload.op, payload.val);
+      this.map.walls.apply(payload.key, payload.op, payload.val);
       requestIfOnline(this.$state, 'requestUpdateState', payload);
     },
     reveal(payload: Payload.Reveal) {

@@ -1,4 +1,4 @@
-import { MapStates } from '@/model/states';
+import { WallStates } from '@/model/wall';
 import { Card } from '../Card';
 
 export class Phenomenon extends Card {
@@ -10,7 +10,7 @@ export class Phenomenon extends Card {
     return;
   }
 
-  public enter(_states: MapStates): void {
+  public enter(_walls: WallStates): void {
     return;
   }
 

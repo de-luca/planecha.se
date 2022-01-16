@@ -50,13 +50,12 @@ import { EternitiesMap } from '@/components/eternities/EternitiesMap';
 import ChaosBtn from '@/components/btn/ChaosBtn.vue';
 import StartBtn from '@/components/btn/StartBtn.vue';
 import Tile from '@/components/eternities/Tile.vue';
-import Scry from '@/components/reveal/Scry.vue';
-import Pick from '@/components/reveal/Pick.vue';
-import Show from '@/components/reveal/Show.vue';
+import TileDetails from '@/components/eternities/TileDetails.vue';
 import Feed from '@/components/board/Feed.vue';
 import PhenomenonWall from '@/components/wall/PhenomenonWall.vue';
-import TileDetails from '@/components/eternities/TileDetails.vue';
-import DiceTray from '@/components/dices/DiceTray.vue';
+import Pick from '@/components/wall/reveal/Pick.vue';
+import Scry from '@/components/wall/reveal/Scry.vue';
+import Show from '@/components/wall/reveal/Show.vue';
 
 @Options({
   inheritAttrs: false,
@@ -64,7 +63,7 @@ import DiceTray from '@/components/dices/DiceTray.vue';
     ChaosBtn, StartBtn,
     Tile, TileDetails, PhenomenonWall,
     Scry, Pick, Show,
-    Feed, DiceTray,
+    Feed,
   },
 })
 export default class EternitiesMapSingleDeck extends mixins(EternitiesMap) {

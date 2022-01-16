@@ -1,5 +1,5 @@
 import { prop } from 'vue-class-component';
-import { Imgable } from './Imgable';
+import { Imgable } from '../Imgable';
 
 export interface WallConfig {
   passive: boolean;

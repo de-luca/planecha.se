@@ -19,7 +19,7 @@
 <script lang="ts">
 import { mixins, Options, prop } from 'vue-class-component';
 import { Phenomenon } from '@/model/card';
-import { Wall, WallProps } from '../Wall';
+import { Wall, WallProps } from './Wall';
 
 import PlaneswalkBtn from '@/components/btn/PlaneswalkBtn.vue';
 

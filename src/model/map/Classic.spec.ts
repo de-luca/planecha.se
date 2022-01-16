@@ -2,7 +2,7 @@ import { Container } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
 import { Classic, MapType } from '.';
 import { Plane } from '../card';
-import { MapStates } from '../states';
+import { WallStates } from '../wall';
 
 jest.mock('@/services/getEnv');
 
@@ -10,7 +10,7 @@ describe('Classic.type', () => {
   it('returns the type', () => {
     const map = new Classic({
       deck: Container.get(DeckProvider).getDeck(),
-      states: new MapStates(),
+      states: new WallStates(),
     });
 
     expect(map.specs.type).toEqual(MapType.CLASSIC);
@@ -21,7 +21,7 @@ describe('Classic.planeswalk', () => {
   it('changes active card', () => {
     const map = new Classic({
       deck: Container.get(DeckProvider).getDeck(),
-      states: new MapStates(),
+      states: new WallStates(),
     });
     const startCard = map.active;
     const deckSize = map.remaining;
@@ -39,7 +39,7 @@ describe('Classic.customPlaneswalk', () => {
   it('changes active card to given planes', () => {
     const map = new Classic({
       deck: Container.get(DeckProvider).getDeck(),
-      states: new MapStates(),
+      states: new WallStates(),
     });
     const startCard = map.active;
     const deckSize = map.remaining;

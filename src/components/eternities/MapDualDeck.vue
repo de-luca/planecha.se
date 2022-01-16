@@ -65,19 +65,19 @@ import {
   EncounterWallState,
   StateKey,
   StateOp,
-} from '@/model/states';
-import { WallConfig } from '../Wall';
+} from '@/model/wall';
+import { WallConfig } from '../wall/Wall';
 
 import ChaosBtn from '@/components/btn/ChaosBtn.vue';
 import StartBtn from '@/components/btn/StartBtn.vue';
 import Tile from '@/components/eternities/Tile.vue';
-import Scry from '@/components/reveal/Scry.vue';
-import Pick from '@/components/reveal/Pick.vue';
-import Show from '@/components/reveal/Show.vue';
+import TileDetails from '@/components/eternities/TileDetails.vue';
 import Feed from '@/components/board/Feed.vue';
 import PhenomenonWall from '@/components/wall/PhenomenonWall.vue';
 import EncounterWall from '@/components/wall/EncounterWall.vue';
-import TileDetails from '@/components/eternities/TileDetails.vue';
+import Pick from '@/components/wall/reveal/Pick.vue';
+import Scry from '@/components/wall/reveal/Scry.vue';
+import Show from '@/components/wall/reveal/Show.vue';
 
 
 interface LocalEncounterWallConfig {
@@ -104,7 +104,7 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
 
   public get encounterWallConfig(): LocalEncounterWallConfig | undefined {
     const wall =
-      this.store.map.states.get<EncounterWallState>(StateKey.ENCOUNTER_WALL);
+      this.store.map.walls.get<EncounterWallState>(StateKey.ENCOUNTER_WALL);
 
     if (!wall) {
       return undefined;

@@ -4,7 +4,7 @@ import { Beacon } from './Beacon';
 import { OnlineInterface } from './OnlineInterface';
 import { PeerMap } from './PeerMap';
 import { Event } from './Handler';
-import { MapStates } from '../states';
+import { WallStates } from '../wall';
 import {
   EncounterTriggers,
   Exported,
@@ -37,8 +37,8 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     this.peers = new PeerMap(this.beacon, name);
   }
 
-  public get states(): MapStates {
-    return this.map.states;
+  public get walls(): WallStates {
+    return this.map.walls;
   }
 
   public get yourName(): string {

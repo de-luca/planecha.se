@@ -1,6 +1,6 @@
 import { Card, Plane } from '../card';
 import { Exported } from '../map';
-import { MapState, StateKey, StateOp } from '../states';
+import { WallState, StateKey, StateOp } from '../wall';
 
 export interface Join {
   roomId: string;
@@ -26,7 +26,7 @@ export interface Counters {
 export interface UpdateState {
   key: StateKey;
   op: StateOp;
-  val?: MapState;
+  val?: WallState;
 }
 
 export interface Reveal {

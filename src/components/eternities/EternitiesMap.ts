@@ -4,16 +4,16 @@ import { Vue } from 'vue-class-component';
 import { useMain } from '@/store/main';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Phenomenon, Plane } from '@/model/card';
-import { PickedLeft, RevealConfig } from '../reveal/BaseReveal';
-import { RevealFactory } from '../reveal/RevealFactory';
-import { WallConfig } from '../Wall';
+import { PickedLeft, RevealConfig } from '../wall/reveal/BaseReveal';
+import { RevealFactory } from '../wall/reveal/RevealFactory';
+import { WallConfig } from '../wall/Wall';
 import { Revealed, Tile } from '@/model/map';
 import {
   RevealerWallState,
   RevealerSource,
   StateKey,
   PhenomenonWallState,
-} from '@/model/states';
+} from '@/model/wall';
 
 import ChaosBtn from '@/components/btn/ChaosBtn.vue';
 import StartBtn from '@/components/btn/StartBtn.vue';
@@ -52,7 +52,7 @@ export class EternitiesMap extends Vue {
 
   public get revealer(): LocalRevealerConfig | undefined {
     const revealer =
-      this.store.map.states.get<RevealerWallState>(StateKey.REVEALER);
+      this.store.map.walls.get<RevealerWallState>(StateKey.REVEALER);
 
     if (!revealer) {
       return undefined;
@@ -95,7 +95,7 @@ export class EternitiesMap extends Vue {
 
   public get phenomenonWall(): LocalPhenomenonWallConfig | undefined {
     if (this.store.map.destination) {
-      const wall = this.store.map.states.get<PhenomenonWallState>(
+      const wall = this.store.map.walls.get<PhenomenonWallState>(
         StateKey.PHENOMENON_WALL,
       );
 

@@ -1,4 +1,4 @@
-import { MapStates } from '../states';
+import { WallStates } from '../wall';
 
 export interface ExportedCard {
   id: string;
@@ -17,8 +17,8 @@ export interface CardInterface {
 
   type: string;
 
-  chaos(state: MapStates, passivity?: Passivity): void;
-  enter(state: MapStates, passivity?: Passivity): void;
+  chaos(walls: WallStates, passivity?: Passivity): void;
+  enter(walls: WallStates, passivity?: Passivity): void;
   leave(): void;
   export(): ExportedCard;
 }

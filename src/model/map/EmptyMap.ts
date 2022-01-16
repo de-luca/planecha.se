@@ -1,5 +1,5 @@
 import { Card } from '../card';
-import { MapStates } from '../states';
+import { WallStates } from '../wall';
 import { Tile } from './Tile';
 import {
   Exported,
@@ -10,7 +10,7 @@ import {
 } from './MapInterface';
 
 export class EmptyMap implements MapInterface {
-  public states: MapStates;
+  public walls: WallStates;
   public destination?: Coordinates | undefined;
   public encounterTriggers: EncounterTriggers;
   public specs: MapSpecs;

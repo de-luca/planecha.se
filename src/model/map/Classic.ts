@@ -21,7 +21,7 @@ export class Classic extends Map {
 
     const { card, shuffled } = this.deck.draw();
     this.active = [ card ];
-    this.active.forEach(c => c.enter(this.states, passivity));
+    this.active.forEach(c => c.enter(this.walls, passivity));
 
     return shuffled;
   }
@@ -30,7 +30,7 @@ export class Classic extends Map {
     this.active.forEach(c => c.leave());
     this.deck.setPlayed(...this.active);
     this.active = planes;
-    this.active.forEach(c => c.enter(this.states));
+    this.active.forEach(c => c.enter(this.walls));
   }
 
   public resolve(passivity: Passivity): boolean {

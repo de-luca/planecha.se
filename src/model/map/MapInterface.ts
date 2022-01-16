@@ -1,4 +1,4 @@
-import { ExportedMapState, MapStates } from '../states';
+import { ExportedWallStates, WallStates } from '../wall';
 import { Card, ExportedCard, Plane } from '../card';
 import { DeckState } from '../deck/Deck';
 import { ExportedTile, Tile } from './Tile';
@@ -48,7 +48,7 @@ export interface EternitiesMapSpecs extends MapSpecs {
 
 export interface Exported {
   specs: MapSpecs;
-  states: ExportedMapState;
+  states: ExportedWallStates;
   hasStarted: boolean;
   deck: DeckState;
   active: Array<ExportedCard>;
@@ -63,7 +63,7 @@ export interface Revealed {
 }
 
 export interface MapInterface {
-  states: MapStates;
+  walls: WallStates;
   hasStarted: boolean;
 
   specs: MapSpecs;

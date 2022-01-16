@@ -54,8 +54,8 @@
 
 <script lang="ts">
 import { mixins, Options } from 'vue-class-component';
-import { BaseReveal, PickedLeft } from './BaseReveal';
 import { Card } from '@/model/card';
+import { BaseReveal, PickedLeft } from './BaseReveal';
 import { Wall } from '../Wall';
 
 @Options({
