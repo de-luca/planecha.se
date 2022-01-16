@@ -46,7 +46,7 @@ export class MapFactory {
         break;
       case MapType.CLASSIC:
         map = new Classic({
-          states: new WallStates(),
+          wallStates: new WallStates(),
           deck: advanced.cards
             ? this.deckProvider.getSpecificDeck(advanced.cards)
             : this.deckProvider.getDeck(),
@@ -72,13 +72,11 @@ export class MapFactory {
   }
 
   public restore(payload: Exported): MapInterface {
-    payload.states.forEach(kv => kv[1].passive = true);
-
     switch (payload.specs.type) {
       case MapType.CLASSIC:
         return new Classic({
           deck: this.deckProvider.getDeckFromExport<Card>(payload.deck),
-          states: new WallStates(payload.states),
+          wallStates: new WallStates(payload.wallStates),
           hasStarted: payload.hasStarted,
           active: this.deckProvider.getPileWithState<Card>(payload.active),
           revealed: payload.revealed

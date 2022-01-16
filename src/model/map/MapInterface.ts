@@ -48,7 +48,7 @@ export interface EternitiesMapSpecs extends MapSpecs {
 
 export interface Exported {
   specs: MapSpecs;
-  states: ExportedWallStates;
+  wallStates: ExportedWallStates;
   hasStarted: boolean;
   deck: DeckState;
   active: Array<ExportedCard>;

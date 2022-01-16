@@ -74,10 +74,17 @@ export class PeerMap {
     };
 
     const initRequest = new Promise<MapInterface>((resolve) => {
-      const handler = (event: MessageEvent<string>) => {
+      const handler = function(this: RTCDataChannel, event: MessageEvent<string>) {
         const payload = Handler.parse<Exported>(event.data);
 
         if (payload.event === Handler.Event.INIT) {
+          // If the player that sends us the payload has empty initiators is its
+          // states, it means that they are the initiator.
+          payload.data.wallStates.forEach(([_key, state]) => {
+            if (state.initiator === undefined) {
+              state.initiator = this.label;
+            }
+          });
           const map = Container.get(MapFactory).restore(payload.data);
           p.channel.removeEventListener('message', handler);
           resolve(map);

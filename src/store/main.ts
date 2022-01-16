@@ -77,6 +77,12 @@ export const useMain = defineStore('main', {
   },
 
   actions: {
+    getPlayerName(id?: string): string {
+      return id
+        ? this.mates.get(id) ?? 'Fblthp'
+        : 'You';
+    },
+
     hey(payload: Payload.Hey): void {
       this.mates.set(payload.id, payload.name);
     },

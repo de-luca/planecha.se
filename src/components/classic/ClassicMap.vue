@@ -117,9 +117,7 @@ export default class ClassicMap extends Vue {
       component: RevealFactory.get(revealer.component),
       config: {
         ...revealer,
-        mateName: revealer.initiator
-          ? this.store.mates.get(revealer.initiator)
-          : undefined,
+        mateName: this.store.getPlayerName(revealer.initiator),
       },
     };
 

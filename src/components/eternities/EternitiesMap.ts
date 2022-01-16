@@ -61,9 +61,7 @@ export class EternitiesMap extends Vue {
       component: RevealFactory.get(revealer.component),
       config: {
         ...revealer,
-        mateName: revealer.initiator
-          ? this.store.mates.get(revealer.initiator)
-          : undefined,
+        mateName: this.store.getPlayerName(revealer.initiator),
       },
     };
 
@@ -97,12 +95,10 @@ export class EternitiesMap extends Vue {
       );
 
       return {
-        config: {
-          mateName: wall?.initiator
-            ? this.store.mates.get(wall.initiator)
-            : undefined,
-        },
         phenomenon: this.store.map.active[0] as Phenomenon,
+        config: {
+          mateName: this.store.getPlayerName(wall?.initiator),
+        },
       };
     }
 

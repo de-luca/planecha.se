@@ -31,14 +31,14 @@ export class EternitiesMapFactory {
     if (specs.subType === EternitiesMapSubType.SINGLE_DECK) {
       return new SingleDeck({
         deck,
-        states: state,
+        wallStates: state,
         deckType: specs.deckType,
       });
     }
 
     return new DualDeck({
       deck,
-      states: state,
+      wallStates: state,
       deckType: EternitiesMapDeckType.PLANES,
       phenomenaDeck: this.deckProvider.getPhenomenonDeck(),
       encounterTriggers: encounterTriggers as EncounterTriggers,
@@ -61,7 +61,7 @@ export class EternitiesMapFactory {
   public restore(payload: EternitiesMapExported): MapInterface {
     const specs = payload.specs as EternitiesMapSpecs;
     const props: SingleDeckProps = {
-      states: new WallStates(payload.states),
+      wallStates: new WallStates(payload.wallStates),
       hasStarted: payload.hasStarted,
       deckType: specs.deckType,
       deck: this.deckProvider.getDeckFromExport<Plane>(payload.deck),

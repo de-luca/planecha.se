@@ -29,7 +29,7 @@ describe('Map.ready', () => {
   it('resolves', async() => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
-      states: new WallStates(),
+      wallStates: new WallStates(),
     });
 
     let ready = false;
@@ -46,7 +46,7 @@ describe('Map.chaos', () => {
   it('triggers chaos', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
-      states: new WallStates(),
+      wallStates: new WallStates(),
     });
     map.active.forEach(card => card.chaos = jest.fn());
     map.chaos();
@@ -58,7 +58,7 @@ describe('Map.updateCounter', () => {
   it('updates card counters', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getPlaneDeck(),
-      states: new WallStates(),
+      wallStates: new WallStates(),
     });
     map.testActive();
     map.active.forEach((card) => {
@@ -75,7 +75,7 @@ describe('Map.revealUntil', () => {
   it('reveals a given number of requested Card', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
-      states: new WallStates(),
+      wallStates: new WallStates(),
     });
     map.revealUntil(2);
     expect(map.revealed?.relevant).toHaveLength(2);
@@ -90,7 +90,7 @@ describe('Map.resolveReveal', () => {
   it('puts back cards on top and bottom', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
-      states: new WallStates(),
+      wallStates: new WallStates(),
     });
 
     const putOnTop = jest.spyOn(map['deck'], 'putOnTop');
@@ -116,7 +116,7 @@ describe('Map.clearRevealed', () => {
   it('sets revealed to nothing', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
-      states: new WallStates(),
+      wallStates: new WallStates(),
     });
     map.revealUntil(5);
     expect(map.revealed).not.toBeUndefined();
@@ -129,7 +129,7 @@ describe('Map.export', () => {
   it('exports the state of the map', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
-      states: new WallStates(),
+      wallStates: new WallStates(),
     });
     const exported = map.export();
     expect(exported.specs.type).toEqual(MapType.EMPTY);
