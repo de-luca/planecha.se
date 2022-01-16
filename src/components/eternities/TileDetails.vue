@@ -29,7 +29,7 @@
       <planeswalk-btn
         v-if="(Math.abs(tile.coords.x) + Math.abs(tile.coords.y) === 1)"
         class="planeswalk-btn"
-        @click="$emit('planeswalk', tile.coords)"
+        @click="$emit('planeswalk', { ...tile.coords })"
       />
     </div>
     <button

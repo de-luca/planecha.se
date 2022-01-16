@@ -3,11 +3,6 @@ declare interface Coordinates {
   y: number;
 }
 
-declare interface Passivity {
-  passive?: boolean;
-  initiator?: string;
-}
-
 declare enum Theme {
   SYS = 'sys',
   DRK = 'drk',

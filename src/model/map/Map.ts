@@ -57,25 +57,16 @@ export abstract class Map implements MapInterface {
     return this.deck.played;
   }
 
-  public chaos(passivity?: Passivity): void {
-    this.active.forEach(c => c.chaos(this.walls, passivity));
+  public chaos(initiator?: string): void {
+    this.active.forEach(c => c.chaos(this.walls, initiator));
   }
 
-  public abstract planeswalk(
-    coords?: Coordinates,
-    passivity?: Passivity,
-  ): boolean;
-  public abstract customPlaneswalk(
-    planes: Array<Plane>,
-    coords?: Coordinates,
-  ): void;
+  public abstract planeswalk(coords?: Coordinates, initiator?: string): boolean;
+  public abstract customPlaneswalk(planes: Array<Plane>, coords?: Coordinates): void;
 
-  public abstract resolve(passivity?: Passivity): boolean;
+  public abstract resolve(initiator?: string): boolean;
 
-  public encounter(
-    _coords: Coordinates,
-    _passivity?: Passivity,
-  ): boolean {
+  public encounter(_coords: Coordinates, _initiator?: string): boolean {
     throw new Error(`Not compatible with ${this.constructor.name} class.`);
   }
 

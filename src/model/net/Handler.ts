@@ -47,7 +47,6 @@ export function getHandler(
 
   return function(this: RTCDataChannel, event: MessageEvent<string>) {
     const payload = parse(event.data);
-    const passivity: Passivity = { passive: true, initiator: this.label };
 
     switch (payload.event) {
       case Event.REQUEST_INIT: {
@@ -57,7 +56,7 @@ export function getHandler(
 
       case Event.UNDO: {
         const data = payload.data as ActPayload.Undo;
-        store.undo({ ...data, passivity });
+        store.undo({ ...data, initiator: this.label });
         break;
       }
 
@@ -68,24 +67,24 @@ export function getHandler(
       }
 
       case Event.CHAOS: {
-        store.chaos({ passivity });
+        store.chaos({ initiator: this.label });
         break;
       }
 
       case Event.RESOLVE: {
-        store.resolve({ passivity });
+        store.resolve({ initiator: this.label });
         break;
       }
 
       case Event.ENCOUNTER: {
         const data = payload.data as ActPayload.Encounter;
-        store.encounter({ ...data, passivity });
+        store.encounter({ ...data, initiator: this.label });
         break;
       }
 
-      case Event.PLANESWALK:{
+      case Event.PLANESWALK: {
         const data = payload.data as ActPayload.Planeswalk;
-        store.planeswalk({ ...data, passivity });
+        store.planeswalk({ ...data, initiator: this.label });
         break;
       }
 
@@ -98,14 +97,14 @@ export function getHandler(
 
         store.customPlaneswalk({
           planes: data.planes.map(id => allCards.find(c => c.id === id) as Plane),
-          passivity,
+          initiator: this.label,
         });
         break;
       }
 
       case Event.COUNTERS: {
         const data = payload.data as ActPayload.Counters;
-        store.updateCounters({ ...data, passivity });
+        store.updateCounters({ ...data, initiator: this.label });
         break;
       }
 
@@ -114,7 +113,7 @@ export function getHandler(
         store.reveal({
           count: data.count,
           type: data.type ? cardTypeMap[data.type] : undefined,
-          passivity,
+          initiator: this.label,
         });
         break;
       }
@@ -129,7 +128,7 @@ export function getHandler(
         store.resolveReveal({
           top: data.top.map((id) => allCards.find(c => c.id === id) as Card),
           bottom: data.bottom.map((id) => allCards.find(c => c.id === id) as Card),
-          passivity,
+          initiator: this.label,
         });
         break;
       }
@@ -144,7 +143,7 @@ export function getHandler(
       }
 
       case Event.START_GAME: {
-        store.startGame({ passivity });
+        store.startGame({ initiator: this.label });
         break;
       }
 

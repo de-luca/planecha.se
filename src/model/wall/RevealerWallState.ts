@@ -19,5 +19,7 @@ export interface RevealerWallState extends WallState {
   source: RevealerSource;
   component: RevealerMode;
   sendShownTo: 'top' | 'bottom';
+
   title?: string;
+  subTitle?: string;
 }

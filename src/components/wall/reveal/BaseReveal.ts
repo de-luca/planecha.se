@@ -11,6 +11,7 @@ export type PickedLeft = {
 export interface RevealConfig extends WallConfig {
   sendShownTo: 'top' | 'bottom';
   title?: string;
+  subTitle?: string;
 }
 
 export class BaseReveal {

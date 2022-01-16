@@ -20,7 +20,6 @@ import StartBtn from '@/components/btn/StartBtn.vue';
 
 
 interface LocalRevealerConfig {
-  passive: boolean;
   component: Component;
   seeder: () => void;
   resolver: (choices: PickedLeft) => void;
@@ -59,11 +58,9 @@ export class EternitiesMap extends Vue {
     }
 
     const config = {
-      passive: revealer.passive,
       component: RevealFactory.get(revealer.component),
       config: {
-        sendShownTo: revealer.sendShownTo,
-        passive: revealer.passive,
+        ...revealer,
         mateName: revealer.initiator
           ? this.store.mates.get(revealer.initiator)
           : undefined,
@@ -101,7 +98,6 @@ export class EternitiesMap extends Vue {
 
       return {
         config: {
-          passive: wall?.passive ?? false,
           mateName: wall?.initiator
             ? this.store.mates.get(wall.initiator)
             : undefined,

@@ -13,15 +13,15 @@ export class Classic extends Map {
   }
 
   public planeswalk(
-    _coordinates?: Coordinates,
-    passivity?: Passivity,
+    _coords?: Coordinates,
+    initiator?: string,
   ): boolean {
     this.active.forEach(c => c.leave());
     this.deck.setPlayed(...this.active);
 
     const { card, shuffled } = this.deck.draw();
     this.active = [ card ];
-    this.active.forEach(c => c.enter(this.walls, passivity));
+    this.active.forEach(c => c.enter(this.walls, initiator));
 
     return shuffled;
   }
@@ -33,7 +33,7 @@ export class Classic extends Map {
     this.active.forEach(c => c.enter(this.walls));
   }
 
-  public resolve(passivity: Passivity): boolean {
-    return this.planeswalk(undefined, passivity);
+  public resolve(initiator: string): boolean {
+    return this.planeswalk(undefined, initiator);
   }
 }

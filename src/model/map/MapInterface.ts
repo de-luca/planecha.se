@@ -81,13 +81,13 @@ export interface MapInterface {
   revealUntil(count: number, type?: typeof Card): boolean;
   resolveReveal(top: Array<Card>, bottom: Array<Card>): void;
 
-  chaos(passivity?: Passivity): void;
+  chaos(initiator?: string): void;
 
-  planeswalk(coords?: Coordinates, passivity?: Passivity): boolean;
+  planeswalk(coords?: Coordinates, initiator?: string): boolean;
   customPlaneswalk(planes: Array<Plane>, coords?: Coordinates): void;
 
-  resolve(passivity?: Passivity): boolean;
-  encounter(coords: Coordinates, passivity?: Passivity): boolean;
+  resolve(initiator?: string): boolean;
+  encounter(coords: Coordinates, initiator?: string): boolean;
 
   updateCounter(planeId: string, change: number): void;
 

@@ -88,24 +88,24 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     return this.map.encounterTriggers;
   }
 
-  public chaos(passivity?: Passivity): void {
-    return this.map.chaos(passivity);
+  public chaos(initiator?: string): void {
+    return this.map.chaos(initiator);
   }
 
-  public planeswalk(coords?: Coordinates, passivity?: Passivity): boolean {
-    return this.map.planeswalk(coords, passivity);
+  public planeswalk(coords?: Coordinates, initiator?: string): boolean {
+    return this.map.planeswalk(coords, initiator);
   }
 
   public customPlaneswalk(planes: Array<Plane>, coords?: Coordinates): void {
     return this.map.customPlaneswalk(planes, coords);
   }
 
-  public resolve(passivity?: Passivity): boolean {
-    return this.map.resolve(passivity);
+  public resolve(initiator?: string): boolean {
+    return this.map.resolve(initiator);
   }
 
-  public encounter(coords: Coordinates, passivity?: Passivity): boolean {
-    return this.map.encounter(coords, passivity);
+  public encounter(coords: Coordinates, initiator?: string): boolean {
+    return this.map.encounter(coords, initiator);
   }
 
   public updateCounter(id: string, change: number): void {
@@ -209,12 +209,7 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
   }
 
   public requestUpdateState(payload: Payload.UpdateState): void {
-    this.peers.broadcast(Event.UPDATE_STATE, {
-      ...payload,
-      val: payload.val?.passive === undefined
-        ? { ...payload.val, passive: true }
-        : payload.val,
-    });
+    this.peers.broadcast(Event.UPDATE_STATE, payload);
   }
 
   public requestStartGame(): void {

@@ -72,6 +72,7 @@ export default class EternitiesMapSingleDeck extends mixins(EternitiesMap) {
   }
 
   public planeswalk(coords: Coordinates): void {
+    console.log(coords);
     this.hideTileDetails();
     this.store.planeswalk({ coords });
   }

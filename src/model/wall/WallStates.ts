@@ -10,7 +10,6 @@ export enum StateOp {
 }
 
 export interface WallState {
-  passive: boolean;
   initiator?: string;
 }
 

@@ -113,7 +113,6 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
     return {
       ...wall,
       config: {
-        passive: wall?.passive ?? false,
         mateName: wall?.initiator
           ? this.store.mates.get(wall.initiator)
           : undefined,

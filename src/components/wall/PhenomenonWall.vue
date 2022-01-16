@@ -4,7 +4,7 @@
     <div class="modal-content">
       <h1 class="title">You encountered a Phenomenon</h1>
       <img :src="imgSrc">
-      <div v-if="config.passive" class="control">
+      <div v-if="config.mateName" class="control">
         <p class="subtitle"><b>{{ mateName }}</b> has control.</p>
       </div>
       <planeswalk-btn

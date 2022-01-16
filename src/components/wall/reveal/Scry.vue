@@ -2,17 +2,20 @@
   <div class="modal" style="display: block">
     <div class="modal-background"></div>
     <div class="modal-content">
+
+      <p class="source"><em><b>{{ mateName ?? 'You' }}</b> encountered</em></p>
       <h1 class="title" v-if="config.title" v-html="config.title"></h1>
+      <h2 class="subtitle" v-if="config.subTitle" v-html="config.subTitle"></h2>
+
       <div class="revealed">
         <template v-for="(c, index) in revealed.relevant" :key="c.id">
           <div class="card-wrapper">
 
             <img :src="buildImgSrc(c)">
 
-            <div class="control" v-if="!config.passive">
+            <div class="control">
               <input
                 type="radio"
-                :disabled="config.passive"
                 :id="id + index + 'top'"
                 :value="true"
                 v-model="picked[c.id]"
@@ -23,7 +26,6 @@
 
               <input
                 type="radio"
-                :disabled="config.passive"
                 :id="id + index + 'bottom'"
                 :value="false"
                 v-model="picked[c.id]"
@@ -38,14 +40,12 @@
       </div>
 
       <button
-        v-if="!config.passive"
         class="button is-secondary is-medium"
         @click="confirm"
         :disabled="!allSet"
       >
         Confirm choice
       </button>
-      <p class="subtitle" v-if="config.passive"><b>{{ mateName }}</b> is chosing.</p>
     </div>
   </div>
 </template>
@@ -116,6 +116,10 @@ input[type="radio"] {
   justify-content: center;
   align-items: center;
   gap: .5rem;
+}
+
+.source {
+  opacity: .5;
 }
 
 .revealed {

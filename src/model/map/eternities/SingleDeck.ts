@@ -26,21 +26,15 @@ export class SingleDeck extends EternitiesMap {
   private encounterPhenomenon(
     card: Phenomenon,
     coords: Coordinates,
-    passivity: Passivity = { passive: false },
+    initiator?: string,
   ): void {
     this.active = [card];
     this.destination = coords;
-    this.active.forEach(c => c.enter(this.walls, passivity));
-    this.walls.set(StateKey.PHENOMENON_WALL, {
-      passive: passivity.passive ?? false,
-      initiator: passivity.initiator,
-    });
+    this.active.forEach(c => c.enter(this.walls, initiator));
+    this.walls.set(StateKey.PHENOMENON_WALL, { initiator });
   }
 
-  public planeswalk(
-    coords: Coordinates,
-    passivity?: Passivity,
-  ): boolean {
+  public planeswalk(coords: Coordinates, initiator?: string): boolean {
     let shuffled = false;
     const xOffset = coords.x;
     const yOffset = coords.y;
@@ -70,7 +64,7 @@ export class SingleDeck extends EternitiesMap {
         this.encounterPhenomenon(
           drawn.card,
           { x: xOffset, y: yOffset },
-          passivity,
+          initiator,
         );
         // Return imediately
         return shuffled;
@@ -117,7 +111,7 @@ export class SingleDeck extends EternitiesMap {
               this.encounterPhenomenon(
                 drawn.card,
                 { x: xOffset, y: yOffset },
-                passivity,
+                initiator,
               );
 
               return shuffled;
@@ -150,7 +144,7 @@ export class SingleDeck extends EternitiesMap {
 
     this.destination = undefined;
 
-    this.active.forEach(c => c.enter(this.walls, passivity));
+    this.active.forEach(c => c.enter(this.walls, initiator));
 
     return shuffled;
   }
@@ -175,11 +169,11 @@ export class SingleDeck extends EternitiesMap {
     }
   }
 
-  public resolve(passivity?: Passivity): boolean {
+  public resolve(initiator?: string): boolean {
     this.deck.setPlayed(...this.active);
     this.walls.delete(StateKey.PHENOMENON_WALL);
 
-    const shuffled = this.planeswalk(this.destination as Coordinates, passivity);
+    const shuffled = this.planeswalk(this.destination as Coordinates, initiator);
 
     return shuffled;
   }

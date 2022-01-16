@@ -36,9 +36,9 @@ function getState(): State {
 function requestIfOnline(
   state: State,
   method: string,
-  payload: Payload.Passiveable,
+  payload: Payload.Requestable,
 ): void {
-  if (state.online && !payload.passivity) {
+  if (state.online && !payload.initiator) {
     if (state.wasShuffled) {
       (state.map as OnlineInterface).requestShuffling();
       state.wasShuffled = false;
@@ -49,19 +49,19 @@ function requestIfOnline(
 }
 
 export namespace Payload {
-  export type Passiveable = { passivity?: Passivity };
+  export type Requestable = { initiator?: string };
 
   export type Hey = { id: string, name: string };
   export type Bye = { id: string };
 
-  export type Planeswalk = Passiveable & ActPayload.Planeswalk;
+  export type Planeswalk = Requestable & ActPayload.Planeswalk;
   export type CustomPlaneswalk = Planeswalk & ActPayload.CustomPlaneswalk;
-  export type Encounter = Passiveable & ActPayload.Encounter;
-  export type Counters = Passiveable & ActPayload.Counters;
-  export type UpdateState = Passiveable & ActPayload.UpdateState;
-  export type Reveal = Passiveable & ActPayload.Reveal;
-  export type ResolveReveal = Passiveable & ActPayload.ResolveReveal;
-  export type Undo = Passiveable & ActPayload.Undo;
+  export type Encounter = Requestable & ActPayload.Encounter;
+  export type Counters = Requestable & ActPayload.Counters;
+  export type UpdateState = Requestable & ActPayload.UpdateState;
+  export type Reveal = Requestable & ActPayload.Reveal;
+  export type ResolveReveal = Requestable & ActPayload.ResolveReveal;
+  export type Undo = Requestable & ActPayload.Undo;
 }
 
 export const useMain = defineStore('main', {
@@ -129,20 +129,17 @@ export const useMain = defineStore('main', {
       this.map.applyShuffle(payload);
     },
 
-    startGame(payload: Payload.Passiveable = {}): void {
+    startGame(payload: Payload.Requestable = {}): void {
       this.map.hasStarted = true;
       requestIfOnline(this.$state, 'requestStartGame', payload);
     },
 
-    chaos(payload: Payload.Passiveable = {}): void {
-      this.map.chaos(payload.passivity);
+    chaos(payload: Payload.Requestable = {}): void {
+      this.map.chaos(payload.initiator);
       requestIfOnline(this.$state, 'requestChaos', payload);
     },
     planeswalk(payload: Payload.Planeswalk = {}): void {
-      this.wasShuffled = this.map.planeswalk(
-        payload.coords,
-        payload.passivity,
-      );
+      this.wasShuffled = this.map.planeswalk(payload.coords, payload.initiator);
       requestIfOnline(this.$state, 'requestPlaneswalk', payload);
     },
     customPlaneswalk(payload: Payload.CustomPlaneswalk) {
@@ -150,11 +147,11 @@ export const useMain = defineStore('main', {
       requestIfOnline(this.$state, 'requestCustomPlaneswalk', payload);
     },
     encounter(payload: Payload.Encounter) {
-      this.map.encounter(payload.coords, payload.passivity);
+      this.map.encounter(payload.coords, payload.initiator);
       requestIfOnline(this.$state, 'requestEncounter', payload);
     },
-    resolve(payload: Payload.Passiveable = {}) {
-      this.map.resolve(payload.passivity);
+    resolve(payload: Payload.Requestable = {}) {
+      this.map.resolve(payload.initiator);
       requestIfOnline(this.$state, 'requestResolve', payload);
     },
     updateCounters(payload: Payload.Counters) {

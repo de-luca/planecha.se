@@ -64,7 +64,6 @@ import Show from '@/components/wall/reveal/Show.vue';
 
 
 type LocalRevealerConfig = {
-  passive: boolean;
   component: Component;
   seeder: () => void;
   resolver: (choices: PickedLeft) => void;
@@ -115,12 +114,9 @@ export default class ClassicMap extends Vue {
     }
 
     const config = {
-      passive: revealer.passive,
       component: RevealFactory.get(revealer.component),
       config: {
-        title: revealer.title,
-        sendShownTo: revealer.sendShownTo,
-        passive: revealer.passive,
+        ...revealer,
         mateName: revealer.initiator
           ? this.store.mates.get(revealer.initiator)
           : undefined,

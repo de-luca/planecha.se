@@ -16,13 +16,13 @@ import {
  * in a random order.
  */
 export class InterplanarTunnel extends Phenomenon {
-  public enter(walls: WallStates, { passive = false, initiator }: Passivity = {}): void {
+  public enter(walls: WallStates, initiator?: string): void {
     const revealer: RevealerWallState = {
       title: this.name,
+      subTitle: 'Chose a plane to put on top the planar deck.',
       source: RevealerSource.INTERPLANAR_TUNNEL,
       component: RevealerMode.PICK,
       sendShownTo: 'top',
-      passive,
       initiator,
     };
 
