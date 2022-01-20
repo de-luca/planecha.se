@@ -61,7 +61,7 @@ export default class Card extends mixins(Imgable).with(Props) {
 
 img {
   border-radius: var(--card-radius);
-  height: 100%;
+  max-height: 100%;
 }
 
 .counters {

@@ -33,7 +33,7 @@ export default class Planeswalkable extends Vue.with(Props) {}
 <style lang="scss" scoped>
 img {
   border-radius: var(--card-radius);
-  height: 100%;
+  max-height: 100%;
 }
 
 .planeswalkable:hover {
