@@ -165,6 +165,7 @@ export const useMain = defineStore('main', {
       requestIfOnline(this.$state, 'requestCounterUpdate', payload);
     },
     updateState(payload: Payload.UpdateState) {
+      console.log(payload);
       this.map.walls.apply(payload.key, payload.op, payload.val);
       requestIfOnline(this.$state, 'requestUpdateState', payload);
     },

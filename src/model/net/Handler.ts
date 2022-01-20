@@ -138,7 +138,7 @@ export function getHandler(
         if (data.val) {
           data.val = { ...data.val, initiator: this.label };
         }
-        store.updateState(data);
+        store.updateState({ ...data, initiator: this.label });
         break;
       }
 

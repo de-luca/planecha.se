@@ -66,7 +66,7 @@ import {
   StateKey,
   StateOp,
 } from '@/model/wall';
-import { WallConfig } from '../wall/Wall';
+import { WallConfig } from '../wall/WallProps';
 
 import ChaosBtn from '@/components/btn/ChaosBtn.vue';
 import StartBtn from '@/components/btn/StartBtn.vue';
@@ -113,9 +113,7 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
     return {
       ...wall,
       config: {
-        mateName: wall?.initiator
-          ? this.store.mates.get(wall.initiator)
-          : undefined,
+        mateName: this.store.getPlayerName(wall?.initiator),
       },
     };
   }

@@ -2,16 +2,9 @@
   <div class="modal" style="display: block">
     <div class="modal-background"></div>
     <div class="modal-content">
-      <h1 class="title">You encountered a Phenomenon</h1>
+      <h1 class="title">{{ config.mateName }} encountered a Phenomenon</h1>
       <img :src="imgSrc">
-      <div v-if="config.mateName" class="control">
-        <p class="subtitle"><b>{{ mateName }}</b> has control.</p>
-      </div>
-      <planeswalk-btn
-        v-else
-        class="planeswalk-btn"
-        @click="$emit('resolve')"
-      />
+      <planeswalk-btn class="planeswalk-btn" @click="$emit('resolve')" />
     </div>
   </div>
 </template>
@@ -19,7 +12,8 @@
 <script lang="ts">
 import { mixins, Options, prop } from 'vue-class-component';
 import { Phenomenon } from '@/model/card';
-import { Wall, WallProps } from './Wall';
+import { WallProps } from './WallProps';
+import { Imgable } from '../Imgable';
 
 import PlaneswalkBtn from '@/components/btn/PlaneswalkBtn.vue';
 
@@ -32,7 +26,7 @@ class Props extends WallProps {
   emits: [ 'resolve' ],
   components: { PlaneswalkBtn },
 })
-export default class PhenomenonWall extends mixins(Wall).with(Props) {
+export default class PhenomenonWall extends mixins(Imgable).with(Props) {
   public get imgSrc(): string {
     return this.buildImgSrc(this.phenomenon);
   }
@@ -42,10 +36,12 @@ export default class PhenomenonWall extends mixins(Wall).with(Props) {
 <style lang="scss" scoped>
 .modal-content {
   position: absolute;
+  max-height: 100vh;
   height: 100%;
   width: 100%;
   top: 0;
   left: 0;
+  padding: 2rem;
 
   display: flex;
   flex-direction: column;

@@ -3,7 +3,7 @@
     <div class="modal-background"></div>
     <div class="modal-content">
 
-      <p class="source"><em><b>{{ mateName ?? 'You' }}</b> encountered</em></p>
+      <p class="source"><em><b>{{ config.mateName }}</b> encountered</em></p>
       <h1 class="title" v-if="config.title" v-html="config.title"></h1>
       <h2 class="subtitle" v-if="config.subTitle" v-html="config.subTitle"></h2>
 
@@ -52,13 +52,13 @@
 
 <script lang="ts">
 import { mixins, Options } from 'vue-class-component';
+import { Imgable } from '@/components/Imgable';
 import { BaseReveal } from './BaseReveal';
-import { Wall } from '../Wall';
 
 @Options({
   emits: ['done'],
 })
-export default class Show extends mixins(Wall).with(BaseReveal) {
+export default class Show extends mixins(Imgable).with(BaseReveal) {
   private static readonly fanAngle = 5;
 
   private activeTab: string = 'relevant';

@@ -2,7 +2,16 @@
   <div class="modal" style="display: block">
     <div class="modal-background"></div>
     <div class="modal-content">
-      <h1 class="title" v-html="title"></h1>
+      <div class="header">
+        <p class="source">
+          <em>
+            <b>{{ config.mateName }}</b>
+            {{ config.mateName === 'You' ? 'are' : 'is' }}
+            attempting to planeswalk
+          </em>
+        </p>
+        <h1 class="title" v-html="title"></h1>
+      </div>
 
       <div class="roll-placeholder">
         <fa class="dice" icon="dice-d20" />
@@ -58,7 +67,8 @@
 <script lang="ts">
 import { mixins, Options, prop } from 'vue-class-component';
 import { EncounterMechanic, TriggerConfig } from '@/model/map';
-import { Wall, WallProps } from './Wall';
+import { WallProps } from './WallProps';
+import { Imgable } from '../Imgable';
 
 class Props extends WallProps {
   public coords = prop<Coordinates>({ required: true });
@@ -68,7 +78,7 @@ class Props extends WallProps {
 @Options({
   emits: [ 'planeswalk', 'encounter' ],
 })
-export default class EncounterWall extends mixins(Wall).with(Props) {
+export default class EncounterWall extends mixins(Imgable).with(Props) {
   private rolled: number = 0;
 
   public get title(): string {
@@ -105,6 +115,14 @@ export default class EncounterWall extends mixins(Wall).with(Props) {
   justify-content: center;
   align-items: center;
   gap: 8rem;
+
+  .source {
+    opacity: .5;
+  }
+
+  .header {
+    text-align: center;
+  }
 
   .title {
     color: var(--text-color);
