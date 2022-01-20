@@ -18,7 +18,7 @@ export enum Event {
   UNDO = 'UNDO',
   SHUFFLE = 'SHUFFLE',
   START_GAME = 'START_GAME',
-  UPDATE_STATE = 'UPDATE_STATE',
+  UPDATE_WALL_STATE = 'UPDATE_WALL_STATE',
 }
 
 export interface Payload<T> {
@@ -133,12 +133,12 @@ export function getHandler(
         break;
       }
 
-      case Event.UPDATE_STATE: {
-        const data = payload.data as ActPayload.UpdateState;
+      case Event.UPDATE_WALL_STATE: {
+        const data = payload.data as ActPayload.UpdateWallState;
         if (data.val) {
           data.val = { ...data.val, initiator: this.label };
         }
-        store.updateState({ ...data, initiator: this.label });
+        store.updateWallState({ ...data, initiator: this.label });
         break;
       }
 

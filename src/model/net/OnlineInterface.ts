@@ -22,7 +22,7 @@ export interface OnlineInterface {
   requestReveal(payload: Payload.Reveal): void;
   requestResolveReveal(payload: Payload.ResolveReveal): void;
 
-  requestUpdateState(payload: Payload.UpdateState): void;
+  requestUpdateWallState(payload: Payload.UpdateWallState): void;
 
   requestStartGame(): void;
 

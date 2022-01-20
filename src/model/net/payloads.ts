@@ -23,7 +23,7 @@ export interface Counters {
   change: number;
 }
 
-export interface UpdateState {
+export interface UpdateWallState {
   key: StateKey;
   op: StateOp;
   val?: WallState;

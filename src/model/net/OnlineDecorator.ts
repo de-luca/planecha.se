@@ -208,8 +208,8 @@ export class OnlineDecorator implements MapInterface, OnlineInterface {
     });
   }
 
-  public requestUpdateState(payload: Payload.UpdateState): void {
-    this.peers.broadcast(Event.UPDATE_STATE, payload);
+  public requestUpdateWallState(payload: Payload.UpdateWallState): void {
+    this.peers.broadcast(Event.UPDATE_WALL_STATE, payload);
   }
 
   public requestStartGame(): void {

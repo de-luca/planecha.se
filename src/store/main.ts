@@ -58,7 +58,7 @@ export namespace Payload {
   export type CustomPlaneswalk = Planeswalk & ActPayload.CustomPlaneswalk;
   export type Encounter = Requestable & ActPayload.Encounter;
   export type Counters = Requestable & ActPayload.Counters;
-  export type UpdateState = Requestable & ActPayload.UpdateState;
+  export type UpdateWallState = Requestable & ActPayload.UpdateWallState;
   export type Reveal = Requestable & ActPayload.Reveal;
   export type ResolveReveal = Requestable & ActPayload.ResolveReveal;
   export type Undo = Requestable & ActPayload.Undo;
@@ -164,10 +164,10 @@ export const useMain = defineStore('main', {
       this.map.updateCounter(payload.planeId, payload.change);
       requestIfOnline(this.$state, 'requestCounterUpdate', payload);
     },
-    updateState(payload: Payload.UpdateState) {
+    updateWallState(payload: Payload.UpdateWallState) {
       console.log(payload);
       this.map.walls.apply(payload.key, payload.op, payload.val);
-      requestIfOnline(this.$state, 'requestUpdateState', payload);
+      requestIfOnline(this.$state, 'requestUpdateWallState', payload);
     },
     reveal(payload: Payload.Reveal) {
       this.wasShuffled = this.map.revealUntil(payload.count, payload.type);

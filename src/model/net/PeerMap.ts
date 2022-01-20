@@ -52,7 +52,7 @@ export class PeerMap {
   broadcast(event: Handler.Event.REVEAL, data: Payload.RevealWire): void;
   broadcast(event: Handler.Event.ENCOUNTER, data: Payload.Encounter): void;
   broadcast(event: Handler.Event.PLANESWALK, data: Payload.Planeswalk): void;
-  broadcast(event: Handler.Event.UPDATE_STATE, data: Payload.UpdateState): void;
+  broadcast(event: Handler.Event.UPDATE_WALL_STATE, data: Payload.UpdateWallState): void;
   broadcast(event: Handler.Event.RESOLVE_REVEAL, data: Payload.ResolveRevealWire): void;
   broadcast(event: Handler.Event.CUSTOM_PLANESWALK, data: Payload.CustomPlaneswalkWire): void;
   public broadcast(event: Handler.Event, data: any = {}): void {

@@ -134,7 +134,7 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
   }
 
   public planeswalk(coords: Coordinates): void {
-    this.store.updateState({
+    this.store.updateWallState({
       key: StateKey.ENCOUNTER_WALL,
       op: StateOp.DELETE,
     });
@@ -142,7 +142,7 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
   }
 
   public encounter(coords: Coordinates): void {
-    this.store.updateState({
+    this.store.updateWallState({
       key: StateKey.ENCOUNTER_WALL,
       op: StateOp.DELETE,
     });
@@ -166,7 +166,7 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
       ) {
         this.encounter(coords);
       } else {
-        this.store.updateState({
+        this.store.updateWallState({
           key: StateKey.ENCOUNTER_WALL,
           op: StateOp.SET,
           val: {
