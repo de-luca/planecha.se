@@ -122,7 +122,7 @@ export const useMain = defineStore('main', {
         (this.map as OnlineInterface).leave();
       }
       this.$reset();
-      eventBus.off('*');
+      eventBus.all.clear();
     },
 
     undo(payload: Payload.Undo): void {
@@ -174,6 +174,7 @@ export const useMain = defineStore('main', {
       requestIfOnline(this.$state, 'requestReveal', payload);
     },
     resolveReveal(payload: Payload.ResolveReveal) {
+      console.log(payload);
       this.map.resolveReveal(payload.top, payload.bottom);
       requestIfOnline(this.$state, 'requestResolveReveal', payload);
     },
