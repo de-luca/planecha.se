@@ -26,8 +26,6 @@
     <feed class="feed" :defaultShow="true" />
   </div>
 
-
-
   <component
     v-if="revealer && revealed"
     :is="revealer.component"
@@ -179,6 +177,7 @@ export default class ClassicMap extends Vue {
     "active active .        "
     "active active feed     "
   ;
+  height: 100%;
 }
 
 .active {

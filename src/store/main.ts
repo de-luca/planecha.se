@@ -174,7 +174,6 @@ export const useMain = defineStore('main', {
       requestIfOnline(this.$state, 'requestReveal', payload);
     },
     resolveReveal(payload: Payload.ResolveReveal) {
-      console.log(payload);
       this.map.resolveReveal(payload.top, payload.bottom);
       requestIfOnline(this.$state, 'requestResolveReveal', payload);
     },

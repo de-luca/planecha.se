@@ -1,24 +1,26 @@
 <template>
-  <div class="map">
-    <template v-for="y in 7" :key="y">
-      <tile
-        v-for="x in 7"
-        :key="x"
-        :tile="getTile(x, y)"
-        :x="x - off"
-        :y="y - off"
-        :hidden="!hasStarted"
-        @hellride="preHellride"
-        @show="showTileDetails"
-      />
-    </template>
-
-    <div class="controls">
-      <component :is="btnComponent" />
+  <div class="map-wrapper">
+    <div class="map">
+      <template v-for="y in 7" :key="y">
+        <tile
+          v-for="x in 7"
+          :key="x"
+          :tile="getTile(x, y)"
+          :x="x - off"
+          :y="y - off"
+          :hidden="!hasStarted"
+          @hellride="preHellride"
+          @show="showTileDetails"
+        />
+      </template>
     </div>
-
-    <feed class="feed" :defaultShow="false" />
   </div>
+
+  <div class="controls">
+    <component :is="btnComponent" />
+  </div>
+
+  <feed class="feed" :defaultShow="false" />
 
   <tile-details
     v-if="displayedTile"
@@ -183,22 +185,31 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
 </script>
 
 <style lang="scss" scoped>
-.map {
-  position: relative;
+.map-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
 
-  @media (max-aspect-ratio: 85/61) {
-    & {
-      grid-template-columns: repeat(7, calc( ((100vw - 2rem) - (6 * 1rem)) / 7) );
-    }
-  }
+.map {
   @media (min-aspect-ratio: 85/61) {
     & {
       grid-template-columns: repeat(7, calc( (((100vw - 2rem) - (6 * 1rem)) / (85 / 61)) / 7) );
     }
   }
 
+  @media (max-aspect-ratio: 1/1) {
+    & {
+      grid-template-rows: repeat(7, calc( (((100vw - 6rem) - (6 * 1rem)) / (85 / 61)) / 7) );
+    }
+  }
+
+  position: relative;
   display: grid;
-  grid-template-rows: repeat(7, calc( ((100vh - 6.5rem) - (6 * 1rem)) / 7) );
+  grid-template-rows: repeat(7, calc( ((100vh - 6rem) - (6 * 1rem)) / 7) );
+  grid-template-columns: repeat(7, 1fr);
   gap: 1rem;
   align-content: center;
 

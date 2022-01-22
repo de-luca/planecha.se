@@ -15,7 +15,9 @@
       <main-menu />
     </div>
 
-    <component :is="mapComponent" />
+    <div class="map-container">
+      <component :is="mapComponent" />
+    </div>
 
     <notif-center />
 
@@ -94,7 +96,7 @@ export default class Board extends Vue {
   overflow: hidden;
   display: grid;
   grid-template-rows: 3rem 1fr;
-  gap: 1.5rem;
+  gap: 1rem;
   grid-template-areas:
     "nav"
     "map"
@@ -147,8 +149,9 @@ export default class Board extends Vue {
   }
 }
 
-.map {
+.map-container {
   grid-area: map;
+  position: relative;
   margin-left: auto;
   margin-right: auto;
   height: 100%;
