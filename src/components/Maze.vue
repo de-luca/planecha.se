@@ -60,6 +60,7 @@ export default class Maze extends Vue {
   overflow: hidden;
   white-space: nowrap;
   pointer-events: none;
+  width: 100vw;
 }
 
 #canary {

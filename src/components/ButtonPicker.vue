@@ -64,7 +64,7 @@ export default class ButtonPicker extends Vue.with(Props) {
   }
 
   .control {
-    display: inline-flex;
+    display: flex;
     gap: 1rem;
 
     label {

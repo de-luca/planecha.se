@@ -71,7 +71,7 @@ export default class OnlinePicker extends mixins(Onlineable).with(Props) {
   }
 
   .control {
-    display: inline-flex;
+    display: flex;
     gap: 1rem;
 
     label {

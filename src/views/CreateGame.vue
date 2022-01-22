@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="wrapper">
     <div class="title">
       <router-link class="brand" to="/">⟁</router-link>
       <div>
@@ -18,7 +18,7 @@
       <div class="field" v-if="requireName">
         <label class="label">Your player name:</label>
         <div class="control">
-          <input v-model="name" class="input" type="text" placeholder="Super Cake" required>
+          <input v-model="name" id="player-name" class="input" type="text" placeholder="Super Cake" required>
         </div>
         <p class="help">The name people in the game will see you as.</p>
         <label class="checkbox">
@@ -48,7 +48,8 @@
 
       <encounter-setup v-model="encounterConfig" v-if="showDualDeckConfig" />
 
-        <div class="field">
+      <div class="field">
+        <div class="control main">
           <button class="button is-secondary" @click.prevent="toggleDeckBuilder">
             Open deck customization
           </button>
@@ -59,6 +60,7 @@
             <em>(In order not to explode)</em>
           </p>
         </div>
+      </div>
 
       <deck-builder
         v-if="openDeckBuilder"
@@ -69,7 +71,7 @@
       />
 
       <div class="field">
-        <div class="control">
+        <div class="control main">
           <button
             class="button is-primary"
             :class="{ 'is-loading': creating }"
@@ -287,10 +289,13 @@ export default class CreateGame extends Vue {
   }
 }
 
-.container {
-  width: 800px;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+.wrapper {
+  padding: 2rem 1rem;
+  height: 100vh;
+  margin: 0 auto;
+  position: relative;
+  width: auto;
+  max-width: 800px;
 }
 
 .scope-block {
@@ -304,8 +309,20 @@ export default class CreateGame extends Vue {
   }
 }
 
-.field button {
-  width: var(--form-btn-width);
+#player-name {
+  width: calc(2 * var(--form-btn-width) + 1rem);
+}
+
+.main.control {
+  display: flex;
+
+  button {
+    width: calc(2 * var(--form-btn-width) + 1rem);
+  }
+}
+
+.field:last-of-type {
+  margin-bottom: .75rem;
 }
 
 .deck-custom {
