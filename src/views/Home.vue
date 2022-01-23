@@ -38,62 +38,57 @@
       </div>
     </section>
 
-    <footer class="footer">
-      <div class="container content">
-        <p>
-          Planecha.se is unofficial Fan Content permitted under the
-          <a
-            href="https://company.wizards.com/en/legal/fancontentpolicy"
-            rel="noopener noreferrer"
-            target="_blank"
-          >Fan Content Policy</a>. Not approved/endorsed by Wizards.<br>
-          Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC.
-        </p>
-        <p>
-          Card data are provided by
-          <a
-            href="https://scryfall.com"
-            rel="noopener noreferrer"
-            target="_blank"
-          >Scryfall</a>.
-        </p>
-        <p>
-          Planecha.se uses icons provided by
-          <a
-            href="https://fontawesome.com"
-            rel="noopener noreferrer"
-            target="_blank"
-          >Font Awesome</a>
-          according to the
-          <a
-            href="https://fontawesome.com/license"
-            rel="noopener noreferrer"
-            target="_blank"
-          >Font Awesome License</a>.
-        </p>
-        <p>
-          The "maze" background font is from
-          <a
-            href="http://mazeletter.xyz/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >Mazeletter</a>.
-        </p>
-        <p>
-          Build version:
-          <a
-            :href="'https://github.com/de-luca/planecha.se/tree/' + sha"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <code>{{ sha }}</code>
-          </a>
-        </p>
-        <div class="theme-container">
-          <theme-selector />
-        </div>
-      </div>
-    </footer>
+    <branded-footer>
+      <p>
+        Planecha.se is unofficial Fan Content permitted under the
+        <a
+          href="https://company.wizards.com/en/legal/fancontentpolicy"
+          rel="noopener noreferrer"
+          target="_blank"
+        >Fan Content Policy</a>. Not approved/endorsed by Wizards.<br>
+        Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC.
+      </p>
+      <p>
+        Card data are provided by
+        <a
+          href="https://scryfall.com"
+          rel="noopener noreferrer"
+          target="_blank"
+        >Scryfall</a>.
+      </p>
+      <p>
+        Planecha.se uses icons provided by
+        <a
+          href="https://fontawesome.com"
+          rel="noopener noreferrer"
+          target="_blank"
+        >Font Awesome</a>
+        according to the
+        <a
+          href="https://fontawesome.com/license"
+          rel="noopener noreferrer"
+          target="_blank"
+        >Font Awesome License</a>.
+      </p>
+      <p>
+        The "maze" background font is from
+        <a
+          href="http://mazeletter.xyz/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >Mazeletter</a>.
+      </p>
+      <p>
+        Build version:
+        <a
+          :href="'https://github.com/de-luca/planecha.se/tree/' + sha"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <code>{{ sha }}</code>
+        </a>
+      </p>
+    </branded-footer>
   </div>
 </template>
 
@@ -101,9 +96,11 @@
 import { Options, Vue } from 'vue-class-component';
 
 import Maze from '@/components/Maze.vue';
-import ThemeSelector from '@/components/ThemeSelector.vue';
+import BrandedFooter from '@/components/BrandedFooter.vue';
 
-@Options({ components: { Maze, ThemeSelector } })
+@Options({
+  components: { Maze, BrandedFooter },
+})
 export default class Home extends Vue {
   public get sha(): string {
     return import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA;
@@ -177,22 +174,6 @@ export default class Home extends Vue {
 
   .subtitle {
     color: var(--brand-color-secondary);
-  }
-}
-
-.footer {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
-
-  background-color: var(--bg-color);
-
-  .container {
-    max-width: 64rem;
-  }
-
-  .theme-container {
-    display: flex;
-    justify-content: flex-end;
   }
 }
 </style>

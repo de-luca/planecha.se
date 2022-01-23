@@ -1,14 +1,13 @@
 <template>
-  <div class="container">
+  <div class="wrapper">
     <div class="title">
-      <router-link class="brand" to="/">⟁</router-link>
+      <router-link class="brand" title="Back Home" to="/">⟁</router-link>
       <div>
         <h1>JOIN GAME</h1>
         <h2 class="subtitle">
           or <router-link to="/create">Create a game</router-link>
         </h2>
       </div>
-      <theme-selector />
     </div>
 
     <form @submit.prevent="join">
@@ -62,6 +61,8 @@
 
     <error-modal v-if="error" :error="error" @dismiss="error = null" />
   </div>
+
+  <branded-footer />
 </template>
 
 <script lang="ts">
@@ -70,10 +71,10 @@ import { useMain } from '@/store/main';
 import { useConfig } from '@/store/config';
 import { Onlineable } from '@/components/Onlineable';
 
-import ThemeSelector from '@/components/ThemeSelector.vue';
+import BrandedFooter from '@/components/BrandedFooter.vue';
 import ErrorModal from '@/components/ErrorModal.vue';
 
-@Options({ components: { ThemeSelector, ErrorModal } })
+@Options({ components: { BrandedFooter, ErrorModal } })
 export default class JoinGame extends mixins(Onlineable) {
   private static readonly urlRegex =
     /https?:\/\/.+\/#\/join\/(?<room>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/;
@@ -138,23 +139,35 @@ export default class JoinGame extends mixins(Onlineable) {
       color: var(--brand-color-secondary);
     }
   }
-
-  div:first-of-type {
-    flex-grow: 1;
-  }
-
-  .theme-selector {
-    align-self: flex-start;
-  }
 }
 
-.container {
-  width: 800px;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+.wrapper {
+  padding: 1rem;
+  margin: 0 auto;
+  position: relative;
+  width: auto;
+  max-width: 800px;
+  min-height: 100vh;
 }
 
-.field.join-game button {
-  width: var(--form-btn-width);
+input.input {
+  width: calc(2 * var(--form-btn-width) + 1rem);
+}
+
+.field.join-game {
+  margin-bottom: 1rem;
+
+  button {
+    @media screen and (max-width: 480px) {
+      & {
+        width: 100%;
+      }
+    }
+    width: var(--form-btn-width);
+  }
+
+  .control {
+    display: flex;
+  }
 }
 </style>

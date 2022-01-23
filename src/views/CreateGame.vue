@@ -1,14 +1,13 @@
 <template>
   <div class="wrapper">
     <div class="title">
-      <router-link class="brand" to="/">⟁</router-link>
+      <router-link class="brand" title="Back Home" to="/">⟁</router-link>
       <div>
         <h1>CREATE GAME</h1>
         <h2 class="subtitle">
           or <router-link to="/join">Join a game</router-link>
         </h2>
       </div>
-      <theme-selector />
     </div>
 
     <form @submit.prevent="create">
@@ -82,8 +81,11 @@
           </button>
         </div>
       </div>
+
     </form>
   </div>
+
+  <branded-footer />
 </template>
 
 <script lang="ts">
@@ -104,7 +106,7 @@ import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';
 import DeckBuilder from '@/components/create/DeckBuilder.vue';
 import OnlinePicker from '@/components/create/OnlinePicker.vue';
 import EncounterSetup from '@/components/create/EncounterSetup.vue';
-import ThemeSelector from '@/components/ThemeSelector.vue';
+import BrandedFooter from '@/components/BrandedFooter.vue';
 
 @Options({
   components: {
@@ -112,7 +114,7 @@ import ThemeSelector from '@/components/ThemeSelector.vue';
     OnlinePicker,
     EncounterSetup,
     DeckBuilder,
-    ThemeSelector,
+    BrandedFooter,
   },
 })
 export default class CreateGame extends Vue {
@@ -279,23 +281,15 @@ export default class CreateGame extends Vue {
       color: var(--brand-color-secondary);
     }
   }
-
-  div:first-of-type {
-    flex-grow: 1;
-  }
-
-  .theme-selector {
-    align-self: flex-start;
-  }
 }
 
 .wrapper {
-  padding: 2rem 1rem;
-  height: 100vh;
+  padding: 1rem;
   margin: 0 auto;
   position: relative;
   width: auto;
   max-width: 800px;
+  min-height: 100vh;
 }
 
 .scope-block {
@@ -317,12 +311,17 @@ export default class CreateGame extends Vue {
   display: flex;
 
   button {
-    width: calc(2 * var(--form-btn-width) + 1rem);
+    @media screen and (max-width: 480px) {
+      & {
+        width: 100%;
+      }
+    }
+    width: var(--form-btn-width);
   }
 }
 
 .field:last-of-type {
-  margin-bottom: .75rem;
+  margin-bottom: 1rem;
 }
 
 .deck-custom {

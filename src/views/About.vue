@@ -1,11 +1,11 @@
 <template>
-  <div class="container">
+  <div class="wrapper">
     <h1 class="title">
-        <router-link class="brand" to="/">
-          <div>⟁</div>
-          <div>⟁</div>
-          <div>⟁</div>
-        </router-link>
+      <router-link class="brand" title="Back Home" to="/">
+        <div>⟁</div>
+        <div>⟁</div>
+        <div>⟁</div>
+      </router-link>
     </h1>
 
     <div class="content">
@@ -96,26 +96,28 @@
         It's the unicode caracter <code>x27c1</code> with some CSS to make it look <em>"cool"</em>.
       </p>
     </div>
-
-    <div class="theme-container">
-      <theme-selector />
-    </div>
   </div>
+
+  <branded-footer />
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import ThemeSelector from '@/components/ThemeSelector.vue';
+import BrandedFooter from '@/components/BrandedFooter.vue';
 
-@Options({ components: { ThemeSelector } })
+@Options({ components: { BrandedFooter } })
 export default class About extends Vue {}
 </script>
 
 <style lang="scss" scoped>
-.container {
-  width: 800px;
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+.wrapper {
+  padding: 1rem;
+  padding-bottom: 3rem;
+  margin: 0 auto;
+  position: relative;
+  width: auto;
+  max-width: 800px;
+  min-height: 100vh;
 }
 
 .content {
@@ -158,10 +160,5 @@ export default class About extends Vue {}
       }
     }
   }
-}
-
-.theme-container {
-  display: flex;
-  justify-content: flex-end;
 }
 </style>
