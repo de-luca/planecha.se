@@ -169,7 +169,6 @@ export default class ClassicMap extends Vue {
 
 <style lang="scss" scoped>
 .map {
-
   @media screen and (max-width: 810px) and (orientation: portrait) {
     grid-template-rows: 8rem auto 2.5rem;
     grid-template-columns: 1fr;
@@ -180,7 +179,7 @@ export default class ClassicMap extends Vue {
     ;
   }
 
-  @media screen and (max-width: 800px) and (orientation: landscape) {
+  @media screen and (max-width: 810px) and (orientation: landscape) {
     grid-template-columns: 1fr 1fr 15rem;
   }
 

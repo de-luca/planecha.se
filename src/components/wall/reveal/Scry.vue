@@ -3,49 +3,49 @@
     <div class="modal-background"></div>
     <div class="modal-content">
 
-      <p class="source"><em><b>{{ config.mateName }}</b> encountered</em></p>
-      <h1 class="title" v-if="config.title" v-html="config.title"></h1>
-      <h2 class="subtitle" v-if="config.subTitle" v-html="config.subTitle"></h2>
-
-      <div class="revealed">
-        <template v-for="(c, index) in revealed.relevant" :key="c.id">
-          <div class="card-wrapper">
-
-            <img :src="buildImgSrc(c)">
-
-            <div class="control">
-              <input
-                type="radio"
-                :id="id + index + 'top'"
-                :value="true"
-                v-model="picked[c.id]"
-              >
-              <label class="button" :for="id + index + 'top'">
-                Keep on top
-              </label>
-
-              <input
-                type="radio"
-                :id="id + index + 'bottom'"
-                :value="false"
-                v-model="picked[c.id]"
-              >
-              <label class="button" :for="id + index + 'bottom'">
-                Put at the bottom
-              </label>
-            </div>
-
-          </div>
-        </template>
+      <div class="header">
+        <p class="source"><em><b>{{ config.mateName }}</b> encountered</em></p>
+        <h1 class="title" v-if="config.title" v-html="config.title"></h1>
+        <h2 class="subtitle" v-if="config.subTitle" v-html="config.subTitle"></h2>
       </div>
 
-      <button
-        class="button is-secondary is-medium"
-        @click="confirm"
-        :disabled="!allSet"
-      >
-        Confirm choice
-      </button>
+      <div class="revealed">
+        <div v-for="(c, index) in revealed.relevant" :key="c.id" class="card-wrapper">
+          <img :src="buildImgSrc(c)">
+          <div class="control to-top">
+            <input
+              type="radio"
+              :id="id + index + 'top'"
+              :value="true"
+              v-model="picked[c.id]"
+            >
+            <label class="button" :for="id + index + 'top'">
+              Keep on top
+            </label>
+          </div>
+          <div class="control to-bottom">
+            <input
+              type="radio"
+              :id="id + index + 'bottom'"
+              :value="false"
+              v-model="picked[c.id]"
+            >
+            <label class="button" :for="id + index + 'bottom'">
+              Put at the bottom
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="confirm">
+        <button
+          class="button is-secondary is-medium"
+          @click="confirm"
+          :disabled="!allSet"
+        >
+          Confirm choice
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -84,67 +84,163 @@ export default class Scry extends mixins(Imgable).with(BaseReveal) {
 </script>
 
 <style lang="scss" scoped>
-.control {
-  display: inline-flex;
-  gap: 1rem;
-
-  label {
-    width: var(--form-btn-width);
-    color: var(--modal-picker-color);
-    background-color: var(--modal-picker-bg);
-    border-color: var(--modal-picker-border);
-  }
-}
-
-input[type="radio"] {
-  display: none;
-
-  &:checked+label {
-    border-color: var(--modal-picker-checked-border);
-  }
-}
-
 .modal-content {
   position: absolute;
-  height: 100%;
-  width: 100%;
   top: 0;
   left: 0;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: .5rem;
-}
-
-.source {
-  opacity: .5;
-}
-
-.revealed {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: .5rem;
-
+  max-height: 100vh;
+  height: 100%;
   width: 100%;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  margin: 0;
 
-  .card-wrapper {
+  // @media screen and (max-width: 810px) and (orientation: portrait) {
+  //   grid-template-rows: 8rem auto 2.5rem;
+  //   grid-template-columns: 1fr;
+  //   grid-template-areas:
+  //     "controls"
+  //     "active"
+  //     "feed"
+  //   ;
+  // }
+
+  // @media screen and (max-width: 800px) and (orientation: landscape) {
+  //   grid-template-columns: 1fr 1fr 15rem;
+  // }
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(3, auto);
+  column-gap: 1rem;
+  row-gap: 1rem;
+  grid-template-areas:
+    "header"
+    "revealed"
+    "confirm"
+  ;
+
+  > div {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
     gap: .5rem;
+  }
 
-    img {
-      height: 30rem;
-      border-radius: var(--card-radius);
+  .header {
+    @media screen and (max-height: 450px) and (orientation: landscape) {
+      .source {
+        margin-bottom: -.5rem;
+      }
+      .title {
+        margin-bottom: 0;
+      }
+      .subtitle {
+        margin-top: -1rem;
+      }
     }
+    grid-area: header;
+    justify-content: flex-end;
+    text-align: center;
+
+    .source {
+      opacity: .5;
+    }
+  }
+
+  .revealed {
+    grid-area: revealed;
+
+    .card-wrapper {
+      @media screen and (max-width: 800px) and (orientation: portrait) {
+        grid-template-rows: repeat(3, auto);
+        grid-template-columns: 1fr;
+        row-gap: .5rem;
+        grid-template-areas:
+          "card"
+          "to-top"
+          "to-bottom"
+        ;
+
+        .to-top {
+          justify-content: center !important;
+        }
+        .to-bottom {
+          justify-content: center !important;
+        }
+      }
+
+      @media screen and (max-height: 450px) and (orientation: landscape) {
+        grid-template-rows: 1fr;
+        grid-template-columns: repeat(3, auto);
+        row-gap: .5rem;
+        grid-template-areas:
+          "to-top card to-bottom"
+        ;
+
+        .control.to-top label {
+          writing-mode: sideways-rl;
+          width: unset !important;
+          height: 100%;
+          max-height: 50vh;
+        }
+        .control.to-bottom label {
+          writing-mode: sideways-lr;
+          width: unset !important;
+          height: 100%;
+          max-height: 50vh;
+        }
+      }
+
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, auto);
+      column-gap: 1rem;
+      row-gap: 1rem;
+      grid-template-areas:
+        "card   card"
+        "to-top to-bottom"
+      ;
+
+      .control {
+        display: flex;
+
+        label {
+          width: var(--form-btn-width);
+          color: var(--modal-picker-color);
+          background-color: var(--modal-picker-bg);
+          border-color: var(--modal-picker-border);
+        }
+
+        input[type="radio"] {
+          display: none;
+
+          &:checked+label {
+            border-color: var(--modal-picker-checked-border);
+          }
+        }
+      }
+
+      img {
+        grid-area: card;
+        max-height: 50vh;
+        max-width: calc(100vw - 1rem);
+        border-radius: var(--card-radius);
+      }
+
+      .to-top {
+        grid-area: to-top;
+        justify-content: flex-end;
+      }
+      .to-bottom {
+        grid-area: to-bottom;
+        justify-content: flex-start;
+      }
+    }
+  }
+
+  .confirm {
+    grid-area: confirm;
+    justify-content: flex-start;
   }
 }
 </style>
