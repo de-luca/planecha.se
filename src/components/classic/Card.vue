@@ -56,8 +56,7 @@ export default class Card extends mixins(Imgable).with(Props) {
 }
 
 img {
-  width: 100%;
-  max-width: 974px;
+  max-height: calc(100vh - 4rem - (3 * 1rem));
   filter: drop-shadow(1px 1px 1px #585858);
   border-radius: var(--card-radius);
 
@@ -69,17 +68,19 @@ img {
 .counters {
   position: absolute;
   right: 0;
-  top: calc(-40px - .5rem);
-  z-index: 2;
+  top: calc(-25px - .5rem);
+  z-index: 421;
 
   .tag {
+    height: 1.75rem;
+
     &.minus, &.plus {
       cursor: pointer;
-      width: 3rem;
+      width: 2rem;
     }
 
     &.value {
-      width: 4rem;
+      width: 3rem;
     }
   }
 }

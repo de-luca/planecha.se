@@ -1,6 +1,13 @@
 <template>
   <div class="board">
 
+    <!-- <div id="landscape-guard">
+      <h1 class="title">
+        Ya might wanna turn that thing sideways, Mate!
+      </h1>
+      <fa icon="mobile" size="4x" fixed-width spin></fa>
+    </div> -->
+
     <div class="nav">
       <div class="brand" @click="thaNav">
         <div title="F">⟁</div>
@@ -163,5 +170,32 @@ export default class Board extends Vue {
   bottom: 1rem;
   right: 1rem;
   width: 30rem;
+}
+
+#landscape-guard {
+  @media screen and (max-width: 480px) and (orientation: portrait) {
+    & {
+      display: flex;
+    }
+  }
+
+  display: none;
+  background-color: rgba(10, 10, 10, .95);
+  z-index: 4269;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+
+  .title {
+    text-align: center;
+    padding: 0 1rem;
+  }
 }
 </style>

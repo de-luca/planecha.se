@@ -169,17 +169,32 @@ export default class ClassicMap extends Vue {
 
 <style lang="scss" scoped>
 .map {
+
+  @media screen and (max-width: 810px) and (orientation: portrait) {
+    grid-template-rows: 8rem auto 2.5rem;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "controls"
+      "active"
+      "feed"
+    ;
+  }
+
+  @media screen and (max-width: 800px) and (orientation: landscape) {
+    grid-template-columns: 1fr 1fr 15rem;
+  }
+
   display: grid;
   grid-template-columns: 1fr 1fr 22rem;
-  grid-template-rows: 8rem auto 3rem;
-  column-gap: 3rem;
+  grid-template-rows: 8rem auto auto;
+  column-gap: 1rem;
   row-gap: .5rem;
   grid-template-areas:
     "active active controls "
     "active active .        "
     "active active feed     "
   ;
-  height: 100%;
+  height: calc(100vh - 3rem - (3 * 1rem));
 }
 
 .active {
