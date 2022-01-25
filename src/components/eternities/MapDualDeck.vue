@@ -20,7 +20,9 @@
     <component :is="btnComponent" />
   </div>
 
-  <feed class="feed" :defaultShow="false" />
+  <div class="feed">
+    <feed :defaultShow="false" />
+  </div>
 
   <tile-details
     v-if="displayedTile"
@@ -194,22 +196,20 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
 }
 
 .map {
+  @media (max-aspect-ratio: 85/61) {
+    & {
+      grid-template-columns: repeat(7, calc( ((100vw - 2rem) - (6 * 1rem)) / 7) );
+    }
+  }
   @media (min-aspect-ratio: 85/61) {
     & {
       grid-template-columns: repeat(7, calc( (((100vw - 2rem) - (6 * 1rem)) / (85 / 61)) / 7) );
     }
   }
 
-  @media (max-aspect-ratio: 1/1) {
-    & {
-      grid-template-rows: repeat(7, calc( (((100vw - 6rem) - (6 * 1rem)) / (85 / 61)) / 7) );
-    }
-  }
-
   position: relative;
   display: grid;
-  grid-template-rows: repeat(7, calc( ((100vh - 6rem) - (6 * 1rem)) / 7) );
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(7, calc( ((100vh - 6.5rem) - (6 * 1rem)) / 7) );
   gap: 1rem;
   align-content: center;
 
@@ -246,6 +246,5 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
   right: 0;
 
   width: 22rem;
-  height: 50vh;
 }
 </style>

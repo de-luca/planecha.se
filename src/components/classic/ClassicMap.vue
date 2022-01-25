@@ -23,7 +23,9 @@
       </template>
     </div>
 
-    <feed class="feed" :defaultShow="true" />
+    <div class="feed">
+      <feed :defaultShow="true" />
+    </div>
   </div>
 
   <component
@@ -169,7 +171,7 @@ export default class ClassicMap extends Vue {
 .map {
   display: grid;
   grid-template-columns: 1fr 1fr 22rem;
-  grid-template-rows: 8rem auto 50vh;
+  grid-template-rows: 8rem auto 3rem;
   column-gap: 3rem;
   row-gap: .5rem;
   grid-template-areas:
@@ -226,5 +228,8 @@ export default class ClassicMap extends Vue {
 
 .feed {
   grid-area: feed;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 </style>

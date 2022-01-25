@@ -82,10 +82,11 @@ export default class Feed extends Vue.with(Props) {
 }
 
 .wrapper {
-  height: 100%;
-  width: 100%;
+  position: relative;
   display: flex;
   flex-direction: column;
+  height: 2.5rem;
+  width: 100%;
 }
 
 .status-bar {
@@ -137,8 +138,11 @@ export default class Feed extends Vue.with(Props) {
 }
 
 .logs {
+  position: absolute;
+  bottom: 2.5rem;
+  height: 40vh;
+  width: 100%;
   z-index: 1;
-  height: 100%;
   padding: 0;
   margin: 0;
   border-bottom-left-radius: 0;

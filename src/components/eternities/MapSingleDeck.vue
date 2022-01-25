@@ -20,7 +20,9 @@
     <component :is="btnComponent" />
   </div>
 
-  <feed class="feed" :defaultShow="false" />
+  <div class="feed">
+    <feed :defaultShow="false" />
+  </div>
 
   <tile-details
     v-if="displayedTile"
@@ -143,6 +145,5 @@ export default class EternitiesMapSingleDeck extends mixins(EternitiesMap) {
   right: 0;
 
   width: 22rem;
-  height: 50vh;
 }
 </style>
