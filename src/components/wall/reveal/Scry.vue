@@ -93,20 +93,6 @@ export default class Scry extends mixins(Imgable).with(BaseReveal) {
   width: 100%;
   margin: 0;
 
-  // @media screen and (max-width: 810px) and (orientation: portrait) {
-  //   grid-template-rows: 8rem auto 2.5rem;
-  //   grid-template-columns: 1fr;
-  //   grid-template-areas:
-  //     "controls"
-  //     "active"
-  //     "feed"
-  //   ;
-  // }
-
-  // @media screen and (max-width: 800px) and (orientation: landscape) {
-  //   grid-template-columns: 1fr 1fr 15rem;
-  // }
-
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(3, auto);
