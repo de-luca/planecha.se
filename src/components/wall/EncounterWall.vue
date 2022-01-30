@@ -149,7 +149,11 @@ export default class EncounterWall extends mixins(Imgable).with(Props) {
       color: var(--secondary);
 
       &.one {
-        filter: drop-shadow(5px 5px 5px red) drop-shadow(-5px -5px 5px red);
+        filter:
+          drop-shadow(0 0 5px #DC143C)
+          drop-shadow(0 0 5px #DC143C)
+          drop-shadow(0 0 5px #DC143C)
+        ;
       }
     }
 

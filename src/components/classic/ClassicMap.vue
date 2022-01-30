@@ -24,7 +24,7 @@
     </div>
 
     <div class="feed">
-      <feed :defaultShow="true" />
+      <feed :defaultShow="shouldDisplayFeed" />
     </div>
   </div>
 
@@ -87,6 +87,12 @@ export default class ClassicMap extends Vue {
     eventBus.on(EventType.POOL_OF_BECOMING, (): void => {
       this.store.reveal({ count: 3 });
     });
+  }
+
+  public get shouldDisplayFeed(): boolean {
+    return window.matchMedia(
+      'screen and (min-width: 800px) and (orientation: landscape)'
+    ).matches;
   }
 
   public get active(): Array<ModelCard> {

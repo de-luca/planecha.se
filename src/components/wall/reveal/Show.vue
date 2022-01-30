@@ -139,6 +139,16 @@ export default class Show extends mixins(Imgable).with(BaseReveal) {
   }
 }
 
+@keyframes move-up {
+  0% { transform: translateY(0) }
+  100% { transform: translateY(-2rem) }
+}
+
+@keyframes move-down {
+  0% { transform: translateY(-2rem) }
+  100% { transform: translateY(0) }
+}
+
 .modal-content {
   position: absolute;
   top: 0;
@@ -220,7 +230,7 @@ export default class Show extends mixins(Imgable).with(BaseReveal) {
         }
 
         position: absolute;
-        transform-origin: center 2500px;
+        transform-origin: center calc(1vw * 150);
 
         max-height: 50vh;
         max-width: calc(100vw - 1rem);
@@ -230,12 +240,19 @@ export default class Show extends mixins(Imgable).with(BaseReveal) {
         }
 
         img {
+          @media screen and (max-width: 800px) and (orientation: portrait) {
+            max-width: 100%;
+          }
+
           height: 100%;
-          max-height: 50vh;
+          max-height: 40vh;
+          max-width: 30vw;
           border-radius: var(--card-radius);
 
+          animation: move-down 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+
           &:hover {
-            // animation: scale-center 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+            animation: move-up 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
           }
         }
       }

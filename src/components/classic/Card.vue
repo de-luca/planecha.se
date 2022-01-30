@@ -2,9 +2,15 @@
   <div v-if="!hidden" class="card-container">
 
     <div v-if="hasCounters" class="counters tags has-addons">
-      <span class="tag is-primary is-large minus" @click="update(-1)">-</span>
-      <span class="tag is-primary is-large value">{{ card.counter.value }}</span>
-      <span class="tag is-primary is-large plus" @click="update(1)">+</span>
+      <span class="tag is-primary is-medium minus" @click="update(-1)">
+        <fa icon="minus" fixed-width />
+      </span>
+      <span class="tag is-primary is-medium value">
+        {{ card.counter.value }}
+      </span>
+      <span class="tag is-primary is-medium plus" @click="update(1)">
+        <fa icon="plus" fixed-width />
+      </span>
     </div>
 
     <img :class="{ phenomenon: isPhenomenon }" :src="imgSrc">
@@ -61,26 +67,25 @@ img {
   border-radius: var(--card-radius);
 
   &.phenomenon {
-    filter: drop-shadow(5px 5px 5px red) drop-shadow(-5px -5px 5px red);
+    filter:
+      drop-shadow(0 0 5px #DC143C)
+      drop-shadow(0 0 5px #DC143C)
+      drop-shadow(0 0 5px #DC143C)
+    ;
   }
 }
 
 .counters {
   position: absolute;
   right: 0;
-  top: calc(-25px - .5rem);
+  top: calc(-25px - 1rem);
   z-index: 421;
 
   .tag {
-    height: 1.75rem;
+    font-weight: bolder;
 
     &.minus, &.plus {
       cursor: pointer;
-      width: 2rem;
-    }
-
-    &.value {
-      width: 3rem;
     }
   }
 }

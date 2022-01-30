@@ -51,8 +51,12 @@ export default class PhenomenonWall extends mixins(Imgable).with(Props) {
 
   img {
     height: 65%;
-    filter: drop-shadow(5px 5px 5px red) drop-shadow(-5px -5px 5px red);
     border-radius: 3.5% / 4.7%;
+    filter:
+      drop-shadow(0 0 5px #DC143C)
+      drop-shadow(0 0 5px #DC143C)
+      drop-shadow(0 0 5px #DC143C)
+    ;
   }
 
   .planeswalk-btn {
