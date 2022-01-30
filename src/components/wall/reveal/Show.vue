@@ -139,15 +139,6 @@ export default class Show extends mixins(Imgable).with(BaseReveal) {
   }
 }
 
-@keyframes scale-center {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1.5);
-  }
-}
-
 .modal-content {
   position: absolute;
   top: 0;

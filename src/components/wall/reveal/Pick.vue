@@ -3,11 +3,13 @@
     <div class="modal-background"></div>
     <div class="modal-content">
 
-      <p class="source"><em><b>{{ config.mateName }}</b> encountered</em></p>
-      <h1 class="title" v-if="config.title" v-html="config.title"></h1>
-      <h2 class="subtitle" v-if="config.subTitle" v-html="config.subTitle"></h2>
+      <div class="header">
+        <p class="source"><em><b>{{ config.mateName }}</b> encountered</em></p>
+        <h1 class="title" v-if="config.title" v-html="config.title"></h1>
+        <h2 class="subtitle" v-if="config.subTitle" v-html="config.subTitle"></h2>
+      </div>
 
-      <div v-if="revealed.others.length > 0" class="tabs is-centered is-medium">
+      <div class="tabs is-centered is-medium">
         <ul>
           <li :class="{ 'is-active': activeTab === 'relevant' }">
             <a @click="activeTab = 'relevant'">Relevant Cards ({{ revealed.relevant.length }})</a>
@@ -18,38 +20,45 @@
         </ul>
       </div>
 
-      <div class="relevant" v-if="activeTab === 'relevant'">
-        <template v-for="(c, index) in revealed.relevant" :key="c.id">
-          <div
-            class="card-wrapper"
-            :style="{ transform: cardAngle(index, revealed.relevant.length) }"
-          >
-            <label>
-              <input type="radio" :value="c" v-model="selected">
+      <div class="revealed">
+        <div class="relevant" v-if="activeTab === 'relevant'">
+          <template v-for="(c, index) in revealed.relevant" :key="c.id">
+            <div
+              class="card-wrapper"
+              :style="cardTransform(index, revealed.relevant.length)"
+            >
+              <label>
+                <input type="radio" :value="c" v-model="selected">
+                <img :src="buildImgSrc(c)">
+              </label>
+            </div>
+          </template>
+        </div>
+
+        <div class="others" v-if="activeTab === 'others' && revealed.others.length > 0">
+          <template v-for="(c, index) in revealed.others" :key="c.id">
+            <div
+              class="card-wrapper"
+              :style="cardTransform(index, revealed.others.length)"
+            >
               <img :src="buildImgSrc(c)">
-            </label>
-          </div>
-        </template>
+            </div>
+          </template>
+        </div>
+        <div class="others" v-if="activeTab === 'others' && revealed.others.length === 0">
+          <em>Such Empty!</em>
+        </div>
       </div>
 
-      <div class="others" v-if="activeTab === 'others'">
-        <template v-for="(c, index) in revealed.others" :key="c.id">
-          <div
-            class="card-wrapper"
-            :style="{ transform: cardAngle(index, revealed.others.length) }"
-          >
-            <img :src="buildImgSrc(c)">
-          </div>
-        </template>
+      <div class="confirm">
+        <button
+          class="button is-secondary is-medium"
+          :disabled="selected === null"
+          @click="confirm"
+        >
+          Confirm choice
+        </button>
       </div>
-
-      <button
-        class="button is-secondary is-medium"
-        :disabled="selected === null"
-        @click="confirm"
-      >
-        Confirm choice
-      </button>
     </div>
   </div>
 </template>
@@ -68,11 +77,49 @@ export default class Pick extends mixins(Imgable).with(BaseReveal) {
 
   private selected: Card | null = null;
   private activeTab: string = 'relevant';
+  private isVertical: Boolean = false;
 
-  public cardAngle(i: number, total: number): string {
+  private mediaQuery: MediaQueryList;
+
+  public created(): void {
+    this.mediaQuery = window.matchMedia(
+      'screen and (max-width: 800px) and (orientation: portrait)'
+    );
+    this.isVertical = this.mediaQuery.matches;
+    this.mediaQuery.addEventListener('change', this.computeVerticality);
+  }
+
+  public unmounted(): void {
+    this.mediaQuery.removeEventListener('change', this.computeVerticality);
+  }
+
+  private computeVerticality(ev: MediaQueryListEvent): void {
+    this.isVertical = ev.matches;
+  }
+
+  public cardTransform(i: number, total: number): Record<string, string> {
+    if (this.isVertical) {
+      return this.cardStack(i);
+    }
+
+    return this.cardAngle(i, total);
+  }
+
+  private cardStack(i: number): Record<string, string> {
+    if (i === 0) {
+      return {};
+    }
+
+    return {
+      position: 'absolute',
+      top: `${i * 2}rem`,
+    };
+  }
+
+  private cardAngle(i: number, total: number): Record<string, string> {
     const angle = (Pick.fanAngle * i) - ((Pick.fanAngle * (total - 1)) / 2);
 
-    return `rotate(${angle.toFixed(2)}deg)`;
+    return { transform: `rotate(${angle.toFixed(2)}deg)` };
   }
 
   public confirm(): void {
@@ -93,72 +140,162 @@ export default class Pick extends mixins(Imgable).with(BaseReveal) {
 </script>
 
 <style lang="scss" scoped>
-@keyframes scale-center {
-  0% {
-    transform: scale(1);
+@mixin small-header {
+  .source {
+    margin-bottom: -.5rem;
   }
-  100% {
-    transform: scale(1.5);
+  .title {
+    margin-bottom: 0;
   }
+  .subtitle {
+    margin-top: -1rem;
+  }
+}
+
+@keyframes move-up {
+  0% { transform: translateY(0) }
+  100% { transform: translateY(-2rem) }
+}
+
+@keyframes move-down {
+  0% { transform: translateY(-2rem) }
+  100% { transform: translateY(0) }
 }
 
 .modal-content {
   position: absolute;
-  height: 100%;
-  width: 100%;
   top: 0;
   left: 0;
+  max-height: 100vh;
+  height: 100%;
+  width: 100%;
+  margin: 0;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: .5rem;
-}
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 3.5rem 3fr 1fr;
+  column-gap: 1rem;
+  row-gap: 1rem;
+  grid-template-areas:
+    "header"
+    "tabs"
+    "revealed"
+    "confirm"
+  ;
 
-.source {
-  opacity: .5;
-}
+  > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+  }
 
-.relevant, .others {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: .5rem;
-
-  height: 50%;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-
-  .card-wrapper {
-    position: absolute;
-    transform-origin: center 2500px;
-
-    &:hover {
-      z-index: 2;
+  .header {
+    @media screen and (max-width: 800px) and (orientation: portrait) {
+      @include small-header;
+    }
+    @media screen and (max-height: 450px) and (orientation: landscape) {
+      @include small-header;
     }
 
-    img {
-      height: 20rem;
-      border-radius: var(--card-radius);
+    grid-area: header;
+    justify-content: flex-end;
+    text-align: center;
 
-      &:hover {
-        animation: scale-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+    .source {
+      opacity: .5;
+    }
+  }
+
+  .tabs {
+    grid-area: tabs;
+    margin-bottom: 0;
+
+    ul {
+      border: none;
+    }
+  }
+
+  .revealed {
+    grid-area: revealed;
+    gap: 5rem;
+    position: relative;
+
+    .relevant, .others {
+      @media screen and (max-width: 800px) and (orientation: portrait) {
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: .5rem;
+
+      height: 100%;
+
+      .card-wrapper {
+        @media screen and (max-width: 800px) and (orientation: portrait) {
+          position: unset;
+          transform-origin: unset;
+        }
+
+        position: absolute;
+        transform-origin: center calc(1vw * 150);
+
+        max-height: 50vh;
+        max-width: calc(100vw - 1rem);
+
+        &:hover, &:active {
+          z-index: 2;
+          cursor: pointer;
+        }
+
+        img {
+          @media screen and (max-width: 800px) and (orientation: portrait) {
+            max-width: 100%;
+          }
+
+          height: 100%;
+          max-height: 40vh;
+          max-width: 30vw;
+          border-radius: var(--card-radius);
+
+          animation: move-down 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+
+          &:hover {
+            animation: move-up 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+          }
+        }
+      }
+    }
+
+    .others img {
+      filter: grayscale(1);
+    }
+
+    input[type="radio"] {
+      display: none;
+
+      &:checked+img {
+        filter:
+          drop-shadow(0 0 5px #7DF9FF)
+          drop-shadow(0 0 5px #7DF9FF)
+          drop-shadow(0 0 5px #7DF9FF)
+        ;
       }
     }
   }
-}
 
-.others img {
-  filter: grayscale(1);
-}
+  .confirm {
+    grid-area: confirm;
+    justify-content: center;
 
-input[type="radio"] {
-  display: none;
-
-  &:checked+img {
-    filter: drop-shadow(5px 5px 5px red) drop-shadow(-5px -5px 5px red);
+    button {
+      width: var(--form-btn-width);
+    }
   }
 }
 </style>
