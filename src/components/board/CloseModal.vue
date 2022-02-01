@@ -67,11 +67,14 @@ button {
 }
 
 .modal-content {
+  max-height: 100vh;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: .5rem;
+  margin: 0 auto;
 
   .box {
     text-align: center;
