@@ -161,11 +161,14 @@ export default class DeckBuilder extends Vue.with(Props) {
 
 <style lang="scss" scoped>
 .modal-content {
-  width: 800px;
+  max-width: 800px;
+  max-height: 100vh;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: .5rem;
+  margin: 0 auto;
 
   h1.title {
     text-align: center;
