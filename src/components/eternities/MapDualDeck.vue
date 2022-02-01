@@ -80,8 +80,8 @@ import Feed from '@/components/board/Feed.vue';
 import PhenomenonWall from '@/components/wall/PhenomenonWall.vue';
 import EncounterWall from '@/components/wall/EncounterWall.vue';
 import Pick from '@/components/wall/reveal/Pick.vue';
-import Scry from '@/components/wall/reveal/Scry.vue';
 import Show from '@/components/wall/reveal/Show.vue';
+import Scry from '@/components/wall/reveal/Scry.vue';
 
 
 interface LocalEncounterWallConfig {

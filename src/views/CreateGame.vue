@@ -309,6 +309,7 @@ export default class CreateGame extends Vue {
 
 .main.control {
   display: flex;
+  gap: 1rem;
 
   button {
     @media screen and (max-width: 480px) {

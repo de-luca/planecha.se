@@ -1,0 +1,110 @@
+@use "sass:math";
+
+@import './header';
+@import './tabs';
+@import './modal-content';
+@import './confirm';
+
+@keyframes move-up {
+  0% { transform: translateY(0) }
+  100% { transform: translateY(-2rem) }
+}
+
+@keyframes move-down {
+  0% { transform: translateY(-2rem) }
+  100% { transform: translateY(0) }
+}
+
+.modal-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1.5fr auto 3fr 1fr;
+  row-gap: 1rem;
+  grid-template-areas:
+    "header"
+    "tabs"
+    "revealed"
+    "confirm"
+  ;
+}
+
+.revealed {
+  grid-area: revealed;
+  position: relative;
+  gap: 5rem;
+
+  .relevant, .others {
+    @media screen and (max-width: 800px) and (orientation: portrait) {
+      flex-direction: column;
+      justify-content: flex-start;
+      max-height: 27rem;
+      height: 27rem;
+      
+      &:not(.empty) {
+        margin-right: 0 !important;
+      }
+    }
+
+    &:not(.empty) {
+      margin-right: math.div($card-width, 2);
+    }
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+
+    height: 100%;
+
+    .card-wrapper {
+      @media screen and (max-width: 800px) and (orientation: portrait) {
+        position: unset;
+        transform-origin: unset;
+        width: 100%;
+        min-height: 2rem;
+        max-height: 2rem;
+        height: 2rem;
+      }
+
+      min-width: math.div($card-width, 2);
+      width: math.div($card-width, 2);
+      max-height: 60vh;
+
+      &:hover, &:active {
+        z-index: 2;
+      }
+
+      img {
+        @media screen and (max-width: 800px) and (orientation: portrait) {
+          max-width: calc(100vw - 1rem);
+          animation: none;
+        }
+
+        max-width: $card-width;
+        border-radius: var(--card-radius);
+
+        animation: move-down 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+
+        &:hover {
+          animation: move-up 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+        }
+      }
+    }
+  }
+
+  .others img {
+    filter: grayscale(1);
+  }
+
+  input[type="radio"] {
+    display: none;
+
+    &:checked+img {
+      filter:
+        drop-shadow(0 0 5px #7DF9FF)
+        drop-shadow(0 0 5px #7DF9FF)
+        drop-shadow(0 0 5px #7DF9FF)
+      ;
+    }
+  }
+}

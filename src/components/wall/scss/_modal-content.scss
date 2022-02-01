@@ -1,0 +1,28 @@
+.modal-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-height: 100vh;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1.5fr auto 3fr 1fr;
+  row-gap: 1rem;
+  grid-template-areas:
+    "header"
+    "tabs"
+    "revealed"
+    "confirm"
+  ;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+  }
+}

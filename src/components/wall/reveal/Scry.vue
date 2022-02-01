@@ -4,7 +4,7 @@
     <div class="modal-content">
 
       <div class="header">
-        <p class="source"><em><b>{{ config.mateName }}</b> encountered</em></p>
+        <p class="muted"><em><b>{{ config.mateName }}</b> encountered</em></p>
         <h1 class="title" v-if="config.title" v-html="config.title"></h1>
         <h2 class="subtitle" v-if="config.subTitle" v-html="config.subTitle"></h2>
       </div>
@@ -84,15 +84,11 @@ export default class Scry extends mixins(Imgable).with(BaseReveal) {
 </script>
 
 <style lang="scss" scoped>
-.modal-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  max-height: 100vh;
-  height: 100%;
-  width: 100%;
-  margin: 0;
+@import '../scss/header';
+@import '../scss/modal-content';
+@import '../scss/confirm';
 
+.modal-content {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(3, auto);
@@ -103,130 +99,97 @@ export default class Scry extends mixins(Imgable).with(BaseReveal) {
     "revealed"
     "confirm"
   ;
+}
 
-  > div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: .5rem;
-  }
+.revealed {
+  grid-area: revealed;
 
-  .header {
-    @media screen and (max-height: 450px) and (orientation: landscape) {
-      .source {
-        margin-bottom: -.5rem;
-      }
-      .title {
-        margin-bottom: 0;
-      }
-      .subtitle {
-        margin-top: -1rem;
-      }
-    }
-    grid-area: header;
-    justify-content: flex-end;
-    text-align: center;
-
-    .source {
-      opacity: .5;
-    }
-  }
-
-  .revealed {
-    grid-area: revealed;
-
-    .card-wrapper {
-      @media screen and (max-width: 800px) and (orientation: portrait) {
-        grid-template-rows: repeat(3, auto);
-        grid-template-columns: 1fr;
-        row-gap: .5rem;
-        grid-template-areas:
-          "card"
-          "to-top"
-          "to-bottom"
-        ;
-
-        .to-top {
-          justify-content: center !important;
-        }
-        .to-bottom {
-          justify-content: center !important;
-        }
-      }
-
-      @media screen and (max-height: 450px) and (orientation: landscape) {
-        grid-template-rows: 1fr;
-        grid-template-columns: repeat(3, auto);
-        row-gap: .5rem;
-        grid-template-areas:
-          "to-top card to-bottom"
-        ;
-
-        .control.to-top label {
-          writing-mode: sideways-rl;
-          width: unset !important;
-          height: 100%;
-          max-height: 50vh;
-        }
-        .control.to-bottom label {
-          writing-mode: sideways-lr;
-          width: unset !important;
-          height: 100%;
-          max-height: 50vh;
-        }
-      }
-
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(2, auto);
-      column-gap: 1rem;
-      row-gap: 1rem;
+  .card-wrapper {
+    @media screen and (max-width: 800px) and (orientation: portrait) {
+      grid-template-rows: repeat(3, auto);
+      grid-template-columns: 1fr;
+      row-gap: .5rem;
       grid-template-areas:
-        "card   card"
-        "to-top to-bottom"
+        "card"
+        "to-top"
+        "to-bottom"
       ;
 
-      .control {
-        display: flex;
-
-        label {
-          width: var(--form-btn-width);
-          color: var(--modal-picker-color);
-          background-color: var(--modal-picker-bg);
-          border-color: var(--modal-picker-border);
-        }
-
-        input[type="radio"] {
-          display: none;
-
-          &:checked+label {
-            border-color: var(--modal-picker-checked-border);
-          }
-        }
-      }
-
-      img {
-        grid-area: card;
-        max-height: 50vh;
-        max-width: calc(100vw - 1rem);
-        border-radius: var(--card-radius);
-      }
-
       .to-top {
-        grid-area: to-top;
-        justify-content: flex-end;
+        justify-content: center !important;
       }
       .to-bottom {
-        grid-area: to-bottom;
-        justify-content: flex-start;
+        justify-content: center !important;
       }
     }
-  }
 
-  .confirm {
-    grid-area: confirm;
-    justify-content: flex-start;
+    @media screen and (max-height: 450px) and (orientation: landscape) {
+      grid-template-rows: 1fr;
+      grid-template-columns: repeat(3, auto);
+      row-gap: .5rem;
+      grid-template-areas:
+        "to-top card to-bottom"
+      ;
+
+      .control.to-top label {
+        writing-mode: sideways-rl;
+        width: unset !important;
+        height: 100%;
+        max-height: 50vh;
+      }
+      .control.to-bottom label {
+        writing-mode: sideways-lr;
+        width: unset !important;
+        height: 100%;
+        max-height: 50vh;
+      }
+    }
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, auto);
+    column-gap: 1rem;
+    row-gap: 1rem;
+    grid-template-areas:
+      "card   card"
+      "to-top to-bottom"
+    ;
+
+    .control {
+      display: flex;
+
+      label {
+        width: var(--form-btn-width);
+        color: var(--modal-picker-color);
+        background-color: var(--modal-picker-bg);
+        border-color: var(--modal-picker-border);
+      }
+
+      input[type="radio"] {
+        display: none;
+
+        &:checked+label {
+          border-color: var(--modal-picker-checked-border);
+        }
+      }
+    }
+
+    img {
+      grid-area: card;
+      max-height: 50vh;
+      max-width: calc(100vw - 1rem);
+      border-radius: var(--card-radius);
+    }
+
+    .to-top {
+      grid-area: to-top;
+      justify-content: flex-end;
+    }
+
+    .to-bottom {
+      grid-area: to-bottom;
+      justify-content: flex-start;
+    }
   }
 }
 </style>

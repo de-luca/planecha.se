@@ -91,7 +91,7 @@ export default class ClassicMap extends Vue {
 
   public get shouldDisplayFeed(): boolean {
     return window.matchMedia(
-      'screen and (min-width: 800px) and (orientation: landscape)'
+      'screen and (min-width: 800px) and (orientation: landscape)',
     ).matches;
   }
 
@@ -154,7 +154,7 @@ export default class ClassicMap extends Vue {
     this.store.planeswalk();
   }
 
-  public customPlaneswalk(choices: PickedLeft): void {
+  private customPlaneswalk(choices: PickedLeft): void {
     this.store.customPlaneswalk({
       planes: choices.picked as Array<Plane>,
     });
@@ -162,7 +162,11 @@ export default class ClassicMap extends Vue {
     this.putBack({ picked: [], left: choices.left });
   }
 
-  public putBack(choices: PickedLeft): void {
+  private multiChaos(cards: Array<Card>): void {
+
+  }
+
+  private putBack(choices: PickedLeft): void {
     const payload = {
       top: choices.picked,
       bottom: _shuffle(choices.left),

@@ -2,8 +2,8 @@ import { Component } from 'vue';
 import { RevealerMode } from '@/model/wall';
 
 import Pick from './Pick.vue';
-import Scry from './Scry.vue';
 import Show from './Show.vue';
+import Scry from './Scry.vue';
 
 export class RevealFactory {
   private static readonly map: Record<RevealerMode, Component> = {
@@ -16,4 +16,3 @@ export class RevealFactory {
     return RevealFactory.map[mode];
   }
 }
-
