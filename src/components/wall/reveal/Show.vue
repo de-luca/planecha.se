@@ -48,14 +48,10 @@
 </template>
 
 <script lang="ts">
-import draggable from 'vuedraggable';
 import { mixins, Options } from 'vue-class-component';
 import { Imgable } from '@/components/Imgable';
 import { BaseReveal } from './BaseReveal';
 
-@Options({
-  components: { draggable },
-})
 export default class Show extends mixins(Imgable).with(BaseReveal) {
   private activeTab: string = 'relevant';
 
