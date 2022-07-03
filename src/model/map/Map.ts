@@ -127,7 +127,6 @@ export abstract class Map implements MapInterface {
     this.hasStarted = state.hasStarted;
     this.destination = state.destination;
     this.walls = new WallStates(state.wallStates);
-    this.active.forEach(c => c.enter(this.walls));
     this.deck = Container.get(DeckProvider).getDeckFromExport(state.deck);
     this.active = Container.get(DeckProvider).getPileWithState(state.active);
     this.revealed = state.revealed === undefined
