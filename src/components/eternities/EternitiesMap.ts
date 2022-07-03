@@ -61,7 +61,7 @@ export class EternitiesMap extends Vue {
       component: RevealFactory.get(revealer.component),
       config: {
         ...revealer,
-        mateName: this.store.getPlayerName(revealer.initiator),
+        mateName: revealer.initiator,
       },
     };
 
@@ -97,7 +97,7 @@ export class EternitiesMap extends Vue {
       return {
         phenomenon: this.store.map.active[0] as Phenomenon,
         config: {
-          mateName: this.store.getPlayerName(wall?.initiator),
+          mateName: wall?.initiator,
         },
       };
     }
@@ -142,11 +142,11 @@ export class EternitiesMap extends Vue {
   }
 
   public resolve(): void {
-    this.store.resolve({});
+    this.store.resolve();
   }
 
   public customPlaneswalk(choices: PickedLeft): void {
-    this.store.customPlaneswalk({
+    this.store.planeswalk({
       planes: choices.picked as Array<Plane>,
     });
 

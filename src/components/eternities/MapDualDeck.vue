@@ -117,7 +117,7 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
     return {
       ...wall,
       config: {
-        mateName: this.store.getPlayerName(wall?.initiator),
+        mateName: wall.initiator,
       },
     };
   }

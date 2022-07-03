@@ -4,16 +4,20 @@ import { defineStore } from 'pinia';
 import {
   BuildProps,
   EmptyMap,
-  Exported,
   MapFactory,
   MapInterface,
-  MapType,
   Patch,
+  PlaneswalkInput,
+  ResolveRevealInput,
+  RevealUntilInput,
+  UpdateCounterInput,
 } from '@/model/map';
 import { eventBus } from '@/services/EventBus';
 import * as ActPayload from '@/model/net/payloads';
 import { useVersion } from './version';
 import { Bridge, BridgeInterface } from '@/model/net/Bridge';
+import { ApplyInput } from '@/model/wall';
+import { DualDeck, EncounterInput } from '@/model/map/eternities';
 
 export interface State {
   online: boolean;
@@ -53,7 +57,7 @@ export const useMain = defineStore('main', {
   state: getState,
 
   getters: {
-    yourName(state: State): string {
+    playerName(state: State): string {
       return state.bridge?.getPlayerName() ?? 'You';
     },
     gameId(state: State): string {
@@ -62,7 +66,7 @@ export const useMain = defineStore('main', {
   },
 
   actions: {
-    getPlayerName(id?: string): string {
+    getMateName(id?: string): string {
       return id
         ? this.mates.get(id) ?? 'Fblthp'
         : 'You';
@@ -107,9 +111,9 @@ export const useMain = defineStore('main', {
       this.bridge?.sync(patch);
     },
 
-    apply(payload: Patch): void {
-      this.map.apply(payload);
-      useVersion().applyPatch(payload);
+    apply(patch: Patch): void {
+      this.map.apply(patch);
+      useVersion().applyPatch(patch);
     },
 
     undo(payload: Payload.Undo): void {
@@ -118,52 +122,37 @@ export const useMain = defineStore('main', {
       // requestIfOnline(this.$state, 'requestUndo', payload);
     },
 
-    // TODO: REMOVE
-    shuffle(payload: Exported): void {
-      // this.map.applyShuffle(payload);
-    },
-
-    startGame(payload: Payload.Requestable = {}): void {
+    startGame(): void {
       this.map.hasStarted = true;
-      // requestIfOnline(this.$state, 'requestStartGame', payload);
     },
 
-    chaos(payload: Payload.Requestable = {}): void {
-      this.map.chaos(payload.initiator);
-      // requestIfOnline(this.$state, 'requestChaos', payload);
+    chaos(): void {
+      this.map.chaos({ initiator: this.playerName });
     },
-    planeswalk(payload: Payload.Planeswalk = {}): void {
-      this.map.planeswalk(payload.coords, payload.initiator);
-      // requestIfOnline(this.$state, 'requestPlaneswalk', payload);
+    planeswalk(payload: Omit<PlaneswalkInput, 'initiator'>): void {
+      this.map.planeswalk({ ...payload, initiator: this.playerName });
     },
-    // TODO: Merge with planeswalk
-    customPlaneswalk(payload: Payload.CustomPlaneswalk) {
-      this.map.customPlaneswalk(payload.planes);
-      // requestIfOnline(this.$state, 'requestCustomPlaneswalk', payload);
+    resolve() {
+      this.map.resolve({ initiator: this.playerName });
     },
-    encounter(payload: Payload.Encounter) {
-      this.map.encounter(payload.coords, payload.initiator);
-      // requestIfOnline(this.$state, 'requestEncounter', payload);
+    updateCounters(payload: UpdateCounterInput) {
+      this.map.updateCounter(payload);
     },
-    resolve(payload: Payload.Requestable = {}) {
-      this.map.resolve(payload.initiator);
-      // requestIfOnline(this.$state, 'requestResolve', payload);
+    reveal(payload: RevealUntilInput) {
+      this.map.revealUntil(payload);
     },
-    updateCounters(payload: Payload.Counters) {
-      this.map.updateCounter(payload.planeId, payload.change);
-      // requestIfOnline(this.$state, 'requestCounterUpdate', payload);
+    resolveReveal(payload: ResolveRevealInput) {
+      this.map.resolveReveal(payload);
     },
-    updateWallState(payload: Payload.UpdateWallState) {
-      this.map.walls.apply(payload.key, payload.op, payload.val);
-      // requestIfOnline(this.$state, 'requestUpdateWallState', payload);
+
+    updateWallState(payload: ApplyInput) {
+      this.map.walls.apply(payload);
     },
-    reveal(payload: Payload.Reveal) {
-      this.map.revealUntil(payload.count, payload.type);
-      // requestIfOnline(this.$state, 'requestReveal', payload);
-    },
-    resolveReveal(payload: Payload.ResolveReveal) {
-      this.map.resolveReveal(payload.top, payload.bottom);
-      // requestIfOnline(this.$state, 'requestResolveReveal', payload);
+
+    encounter(payload: Omit<EncounterInput, 'initiator'>) {
+      if (this.map instanceof DualDeck) {
+        this.map.encounter({ ...payload, initiator: this.playerName });
+      }
     },
   },
 });

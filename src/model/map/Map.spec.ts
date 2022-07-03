@@ -49,7 +49,7 @@ describe('Map.chaos', () => {
       walls: new WallStates(),
     });
     map.active.forEach(card => card.chaos = vi.fn());
-    map.chaos();
+    map.chaos({ initiator: 'foo' });
     map.active.forEach(card => expect(card.chaos).toHaveBeenCalled());
   });
 });
@@ -66,7 +66,7 @@ describe('Map.updateCounter', () => {
         card.updateCounter = vi.fn();
       }
     });
-    map.updateCounter(map.active[0].id, 1);
+    map.updateCounter({ planeId: map.active[0].id, change: 1 });
     expect((map.active[0] as Plane).updateCounter).toHaveBeenCalled();
   });
 });
@@ -77,7 +77,7 @@ describe('Map.revealUntil', () => {
       deck: Container.get(DeckProvider).getDeck(),
       walls: new WallStates(),
     });
-    map.revealUntil(2);
+    map.revealUntil({ count: 2 });
     expect(map.revealed?.relevant).toHaveLength(2);
     expect(map.revealed?.others).toHaveLength(0);
     for (const card of map.revealed?.relevant ?? []) {
@@ -95,32 +95,17 @@ describe('Map.resolveReveal', () => {
 
     const putOnTop = vi.spyOn(map['deck'], 'putOnTop');
     const putOnTheBottom = vi.spyOn(map['deck'], 'putOnTheBottom');
-    const clearRevealed = vi.spyOn(map, 'clearRevealed');
     eventBus.emit = vi.fn();
 
-    map.revealUntil(2);
+    map.revealUntil({ count: 2 });
     const top = map.revealed?.relevant[0] as Card;
     const bottom = map.revealed?.relevant[1] as Card;
-    map.resolveReveal([ top ], [ bottom ]);
+    map.resolveReveal({top: [top], bottom: [bottom]});
     expect(putOnTop).toHaveBeenCalled();
     expect(putOnTheBottom).toHaveBeenCalled();
-    expect(clearRevealed).toHaveBeenCalled();
 
     expect(map['deck']['cards'][0]).toEqual(top);
     expect(map['deck']['cards'][map.remaining - 1]).toEqual(bottom);
-    expect(map.revealed).toBeUndefined();
-  });
-});
-
-describe('Map.clearRevealed', () => {
-  it('sets revealed to nothing', () => {
-    const map = new TestMap({
-      deck: Container.get(DeckProvider).getDeck(),
-      walls: new WallStates(),
-    });
-    map.revealUntil(5);
-    expect(map.revealed).not.toBeUndefined();
-    map.clearRevealed();
     expect(map.revealed).toBeUndefined();
   });
 });

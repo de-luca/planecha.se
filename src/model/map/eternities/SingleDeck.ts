@@ -1,9 +1,12 @@
 import { Phenomenon, Plane } from '@/model/card';
-import { EternitiesMap, EternitiesMapProps } from './EternitiesMap';
+import { EternitiesMap, EternitiesMapProps, PlaneswalkInput } from './EternitiesMap';
 import {
+  CustomEternitiesPlaneswalkInput,
   EternitiesMapSpecs,
   EternitiesMapSubType,
+  EternitiesPlaneswalkInput,
   MapType,
+  ResolveInput,
 } from '../MapInterface';
 import { StateKey } from '@/model/wall';
 import { Tile, TileStatus } from '../Tile';
@@ -23,21 +26,18 @@ export class SingleDeck extends EternitiesMap {
     };
   }
 
-  private encounterPhenomenon(
-    card: Phenomenon,
-    coords: Coordinates,
-    initiator?: string,
-  ): void {
-    this.active = [card];
-    this.destination = coords;
-    this.active.forEach(c => c.enter(this.walls, initiator));
-    this.walls.set(StateKey.PHENOMENON_WALL, { initiator });
+  public planeswalk(input: PlaneswalkInput): void {
+    if ('planes' in input) {
+      return this.customPlaneswalk(input);
+    } else {
+      return this.simplePlaneswalk(input);
+    }
   }
 
-  public planeswalk(coords: Coordinates, initiator?: string): boolean {
+  private simplePlaneswalk(input: EternitiesPlaneswalkInput): void {
     let shuffled = false;
-    const xOffset = coords.x;
-    const yOffset = coords.y;
+    const xOffset = input.coords.x;
+    const yOffset = input.coords.y;
 
     // The active tile is at the center
     const activeTile = this.tiles.find((t) => t.coords.x === SingleDeck.center.x
@@ -64,10 +64,10 @@ export class SingleDeck extends EternitiesMap {
         this.encounterPhenomenon(
           drawn.card,
           { x: xOffset, y: yOffset },
-          initiator,
+          input.initiator,
         );
         // Return imediately
-        return shuffled;
+        return;
       }
 
       // This is a Plane
@@ -111,10 +111,10 @@ export class SingleDeck extends EternitiesMap {
               this.encounterPhenomenon(
                 drawn.card,
                 { x: xOffset, y: yOffset },
-                initiator,
+                input.initiator,
               );
 
-              return shuffled;
+              return;
             }
 
             this.tiles.push(new Tile(
@@ -144,12 +144,10 @@ export class SingleDeck extends EternitiesMap {
 
     this.destination = undefined;
 
-    this.active.forEach(c => c.enter(this.walls, initiator));
-
-    return shuffled;
+    this.active.forEach(c => c.enter(this.walls, input.initiator));
   }
 
-  public customPlaneswalk(planes: Array<Plane>): void {
+  private customPlaneswalk(input: CustomEternitiesPlaneswalkInput): void {
     const xOffset = (this.destination as Coordinates).x;
     const yOffset = (this.destination as Coordinates).y;
 
@@ -158,23 +156,34 @@ export class SingleDeck extends EternitiesMap {
     );
 
     if (destinationTile) {
-      destinationTile.plane = planes;
+      destinationTile.plane = input.planes;
     } else {
       destinationTile = new Tile(
         { x: xOffset, y: yOffset },
         TileStatus.ACTIVE,
-        planes,
+        input.planes,
       );
       this.tiles.push(destinationTile);
     }
   }
 
-  public resolve(initiator?: string): boolean {
+  private encounterPhenomenon(
+    card: Phenomenon,
+    coords: Coordinates,
+    initiator: string,
+  ): void {
+    this.active = [card];
+    this.destination = coords;
+    this.active.forEach(c => c.enter(this.walls, initiator));
+    this.walls.set(StateKey.PHENOMENON_WALL, { initiator });
+  }
+
+  public resolve(input: ResolveInput): void {
     this.deck.setPlayed(...this.active);
     this.walls.delete(StateKey.PHENOMENON_WALL);
-
-    const shuffled = this.planeswalk(this.destination as Coordinates, initiator);
-
-    return shuffled;
+    this.planeswalk({
+      ...input,
+      coords: this.destination as Coordinates,
+    });
   }
 }

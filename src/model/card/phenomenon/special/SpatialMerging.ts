@@ -16,7 +16,7 @@ import {
  * bottom of your planar deck in any order.
  */
 export class SpatialMerging extends Phenomenon {
-  public enter(walls: WallStates, initiator?: string): void {
+  public enter(walls: WallStates, initiator: string): void {
     const revealer: RevealerWallState = {
       title: this.name,
       subTitle: 'You\'ll planeswalk to these two planes simultaneously.',

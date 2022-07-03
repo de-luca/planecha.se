@@ -123,7 +123,7 @@ export default class ClassicMap extends Vue {
       component: RevealFactory.get(revealer.component),
       config: {
         ...revealer,
-        mateName: this.store.getPlayerName(revealer.initiator),
+        mateName: revealer.initiator,
       },
     };
 
@@ -151,11 +151,11 @@ export default class ClassicMap extends Vue {
   }
 
   public planeswalk(): void {
-    this.store.planeswalk();
+    this.store.planeswalk({});
   }
 
   private customPlaneswalk(choices: PickedLeft): void {
-    this.store.customPlaneswalk({
+    this.store.planeswalk({
       planes: choices.picked as Array<Plane>,
     });
 

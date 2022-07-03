@@ -7,12 +7,18 @@ import { Deck } from '../deck/Deck';
 import { WallStates, StateKey } from '../wall';
 import { Tile } from './Tile';
 import {
+  ChaosInput,
   Exported,
   MapSpecs,
   MapInterface,
   Revealed,
   EncounterTriggers,
   Patch,
+  PlaneswalkInput,
+  ResolveInput,
+  UpdateCounterInput,
+  RevealUntilInput,
+  ResolveRevealInput,
 } from './MapInterface';
 
 
@@ -60,38 +66,35 @@ export abstract class Map implements MapInterface {
     return this.deck.played;
   }
 
-  public chaos(initiator?: string): void {
-    this.active.forEach(c => c.chaos(this.walls, initiator));
+  public chaos(input: ChaosInput): void {
+    this.active.forEach(c => c.chaos(this.walls, input.initiator));
   }
 
-  public abstract planeswalk(coords?: Coordinates, initiator?: string): boolean;
-  public abstract customPlaneswalk(planes: Array<Plane>, coords?: Coordinates): void;
+  public abstract planeswalk(input: PlaneswalkInput): void;
 
-  public abstract resolve(initiator?: string): boolean;
+  public abstract resolve(input: ResolveInput): void;
 
-  public encounter(_coords: Coordinates, _initiator?: string): boolean {
-    throw new Error(`Not compatible with ${this.constructor.name} class.`);
+  public updateCounter(input: UpdateCounterInput): void {
+    (this.active.find(c => c.id === input.planeId) as Plane)
+      .updateCounter(input.change);
   }
 
-  public updateCounter(planeId: string, change: number): void {
-    (this.active.find(c => c.id === planeId) as Plane).updateCounter(change);
-  }
-
-  public revealUntil(count: number, type?: typeof Card): boolean {
-    const { relevant, others, shuffled } = this.deck.revealUntil(count, type);
+  public revealUntil(input: RevealUntilInput): void {
+    const { relevant, others } = this.deck.revealUntil(
+      input.count,
+      input.type,
+    );
     this.revealed = { relevant, others };
-    return shuffled;
   }
 
-  public resolveReveal(top: Card[], bottom: Card[]): void {
-    this.deck.putOnTop(top);
-    this.deck.putOnTheBottom(bottom);
-
+  public resolveReveal(input: ResolveRevealInput): void {
+    this.deck.putOnTop(input.top);
+    this.deck.putOnTheBottom(input.bottom);
     this.clearRevealed();
     this.walls.delete(StateKey.REVEALER);
   }
 
-  public clearRevealed(): void {
+  private clearRevealed(): void {
     this.revealed = undefined;
   }
 

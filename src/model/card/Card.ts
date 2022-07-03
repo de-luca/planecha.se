@@ -24,8 +24,8 @@ export abstract class Card implements CardInterface {
   }
   public abstract get type(): string;
 
-  public abstract chaos(walls: WallStates, initiator?: string): void;
-  public abstract enter(walls: WallStates, initiator?: string): void;
+  public abstract chaos(walls: WallStates, initiator: string): void;
+  public abstract enter(walls: WallStates, initiator: string): void;
   public abstract leave(): void;
 
   public export(): ExportedCard {

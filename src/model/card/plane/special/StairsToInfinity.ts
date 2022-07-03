@@ -17,7 +17,7 @@ import {
  * You may put it on the bottom of your planar deck.
  */
 export class StairsToInfinity extends Plane {
-  public chaos(walls: WallStates, initiator?: string): void {
+  public chaos(walls: WallStates, initiator: string): void {
     const revealer: RevealerWallState = {
       title: this.name,
       subTitle: 'Chose to put this card on top or at the bottom the planar deck.',
@@ -28,9 +28,6 @@ export class StairsToInfinity extends Plane {
     };
 
     walls.set(StateKey.REVEALER, revealer);
-
-    if (!initiator) {
-      eventBus.emit(EventType.STAIRS_TO_INFINITY);
-    }
+    eventBus.emit(EventType.STAIRS_TO_INFINITY);
   }
 }

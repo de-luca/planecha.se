@@ -6,7 +6,9 @@ import {
   EternitiesMapDeckType,
   EternitiesMapSpecs,
   EternitiesMapSubType,
+  Initable,
   MapType,
+  ResolveInput,
 } from '../MapInterface';
 import { EternitiesMapExported } from './EternitiesMap';
 import { StateKey } from '@/model/wall';
@@ -22,6 +24,10 @@ export interface DualDeckProps extends SingleDeckProps {
   deckType: EternitiesMapDeckType.PLANES;
   phenomenaDeck: Deck<Phenomenon>;
   encounterTriggers: EncounterTriggers;
+}
+
+export interface EncounterInput extends Initable {
+  coords: Coordinates;
 }
 
 export class DualDeck extends SingleDeck {
@@ -51,23 +57,23 @@ export class DualDeck extends SingleDeck {
     return this.phenomenaDeck.played;
   }
 
-  public resolve(initiator?: string): boolean {
+  public encounter(input: EncounterInput): void {
+    this.destination = input.coords;
+    this.active = [this.phenomenaDeck.draw().card];
+    this.active.forEach(c => c.enter(this.walls, input.initiator));
+    this.walls.set(StateKey.PHENOMENON_WALL, { initiator: input.initiator });
+  }
+
+  public override resolve(input: ResolveInput): void {
     this.phenomenaDeck.setPlayed(...this.active as Array<Phenomenon>);
     this.walls.delete(StateKey.PHENOMENON_WALL);
-    const shuffled = this.planeswalk(this.destination as Coordinates, initiator);
-    return shuffled;
+    this.planeswalk({
+      ...input,
+      coords: this.destination as Coordinates,
+    });
   }
 
-  public override encounter(coords: Coordinates, initiator?: string): boolean {
-    this.destination = coords;
-    const { card: drawn, shuffled } = this.phenomenaDeck.draw();
-    this.active = [ drawn ];
-    this.active.forEach(c => c.enter(this.walls, initiator));
-    this.walls.set(StateKey.PHENOMENON_WALL, { initiator });
-    return shuffled;
-  }
-
-  public export(): DualDeckExported {
+  public override export(): DualDeckExported {
     return {
       ...super.export(),
       phenomenaDeck: this.phenomenaDeck.export(),

@@ -17,7 +17,7 @@ import {
  * Then put the revealed cards on the bottom of your planar deck in any order.
  */
 export class PoolOfBecoming extends Plane {
-  public chaos(walls: WallStates, initiator?: string): void {
+  public chaos(walls: WallStates, initiator: string): void {
     const revealer: RevealerWallState = {
       title: this.name,
       subTitle: 'Chaos from these cards will trigger.',
@@ -28,9 +28,6 @@ export class PoolOfBecoming extends Plane {
     };
 
     walls.set(StateKey.REVEALER, revealer);
-
-    if (!initiator) {
-      eventBus.emit(EventType.POOL_OF_BECOMING);
-    }
+    eventBus.emit(EventType.POOL_OF_BECOMING);
   }
 }

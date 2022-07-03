@@ -10,9 +10,20 @@ export enum StateOp {
 }
 
 export interface WallState {
-  initiator?: string;
+  initiator: string;
 }
 
+interface ApplySetInput {
+  key: StateKey;
+  op: StateOp.SET;
+  val: WallState;
+}
+interface ApplyDelInput {
+  key: StateKey;
+  op: StateOp.DELETE;
+}
+
+export type ApplyInput = ApplySetInput | ApplyDelInput;
 export type ExportedWallStates = Array<[StateKey, WallState]>;
 
 export class WallStates extends Map<StateKey, WallState> {
@@ -24,13 +35,13 @@ export class WallStates extends Map<StateKey, WallState> {
     return super.get(key) as T | undefined;
   }
 
-  public apply(key: StateKey, op: StateOp, val?: WallState): void {
-    switch(op) {
+  public apply(input: ApplyInput): void {
+    switch(input.op) {
       case StateOp.SET:
-        this.set(key, val as WallState);
+        this.set(input.key, input.val);
         break;
       case StateOp.DELETE:
-        this.delete(key);
+        this.delete(input.key);
         break;
     }
   }

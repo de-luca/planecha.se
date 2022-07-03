@@ -17,8 +17,8 @@ export interface CardInterface {
 
   type: string;
 
-  chaos(walls: WallStates, initiator?: string): void;
-  enter(walls: WallStates, initiator?: string): void;
+  chaos(walls: WallStates, initiator: string): void;
+  enter(walls: WallStates, initiator: string): void;
   leave(): void;
   export(): ExportedCard;
 }

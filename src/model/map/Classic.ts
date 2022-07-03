@@ -1,6 +1,5 @@
-import { Plane } from '../card';
 import { Map, MapProps } from './Map';
-import { MapSpecs, MapType } from './MapInterface';
+import { MapSpecs, MapType, PlaneswalkInput, ResolveInput } from './MapInterface';
 
 export class Classic extends Map {
   public constructor(props: MapProps) {
@@ -12,28 +11,20 @@ export class Classic extends Map {
     return { type: MapType.CLASSIC };
   }
 
-  public planeswalk(
-    _coords?: Coordinates,
-    initiator?: string,
-  ): boolean {
+  public planeswalk(input: PlaneswalkInput): void {
     this.active.forEach(c => c.leave());
     this.deck.setPlayed(...this.active);
 
-    const { card, shuffled } = this.deck.draw();
-    this.active = [ card ];
-    this.active.forEach(c => c.enter(this.walls, initiator));
+    if ('planes' in input) {
+      this.active = input.planes;
+    } else {
+      this.active = [this.deck.draw().card];
+    }
 
-    return shuffled;
+    this.active.forEach(c => c.enter(this.walls, input.initiator));
   }
 
-  public customPlaneswalk(planes: Array<Plane>): void {
-    this.active.forEach(c => c.leave());
-    this.deck.setPlayed(...this.active);
-    this.active = planes;
-    this.active.forEach(c => c.enter(this.walls));
-  }
-
-  public resolve(initiator: string): boolean {
-    return this.planeswalk(undefined, initiator);
+  public resolve(input: ResolveInput): void {
+    return this.planeswalk(input);
   }
 }

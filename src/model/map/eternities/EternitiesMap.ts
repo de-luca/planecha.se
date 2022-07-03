@@ -3,8 +3,10 @@ import { Container } from 'typedi';
 import { Map, MapProps } from '../Map';
 import { Tile, TileStatus, ExportedTile } from '../Tile';
 import {
+  CustomEternitiesPlaneswalkInput,
   EternitiesMapDeckType,
   EternitiesMapSpecs,
+  EternitiesPlaneswalkInput,
   Exported,
   Patch,
 } from '../MapInterface';
@@ -17,6 +19,10 @@ export interface EternitiesMapProps extends MapProps {
   deckType: EternitiesMapDeckType;
   tiles?: Array<Tile>;
 }
+
+export type PlaneswalkInput =
+  EternitiesPlaneswalkInput |
+  CustomEternitiesPlaneswalkInput;
 
 export abstract class EternitiesMap extends Map {
   protected static readonly activeRange = 1;
@@ -64,6 +70,8 @@ export abstract class EternitiesMap extends Map {
 
     return tiles;
   }
+
+  public abstract planeswalk(input: PlaneswalkInput): void;
 
   protected isHellriding(coords: Coordinates): boolean {
     return Math.abs(coords.x) === 1 && Math.abs(coords.y) === 1;

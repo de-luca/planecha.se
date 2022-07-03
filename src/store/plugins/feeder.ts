@@ -13,7 +13,7 @@ export function createFeeder(context: PiniaPluginContext) {
         switch (action) {
           case 'undo':
             const payload = args[0] as Payload.Undo;
-            store.feed.push(`<b>${store.getPlayerName(payload?.initiator)}</b> undid last action`);
+            store.feed.push(`<b>${store.playerName}</b> undid last action`);
             break;
           case 'init': {
             const payload = args[0] as BuildProps;
@@ -34,7 +34,7 @@ export function createFeeder(context: PiniaPluginContext) {
           }
           case 'planeswalk': {
             const payload = args[0] as Payload.Planeswalk;
-            const message = `<b>${store.getPlayerName(payload?.initiator)}</b> ` +
+            const message = `<b>${store.playerName}</b> ` +
               (store.map?.active[0].type === 'plane' ? `${plnwlk} to` : 'encountered') +
               ` <b>${store.map?.active[0].name}</b>`;
             store.feed.push(message);
@@ -42,14 +42,14 @@ export function createFeeder(context: PiniaPluginContext) {
           }
           case 'customPlaneswalk': {
             const payload = args[0] as Payload.CustomPlaneswalk;
-            const message = `<b>${store.getPlayerName(payload?.initiator)}</b> ${plnwlk} to ` +
+            const message = `<b>${store.playerName}</b> ${plnwlk} to ` +
               `<b>${store.map?.active.map((c: Card) => c.name).join('</b> and <b>')}</b>`;
             store.feed.push(message);
             break;
           }
           case 'chaos': {
             const payload = args[0] as Payload.Requestable;
-            const message = `<b>${store.getPlayerName(payload?.initiator)}</b> triggered ${chaos} ` +
+            const message = `<b>${store.playerName}</b> triggered ${chaos} ` +
               `on <b>${store.map?.active.map((c: Card) => c.name).join('</b> and <b>')}</b>`;
             store.feed.push(message);
             break;
@@ -57,7 +57,7 @@ export function createFeeder(context: PiniaPluginContext) {
           case 'updateCounters': {
             const payload = args[0] as Payload.Counters;
             const plane = store.map.active.find((c: Card) => c.id === payload.planeId) as Plane;
-            const message = `<b>${store.getPlayerName(payload?.initiator)}</b> ` +
+            const message = `<b>${store.playerName}</b> ` +
               `${payload.change > 0 ? 'added ' : 'removed '} <b>${Math.abs(payload.change)}</b> ` +
               `(<b>${plane.counter?.value}</b>) counter on ` +
               `<b>${plane.name}</b>`;
@@ -68,13 +68,13 @@ export function createFeeder(context: PiniaPluginContext) {
             const payload = args[0] as Payload.ResolveReveal;
             if (payload.top.length > 0) {
               store.feed.push(
-                `<b>${store.getPlayerName(payload?.initiator)}</b> putted on top ` +
+                `<b>${store.playerName}</b> putted on top ` +
                 `<b>${payload.top.map(c => c.name).join('</b>, <b>')}</b>`,
               );
             }
             if (payload.bottom.length > 0) {
               store.feed.push(
-                `<b>${store.getPlayerName(payload?.initiator)}</b> putted at the bottom ` +
+                `<b>${store.playerName}</b> putted at the bottom ` +
                 `<b>${payload.bottom.map(c => c.name).join('</b>, <b>')}</b>`,
               );
             }

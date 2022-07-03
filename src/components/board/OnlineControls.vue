@@ -53,7 +53,7 @@
             <fa icon="users" fixed-width />
             Current Players
           </p>
-          <p>{{ yourName }}</p>
+          <p>{{ playerName }}</p>
           <template v-for="[id, name] in mates" :key="id">
             <p>{{ name }}</p>
           </template>
@@ -80,8 +80,8 @@ export default class OnlineControls extends Vue {
   private active: boolean = true;
   private copyBtnText: BtnText = BtnText.IDLE;
 
-  public get yourName(): string {
-    return this.store.yourName;
+  public get playerName(): string {
+    return this.store.playerName;
   }
 
   public get roomUrl(): string {

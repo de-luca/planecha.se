@@ -34,11 +34,11 @@ export class Plane extends Card {
     return this.counter.value;
   }
 
-  public chaos(_walls: WallStates): void {
+  public chaos(_w: WallStates, _i: string): void {
     return;
   }
 
-  public enter(_walls: WallStates): void {
+  public enter(_w: WallStates, _i: string): void {
     return;
   }
 

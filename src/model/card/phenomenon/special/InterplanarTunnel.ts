@@ -16,7 +16,7 @@ import {
  * in a random order.
  */
 export class InterplanarTunnel extends Phenomenon {
-  public enter(walls: WallStates, initiator?: string): void {
+  public enter(walls: WallStates, initiator: string): void {
     const revealer: RevealerWallState = {
       title: this.name,
       subTitle: 'Chose a plane to put on top the planar deck.',

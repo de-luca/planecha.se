@@ -10,7 +10,7 @@ export class Phenomenon extends Card {
     return;
   }
 
-  public enter(_walls: WallStates): void {
+  public enter(_w: WallStates, _i: string): void {
     return;
   }
 

@@ -26,15 +26,13 @@ describe('Classic.planeswalk', () => {
     const deckSize = map.remaining;
     const playedSize = map.played.length;
 
-    map.planeswalk();
+    map.planeswalk({ initiator: 'foo' });
 
     expect(map.active).not.toEqual(startCard);
     expect(map.remaining).toBeLessThan(deckSize);
     expect(map.played.length).toBeGreaterThan(playedSize);
   });
-});
 
-describe('Classic.customPlaneswalk', () => {
   it('changes active card to given planes', () => {
     const map = new Classic({
       deck: Container.get(DeckProvider).getDeck(),
@@ -44,9 +42,15 @@ describe('Classic.customPlaneswalk', () => {
     const deckSize = map.remaining;
     const playedSize = map.played.length;
 
-    map.revealUntil(2, Plane);
-    map.customPlaneswalk(map.revealed?.relevant as Array<Plane>);
-    map.resolveReveal([], map.revealed?.others ?? []);
+    map.revealUntil({ count: 2, type: Plane });
+    map.planeswalk({
+      initiator: 'foo',
+      planes: map.revealed?.relevant as Array<Plane>,
+    });
+    map.resolveReveal({
+      top: [],
+      bottom: map.revealed?.others ?? [],
+    });
 
     expect(map.active).not.toEqual(startCard);
     expect(map.active).toHaveLength(2);

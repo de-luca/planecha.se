@@ -42,7 +42,7 @@ describe('EternitiesMap.planeswalk', () => {
       walls: new WallStates(),
     });
     const currentActive = map.active;
-    map.planeswalk({ x: 1, y: 0 });
+    map.planeswalk({ initiator: 'foo', coords: { x: 1, y: 0 } });
     expect(map.active).not.toEqual(currentActive);
   });
 
@@ -52,7 +52,7 @@ describe('EternitiesMap.planeswalk', () => {
       deck: Container.get(DeckProvider).getPlaneDeck(),
       walls: new WallStates(),
     });
-    map.planeswalk({ x: 1, y: 0 });
+    map.planeswalk({ initiator: 'foo', coords: { x: 1, y: 0 } });
     expect(map.tiles).toHaveLength(8);
     expect(map.tiles).toEqual(
       expect.arrayContaining([
@@ -69,7 +69,7 @@ describe('EternitiesMap.planeswalk', () => {
       deck: Container.get(DeckProvider).getPlaneDeck(),
       walls: new WallStates(),
     });
-    map.planeswalk({ x: -1, y: 0 });
+    map.planeswalk({ initiator: 'foo', coords: { x: -1, y: 0 } });
     expect(map.tiles).toHaveLength(8);
     expect(map.tiles).toEqual(
       expect.arrayContaining([
@@ -86,7 +86,7 @@ describe('EternitiesMap.planeswalk', () => {
       deck: Container.get(DeckProvider).getPlaneDeck(),
       walls: new WallStates(),
     });
-    map.planeswalk({ x: 0, y: 1 });
+    map.planeswalk({ initiator: 'foo', coords: { x: 0, y: 1 } });
     expect(map.tiles).toHaveLength(8);
     expect(map.tiles).toEqual(
       expect.arrayContaining([
@@ -103,7 +103,7 @@ describe('EternitiesMap.planeswalk', () => {
       deck: Container.get(DeckProvider).getPlaneDeck(),
       walls: new WallStates(),
     });
-    map.planeswalk({ x: 0, y: -1 });
+    map.planeswalk({ initiator: 'foo', coords: { x: 0, y: -1 } });
     expect(map.tiles).toHaveLength(8);
     expect(map.tiles).toEqual(
       expect.arrayContaining([
@@ -121,7 +121,7 @@ describe('EternitiesMap.planeswalk', () => {
       walls: new WallStates(),
     });
 
-    map.planeswalk({ x: 0, y: -1 });
+    map.planeswalk({ initiator: 'foo', coords: { x: 0, y: -1 } });
     expect(map.tiles).toHaveLength(8);
     expect(map.tiles).toEqual(
       expect.arrayContaining([
@@ -129,7 +129,7 @@ describe('EternitiesMap.planeswalk', () => {
       ]),
     );
 
-    map.planeswalk({ x: 0, y: -1 });
+    map.planeswalk({ initiator: 'foo', coords: { x: 0, y: -1 } });
     expect(map.tiles).toHaveLength(11);
     expect(map.tiles).toEqual(
       expect.arrayContaining([
@@ -137,7 +137,7 @@ describe('EternitiesMap.planeswalk', () => {
       ]),
     );
 
-    map.planeswalk({ x: 0, y: -1 });
+    map.planeswalk({ initiator: 'foo', coords: { x: 0, y: -1 } });
     expect(map.tiles).toHaveLength(11);
     expect(map.tiles).toEqual(
       expect.arrayContaining([
