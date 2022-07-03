@@ -1,4 +1,5 @@
 import _shuffle from 'lodash.shuffle';
+import { patch } from '@n1ru4l/json-patch-plus';
 import { Container } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
 import { Card, Plane } from '../card';
@@ -11,10 +12,12 @@ import {
   MapInterface,
   Revealed,
   EncounterTriggers,
+  Patch,
 } from './MapInterface';
 
+
 export interface MapProps {
-  wallStates: WallStates;
+  walls: WallStates;
   hasStarted?: boolean;
   deck: Deck<Card>;
   active?: Array<Card>;
@@ -24,7 +27,7 @@ export interface MapProps {
 
 export abstract class Map implements MapInterface {
   protected deck: Deck<Card>;
-  public readonly walls: WallStates;
+  public walls: WallStates;
   public hasStarted: boolean;
 
   public active: Array<Card>;
@@ -36,7 +39,7 @@ export abstract class Map implements MapInterface {
 
   public constructor(props: MapProps) {
     this.deck = props.deck;
-    this.walls = props.wallStates;
+    this.walls = props.walls;
     this.hasStarted = props.hasStarted ?? false;
     this.active = props.active ?? [];
     this.revealed = props.revealed;
@@ -94,9 +97,10 @@ export abstract class Map implements MapInterface {
 
   public export(): Exported {
     return {
-      wallStates: this.walls.export(),
-      hasStarted: this.hasStarted,
       specs: this.specs,
+      hasStarted: this.hasStarted,
+      destination: this.destination,
+      wallStates: this.walls.export(),
       deck: this.deck.export(),
       active: this.active.map(c => c.export()),
       revealed: this.revealed === undefined
@@ -105,17 +109,25 @@ export abstract class Map implements MapInterface {
           relevant: this.revealed.relevant.map(c => c.id),
           others: this.revealed.others.map(c => c.id),
         },
-      destination: this.destination,
     };
   }
 
-  public applyUndo(state: Exported): void {
-    this.applyShuffle(state);
-    this.hasStarted = state.hasStarted;
-    this.active.forEach(c => c.enter(this.walls));
+  public apply(patch: Patch): void {
+    const state = this.crunchState<Exported>(patch);
+    if(state) {
+      this.applyState(state);
+    }
   }
 
-  public applyShuffle(state: Exported): void {
+  protected crunchState<T extends Exported>(p: Patch): Exported | undefined {
+    return p.delta ? patch({ left: this.export(), delta: p.delta}) as T : undefined;
+  }
+
+  protected applyState(state: Exported): void {
+    this.hasStarted = state.hasStarted;
+    this.destination = state.destination;
+    this.walls = new WallStates(state.wallStates);
+    this.active.forEach(c => c.enter(this.walls));
     this.deck = Container.get(DeckProvider).getDeckFromExport(state.deck);
     this.active = Container.get(DeckProvider).getPileWithState(state.active);
     this.revealed = state.revealed === undefined

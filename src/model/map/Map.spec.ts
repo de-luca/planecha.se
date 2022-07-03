@@ -1,8 +1,10 @@
+import { describe, it, vi, expect } from 'vitest';
 import { Container } from 'typedi';
+import { diff } from '@n1ru4l/json-patch-plus';
 import { DeckProvider } from '@/services/DeckProvider';
 import { eventBus } from '@/services/EventBus';
 import { Card, Plane } from '../card';
-import { Map, MapSpecs, MapType } from '.';
+import { Map, MapSpecs, MapType, Patch } from '.';
 import { WallStates } from '../wall';
 
 class TestMap extends Map {
@@ -23,13 +25,11 @@ class TestMap extends Map {
   }
 }
 
-jest.mock('@/services/getEnv');
-
 describe('Map.ready', () => {
   it('resolves', async() => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
-      wallStates: new WallStates(),
+      walls: new WallStates(),
     });
 
     let ready = false;
@@ -46,9 +46,9 @@ describe('Map.chaos', () => {
   it('triggers chaos', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
-      wallStates: new WallStates(),
+      walls: new WallStates(),
     });
-    map.active.forEach(card => card.chaos = jest.fn());
+    map.active.forEach(card => card.chaos = vi.fn());
     map.chaos();
     map.active.forEach(card => expect(card.chaos).toHaveBeenCalled());
   });
@@ -58,12 +58,12 @@ describe('Map.updateCounter', () => {
   it('updates card counters', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getPlaneDeck(),
-      wallStates: new WallStates(),
+      walls: new WallStates(),
     });
     map.testActive();
     map.active.forEach((card) => {
       if (card instanceof Plane) {
-        card.updateCounter = jest.fn();
+        card.updateCounter = vi.fn();
       }
     });
     map.updateCounter(map.active[0].id, 1);
@@ -75,7 +75,7 @@ describe('Map.revealUntil', () => {
   it('reveals a given number of requested Card', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
-      wallStates: new WallStates(),
+      walls: new WallStates(),
     });
     map.revealUntil(2);
     expect(map.revealed?.relevant).toHaveLength(2);
@@ -90,13 +90,13 @@ describe('Map.resolveReveal', () => {
   it('puts back cards on top and bottom', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
-      wallStates: new WallStates(),
+      walls: new WallStates(),
     });
 
-    const putOnTop = jest.spyOn(map['deck'], 'putOnTop');
-    const putOnTheBottom = jest.spyOn(map['deck'], 'putOnTheBottom');
-    const clearRevealed = jest.spyOn(map, 'clearRevealed');
-    eventBus.emit = jest.fn();
+    const putOnTop = vi.spyOn(map['deck'], 'putOnTop');
+    const putOnTheBottom = vi.spyOn(map['deck'], 'putOnTheBottom');
+    const clearRevealed = vi.spyOn(map, 'clearRevealed');
+    eventBus.emit = vi.fn();
 
     map.revealUntil(2);
     const top = map.revealed?.relevant[0] as Card;
@@ -116,7 +116,7 @@ describe('Map.clearRevealed', () => {
   it('sets revealed to nothing', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
-      wallStates: new WallStates(),
+      walls: new WallStates(),
     });
     map.revealUntil(5);
     expect(map.revealed).not.toBeUndefined();
@@ -129,7 +129,7 @@ describe('Map.export', () => {
   it('exports the state of the map', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
-      wallStates: new WallStates(),
+      walls: new WallStates(),
     });
     const exported = map.export();
     expect(exported.specs.type).toEqual(MapType.EMPTY);
@@ -139,5 +139,39 @@ describe('Map.export', () => {
     for (const card of map.active) {
       expect(exported.active).toContain(card.id);
     }
+  });
+});
+
+describe('Map.apply', () => {
+  it('applies patch the states of the map', () => {
+    const map = new TestMap({
+      deck: Container.get(DeckProvider).getDeck(),
+      walls: new WallStates(),
+    });
+
+    // Get a base state
+    const base = map.export();
+
+    // Do actions to modify the state
+    map.hasStarted = true;
+    map.testActive();
+
+    // Get the new state
+    const updated = map.export();
+
+    // Get the delta between version
+    // Swap left/right to go back to the base
+    const delta = diff({ left: updated, right: base });
+
+    const patch: Patch = {
+      event: 'test',
+      playHead: 1,
+      delta,
+    };
+
+    // Apply the patch to go back to the base
+    map.apply(patch);
+
+    expect(map.export()).toEqual(base);
   });
 });

@@ -2,6 +2,7 @@ import { ExportedWallStates, WallStates } from '../wall';
 import { Card, ExportedCard, Plane } from '../card';
 import { DeckState } from '../deck/Deck';
 import { ExportedTile, Tile } from './Tile';
+import { Delta } from '@n1ru4l/json-patch-plus';
 
 export enum EncounterTrigger {
   ON_PLANESWALK = 'ON_PLANESWALK',
@@ -62,18 +63,21 @@ export interface Revealed {
   others: Array<Card>;
 }
 
+export interface Patch {
+  playHead: number;
+  event: string;
+  delta?: Delta;
+}
+
 export interface MapInterface {
   walls: WallStates;
   hasStarted: boolean;
-
   specs: MapSpecs;
   active: Array<Card>;
   played: Array<Card>;
   remaining: number;
-
   revealed?: Revealed;
   ready: Promise<void>;
-
   tiles: Array<Tile>;
   destination?: Coordinates;
   encounterTriggers: EncounterTriggers
@@ -92,6 +96,5 @@ export interface MapInterface {
   updateCounter(planeId: string, change: number): void;
 
   export(): Exported;
-  applyUndo(state: Exported): void;
-  applyShuffle(state: Exported): void;
+  apply(patch: Patch): void;
 }

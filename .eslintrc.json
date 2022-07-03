@@ -9,13 +9,8 @@
   "env": {
     "node": true
   },
-  "plugins": [
-    "jest"
-  ],
   "extends": [
-    "plugin:vue/vue3-essential",
-    "plugin:jest/recommended",
-    "plugin:jest/style"
+    "plugin:vue/vue3-essential"
   ],
   "rules": {
     "no-plusplus": ["off"],

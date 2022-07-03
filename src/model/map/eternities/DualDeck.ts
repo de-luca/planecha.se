@@ -75,8 +75,8 @@ export class DualDeck extends SingleDeck {
     };
   }
 
-  public override applyUndo(state: DualDeckExported): void {
+  protected override applyState(state: DualDeckExported): void {
+    super.applyState(state);
     this.phenomenaDeck = Container.get(DeckProvider).getDeckFromExport(state.phenomenaDeck);
-    super.applyUndo(state);
   }
 }

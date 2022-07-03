@@ -9,8 +9,9 @@ import {
 } from '@fortawesome/vue-fontawesome';
 import { router } from './router';
 import { createFeeder } from './store/plugins/feeder';
-import { createVersionizer } from './store/plugins/versionizer';
+import { versionizer } from './store/plugins/versionizer';
 import App from './App.vue';
+import { createSynchronizer } from './store/plugins/synchronizer';
 
 document.documentElement.setAttribute(
   'data-theme',
@@ -23,7 +24,8 @@ createApp(App)
   .use(
     createPinia()
       .use(createFeeder)
-      .use(createVersionizer),
+      .use(versionizer)
+      .use(createSynchronizer),
   )
   .use(router)
   .mount('#app');

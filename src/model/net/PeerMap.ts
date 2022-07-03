@@ -1,7 +1,7 @@
 import { Container } from 'typedi';
 import { getEnv } from '@/services/getEnv';
 import { eventBus, EventType as BusEvent } from '@/services/EventBus';
-import { Exported, MapFactory, MapInterface } from '../map';
+import { Exported, MapFactory, MapInterface, Patch } from '../map';
 import { Beacon, SignalData, SignalPayload } from './Beacon';
 import { PeerLogs } from './PeerLogs';
 import { PeerICEError } from './error/PeerICEError';
@@ -30,31 +30,19 @@ export class PeerMap {
   private peers: Map<string, Peer>;
   private beacon: Beacon;
 
-  public readonly yourName: string;
+  public readonly playerName: string;
 
-  public constructor(beacon: Beacon, yourName: string) {
+  public constructor(beacon: Beacon, playerName: string) {
     this.peers = new Map();
     this.beacon = beacon;
-    this.yourName = yourName;
+    this.playerName = playerName;
     this.beacon.addEventListener('signal', (ev) => {
       this.signal((ev as CustomEvent<SignalPayload>).detail);
     });
   }
 
-  broadcast(event: Handler.Event.CHAOS): void;
-  broadcast(event: Handler.Event.RESOLVE): void;
-  broadcast(event: Handler.Event.START_GAME): void;
-  broadcast(event: Handler.Event.REQUEST_INIT): void;
-  broadcast(event: Handler.Event.SHUFFLE, data: Exported): void;
-  broadcast(event: Handler.Event.UNDO, data: Payload.Undo): void;
+  broadcast(event: Handler.Event.SYNC, data: Patch): void;
   broadcast(event: Handler.Event.HEY, data: Payload.NameWire): void;
-  broadcast(event: Handler.Event.COUNTERS, data: Payload.Counters): void;
-  broadcast(event: Handler.Event.REVEAL, data: Payload.RevealWire): void;
-  broadcast(event: Handler.Event.ENCOUNTER, data: Payload.Encounter): void;
-  broadcast(event: Handler.Event.PLANESWALK, data: Payload.Planeswalk): void;
-  broadcast(event: Handler.Event.UPDATE_WALL_STATE, data: Payload.UpdateWallState): void;
-  broadcast(event: Handler.Event.RESOLVE_REVEAL, data: Payload.ResolveRevealWire): void;
-  broadcast(event: Handler.Event.CUSTOM_PLANESWALK, data: Payload.CustomPlaneswalkWire): void;
   public broadcast(event: Handler.Event, data: any = {}): void {
     this.peers.forEach(peer => peer.channel.send(Handler.stringify(event, data)));
   }
@@ -78,13 +66,6 @@ export class PeerMap {
         const payload = Handler.parse<Exported>(event.data);
 
         if (payload.event === Handler.Event.INIT) {
-          // If the player that sends us the payload has empty initiators is its
-          // states, it means that they are the initiator.
-          payload.data.wallStates.forEach(([_key, state]) => {
-            if (state.initiator === undefined) {
-              state.initiator = this.label;
-            }
-          });
           const map = Container.get(MapFactory).restore(payload.data);
           p.channel.removeEventListener('message', handler);
           resolve(map);
@@ -94,7 +75,7 @@ export class PeerMap {
     });
 
     p.channel.send(JSON.stringify(payload));
-    return await initRequest;
+    return initRequest;
   }
 
   public async addPeer(...ids: Array<string>): Promise<Array<void>> {
@@ -114,7 +95,7 @@ export class PeerMap {
           'open',
           () => {
             peer.channel.send(
-              Handler.stringify(Handler.Event.HEY, { name: this.yourName }),
+              Handler.stringify(Handler.Event.HEY, { name: this.playerName }),
             );
 
             resolve();
@@ -139,7 +120,7 @@ export class PeerMap {
     const channel = connection.createDataChannel(id, PeerMap.channelConfig);
     const logs = new PeerLogs();
 
-    channel.addEventListener('message', Handler.getHandler(this.yourName));
+    channel.addEventListener('message', Handler.getHandler(this.playerName));
 
     connection.addEventListener('icecandidate', ({ candidate }) => {
       if (candidate) {

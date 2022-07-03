@@ -1,8 +1,9 @@
-import { promisify } from '../../../tests/promisify';
+import { describe, it, vi, Mock, expect } from 'vitest';
 import { getEnv } from '@/services/getEnv';
+import { promisify } from '../../../tests/promisify';
 import { Beacon, SignalData, SignalPayload } from './Beacon';
 
-jest.mock('@/services/getEnv');
+vi.mock('@/services/getEnv');
 
 describe('Beacon.constructor', () => {
   it('starts a websocket and emit ready event', async() => {
@@ -19,7 +20,7 @@ describe('Beacon.check', () => {
   });
 
   it('returns false if server is unavailable', async() => {
-    (getEnv as jest.Mock).mockImplementationOnce(() => 'ws://DEAD');
+    (getEnv as Mock).mockImplementationOnce(() => 'ws://DEAD');
     expect(await Beacon.check()).toEqual(false);
   });
 });

@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { Container } from 'typedi';
 import { PhenomenonFactory, Phenomenon } from '.';
 import { InterplanarTunnel } from './special';

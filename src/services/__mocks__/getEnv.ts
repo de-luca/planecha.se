@@ -1,4 +1,6 @@
-export const getEnv = jest.fn((key: keyof ImportMetaEnv): string | boolean | undefined => {
+import { vi } from 'vitest';
+
+export const getEnv = vi.fn((key: keyof ImportMetaEnv): string | boolean | undefined => {
   return {
     VITE_BEACON_URL: 'ws://beacon:7878',
     VITE_TURN_URL: 'turn:domai.ne:1234',

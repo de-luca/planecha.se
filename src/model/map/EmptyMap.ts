@@ -49,12 +49,9 @@ export class EmptyMap implements MapInterface {
     throw new Error('Method not implemented.');
   }
   export(): Exported {
-    throw new Error('Method not implemented.');
+    throw new Error('EXPORT Method not implemented.');
   }
-  applyUndo(): void {
-    throw new Error('Method not implemented.');
-  }
-  applyShuffle(): void {
+  apply(): void {
     throw new Error('Method not implemented.');
   }
 }

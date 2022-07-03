@@ -1,7 +1,6 @@
 import { Inject, Service } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
 import { Card } from '../card';
-import { OnlineDecorator } from '../net/OnlineDecorator';
 import {
   Classic,
   EmptyMap,
@@ -13,7 +12,6 @@ import {
 } from '.';
 import { EternitiesMapExported, EternitiesMapFactory } from './eternities';
 import { WallStates } from '../wall';
-import { OnlineInterface } from '../net/OnlineInterface';
 
 export interface AdvancedOptions {
   name?: string;
@@ -35,25 +33,19 @@ export class MapFactory {
   @Inject(() => EternitiesMapFactory)
   private eternitiesMapFactory: EternitiesMapFactory;
 
-  public build(
-    { type, online, advanced }: BuildProps,
-  ): MapInterface | MapInterface & OnlineInterface {
-    let map: MapInterface;
-
+  public build({ type, advanced }: BuildProps): MapInterface {
     switch (type) {
       case MapType.EMPTY:
-        map = new EmptyMap();
-        break;
+        return new EmptyMap();
       case MapType.CLASSIC:
-        map = new Classic({
-          wallStates: new WallStates(),
+        return new Classic({
+          walls: new WallStates(),
           deck: advanced.cards
             ? this.deckProvider.getSpecificDeck(advanced.cards)
             : this.deckProvider.getDeck(),
         });
-        break;
       case MapType.ETERNITIES:
-        map = this.eternitiesMapFactory.build(
+        return this.eternitiesMapFactory.build(
           {
             type,
             ...advanced.specs as Omit<EternitiesMapSpecs, 'type'>,
@@ -61,14 +53,7 @@ export class MapFactory {
           advanced.encounterTriggers,
           advanced.cards,
         );
-        break;
     }
-
-    if (online) {
-      return new OnlineDecorator(map, advanced.name as string);
-    }
-
-    return map;
   }
 
   public restore(payload: Exported): MapInterface {
@@ -76,7 +61,7 @@ export class MapFactory {
       case MapType.CLASSIC:
         return new Classic({
           deck: this.deckProvider.getDeckFromExport<Card>(payload.deck),
-          wallStates: new WallStates(payload.wallStates),
+          walls: new WallStates(payload.wallStates),
           hasStarted: payload.hasStarted,
           active: this.deckProvider.getPileWithState<Card>(payload.active),
           revealed: payload.revealed

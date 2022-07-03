@@ -6,6 +6,7 @@ import {
   EternitiesMapDeckType,
   EternitiesMapSpecs,
   Exported,
+  Patch,
 } from '../MapInterface';
 
 export interface EternitiesMapExported extends Exported {
@@ -76,8 +77,8 @@ export abstract class EternitiesMap extends Map {
     };
   }
 
-  public override applyUndo(state: EternitiesMapExported): void {
+  protected override applyState(state: EternitiesMapExported): void {
+    super.applyState(state);
     this.tiles = (state.tiles as Array<ExportedTile>).map(Tile.fromExport);
-    super.applyUndo(state);
   }
 }

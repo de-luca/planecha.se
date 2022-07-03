@@ -61,7 +61,7 @@ export class Deck<T extends Card> {
   }
 
   public shuffle(): void {
-    this.cards = _shuffle(this.played);
+    this.cards = _shuffle([...this.cards, ...this.played]);
     this.played = [];
   }
 
