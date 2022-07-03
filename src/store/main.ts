@@ -13,11 +13,24 @@ import {
   UpdateCounterInput,
 } from '@/model/map';
 import { eventBus } from '@/services/EventBus';
-import * as ActPayload from '@/model/net/payloads';
 import { useVersion } from './version';
 import { Bridge, BridgeInterface } from '@/model/net/Bridge';
 import { ApplyInput } from '@/model/wall';
 import { DualDeck, EncounterInput } from '@/model/map/eternities';
+
+export interface HeyPayload {
+  id: string;
+  name: string;
+}
+
+export interface ByePayload {
+  id: string;
+}
+
+export interface JoinPayload {
+  roomId: string;
+  name: string;
+}
 
 export interface State {
   online: boolean;
@@ -35,22 +48,6 @@ function getState(): State {
     mates: new Map(),
     feed: [],
   };
-}
-
-export namespace Payload {
-  export type Requestable = { initiator?: string };
-
-  export type Hey = { id: string, name: string };
-  export type Bye = { id: string };
-
-  export type Planeswalk = Requestable & ActPayload.Planeswalk;
-  export type CustomPlaneswalk = Planeswalk & ActPayload.CustomPlaneswalk;
-  export type Encounter = Requestable & ActPayload.Encounter;
-  export type Counters = Requestable & ActPayload.Counters;
-  export type UpdateWallState = Requestable & ActPayload.UpdateWallState;
-  export type Reveal = Requestable & ActPayload.Reveal;
-  export type ResolveReveal = Requestable & ActPayload.ResolveReveal;
-  export type Undo = Requestable & ActPayload.Undo;
 }
 
 export const useMain = defineStore('main', {
@@ -72,10 +69,10 @@ export const useMain = defineStore('main', {
         : 'You';
     },
 
-    hey(payload: Payload.Hey): void {
+    hey(payload: HeyPayload): void {
       this.mates.set(payload.id, payload.name);
     },
-    bye(payload: Payload.Bye): void {
+    bye(payload: ByePayload): void {
       this.mates.delete(payload.id);
     },
 
@@ -92,7 +89,7 @@ export const useMain = defineStore('main', {
       }
     },
 
-    async join(payload: ActPayload.Join) {
+    async join(payload: JoinPayload) {
       this.leave();
       this.online = true;
       this.bridge = new Bridge(payload.name);
@@ -116,7 +113,7 @@ export const useMain = defineStore('main', {
       useVersion().applyPatch(patch);
     },
 
-    undo(payload: Payload.Undo): void {
+    undo(): void {
       // this.map.applyUndo(payload.version);
       // this.versionBuffer = undefined;
       // requestIfOnline(this.$state, 'requestUndo', payload);

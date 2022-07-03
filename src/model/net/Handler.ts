@@ -1,6 +1,4 @@
-import * as ActPayload from './payloads';
-import { Card, Phenomenon, Plane } from '../card';
-import { Exported, Patch } from '../map';
+import { Patch } from '../map';
 import { useMain } from '@/store/main';
 
 export enum Event {
@@ -10,16 +8,14 @@ export enum Event {
   SYNC = 'SYNC',
 }
 
+export interface Hey {
+  name: string;
+}
+
 export interface Payload<T> {
   event: Event,
   data: T,
 }
-
-const cardTypeMap: Record<string, typeof Card> = {
-  'Card': Card,
-  'Plane': Plane,
-  'Phenomenon': Phenomenon,
-};
 
 export function parse<T>(payload: string): Payload<T> {
   return JSON.parse(payload) as Payload<T>;
@@ -45,7 +41,7 @@ export function getHandler(
 
       case Event.HEY: {
         if (!store.mates.get(this.label)) {
-          const data = payload.data as ActPayload.NameWire;
+          const data = payload.data as Hey;
           store.hey({ ...data, id: this.label });
           this.send(stringify(Event.HEY, { name: myName }));
         }

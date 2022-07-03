@@ -6,7 +6,6 @@ import { Beacon, SignalData, SignalPayload } from './Beacon';
 import { PeerLogs } from './PeerLogs';
 import { PeerICEError } from './error/PeerICEError';
 import * as Handler from './Handler';
-import * as Payload from './payloads';
 
 interface Peer {
   connection: RTCPeerConnection;
@@ -41,8 +40,8 @@ export class PeerMap {
     });
   }
 
-  broadcast(event: Handler.Event.SYNC, data: Patch): void;
-  broadcast(event: Handler.Event.HEY, data: Payload.NameWire): void;
+  public broadcast(event: Handler.Event.SYNC, data: Patch): void;
+  public broadcast(event: Handler.Event.HEY, data: Handler.Hey): void;
   public broadcast(event: Handler.Event, data: any = {}): void {
     this.peers.forEach(peer => peer.channel.send(Handler.stringify(event, data)));
   }
