@@ -113,7 +113,7 @@ export default class ClassicMap extends Vue {
 
   public get revealer(): LocalRevealerConfig | undefined {
     const revealer =
-      this.store.map.walls.get<RevealerWallState>(StateKey.REVEALER);
+      this.store.map.wallStates.get<RevealerWallState>(StateKey.REVEALER);
 
     if (!revealer) {
       return undefined;

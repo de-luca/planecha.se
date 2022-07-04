@@ -4,13 +4,16 @@ import { Card } from '../card';
 import {
   Classic,
   EmptyMap,
-  EncounterTriggers,
-  EternitiesMapSpecs,
   Exported,
   MapInterface,
   MapType,
 } from '.';
-import { EternitiesMapExported, EternitiesMapFactory } from './eternities';
+import {
+  EncounterTriggers,
+  EternitiesMapExported,
+  EternitiesMapFactory,
+  EternitiesMapSpecs,
+} from './eternities';
 import { WallStates } from '../wall';
 
 export interface AdvancedOptions {
@@ -39,7 +42,7 @@ export class MapFactory {
         return new EmptyMap();
       case MapType.CLASSIC:
         return new Classic({
-          walls: new WallStates(),
+          wallStates: new WallStates(),
           deck: advanced.cards
             ? this.deckProvider.getSpecificDeck(advanced.cards)
             : this.deckProvider.getDeck(),
@@ -61,7 +64,7 @@ export class MapFactory {
       case MapType.CLASSIC:
         return new Classic({
           deck: this.deckProvider.getDeckFromExport<Card>(payload.deck),
-          walls: new WallStates(payload.wallStates),
+          wallStates: new WallStates(payload.wallStates),
           hasStarted: payload.hasStarted,
           active: this.deckProvider.getPileWithState<Card>(payload.active),
           revealed: payload.revealed
@@ -70,7 +73,6 @@ export class MapFactory {
               others: this.deckProvider.getOrderedPile<Card>(payload.revealed.others),
             }
             : undefined,
-          destination: payload.destination,
         });
       case MapType.ETERNITIES:
         return this.eternitiesMapFactory.restore(payload as EternitiesMapExported);

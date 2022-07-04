@@ -7,7 +7,7 @@ import { Phenomenon, Plane } from '@/model/card';
 import { PickedLeft, RevealConfig } from '../wall/reveal/BaseReveal';
 import { RevealFactory } from '../wall/reveal/RevealFactory';
 import { WallConfig } from '../wall/WallProps';
-import { Revealed, Tile } from '@/model/map';
+import { Revealed } from '@/model/map';
 import {
   RevealerWallState,
   RevealerSource,
@@ -17,6 +17,7 @@ import {
 
 import ChaosBtn from '@/components/btn/ChaosBtn.vue';
 import StartBtn from '@/components/btn/StartBtn.vue';
+import { EternitiesMap as EternitiesMapModel, SingleDeck, Tile } from '@/model/map/eternities';
 
 
 interface LocalRevealerConfig {
@@ -51,7 +52,7 @@ export class EternitiesMap extends Vue {
 
   public get revealer(): LocalRevealerConfig | undefined {
     const revealer =
-      this.store.map.walls.get<RevealerWallState>(StateKey.REVEALER);
+      this.store.map.wallStates.get<RevealerWallState>(StateKey.REVEALER);
 
     if (!revealer) {
       return undefined;
@@ -89,8 +90,8 @@ export class EternitiesMap extends Vue {
   }
 
   public get phenomenonWall(): LocalPhenomenonWallConfig | undefined {
-    if (this.store.map.destination) {
-      const wall = this.store.map.walls.get<PhenomenonWallState>(
+    if ((this.store.map as SingleDeck).destination) {
+      const wall = this.store.map.wallStates.get<PhenomenonWallState>(
         StateKey.PHENOMENON_WALL,
       );
 
@@ -118,7 +119,7 @@ export class EternitiesMap extends Vue {
   }
 
   public getTile(x: number, y: number): Tile | undefined {
-    return this.store.map.tiles.find((tile) => {
+    return (this.store.map as EternitiesMapModel).tiles.find((tile) => {
       return tile.coords.x === x - this.off
         && tile.coords.y === y - this.off;
     });

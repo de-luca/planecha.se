@@ -92,14 +92,14 @@
 import { Options, Vue } from 'vue-class-component';
 import { useMain } from '@/store/main';
 import { useConfig } from '@/store/config';
+import { MapType } from '@/model/map';
 import {
   EncounterMechanic,
   EncounterTrigger,
   EncounterTriggers,
   EternitiesMapDeckType,
   EternitiesMapSubType,
-  MapType,
-} from '@/model/map';
+} from '@/model/map/eternities';
 import { Card, Plane } from '@/model/card';
 import { Scope } from '@/components/create/builder/types';
 import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';

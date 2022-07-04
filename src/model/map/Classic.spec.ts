@@ -9,7 +9,7 @@ describe('Classic.type', () => {
   it('returns the type', () => {
     const map = new Classic({
       deck: Container.get(DeckProvider).getDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
 
     expect(map.specs.type).toEqual(MapType.CLASSIC);
@@ -20,7 +20,7 @@ describe('Classic.planeswalk', () => {
   it('changes active card', () => {
     const map = new Classic({
       deck: Container.get(DeckProvider).getDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
     const startCard = map.active;
     const deckSize = map.remaining;
@@ -36,7 +36,7 @@ describe('Classic.planeswalk', () => {
   it('changes active card to given planes', () => {
     const map = new Classic({
       deck: Container.get(DeckProvider).getDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
     const startCard = map.active;
     const deckSize = map.remaining;

@@ -1,18 +1,31 @@
 import { Plane } from '@/model/card';
-import { Container } from 'typedi';
 import { Map, MapProps } from '../Map';
-import { Tile, TileStatus, ExportedTile } from '../Tile';
+import { Tile, TileStatus, ExportedTile } from './Tile';
 import {
   CustomEternitiesPlaneswalkInput,
-  EternitiesMapDeckType,
-  EternitiesMapSpecs,
   EternitiesPlaneswalkInput,
   Exported,
-  Patch,
+  MapSpecs,
 } from '../MapInterface';
+
+export enum EternitiesMapSubType {
+  SINGLE_DECK = 'SINGLE_DECK',
+  DUAL_DECK = 'DUAL_DECK',
+}
+
+export enum EternitiesMapDeckType {
+  PLANES = 'PLANES',
+  ALL = 'ALL',
+}
+
+export interface EternitiesMapSpecs extends MapSpecs {
+  subType: EternitiesMapSubType;
+  deckType: EternitiesMapDeckType;
+}
 
 export interface EternitiesMapExported extends Exported {
   specs: EternitiesMapSpecs;
+  tiles?: Array<ExportedTile>;
 }
 
 export interface EternitiesMapProps extends MapProps {
@@ -29,19 +42,22 @@ export abstract class EternitiesMap extends Map {
   protected static readonly maxRange = 3;
   protected static readonly center: Coordinates = { x: 0, y: 0 };
 
-  protected deckType: EternitiesMapDeckType;
+  protected _deckType: EternitiesMapDeckType;
+  protected _tiles: Array<Tile>;
 
   protected constructor(props: EternitiesMapProps) {
     super(props);
 
-    this.deck = props.deck;
-    this.active = props.active ?? [this.deck.drawPlane().card];
-    this.tiles = props.tiles ?? this.initializeTiles();
-    this.deckType = props.deckType;
+    this._deck = props.deck;
+    this._active = props.active ?? [this._deck.drawPlane().card];
+    this._tiles = props.tiles ?? this.initializeTiles();
+    this._deckType = props.deckType;
   }
 
-  public override get specs(): EternitiesMapSpecs {
-    throw new Error('Method not implemented.');
+  public abstract get specs(): EternitiesMapSpecs;
+
+  public get tiles(): Array<Tile> {
+    return this._tiles;
   }
 
   private initializeTiles(): Array<Tile> {
@@ -62,7 +78,7 @@ export abstract class EternitiesMap extends Map {
           tiles.push(new Tile(
             { x, y },
             TileStatus.VISIBLE,
-            [this.deck.drawPlane().card],
+            [this._deck.drawPlane().card],
           ));
         }
       }
@@ -77,7 +93,7 @@ export abstract class EternitiesMap extends Map {
     return Math.abs(coords.x) === 1 && Math.abs(coords.y) === 1;
   }
 
-  public export(): EternitiesMapExported {
+  public override export(): EternitiesMapExported {
     return {
       ...super.export(),
       specs: this.specs,
@@ -87,6 +103,6 @@ export abstract class EternitiesMap extends Map {
 
   protected override applyState(state: EternitiesMapExported): void {
     super.applyState(state);
-    this.tiles = (state.tiles as Array<ExportedTile>).map(Tile.fromExport);
+    this._tiles = (state.tiles as Array<ExportedTile>).map(Tile.fromExport);
   }
 }

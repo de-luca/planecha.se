@@ -2,18 +2,32 @@ import { Phenomenon } from '@/model/card';
 import { Deck, DeckState } from '@/model/deck/Deck';
 import { SingleDeckProps, SingleDeck } from './SingleDeck';
 import {
-  EncounterTriggers,
-  EternitiesMapDeckType,
-  EternitiesMapSpecs,
-  EternitiesMapSubType,
   Initable,
   MapType,
   ResolveInput,
 } from '../MapInterface';
-import { EternitiesMapExported } from './EternitiesMap';
+import { EternitiesMapDeckType, EternitiesMapExported, EternitiesMapSpecs, EternitiesMapSubType } from './EternitiesMap';
 import { StateKey } from '@/model/wall';
 import { DeckProvider } from '@/services/DeckProvider';
 import { Container } from 'typedi';
+
+export enum EncounterTrigger {
+  ON_PLANESWALK = 'ON_PLANESWALK',
+  ON_HELLRIDE = 'ON_HELLRIDE',
+}
+
+export enum EncounterMechanic {
+  MANUAL = 'MANUAL',
+  AUTO = 'AUTO',
+}
+
+export interface TriggerConfig {
+  enabled: boolean;
+  mechanic: EncounterMechanic;
+  ratio: number;
+}
+
+export type EncounterTriggers = Record<EncounterTrigger, TriggerConfig>;
 
 export interface DualDeckExported extends EternitiesMapExported {
   phenomenaDeck: DeckState;
@@ -31,58 +45,62 @@ export interface EncounterInput extends Initable {
 }
 
 export class DualDeck extends SingleDeck {
-  private phenomenaDeck: Deck<Phenomenon>;
-  public readonly encounterTriggers: EncounterTriggers;
+  private _phenomenaDeck: Deck<Phenomenon>;
+  private _encounterTriggers: EncounterTriggers;
 
   public constructor(props: DualDeckProps) {
     super(props);
 
-    this.phenomenaDeck = props.phenomenaDeck;
-    this.encounterTriggers = props.encounterTriggers;
+    this._phenomenaDeck = props.phenomenaDeck;
+    this._encounterTriggers = props.encounterTriggers;
   }
 
   public get specs(): EternitiesMapSpecs {
     return {
       type: MapType.ETERNITIES,
       subType: EternitiesMapSubType.DUAL_DECK,
-      deckType: this.deckType,
+      deckType: this._deckType,
     };
   }
 
+  public get encounterTriggers(): EncounterTriggers {
+    return this._encounterTriggers;
+  }
+
   public get remainingPhenomena(): number {
-    return this.phenomenaDeck.remaining;
+    return this._phenomenaDeck.remaining;
   }
 
   public get playedPhenomena(): Array<Phenomenon> {
-    return this.phenomenaDeck.played;
+    return this._phenomenaDeck.played;
   }
 
   public encounter(input: EncounterInput): void {
-    this.destination = input.coords;
-    this.active = [this.phenomenaDeck.draw().card];
-    this.active.forEach(c => c.enter(this.walls, input.initiator));
-    this.walls.set(StateKey.PHENOMENON_WALL, { initiator: input.initiator });
+    this._destination = input.coords;
+    this._active = [this._phenomenaDeck.draw().card];
+    this.active.forEach(c => c.enter(this._wallStates, input.initiator));
+    this._wallStates.set(StateKey.PHENOMENON_WALL, { initiator: input.initiator });
   }
 
   public override resolve(input: ResolveInput): void {
-    this.phenomenaDeck.setPlayed(...this.active as Array<Phenomenon>);
-    this.walls.delete(StateKey.PHENOMENON_WALL);
+    this._phenomenaDeck.setPlayed(...this.active as Array<Phenomenon>);
+    this._wallStates.delete(StateKey.PHENOMENON_WALL);
     this.planeswalk({
       ...input,
-      coords: this.destination as Coordinates,
+      coords: this._destination as Coordinates,
     });
   }
 
   public override export(): DualDeckExported {
     return {
       ...super.export(),
-      phenomenaDeck: this.phenomenaDeck.export(),
-      encounterTriggers: this.encounterTriggers,
+      phenomenaDeck: this._phenomenaDeck.export(),
+      encounterTriggers: this._encounterTriggers,
     };
   }
 
   protected override applyState(state: DualDeckExported): void {
     super.applyState(state);
-    this.phenomenaDeck = Container.get(DeckProvider).getDeckFromExport(state.phenomenaDeck);
+    this._phenomenaDeck = Container.get(DeckProvider).getDeckFromExport(state.phenomenaDeck);
   }
 }

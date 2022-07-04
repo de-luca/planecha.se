@@ -4,7 +4,7 @@ import { MapSpecs, MapType, PlaneswalkInput, ResolveInput } from './MapInterface
 export class Classic extends Map {
   public constructor(props: MapProps) {
     super(props);
-    this.active = props.active ?? [this.deck.drawPlane().card];
+    this._active = props.active ?? [this._deck.drawPlane().card];
   }
 
   public get specs(): MapSpecs {
@@ -12,16 +12,16 @@ export class Classic extends Map {
   }
 
   public planeswalk(input: PlaneswalkInput): void {
-    this.active.forEach(c => c.leave());
-    this.deck.setPlayed(...this.active);
+    this._active.forEach(c => c.leave());
+    this._deck.setPlayed(...this.active);
 
     if ('planes' in input) {
-      this.active = input.planes;
+      this._active = input.planes;
     } else {
-      this.active = [this.deck.draw().card];
+      this._active = [this._deck.draw().card];
     }
 
-    this.active.forEach(c => c.enter(this.walls, input.initiator));
+    this.active.forEach(c => c.enter(this._wallStates, input.initiator));
   }
 
   public resolve(input: ResolveInput): void {

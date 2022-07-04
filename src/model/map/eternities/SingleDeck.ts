@@ -1,29 +1,40 @@
 import { Phenomenon, Plane } from '@/model/card';
-import { EternitiesMap, EternitiesMapProps, PlaneswalkInput } from './EternitiesMap';
+import { EternitiesMap, EternitiesMapExported, EternitiesMapProps, EternitiesMapSpecs, EternitiesMapSubType, PlaneswalkInput } from './EternitiesMap';
 import {
   CustomEternitiesPlaneswalkInput,
-  EternitiesMapSpecs,
-  EternitiesMapSubType,
   EternitiesPlaneswalkInput,
   MapType,
   ResolveInput,
 } from '../MapInterface';
 import { StateKey } from '@/model/wall';
-import { Tile, TileStatus } from '../Tile';
+import { Tile, TileStatus } from './Tile';
 
-export interface SingleDeckProps extends EternitiesMapProps {}
+export interface SingleDeckExported extends EternitiesMapExported {
+  destination?: Coordinates;
+}
+
+export interface SingleDeckProps extends EternitiesMapProps {
+  destination?: Coordinates;
+}
 
 export class SingleDeck extends EternitiesMap {
+  protected _destination?: Coordinates;
+
   public constructor(props: SingleDeckProps) {
     super(props);
+    this._destination = props.destination;
   }
 
   public get specs(): EternitiesMapSpecs {
     return {
       type: MapType.ETERNITIES,
       subType: EternitiesMapSubType.SINGLE_DECK,
-      deckType: this.deckType,
+      deckType: this._deckType,
     };
+  }
+
+  public get destination(): Coordinates | undefined {
+    return this._destination;
   }
 
   public planeswalk(input: PlaneswalkInput): void {
@@ -55,7 +66,7 @@ export class SingleDeck extends EternitiesMap {
     } else {
       // It does not exist (HellRiding)
       // Draw a card and put it in place
-      const drawn = this.deck.draw();
+      const drawn = this._deck.draw();
       shuffled = drawn.shuffled;
 
       // This is a Phenomenon
@@ -82,7 +93,7 @@ export class SingleDeck extends EternitiesMap {
     }
 
     // Actualy change the active pointer
-    this.active = newActiveTile.plane;
+    this._active = newActiveTile.plane;
 
     // Look over the board
     for (
@@ -103,7 +114,7 @@ export class SingleDeck extends EternitiesMap {
           const tile = this.tiles.find((t) => t.coords.x === x && t.coords.y === y);
           if (!tile) {
             // NO?!! Then draw and place a plane
-            const drawn = this.deck.draw();
+            const drawn = this._deck.draw();
             shuffled = drawn.shuffled;
 
             if (drawn.card instanceof Phenomenon) {
@@ -135,21 +146,21 @@ export class SingleDeck extends EternitiesMap {
 
     this.tiles
       .filter(t => Math.abs(t.coords.x) + Math.abs(t.coords.y) > SingleDeck.maxRange)
-      .forEach(t => this.deck.setPlayed(...t.plane));
+      .forEach(t => this._deck.setPlayed(...t.plane));
 
     // Remove all the plan that are too far
-    this.tiles = this.tiles.filter((t) => (
+    this._tiles = this.tiles.filter((t) => (
       Math.abs(t.coords.x) + Math.abs(t.coords.y) <= SingleDeck.maxRange
     ));
 
-    this.destination = undefined;
+    this._destination = undefined;
 
-    this.active.forEach(c => c.enter(this.walls, input.initiator));
+    this.active.forEach(c => c.enter(this._wallStates, input.initiator));
   }
 
   private customPlaneswalk(input: CustomEternitiesPlaneswalkInput): void {
-    const xOffset = (this.destination as Coordinates).x;
-    const yOffset = (this.destination as Coordinates).y;
+    const xOffset = (this._destination as Coordinates).x;
+    const yOffset = (this._destination as Coordinates).y;
 
     let destinationTile = this.tiles.find(
       t => t.coords.x === xOffset && t.coords.y === yOffset,
@@ -172,18 +183,30 @@ export class SingleDeck extends EternitiesMap {
     coords: Coordinates,
     initiator: string,
   ): void {
-    this.active = [card];
-    this.destination = coords;
-    this.active.forEach(c => c.enter(this.walls, initiator));
-    this.walls.set(StateKey.PHENOMENON_WALL, { initiator });
+    this._active = [card];
+    this._destination = coords;
+    this.active.forEach(c => c.enter(this._wallStates, initiator));
+    this._wallStates.set(StateKey.PHENOMENON_WALL, { initiator });
   }
 
   public resolve(input: ResolveInput): void {
-    this.deck.setPlayed(...this.active);
-    this.walls.delete(StateKey.PHENOMENON_WALL);
+    this._deck.setPlayed(...this.active);
+    this._wallStates.delete(StateKey.PHENOMENON_WALL);
     this.planeswalk({
       ...input,
-      coords: this.destination as Coordinates,
+      coords: this._destination as Coordinates,
     });
+  }
+
+  public override export(): SingleDeckExported {
+    return {
+      ...super.export(),
+      destination: this._destination,
+    };
+  }
+
+  protected override applyState(state: SingleDeckExported): void {
+    super.applyState(state);
+    this._destination = state.destination;
   }
 }

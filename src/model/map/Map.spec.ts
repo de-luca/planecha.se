@@ -12,7 +12,7 @@ class TestMap extends Map {
     return { type: MapType.EMPTY };
   }
   public testActive(): void {
-    this.active = [ this.deck.draw().card ];
+    this._active = [ this._deck.draw().card ];
   }
   public planeswalk(): boolean {
     throw new Error('Method not implemented.');
@@ -29,7 +29,7 @@ describe('Map.ready', () => {
   it('resolves', async() => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
 
     let ready = false;
@@ -46,7 +46,7 @@ describe('Map.chaos', () => {
   it('triggers chaos', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
     map.active.forEach(card => card.chaos = vi.fn());
     map.chaos({ initiator: 'foo' });
@@ -58,7 +58,7 @@ describe('Map.updateCounter', () => {
   it('updates card counters', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getPlaneDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
     map.testActive();
     map.active.forEach((card) => {
@@ -75,7 +75,7 @@ describe('Map.revealUntil', () => {
   it('reveals a given number of requested Card', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
     map.revealUntil({ count: 2 });
     expect(map.revealed?.relevant).toHaveLength(2);
@@ -90,11 +90,11 @@ describe('Map.resolveReveal', () => {
   it('puts back cards on top and bottom', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
 
-    const putOnTop = vi.spyOn(map['deck'], 'putOnTop');
-    const putOnTheBottom = vi.spyOn(map['deck'], 'putOnTheBottom');
+    const putOnTop = vi.spyOn(map['_deck'], 'putOnTop');
+    const putOnTheBottom = vi.spyOn(map['_deck'], 'putOnTheBottom');
     eventBus.emit = vi.fn();
 
     map.revealUntil({ count: 2 });
@@ -104,8 +104,8 @@ describe('Map.resolveReveal', () => {
     expect(putOnTop).toHaveBeenCalled();
     expect(putOnTheBottom).toHaveBeenCalled();
 
-    expect(map['deck']['cards'][0]).toEqual(top);
-    expect(map['deck']['cards'][map.remaining - 1]).toEqual(bottom);
+    expect(map['_deck']['cards'][0]).toEqual(top);
+    expect(map['_deck']['cards'][map.remaining - 1]).toEqual(bottom);
     expect(map.revealed).toBeUndefined();
   });
 });
@@ -114,7 +114,7 @@ describe('Map.export', () => {
   it('exports the state of the map', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
     const exported = map.export();
     expect(exported.specs.type).toEqual(MapType.EMPTY);
@@ -131,14 +131,14 @@ describe('Map.apply', () => {
   it('applies patch the states of the map', () => {
     const map = new TestMap({
       deck: Container.get(DeckProvider).getDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
 
     // Get a base state
     const base = map.export();
 
     // Do actions to modify the state
-    map.hasStarted = true;
+    map.start();
     map.testActive();
 
     // Get the new state

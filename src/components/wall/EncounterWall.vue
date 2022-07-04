@@ -66,9 +66,10 @@
 
 <script lang="ts">
 import { mixins, Options, prop } from 'vue-class-component';
-import { EncounterMechanic, TriggerConfig } from '@/model/map';
+import {  } from '@/model/map';
 import { WallProps } from './WallProps';
 import { Imgable } from '../Imgable';
+import { EncounterMechanic, TriggerConfig } from '@/model/map/eternities';
 
 class Props extends WallProps {
   public coords = prop<Coordinates>({ required: true });

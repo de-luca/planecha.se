@@ -36,7 +36,7 @@ describe('versionizer', () => {
     };
     await store.init(props);
     store.startGame();
-    store.planeswalk();
+    store.planeswalk({});
     expect(version.head).toEqual(store.map.export());
     expect(version.patches).toHaveLength(3);
     expect(version.patches[0].playHead).toEqual(0);

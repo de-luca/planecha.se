@@ -1,18 +1,14 @@
 import { Inject, Service } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
-import { SingleDeck, SingleDeckProps } from './SingleDeck';
-import { DualDeck, DualDeckExported } from './DualDeck';
+import { SingleDeck, SingleDeckExported, SingleDeckProps } from './SingleDeck';
+import { DualDeck, DualDeckExported, EncounterTriggers } from './DualDeck';
 import {
-  EncounterTriggers,
-  EternitiesMapDeckType,
-  EternitiesMapSpecs,
-  EternitiesMapSubType,
   MapInterface,
 } from '../MapInterface';
-import { Tile } from '../Tile';
+import { Tile } from './Tile';
 import { Card, Plane } from '@/model/card';
 import { Deck } from '@/model/deck/Deck';
-import { EternitiesMapExported } from './EternitiesMap';
+import { EternitiesMapDeckType, EternitiesMapExported, EternitiesMapSpecs, EternitiesMapSubType } from './EternitiesMap';
 import { WallStates } from '@/model/wall';
 
 @Service()
@@ -31,14 +27,14 @@ export class EternitiesMapFactory {
     if (specs.subType === EternitiesMapSubType.SINGLE_DECK) {
       return new SingleDeck({
         deck,
-        walls: state,
+        wallStates: state,
         deckType: specs.deckType,
       });
     }
 
     return new DualDeck({
       deck,
-      walls: state,
+      wallStates: state,
       deckType: EternitiesMapDeckType.PLANES,
       phenomenaDeck: this.deckProvider.getPhenomenonDeck(),
       encounterTriggers: encounterTriggers as EncounterTriggers,
@@ -61,7 +57,7 @@ export class EternitiesMapFactory {
   public restore(payload: EternitiesMapExported): MapInterface {
     const specs = payload.specs as EternitiesMapSpecs;
     const props: SingleDeckProps = {
-      walls: new WallStates(payload.wallStates),
+      wallStates: new WallStates(payload.wallStates),
       hasStarted: payload.hasStarted,
       deckType: specs.deckType,
       deck: this.deckProvider.getDeckFromExport<Plane>(payload.deck),
@@ -73,11 +69,13 @@ export class EternitiesMapFactory {
         }
         : undefined,
       tiles: payload.tiles?.map(Tile.fromExport),
-      destination: payload.destination,
     };
 
     if (specs.subType === EternitiesMapSubType.SINGLE_DECK) {
-      return new SingleDeck(props);
+      return new SingleDeck({
+        ...props,
+        destination: (payload as SingleDeckExported).destination,
+      });
     }
 
     return new DualDeck({

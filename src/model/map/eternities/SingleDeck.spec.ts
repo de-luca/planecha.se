@@ -2,19 +2,16 @@ import { describe, it, expect } from 'vitest';
 import { Container } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
 import { SingleDeck } from './SingleDeck';
-import {
-  MapType,
-  EternitiesMapDeckType,
-  EternitiesMapSubType,
-} from '..';
+import { MapType } from '..';
 import { WallStates } from '@/model/wall';
+import { EternitiesMapDeckType, EternitiesMapSubType } from './EternitiesMap';
 
 describe('EternitiesMap.type', () => {
   it('returns the type', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
     expect(map.specs.type).toEqual(MapType.ETERNITIES);
     expect(map.specs.subType).toEqual(EternitiesMapSubType.SINGLE_DECK);
@@ -28,7 +25,7 @@ describe('EternitiesMap.initializeTiles', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
     expect(map.tiles).toHaveLength(5);
   });
@@ -39,7 +36,7 @@ describe('EternitiesMap.planeswalk', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
     const currentActive = map.active;
     map.planeswalk({ initiator: 'foo', coords: { x: 1, y: 0 } });
@@ -50,7 +47,7 @@ describe('EternitiesMap.planeswalk', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
     map.planeswalk({ initiator: 'foo', coords: { x: 1, y: 0 } });
     expect(map.tiles).toHaveLength(8);
@@ -67,7 +64,7 @@ describe('EternitiesMap.planeswalk', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
     map.planeswalk({ initiator: 'foo', coords: { x: -1, y: 0 } });
     expect(map.tiles).toHaveLength(8);
@@ -84,7 +81,7 @@ describe('EternitiesMap.planeswalk', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
     map.planeswalk({ initiator: 'foo', coords: { x: 0, y: 1 } });
     expect(map.tiles).toHaveLength(8);
@@ -101,7 +98,7 @@ describe('EternitiesMap.planeswalk', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
     map.planeswalk({ initiator: 'foo', coords: { x: 0, y: -1 } });
     expect(map.tiles).toHaveLength(8);
@@ -118,7 +115,7 @@ describe('EternitiesMap.planeswalk', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
 
     map.planeswalk({ initiator: 'foo', coords: { x: 0, y: -1 } });
@@ -152,7 +149,7 @@ describe('EternitiesMap.export', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
       deck: Container.get(DeckProvider).getPlaneDeck(),
-      walls: new WallStates(),
+      wallStates: new WallStates(),
     });
     const exported = map.export();
     expect(exported.specs.type).toEqual(MapType.ETERNITIES);

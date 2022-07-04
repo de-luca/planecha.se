@@ -35,7 +35,8 @@
 import { Options, Vue } from 'vue-class-component';
 import { useMain } from '@/store/main';
 import { Component } from '@vue/runtime-core';
-import { MapType, EternitiesMapSpecs, EternitiesMapSubType } from '@/model/map';
+import { MapType } from '@/model/map';
+import { EternitiesMapSpecs, EternitiesMapSubType } from '@/model/map/eternities';
 import { eventBus, EventType } from '@/services/EventBus';
 
 import ClassicMap from '@/components/classic/ClassicMap.vue';

@@ -60,16 +60,17 @@
 import { mixins, Options } from 'vue-class-component';
 import { EternitiesMap } from '@/components/eternities/EternitiesMap';
 import {
-  EncounterMechanic,
-  EncounterTrigger,
-  EncounterTriggers,
-  TriggerConfig,
-} from '@/model/map';
-import {
   EncounterWallState,
   StateKey,
   StateOp,
 } from '@/model/wall';
+import {
+  DualDeck,
+  EncounterMechanic,
+  EncounterTrigger,
+  EncounterTriggers,
+  TriggerConfig,
+} from '@/model/map/eternities';
 import { WallConfig } from '../wall/WallProps';
 
 import ChaosBtn from '@/components/btn/ChaosBtn.vue';
@@ -103,12 +104,12 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
 
   public created(): void {
     this.setUp();
-    this.triggers = this.store.map.encounterTriggers;
+    this.triggers = (this.store.map as DualDeck).encounterTriggers;
   }
 
   public get encounterWallConfig(): LocalEncounterWallConfig | undefined {
     const wall =
-      this.store.map.walls.get<EncounterWallState>(StateKey.ENCOUNTER_WALL);
+      this.store.map.wallStates.get<EncounterWallState>(StateKey.ENCOUNTER_WALL);
 
     if (!wall) {
       return undefined;

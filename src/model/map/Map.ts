@@ -5,14 +5,12 @@ import { DeckProvider } from '@/services/DeckProvider';
 import { Card, Plane } from '../card';
 import { Deck } from '../deck/Deck';
 import { WallStates, StateKey } from '../wall';
-import { Tile } from './Tile';
 import {
   ChaosInput,
   Exported,
   MapSpecs,
   MapInterface,
   Revealed,
-  EncounterTriggers,
   Patch,
   PlaneswalkInput,
   ResolveInput,
@@ -23,33 +21,26 @@ import {
 
 
 export interface MapProps {
-  walls: WallStates;
+  wallStates: WallStates;
   hasStarted?: boolean;
   deck: Deck<Card>;
   active?: Array<Card>;
   revealed?: Revealed;
-  destination?: Coordinates;
 }
 
 export abstract class Map implements MapInterface {
-  protected deck: Deck<Card>;
-  public walls: WallStates;
-  public hasStarted: boolean;
-
-  public active: Array<Card>;
-  public revealed?: Revealed;
-
-  public tiles: Array<Tile> = [];
-  public destination?: Coordinates;
-  public readonly encounterTriggers: EncounterTriggers;
+  protected _deck: Deck<Card>;
+  protected _hasStarted: boolean;
+  protected _wallStates: WallStates;
+  protected _revealed?: Revealed;
+  protected _active: Array<Card>;
 
   public constructor(props: MapProps) {
-    this.deck = props.deck;
-    this.walls = props.walls;
-    this.hasStarted = props.hasStarted ?? false;
-    this.active = props.active ?? [];
-    this.revealed = props.revealed;
-    this.destination = props.destination;
+    this._deck = props.deck;
+    this._wallStates = props.wallStates;
+    this._hasStarted = props.hasStarted ?? false;
+    this._revealed = props.revealed;
+    this._active = props.active ?? [];
   }
 
   public abstract get specs(): MapSpecs;
@@ -58,16 +49,36 @@ export abstract class Map implements MapInterface {
     return new Promise(resolve => resolve());
   }
 
+  public get hasStarted(): boolean {
+    return this._hasStarted;
+  }
+
+  public get wallStates(): WallStates {
+    return this._wallStates;
+  }
+
+  public get revealed(): Revealed | undefined {
+    return this._revealed;
+  }
+
+  public get active(): Array<Card> {
+    return this._active;
+  }
+
   public get remaining(): number {
-    return this.deck.remaining;
+    return this._deck.remaining;
   }
 
   public get played(): Array<Card> {
-    return this.deck.played;
+    return this._deck.played;
+  }
+
+  public start(): void {
+    this._hasStarted = true;
   }
 
   public chaos(input: ChaosInput): void {
-    this.active.forEach(c => c.chaos(this.walls, input.initiator));
+    this._active.forEach(c => c.chaos(this._wallStates, input.initiator));
   }
 
   public abstract planeswalk(input: PlaneswalkInput): void;
@@ -75,42 +86,41 @@ export abstract class Map implements MapInterface {
   public abstract resolve(input: ResolveInput): void;
 
   public updateCounter(input: UpdateCounterInput): void {
-    (this.active.find(c => c.id === input.planeId) as Plane)
+    (this._active.find(c => c.id === input.planeId) as Plane)
       .updateCounter(input.change);
   }
 
   public revealUntil(input: RevealUntilInput): void {
-    const { relevant, others } = this.deck.revealUntil(
+    const { relevant, others } = this._deck.revealUntil(
       input.count,
       input.type,
     );
-    this.revealed = { relevant, others };
+    this._revealed = { relevant, others };
   }
 
   public resolveReveal(input: ResolveRevealInput): void {
-    this.deck.putOnTop(input.top);
-    this.deck.putOnTheBottom(input.bottom);
+    this._deck.putOnTop(input.top);
+    this._deck.putOnTheBottom(input.bottom);
     this.clearRevealed();
-    this.walls.delete(StateKey.REVEALER);
+    this._wallStates.delete(StateKey.REVEALER);
   }
 
   private clearRevealed(): void {
-    this.revealed = undefined;
+    this._revealed = undefined;
   }
 
   public export(): Exported {
     return {
       specs: this.specs,
-      hasStarted: this.hasStarted,
-      destination: this.destination,
-      wallStates: this.walls.export(),
-      deck: this.deck.export(),
-      active: this.active.map(c => c.export()),
-      revealed: this.revealed === undefined
+      hasStarted: this._hasStarted,
+      wallStates: this._wallStates.export(),
+      deck: this._deck.export(),
+      active: this._active.map(c => c.export()),
+      revealed: this._revealed === undefined
         ? undefined
         : {
-          relevant: this.revealed.relevant.map(c => c.id),
-          others: this.revealed.others.map(c => c.id),
+          relevant: this._revealed.relevant.map(c => c.id),
+          others: this._revealed.others.map(c => c.id),
         },
     };
   }
@@ -127,12 +137,11 @@ export abstract class Map implements MapInterface {
   }
 
   protected applyState(state: Exported): void {
-    this.hasStarted = state.hasStarted;
-    this.destination = state.destination;
-    this.walls = new WallStates(state.wallStates);
-    this.deck = Container.get(DeckProvider).getDeckFromExport(state.deck);
-    this.active = Container.get(DeckProvider).getPileWithState(state.active);
-    this.revealed = state.revealed === undefined
+    this._hasStarted = state.hasStarted;
+    this._wallStates = new WallStates(state.wallStates);
+    this._deck = Container.get(DeckProvider).getDeckFromExport(state.deck);
+    this._active = Container.get(DeckProvider).getPileWithState(state.active);
+    this._revealed = state.revealed === undefined
       ? undefined
       : {
         relevant: Container.get(DeckProvider).getOrderedPile(state.revealed.relevant),

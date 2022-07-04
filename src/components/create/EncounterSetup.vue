@@ -106,8 +106,8 @@
 </template>
 
 <script lang="ts">
-import { EncounterMechanic, EncounterTriggers } from '@/model/map';
 import { Options, Vue, prop } from 'vue-class-component';
+import { EncounterMechanic, EncounterTriggers } from '@/model/map/eternities';
 
 
 class Props {

@@ -120,7 +120,7 @@ export const useMain = defineStore('main', {
     },
 
     startGame(): void {
-      this.map.hasStarted = true;
+      this.map.start();
     },
 
     chaos(): void {
@@ -143,7 +143,7 @@ export const useMain = defineStore('main', {
     },
 
     updateWallState(payload: ApplyInput) {
-      this.map.walls.apply(payload);
+      this.map.wallStates.apply(payload);
     },
 
     encounter(payload: Omit<EncounterInput, 'initiator'>) {
