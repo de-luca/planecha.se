@@ -46,7 +46,6 @@ export class SingleDeck extends EternitiesMap {
   }
 
   private simplePlaneswalk(input: EternitiesPlaneswalkInput): void {
-    let shuffled = false;
     const xOffset = input.coords.x;
     const yOffset = input.coords.y;
 
@@ -67,13 +66,12 @@ export class SingleDeck extends EternitiesMap {
       // It does not exist (HellRiding)
       // Draw a card and put it in place
       const drawn = this._deck.draw();
-      shuffled = drawn.shuffled;
 
       // This is a Phenomenon
-      if (drawn.card instanceof Phenomenon) {
+      if (drawn instanceof Phenomenon) {
         // Special encounter
         this.encounterPhenomenon(
-          drawn.card,
+          drawn,
           { x: xOffset, y: yOffset },
           input.initiator,
         );
@@ -86,7 +84,7 @@ export class SingleDeck extends EternitiesMap {
       newActiveTile = new Tile(
         { x: xOffset, y: yOffset },
         TileStatus.ACTIVE,
-        [ drawn.card as Plane ],
+        [ drawn as Plane ],
       );
 
       this.tiles.push(newActiveTile);
@@ -115,12 +113,11 @@ export class SingleDeck extends EternitiesMap {
           if (!tile) {
             // NO?!! Then draw and place a plane
             const drawn = this._deck.draw();
-            shuffled = drawn.shuffled;
 
-            if (drawn.card instanceof Phenomenon) {
+            if (drawn instanceof Phenomenon) {
               // Special encounter
               this.encounterPhenomenon(
-                drawn.card,
+                drawn,
                 { x: xOffset, y: yOffset },
                 input.initiator,
               );
@@ -131,7 +128,7 @@ export class SingleDeck extends EternitiesMap {
             this.tiles.push(new Tile(
               { x, y },
               TileStatus.VISIBLE,
-              [ drawn.card as Plane ],
+              [ drawn as Plane ],
             ));
           }
         }

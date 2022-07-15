@@ -56,7 +56,7 @@ describe('DeckProvider.getPlaneDeck', () => {
     const planeDeck = provider.getPlaneDeck();
     expect(planeDeck.remaining).toEqual(78);
     while (planeDeck.remaining > 0) {
-      expect(planeDeck.draw().card).toBeInstanceOf(Plane);
+      expect(planeDeck.draw()).toBeInstanceOf(Plane);
     }
   });
 });
@@ -66,7 +66,7 @@ describe('DeckProvider.getPhenomenonDeck', () => {
     const planeDeck = provider.getPhenomenonDeck();
     expect(planeDeck.remaining).toEqual(8);
     while (planeDeck.remaining > 0) {
-      expect(planeDeck.draw().card).toBeInstanceOf(Phenomenon);
+      expect(planeDeck.draw()).toBeInstanceOf(Phenomenon);
     }
   });
 });
@@ -80,7 +80,7 @@ describe('DeckProvider.getSpecificDeck', () => {
     const deck = provider.getSpecificDeck(ids);
     expect(deck.remaining).toEqual(2);
     while (deck.remaining > 0) {
-      expect(ids).toContain(deck.draw().card.id);
+      expect(ids).toContain(deck.draw().id);
     }
   });
 });
@@ -93,21 +93,21 @@ describe('DeckProvider.getOrderedDeck', () => {
     ];
     const deck = provider.getOrderedDeck(ids);
     expect(deck.remaining).toEqual(2);
-    expect(deck.draw().card.id).toEqual(ids[0]);
-    expect(deck.draw().card.id).toEqual(ids[1]);
+    expect(deck.draw().id).toEqual(ids[0]);
+    expect(deck.draw().id).toEqual(ids[1]);
   });
 });
 
 describe('DeckProvider.getDeckFromExport', () => {
   it('returns a Deck from a DeckState', () => {
     const deck = provider.getDeckFromExport({
-      cards: ['56a1afab-782c-4f31-96f5-17b676852fea'],
-      played: ['5d87893f-36e0-4621-a139-fedbc74ed4c5'],
+      cards: [{ id: '56a1afab-782c-4f31-96f5-17b676852fea' }],
+      played: [{ id: '5d87893f-36e0-4621-a139-fedbc74ed4c5' }],
     });
     expect(deck.remaining).toEqual(1);
     expect(deck.played).toHaveLength(1);
     expect(deck.played[0].id).toEqual('5d87893f-36e0-4621-a139-fedbc74ed4c5');
-    expect(deck.draw().card.id).toEqual('56a1afab-782c-4f31-96f5-17b676852fea');
+    expect(deck.draw().id).toEqual('56a1afab-782c-4f31-96f5-17b676852fea');
   });
 });
 

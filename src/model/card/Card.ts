@@ -3,14 +3,14 @@ import { Props } from './CardFactory';
 import { CardInterface, ExportedCard } from './CardInterface';
 
 export abstract class Card implements CardInterface {
-  public id: string;
-  public oracleId: string;
-  public multiverseIds: Array<number>;
-  public name: string;
-  public scryfallUri: string;
-  public typeLine: string;
-  public oracleText: string;
-  public gathererUri: string;
+  public readonly id: string;
+  public readonly oracleId: string;
+  public readonly multiverseIds: Array<number>;
+  public readonly name: string;
+  public readonly scryfallUri: string;
+  public readonly typeLine: string;
+  public readonly oracleText: string;
+  public readonly gathererUri: string;
 
   public constructor(props: Props) {
     this.id = props.id;
@@ -22,7 +22,6 @@ export abstract class Card implements CardInterface {
     this.oracleText = props.oracleText;
     this.gathererUri = props.gathererUri;
   }
-  public abstract get type(): string;
 
   public abstract chaos(walls: WallStates, initiator: string): void;
   public abstract enter(walls: WallStates, initiator: string): void;

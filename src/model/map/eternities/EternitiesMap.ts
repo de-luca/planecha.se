@@ -25,7 +25,7 @@ export interface EternitiesMapSpecs extends MapSpecs {
 
 export interface EternitiesMapExported extends Exported {
   specs: EternitiesMapSpecs;
-  tiles?: Array<ExportedTile>;
+  tiles: Array<ExportedTile>;
 }
 
 export interface EternitiesMapProps extends MapProps {
@@ -45,11 +45,11 @@ export abstract class EternitiesMap extends Map {
   protected _deckType: EternitiesMapDeckType;
   protected _tiles: Array<Tile>;
 
-  protected constructor(props: EternitiesMapProps) {
+  public constructor(props: EternitiesMapProps) {
     super(props);
 
     this._deck = props.deck;
-    this._active = props.active ?? [this._deck.drawPlane().card];
+    this._active = props.active ?? [this._deck.drawPlane()];
     this._tiles = props.tiles ?? this.initializeTiles();
     this._deckType = props.deckType;
   }
@@ -78,7 +78,7 @@ export abstract class EternitiesMap extends Map {
           tiles.push(new Tile(
             { x, y },
             TileStatus.VISIBLE,
-            [this._deck.drawPlane().card],
+            [this._deck.drawPlane()],
           ));
         }
       }

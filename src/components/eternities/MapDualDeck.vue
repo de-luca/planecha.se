@@ -166,6 +166,7 @@ export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
   ): void {
     if (trigger) {
       if (
+        trigger.enabled &&
         trigger.mechanic === EncounterMechanic.AUTO &&
         trigger.ratio === 1
       ) {

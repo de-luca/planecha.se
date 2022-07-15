@@ -6,7 +6,7 @@ import { MapType } from '..';
 import { WallStates } from '@/model/wall';
 import { EternitiesMapDeckType, EternitiesMapSubType } from './EternitiesMap';
 
-describe('EternitiesMap.type', () => {
+describe('SingleDeck.specs', () => {
   it('returns the type', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
@@ -19,19 +19,7 @@ describe('EternitiesMap.type', () => {
   });
 });
 
-describe('EternitiesMap.initializeTiles', () => {
-  it('initializes board tiles', () => {
-    // it's called in the constructor...
-    const map = new SingleDeck({
-      deckType: EternitiesMapDeckType.PLANES,
-      deck: Container.get(DeckProvider).getPlaneDeck(),
-      wallStates: new WallStates(),
-    });
-    expect(map.tiles).toHaveLength(5);
-  });
-});
-
-describe('EternitiesMap.planeswalk', () => {
+describe('SingleDeck.planeswalk', () => {
   it('changes current active plane', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,
@@ -144,7 +132,7 @@ describe('EternitiesMap.planeswalk', () => {
   });
 });
 
-describe('EternitiesMap.export', () => {
+describe('SingleDeck.export', () => {
   it('exports the state of the map', () => {
     const map = new SingleDeck({
       deckType: EternitiesMapDeckType.PLANES,

@@ -14,18 +14,38 @@ export interface ExportedTile {
 }
 
 export class Tile {
-  public coords: Coordinates;
-  public state: TileStatus;
-  public plane: Array<Plane>;
+  private _coords: Coordinates;
+  private _state: TileStatus;
+  private _plane: Array<Plane>;
 
   public constructor(
     coords: Coordinates,
     state: TileStatus,
     plane: Array<Plane>,
   ) {
-    this.coords = coords;
-    this.state = state;
-    this.plane = plane;
+    this._coords = coords;
+    this._state = state;
+    this._plane = plane;
+  }
+
+  public get coords(): Coordinates {
+    return this._coords;
+  }
+
+  public get state(): TileStatus {
+    return this._state;
+  }
+
+  public set state(status: TileStatus) {
+    this._state = status;
+  }
+
+  public get plane(): Array<Plane> {
+    return this._plane;
+  }
+
+  public set plane(planes: Array<Plane>) {
+    this._plane = planes;
   }
 
   public static fromExport(tile: ExportedTile): Tile {
@@ -38,9 +58,9 @@ export class Tile {
 
   public export(): ExportedTile {
     return {
-      coords: { ...this.coords },
-      state: this.state,
-      plane: this.plane.map(p => p.export()),
+      coords: { ...this._coords },
+      state: this._state,
+      plane: this._plane.map(p => p.export()),
     };
   }
 }

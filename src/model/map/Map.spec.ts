@@ -12,7 +12,7 @@ class TestMap extends Map {
     return { type: MapType.EMPTY };
   }
   public testActive(): void {
-    this._active = [ this._deck.draw().card ];
+    this._active = [ this._deck.draw() ];
   }
   public planeswalk(): boolean {
     throw new Error('Method not implemented.');
@@ -104,8 +104,8 @@ describe('Map.resolveReveal', () => {
     expect(putOnTop).toHaveBeenCalled();
     expect(putOnTheBottom).toHaveBeenCalled();
 
-    expect(map['_deck']['cards'][0]).toEqual(top);
-    expect(map['_deck']['cards'][map.remaining - 1]).toEqual(bottom);
+    expect(map['_deck']['_cards'][0]).toEqual(top);
+    expect(map['_deck']['_cards'][map.remaining - 1]).toEqual(bottom);
     expect(map.revealed).toBeUndefined();
   });
 });

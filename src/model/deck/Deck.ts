@@ -1,68 +1,61 @@
 import { shuffle as _shuffle } from '@/services/shuffle';
-import { Card, Plane } from '../card';
+import { Card, ExportedCard, Plane } from '../card';
 
 export interface DeckState {
-  cards: Array<string>;
-  played: Array<string>;
+  cards: Array<ExportedCard>;
+  played: Array<ExportedCard>;
 }
 
 export class Deck<T extends Card> {
-  private cards: Array<T>;
-  public played: Array<T>;
+  private _cards: Array<T>;
+  private _played: Array<T>;
 
   public constructor(cards: Array<T>, played?: Array<T>) {
-    this.cards = cards;
-    this.played = played ?? [];
+    this._cards = cards;
+    this._played = played ?? [];
   }
 
   public get remaining(): number {
-    return this.cards.length;
+    return this._cards.length;
   }
 
-  public draw(): { card: T, shuffled: boolean } {
-    // Reach for the top card
-    const card = this.cards.shift();
+  public get played(): Array<T> {
+    return this._played;
+  }
 
-    // There's nothing, like the deep void in your heart
+  public draw(): T {
+    const card = this._cards.shift();
     if (!card) {
       this.shuffle();
-
-      return {
-        card: this.cards.shift() as T,
-        shuffled: true,
-      };
+      return this._cards.shift() as T;
     }
-
-    return { card: card as T, shuffled: false };
+    return card as T;
   }
 
   public setPlayed(...cards: Array<T>): void {
-    this.played.push(...cards);
+    this._played.push(...cards);
   }
 
-  public drawPlane(): { card: Plane, shuffled: boolean } {
+  public drawPlane(): Plane {
     let card: Card;
-    let shuffled: boolean;
     let found = false;
 
     do {
       // Draw card
-      ({ card, shuffled } = this.draw());
+      card = this.draw();
       if (card instanceof Plane) {
-        // it's a plane
         found = true;
       } else {
-        // it's a phenomenon, put it in the bottom
-        this.cards.push(card as T);
+        this._cards.push(card as T);
       }
     } while (!found);
 
-    return { card: card as Plane, shuffled };
+    return card as Plane;
   }
 
   public shuffle(): void {
-    this.cards = _shuffle([...this.cards, ...this.played]);
-    this.played = [];
+    this._cards = _shuffle([...this._cards, ...this._played]);
+    this._played = [];
   }
 
   public revealUntil(
@@ -71,41 +64,36 @@ export class Deck<T extends Card> {
   ): {
     relevant: Array<Card>;
     others: Array<Card>;
-    shuffled: boolean;
   } {
     const relevant: Array<Card> = [];
     const others: Array<Card> = [];
-
-    let shuffled = false;
     let found = 0;
 
     do {
       const drawn = this.draw();
-      shuffled = drawn.shuffled;
-
-      if (drawn.card instanceof type) {
+      if (drawn instanceof type) {
         found++;
-        relevant.push(drawn.card);
+        relevant.push(drawn);
       } else {
-        others.push(drawn.card);
+        others.push(drawn);
       }
     } while (found < count);
 
-    return { relevant, others, shuffled };
+    return { relevant, others };
   }
 
   public putOnTop(cards: Array<T>): void {
-    this.cards.unshift(...cards);
+    this._cards.unshift(...cards);
   }
 
   public putOnTheBottom(cards: Array<T>): void {
-    this.cards.push(...cards);
+    this._cards.push(...cards);
   }
 
   public export(): DeckState {
     return {
-      cards: this.cards.map(c => c.id),
-      played: this.played.map(c => c.id),
+      cards: this._cards.map(c => c.export()),
+      played: this._played.map(c => c.export()),
     };
   }
 }

@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { Container } from 'typedi';
 import { DeckProvider } from '@/services/DeckProvider';
 import { Card, Plane } from '../card';
@@ -10,23 +10,23 @@ describe('Deck.draw', () => {
     const deck = provider.getDeck();
     expect(deck.remaining).toEqual(86);
     const drawn = deck.draw();
-    expect(drawn.card).toBeInstanceOf(Card);
-    expect(drawn.shuffled).toEqual(false);
+    expect(drawn).toBeInstanceOf(Card);
     expect(deck.remaining).toEqual(85);
   });
 
   it('reshuffle and draws a card', () => {
     const deck = provider.getDeck();
+    const shuffleSpy = vi.spyOn(deck, 'shuffle');
     while(deck.remaining > 0) {
-      deck.setPlayed(deck.draw().card);
+      deck.setPlayed(deck.draw());
     }
     expect(deck.played).toHaveLength(86);
     expect(deck.remaining).toEqual(0);
     const drawn = deck.draw();
-    expect(drawn.card).toBeInstanceOf(Card);
-    expect(drawn.shuffled).toEqual(true);
+    expect(drawn).toBeInstanceOf(Card);
     expect(deck.remaining).toEqual(85);
     expect(deck.played).toHaveLength(0);
+    expect(shuffleSpy).toHaveBeenCalled();
   });
 });
 
@@ -34,7 +34,7 @@ describe('Deck.setPlayed', () => {
   it('sets a played card in the played pile', () => {
     const deck = provider.getDeck();
     const drawn = deck.draw();
-    deck.setPlayed(drawn.card);
+    deck.setPlayed(drawn);
     expect(deck.remaining).toEqual(85);
     expect(deck.played).toHaveLength(1);
   });
@@ -44,8 +44,7 @@ describe('Deck.drawPlane', () => {
   it('draws a plane', () => {
     const deck = provider.getDeck();
     const drawn = deck.drawPlane();
-    expect(drawn.card).toBeInstanceOf(Plane);
-    expect(drawn.shuffled).toEqual(false);
+    expect(drawn).toBeInstanceOf(Plane);
     expect(deck.remaining).toEqual(85);
   });
 });
@@ -54,7 +53,7 @@ describe('Deck.shuffle', () => {
   it('shuffled played cards back', () => {
     const deck = provider.getDeck();
     while(deck.remaining > 0) {
-      deck.setPlayed(deck.draw().card);
+      deck.setPlayed(deck.draw());
     }
     expect(deck.played).toHaveLength(86);
     expect(deck.remaining).toEqual(0);
@@ -69,7 +68,6 @@ describe('Deck.revealUntil', () => {
     const deck = provider.getDeck();
     const revealed = deck.revealUntil(2, Plane);
     expect(revealed.relevant).toHaveLength(2);
-    expect(revealed.shuffled).toEqual(false);
     for (const card of revealed.relevant) {
       expect(card).toBeInstanceOf(Plane);
     }
@@ -92,23 +90,23 @@ describe('Deck.revealUntil', () => {
 describe('Deck.putOnTop', () => {
   it('puts given cards on top of the deck', () => {
     const deck = provider.getDeck();
-    const card = deck.draw().card;
+    const card = deck.draw();
     deck.putOnTop([ card ]);
     expect(deck.remaining).toEqual(86);
-    expect(deck.draw().card).toEqual(card);
+    expect(deck.draw()).toEqual(card);
   });
 });
 
 describe('Deck.putOnTheBottom', () => {
   it('puts given cards on the bottom of the deck', () => {
     const deck = provider.getDeck();
-    const card = deck.draw().card;
+    const card = deck.draw();
     deck.putOnTheBottom([ card ]);
     expect(deck.remaining).toEqual(86);
     while (deck.remaining > 1) {
       deck.draw();
     }
     expect(deck.remaining).toEqual(1);
-    expect(deck.draw().card).toEqual(card);
+    expect(deck.draw()).toEqual(card);
   });
 });

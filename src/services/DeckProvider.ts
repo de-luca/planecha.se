@@ -79,8 +79,8 @@ export class DeckProvider {
 
   public getDeckFromExport<T extends Card>(state: DeckState): Deck<T> {
     return new Deck<T>(
-      this.getOrderedPile(state.cards),
-      this.getOrderedPile(state.played),
+      this.getPileWithState(state.cards),
+      this.getPileWithState(state.played),
     );
   }
 

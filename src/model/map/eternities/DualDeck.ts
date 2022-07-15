@@ -21,12 +21,16 @@ export enum EncounterMechanic {
   AUTO = 'AUTO',
 }
 
-export interface TriggerConfig {
-  enabled: boolean;
+interface TriggerConfigEnabled {
+  enabled: true;
   mechanic: EncounterMechanic;
   ratio: number;
 }
+interface TriggerConfigDisabled {
+  enabled: false;
+}
 
+export type TriggerConfig = TriggerConfigEnabled | TriggerConfigDisabled;
 export type EncounterTriggers = Record<EncounterTrigger, TriggerConfig>;
 
 export interface DualDeckExported extends EternitiesMapExported {
@@ -50,7 +54,6 @@ export class DualDeck extends SingleDeck {
 
   public constructor(props: DualDeckProps) {
     super(props);
-
     this._phenomenaDeck = props.phenomenaDeck;
     this._encounterTriggers = props.encounterTriggers;
   }
@@ -77,13 +80,13 @@ export class DualDeck extends SingleDeck {
 
   public encounter(input: EncounterInput): void {
     this._destination = input.coords;
-    this._active = [this._phenomenaDeck.draw().card];
-    this.active.forEach(c => c.enter(this._wallStates, input.initiator));
+    this._active = [this._phenomenaDeck.draw()];
+    this._active.forEach(c => c.enter(this._wallStates, input.initiator));
     this._wallStates.set(StateKey.PHENOMENON_WALL, { initiator: input.initiator });
   }
 
   public override resolve(input: ResolveInput): void {
-    this._phenomenaDeck.setPlayed(...this.active as Array<Phenomenon>);
+    this._phenomenaDeck.setPlayed(...this._active as Array<Phenomenon>);
     this._wallStates.delete(StateKey.PHENOMENON_WALL);
     this.planeswalk({
       ...input,

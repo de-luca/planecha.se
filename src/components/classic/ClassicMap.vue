@@ -104,7 +104,7 @@ export default class ClassicMap extends Vue {
   }
 
   public get isPlane(): boolean {
-    return this.store.map.active[0].type === 'plane';
+    return this.store.map.active[0] instanceof Plane;
   }
 
   public get hasStarted(): boolean {

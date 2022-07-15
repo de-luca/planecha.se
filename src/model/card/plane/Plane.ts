@@ -4,34 +4,33 @@ import { Card } from '../Card';
 import { ExportedCard } from '../CardInterface';
 
 export class Plane extends Card {
-  public counter?: Counter;
+  protected _counter?: Counter;
 
   public constructor(props: Props) {
     super(props);
-
-    this.counter = props.counter ?? undefined;
+    this._counter = props.counter ?? undefined;
   }
 
-  public get type(): string {
-    return 'plane';
+  public get counter(): Counter | undefined {
+    return this._counter;
   }
 
   public initCounter(): void {
-    if (this.counter) {
-      this.counter.value = this.counter.start;
+    if (this._counter) {
+      this._counter.value = this._counter.start;
     }
   }
 
   public updateCounter(change: number): undefined | number {
-    if (!this.counter) {
+    if (!this._counter) {
       return undefined;
     }
 
-    this.counter.value = this.counter.value + change < 0
+    this._counter.value = this._counter.value + change < 0
       ? 0
-      : this.counter.value + change;
+      : this._counter.value + change;
 
-    return this.counter.value;
+    return this._counter.value;
   }
 
   public chaos(_w: WallStates, _i: string): void {
@@ -43,15 +42,15 @@ export class Plane extends Card {
   }
 
   public leave(): void {
-    if (this.counter?.reset) {
-      this.counter.value = this.counter.start;
+    if (this._counter?.reset) {
+      this._counter.value = this._counter.start;
     }
   }
 
   public export(): ExportedCard {
     return {
       id: this.id,
-      counters: this.counter?.value,
+      counters: this._counter?.value,
     };
   }
 }

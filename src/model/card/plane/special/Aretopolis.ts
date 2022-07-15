@@ -13,7 +13,7 @@ import { Plane } from '../Plane';
  * then draw cards equal to the number of scroll counters on it.
  */
 export class Aretopolis extends Plane {
-  declare public counter: Counter;
+  declare protected _counter: Counter;
 
   public chaos(): void {
     this.updateCounter(1);
@@ -23,11 +23,11 @@ export class Aretopolis extends Plane {
     super.updateCounter(change);
     this.checkMaxCounters();
 
-    return this.counter?.value;
+    return this._counter?.value;
   }
 
   private checkMaxCounters(): void {
-    if (this.counter.value >= (this.counter.max as number)) {
+    if (this._counter.value >= (this._counter.max as number)) {
       eventBus.emit(EventType.ARETOPOLIS);
     }
   }

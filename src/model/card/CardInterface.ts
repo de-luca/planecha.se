@@ -15,8 +15,6 @@ export interface CardInterface {
   oracleText: string;
   gathererUri: string;
 
-  type: string;
-
   chaos(walls: WallStates, initiator: string): void;
   enter(walls: WallStates, initiator: string): void;
   leave(): void;
