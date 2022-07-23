@@ -24,7 +24,7 @@
 import { Plane } from '@/model/card';
 import { useMain } from '@/store/main';
 import { prop, mixins } from 'vue-class-component';
-import { Imgable } from '../Imgable';
+import { Imgable } from '../../Imgable';
 
 class Props {
   public card = prop<Plane>({ required: true });

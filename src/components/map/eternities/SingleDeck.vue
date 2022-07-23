@@ -17,7 +17,8 @@
   </div>
 
   <div class="controls">
-    <component :is="btnComponent" />
+    <chaos-btn v-if="hasStarted" @click="chaos" />
+    <start-btn v-else />
   </div>
 
   <div class="feed">
@@ -49,12 +50,12 @@
 
 <script lang="ts">
 import { mixins, Options } from 'vue-class-component';
-import { EternitiesMap } from '@/components/eternities/EternitiesMap';
+import { Eternities } from '@/components/map/eternities/Eternities';
 
 import ChaosBtn from '@/components/btn/ChaosBtn.vue';
 import StartBtn from '@/components/btn/StartBtn.vue';
-import Tile from '@/components/eternities/Tile.vue';
-import TileDetails from '@/components/eternities/TileDetails.vue';
+import Tile from '@/components/map/eternities/Tile.vue';
+import TileDetails from '@/components/map/eternities/TileDetails.vue';
 import Feed from '@/components/board/Feed.vue';
 import PhenomenonWall from '@/components/wall/PhenomenonWall.vue';
 import Pick from '@/components/wall/reveal/Pick.vue';
@@ -70,7 +71,7 @@ import Scry from '@/components/wall/reveal/Scry.vue';
     Feed,
   },
 })
-export default class EternitiesMapSingleDeck extends mixins(EternitiesMap) {
+export default class EternitiesMapSingleDeck extends mixins(Eternities) {
   public created(): void {
     this.setUp();
   }

@@ -66,10 +66,9 @@
 
 <script lang="ts">
 import { mixins, Options, prop } from 'vue-class-component';
-import {  } from '@/model/map';
 import { WallProps } from './WallProps';
 import { Imgable } from '../Imgable';
-import { EncounterMechanic, TriggerConfig } from '@/model/map/eternities';
+import { EncounterMechanic, TriggerConfig, TriggerConfigEnabled } from '@/model/map/eternities';
 
 class Props extends WallProps {
   public coords = prop<Coordinates>({ required: true });
@@ -83,13 +82,16 @@ export default class EncounterWall extends mixins(Imgable).with(Props) {
   private rolled: number = 0;
 
   public get title(): string {
-    return this.triggerConfig.mechanic === EncounterMechanic.MANUAL
-      ? 'Now\'s the time to roll your dice!'
-      : 'Let\'s roll for the encounter!';
+    return this.triggerConfig.enabled &&
+      this.triggerConfig.mechanic === EncounterMechanic.MANUAL
+        ? 'Now\'s the time to roll your dice!'
+        : 'Let\'s roll for the encounter!';
   }
 
   public roll(): number {
-    this.rolled = Math.floor(Math.random() * this.triggerConfig.ratio) + 1;
+    this.rolled = Math.floor(
+      Math.random() * (this.triggerConfig as TriggerConfigEnabled).ratio,
+    ) + 1;
     return this.rolled;
   }
 

@@ -2,7 +2,6 @@
   <button
     title="Chaos"
     class="button is-secondary is-rounded"
-    @click="chaos"
     @keyup.space.prevent
   >
     <svg class="control" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 100'>
@@ -13,13 +12,6 @@
 
 <script lang="ts">
 import { Vue } from 'vue-class-component';
-import { useMain } from '@/store/main';
 
-export default class ChaosBtn extends Vue {
-  private store = useMain();
-
-  public chaos() {
-    this.store.chaos();
-  }
-}
+export default class ChaosBtn extends Vue {}
 </script>

@@ -39,9 +39,9 @@ import { MapType } from '@/model/map';
 import { EternitiesMapSpecs, EternitiesMapSubType } from '@/model/map/eternities';
 import { eventBus, EventType } from '@/services/EventBus';
 
-import ClassicMap from '@/components/classic/ClassicMap.vue';
-import MapSingleDeck from '@/components/eternities/MapSingleDeck.vue';
-import MapDualDeck from '@/components/eternities/MapDualDeck.vue';
+import Classic from '@/components/map/classic/Classic.vue';
+import SingleDeck from '@/components/map/eternities/SingleDeck.vue';
+import DualDeck from '@/components/map/eternities/DualDeck.vue';
 import NotifCenter from '@/components/board/NotifCenter.vue';
 import ThemeSelector from '@/components/ThemeSelector.vue';
 
@@ -52,7 +52,7 @@ import DiceTray from '@/components/board/DiceTray.vue';
 
 @Options({
   components: {
-    ClassicMap, MapSingleDeck, MapDualDeck,
+    Classic, SingleDeck, DualDeck,
     NotifCenter,
     ThemeSelector, MainMenu, OnlineControls,
     DiceTray,
@@ -77,11 +77,11 @@ export default class Board extends Vue {
 
     switch (specs.type) {
       case MapType.CLASSIC:
-        return ClassicMap;
+        return Classic;
       case MapType.ETERNITIES:
         return (specs as EternitiesMapSpecs).subType === EternitiesMapSubType.SINGLE_DECK
-          ? MapSingleDeck
-          : MapDualDeck;
+          ? SingleDeck
+          : DualDeck;
       default:
         throw new Error('Incompatible');
     }

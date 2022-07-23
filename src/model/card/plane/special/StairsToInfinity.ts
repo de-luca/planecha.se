@@ -17,6 +17,10 @@ import {
  * You may put it on the bottom of your planar deck.
  */
 export class StairsToInfinity extends Plane {
+  public override get chaosRequireInterraction(): boolean {
+    return true;
+  }
+
   public chaos(walls: WallStates, initiator: string): void {
     const revealer: RevealerWallState = {
       title: this.name,

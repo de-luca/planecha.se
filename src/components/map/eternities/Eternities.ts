@@ -1,12 +1,10 @@
 import _shuffle from 'lodash.shuffle';
 import { Component } from 'vue';
-import { Vue } from 'vue-class-component';
-import { useMain } from '@/store/main';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Phenomenon, Plane } from '@/model/card';
-import { PickedLeft, RevealConfig } from '../wall/reveal/BaseReveal';
-import { RevealFactory } from '../wall/reveal/RevealFactory';
-import { WallConfig } from '../wall/WallProps';
+import { PickedLeft, RevealConfig } from '../../wall/reveal/BaseReveal';
+import { RevealFactory } from '../../wall/reveal/RevealFactory';
+import { WallConfig } from '../../wall/WallProps';
 import { Revealed } from '@/model/map';
 import {
   RevealerWallState,
@@ -15,9 +13,8 @@ import {
   PhenomenonWallState,
 } from '@/model/wall';
 
-import ChaosBtn from '@/components/btn/ChaosBtn.vue';
-import StartBtn from '@/components/btn/StartBtn.vue';
 import { EternitiesMap as EternitiesMapModel, SingleDeck, Tile } from '@/model/map/eternities';
+import { Map } from '../Map';
 
 
 interface LocalRevealerConfig {
@@ -32,9 +29,8 @@ interface LocalPhenomenonWallConfig {
   phenomenon: Phenomenon;
 }
 
-export class EternitiesMap extends Vue {
+export class Eternities extends Map {
   protected readonly off: number = 4;
-  protected store = useMain();
   protected displayedTile: Tile | null = null;
 
   protected setUp(): void {
@@ -110,10 +106,6 @@ export class EternitiesMap extends Vue {
     return this.store.map.hasStarted;
   }
 
-  public get btnComponent(): Component {
-    return this.hasStarted ? ChaosBtn : StartBtn;
-  }
-
   public unreachable(x: number, y: number): boolean {
     return Math.abs(x - this.off) + Math.abs(y - this.off) > 3;
   }
@@ -123,15 +115,6 @@ export class EternitiesMap extends Vue {
       return tile.coords.x === x - this.off
         && tile.coords.y === y - this.off;
     });
-  }
-
-  public putBack(choices: PickedLeft): void {
-    const payload = {
-      top: choices.picked,
-      bottom: _shuffle(choices.left),
-    };
-
-    this.store.resolveReveal(payload);
   }
 
   public showTileDetails(tile: Tile): void {

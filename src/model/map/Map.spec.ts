@@ -48,9 +48,10 @@ describe('Map.chaos', () => {
       deck: Container.get(DeckProvider).getDeck(),
       wallStates: new WallStates(),
     });
+    map.testActive();
     map.active.forEach(card => card.chaos = vi.fn());
-    map.chaos({ initiator: 'foo' });
-    map.active.forEach(card => expect(card.chaos).toHaveBeenCalled());
+    map.chaos({ card: map.active[0], initiator: 'foo' });
+    expect(map.active[0].chaos).toHaveBeenCalled();
   });
 });
 

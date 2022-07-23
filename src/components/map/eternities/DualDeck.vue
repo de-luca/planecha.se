@@ -17,7 +17,8 @@
   </div>
 
   <div class="controls">
-    <component :is="btnComponent" />
+    <chaos-btn v-if="hasStarted" @click="chaos" />
+    <start-btn v-else />
   </div>
 
   <div class="feed">
@@ -58,25 +59,25 @@
 
 <script lang="ts">
 import { mixins, Options } from 'vue-class-component';
-import { EternitiesMap } from '@/components/eternities/EternitiesMap';
+import { Eternities } from '@/components/map/eternities/Eternities';
+import { WallConfig } from '@/components/wall/WallProps';
 import {
   EncounterWallState,
   StateKey,
   StateOp,
 } from '@/model/wall';
 import {
-  DualDeck,
+  DualDeck as DualDeckMap,
   EncounterMechanic,
   EncounterTrigger,
   EncounterTriggers,
   TriggerConfig,
 } from '@/model/map/eternities';
-import { WallConfig } from '../wall/WallProps';
 
 import ChaosBtn from '@/components/btn/ChaosBtn.vue';
 import StartBtn from '@/components/btn/StartBtn.vue';
-import Tile from '@/components/eternities/Tile.vue';
-import TileDetails from '@/components/eternities/TileDetails.vue';
+import Tile from '@/components/map/eternities/Tile.vue';
+import TileDetails from '@/components/map/eternities/TileDetails.vue';
 import Feed from '@/components/board/Feed.vue';
 import PhenomenonWall from '@/components/wall/PhenomenonWall.vue';
 import EncounterWall from '@/components/wall/EncounterWall.vue';
@@ -99,12 +100,12 @@ interface LocalEncounterWallConfig {
     TileDetails,
   },
 })
-export default class EternitiesMapDualDeck extends mixins(EternitiesMap) {
+export default class DualDeck extends mixins(Eternities) {
   private triggers: EncounterTriggers;
 
   public created(): void {
     this.setUp();
-    this.triggers = (this.store.map as DualDeck).encounterTriggers;
+    this.triggers = (this.store.map as DualDeckMap).encounterTriggers;
   }
 
   public get encounterWallConfig(): LocalEncounterWallConfig | undefined {

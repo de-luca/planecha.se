@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 
 import {
   BuildProps,
+  ChaosInput,
   EmptyMap,
   MapFactory,
   MapInterface,
@@ -17,6 +18,18 @@ import { useVersion } from './version';
 import { Bridge, BridgeInterface } from '@/model/net/Bridge';
 import { ApplyInput } from '@/model/wall';
 import { DualDeck, EncounterInput } from '@/model/map/eternities';
+import { Phenomenon, Plane } from '@/model/card';
+
+export enum Op {
+  CHAOS = 'chaos',
+  RESOLVE_REVEAL = 'resolveReveal',
+}
+
+export interface OpRequest {
+  op: Op;
+  payload?: unknown;
+}
+
 
 export interface HeyPayload {
   id: string;
@@ -38,6 +51,7 @@ export interface State {
   bridge?: BridgeInterface;
   mates: Map<string, string>;
   feed: Array<string>;
+  opStack: Array<OpRequest>;
 };
 
 function getState(): State {
@@ -47,6 +61,7 @@ function getState(): State {
     bridge: undefined,
     mates: new Map(),
     feed: [],
+    opStack: [],
   };
 }
 
@@ -123,8 +138,14 @@ export const useMain = defineStore('main', {
       this.map.start();
     },
 
-    chaos(): void {
-      this.map.chaos({ initiator: this.playerName });
+    chaos(payload: Omit<ChaosInput, 'initiator'>): void {
+      this.map.chaos({ ...payload, initiator: this.playerName });
+      if (
+          payload.card instanceof Phenomenon ||
+          (payload.card instanceof Plane && !payload.card.chaosRequireInterraction)
+      ) {
+        this.resolveOpStack();
+      }
     },
     planeswalk(payload: Omit<PlaneswalkInput, 'initiator'>): void {
       this.map.planeswalk({ ...payload, initiator: this.playerName });
@@ -140,6 +161,7 @@ export const useMain = defineStore('main', {
     },
     resolveReveal(payload: ResolveRevealInput) {
       this.map.resolveReveal(payload);
+      this.resolveOpStack();
     },
 
     updateWallState(payload: ApplyInput) {
@@ -150,6 +172,15 @@ export const useMain = defineStore('main', {
       if (this.map instanceof DualDeck) {
         this.map.encounter({ ...payload, initiator: this.playerName });
       }
+    },
+
+    pushOpToStack(op: Op, payload: unknown) {
+      this.opStack.push({ op, payload });
+    },
+    resolveOpStack() {
+      const opr = this.opStack.pop();
+      // @ts-ignore
+      opr && this[opr.op](opr.payload);
     },
   },
 });

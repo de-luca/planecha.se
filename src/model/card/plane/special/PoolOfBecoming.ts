@@ -17,6 +17,10 @@ import {
  * Then put the revealed cards on the bottom of your planar deck in any order.
  */
 export class PoolOfBecoming extends Plane {
+  public get chaosRequireInterraction(): boolean {
+    return true;
+  }
+
   public chaos(walls: WallStates, initiator: string): void {
     const revealer: RevealerWallState = {
       title: this.name,

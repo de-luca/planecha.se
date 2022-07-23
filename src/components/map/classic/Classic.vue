@@ -10,7 +10,7 @@
 
     <div class="controls">
       <template v-if="hasStarted">
-        <chaos-btn v-if="isPlane" />
+        <chaos-btn v-if="isPlane" @click="chaos" />
         <planeswalk-btn
           :title="isPlane ? 'Planeswalk' : 'Resolve'"
           :disabled="revealer && revealer.passive"
@@ -28,6 +28,8 @@
     </div>
   </div>
 
+  <stack-wall v-if="showStackWall" @done="customChaos" />
+
   <component
     v-if="revealer && revealed"
     :is="revealer.component"
@@ -39,24 +41,27 @@
 
 <script lang="ts">
 import _shuffle from 'lodash.shuffle';
-import { Options, Vue } from 'vue-class-component';
+import { Map } from '../Map';
+import { mixins, Options } from 'vue-class-component';
 import { Component } from '@vue/runtime-core';
-import { useMain } from '@/store/main';
+import { Op } from '@/store/main';
 import { Card as ModelCard, Plane } from '@/model/card';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Revealed } from '@/model/map';
-import { RevealFactory } from '@/components/wall/reveal/RevealFactory';
-import { PickedLeft, RevealConfig } from '@/components/wall/reveal/BaseReveal';
 import {
   RevealerWallState,
   RevealerSource,
   StateKey,
 } from '@/model/wall';
 
+import { RevealFactory } from '@/components/wall/reveal/RevealFactory';
+import { PickedLeft, RevealConfig } from '@/components/wall/reveal/BaseReveal';
+
+import StackWall from '@/components/wall/StackWall.vue';
 import ChaosBtn from '@/components/btn/ChaosBtn.vue';
 import StartBtn from '@/components/btn/StartBtn.vue';
 import PlaneswalkBtn from '@/components/btn/PlaneswalkBtn.vue';
-import Card from '@/components/classic/Card.vue';
+import Card from '@/components/map/classic/Card.vue';
 import Feed from '@/components/board/Feed.vue';
 import Pick from '@/components/wall/reveal/Pick.vue';
 import Scry from '@/components/wall/reveal/Scry.vue';
@@ -75,11 +80,10 @@ type LocalRevealerConfig = {
     Card, Feed,
     ChaosBtn, StartBtn, PlaneswalkBtn,
     Pick, Scry, Show,
+    StackWall,
   },
 })
-export default class ClassicMap extends Vue {
-  private store = useMain();
-
+export default class Classic extends mixins(Map) {
   public created() {
     eventBus.on(EventType.STAIRS_TO_INFINITY, (): void => {
       this.store.reveal({ count: 1 });
@@ -129,11 +133,23 @@ export default class ClassicMap extends Vue {
 
     switch (revealer.source) {
       case RevealerSource.STAIRS_TO_INFINITY:
-      case RevealerSource.POOL_OF_BECOMING:
         return {
           ...config,
           seeder: () => {},
           resolver: this.putBack,
+        };
+      case RevealerSource.POOL_OF_BECOMING:
+        return {
+          ...config,
+          seeder: () => {},
+          resolver: (choices: PickedLeft) => {
+            this.store.pushOpToStack(Op.RESOLVE_REVEAL,{
+              top: choices.picked,
+              bottom: _shuffle(choices.left),
+            });
+            choices.left.forEach(card => this.store.pushOpToStack(Op.CHAOS, { card }));
+            this.store.resolveOpStack();
+          },
         };
       case RevealerSource.INTERPLANAR_TUNNEL:
         return {
@@ -160,19 +176,6 @@ export default class ClassicMap extends Vue {
     });
 
     this.putBack({ picked: [], left: choices.left });
-  }
-
-  private multiChaos(cards: Array<Card>): void {
-
-  }
-
-  private putBack(choices: PickedLeft): void {
-    const payload = {
-      top: choices.picked,
-      bottom: _shuffle(choices.left),
-    };
-
-    this.store.resolveReveal(payload);
   }
 }
 </script>

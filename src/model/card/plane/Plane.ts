@@ -15,6 +15,10 @@ export class Plane extends Card {
     return this._counter;
   }
 
+  public get chaosRequireInterraction(): boolean {
+    return false;
+  }
+
   public initCounter(): void {
     if (this._counter) {
       this._counter.value = this._counter.start;

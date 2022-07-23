@@ -37,6 +37,10 @@ export interface Initable {
   initiator: string;
 }
 
+export interface ChaosInput extends Initable {
+  card: Card;
+}
+
 export interface ClassicPlaneswalkInput extends Initable {}
 
 export interface CustomClassicPlaneswalkInput extends ClassicPlaneswalkInput {
@@ -66,7 +70,6 @@ export interface ResolveRevealInput {
   bottom: Array<Card>;
 }
 
-export type ChaosInput = Initable;
 export type PlaneswalkInput =
   ClassicPlaneswalkInput |
   CustomClassicPlaneswalkInput |

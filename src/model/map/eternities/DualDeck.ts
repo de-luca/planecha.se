@@ -21,12 +21,12 @@ export enum EncounterMechanic {
   AUTO = 'AUTO',
 }
 
-interface TriggerConfigEnabled {
+export interface TriggerConfigEnabled {
   enabled: true;
   mechanic: EncounterMechanic;
   ratio: number;
 }
-interface TriggerConfigDisabled {
+export interface TriggerConfigDisabled {
   enabled: false;
 }
 

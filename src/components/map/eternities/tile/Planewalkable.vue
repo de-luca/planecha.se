@@ -1,22 +1,19 @@
 <template>
   <div
-    title="You are here ;)"
-    class="current"
+    v-if="!hidden"
+    title="Planeswalk"
+    class="planeswalkable"
     :class="{ multi: tile.plane.length > 1 }"
     @click="$emit('show')"
   >
-    <fa
-      class="marker"
-      icon="map-marker-alt"
-      size="5x"
-    />
     <card
       v-for="p in tile.plane"
       :key="p"
       :card="p"
-      :current="true"
-      :hasStarted="!hidden"
     />
+  </div>
+  <div v-else class="hidden">
+    <img src="/cards/back.jpg">
   </div>
 </template>
 
@@ -24,35 +21,23 @@
 import { Options, Vue } from 'vue-class-component';
 import { Props } from './Props';
 
-import Card from '@/components/eternities/Card.vue';
+import Card from '@/components/map/eternities/Card.vue';
 
 @Options({
   emits: [ 'show' ],
   components: { Card },
 })
-export default class Current extends Vue.with(Props) {}
+export default class Planeswalkable extends Vue.with(Props) {}
 </script>
 
 <style lang="scss" scoped>
 img {
   border-radius: var(--card-radius);
+  max-height: 100%;
 }
 
-.current {
-  position: relative;
-  z-index: 2;
-
-  .marker {
-    z-index: 3;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0);
-    color: var(--brand-color-secondary);
-  }
-
-  &:hover .marker {
-    color: var(--brand-color-primary);
-  }
+.planeswalkable:hover {
+  z-index: 3;
 }
 
 .multi {
