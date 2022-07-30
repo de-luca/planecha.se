@@ -1,5 +1,5 @@
-import { Patch } from '../map';
 import { useMain } from '@/store/main';
+import { Patch } from '../versioning';
 
 export enum Event {
   REQUEST_INIT = 'REQUEST_INIT',

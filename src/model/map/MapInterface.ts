@@ -2,6 +2,7 @@ import { Delta } from '@n1ru4l/json-patch-plus';
 import { ExportedWallStates, WallStates } from '../wall';
 import { Card, ExportedCard, Plane } from '../card';
 import { DeckState } from '../deck/Deck';
+import { Patch } from '../versioning/Patch';
 
 export enum MapType {
   EMPTY = 'empty',
@@ -25,12 +26,6 @@ export interface Exported {
 export interface Revealed {
   relevant: Array<Card>;
   others: Array<Card>;
-}
-
-export interface Patch {
-  playHead: number;
-  event: string;
-  delta?: Delta;
 }
 
 export interface Initable {

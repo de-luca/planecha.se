@@ -11,7 +11,6 @@ import { router } from './router';
 import { createFeeder } from './store/plugins/feeder';
 import { versionizer } from './store/plugins/versionizer';
 import App from './App.vue';
-import { createSynchronizer } from './store/plugins/synchronizer';
 
 document.documentElement.setAttribute(
   'data-theme',
@@ -25,7 +24,6 @@ createApp(App)
     createPinia()
       .use(createFeeder)
       .use(versionizer)
-      .use(createSynchronizer),
   )
   .use(router)
   .mount('#app');

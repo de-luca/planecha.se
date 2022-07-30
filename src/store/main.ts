@@ -7,18 +7,17 @@ import {
   EmptyMap,
   MapFactory,
   MapInterface,
-  Patch,
   PlaneswalkInput,
   ResolveRevealInput,
   RevealUntilInput,
   UpdateCounterInput,
 } from '@/model/map';
 import { eventBus } from '@/services/EventBus';
-import { useVersion } from './version';
 import { Bridge, BridgeInterface } from '@/model/net/Bridge';
 import { ApplyInput } from '@/model/wall';
 import { DualDeck, EncounterInput } from '@/model/map/eternities';
 import { Phenomenon, Plane } from '@/model/card';
+import { Patch, Repository, RepositoryInterface } from '@/model/versioning';
 
 export enum Op {
   CHAOS = 'chaos',
@@ -48,6 +47,7 @@ export interface JoinPayload {
 export interface State {
   online: boolean;
   map: MapInterface;
+  repository: RepositoryInterface;
   bridge?: BridgeInterface;
   mates: Map<string, string>;
   feed: Array<string>;
@@ -58,6 +58,7 @@ function getState(): State {
   return {
     online: false,
     map: new EmptyMap(),
+    repository: new Repository(),
     bridge: undefined,
     mates: new Map(),
     feed: [],
@@ -116,7 +117,6 @@ export const useMain = defineStore('main', {
       this.bridge?.leave();
       this.$reset();
       eventBus.all.clear();
-      useVersion().$reset();
     },
 
     sync(patch: Patch): void {
@@ -125,7 +125,8 @@ export const useMain = defineStore('main', {
 
     apply(patch: Patch): void {
       this.map.apply(patch);
-      useVersion().applyPatch(patch);
+      this.repository.apply(patch);
+      this.repository.setStash(this.map.export());
     },
 
     undo(): void {

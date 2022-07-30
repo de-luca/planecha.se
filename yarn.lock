@@ -101,10 +101,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.0.tgz#87de7af9c231826fdd68ac7258f77c429e0e5fcf"
   integrity sha512-wdppn25U8z/2yiaT6YGquE6X8sSv7hNMWSXYSSU1jGv/yd6XqjXgTDJ8KP4NgjTXfJ3GbRjeeb8RTV7a/VpM+w==
 
-"@n1ru4l/json-patch-plus@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@n1ru4l/json-patch-plus/-/json-patch-plus-0.1.4.tgz#c4b00ef68e193be2bbbd07ba4fb11cf20d6ffc80"
-  integrity sha512-VJSHZGg0cDud4t0mvfigFtd0fg/PMrTfmXWaJrBK7y6hdCEFT3rFq6Sw7SEb58tP0lveNCDqL14joc+MuZ+bsw==
+"@n1ru4l/json-patch-plus@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@n1ru4l/json-patch-plus/-/json-patch-plus-0.2.0.tgz#b8fa09fd980c3460dfdc109a7c4cc5590157aa6b"
+  integrity sha512-pLkJy83/rVfDTyQgDSC8GeXAHEdXNHGNJrB1b7wAyGQu0iv7tpMXntKVSqj0+XKNVQbco40SZffNfVALzIt0SQ==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -1991,6 +1991,11 @@ optionator@^0.9.1:
     prelude-ls "^1.2.1"
     type-check "^0.4.0"
     word-wrap "^1.2.3"
+
+oxide.ts@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/oxide.ts/-/oxide.ts-1.0.0.tgz#8acd43f8e6ec15ec0dbb0fdcb79257887bdd7a68"
+  integrity sha512-1svZO+u3VFbPo4WkKNgZ9YMMv+nsuZOonqkuhDDasT86JsFM66RcE+9hpGzpWselwQrdfjRLXkJnOa5Z94co2g==
 
 p-limit@^1.1.0:
   version "1.3.0"

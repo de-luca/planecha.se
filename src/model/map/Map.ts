@@ -11,13 +11,13 @@ import {
   MapSpecs,
   MapInterface,
   Revealed,
-  Patch,
   PlaneswalkInput,
   ResolveInput,
   UpdateCounterInput,
   RevealUntilInput,
   ResolveRevealInput,
 } from './MapInterface';
+import { Patch } from '../versioning';
 
 
 export interface MapProps {
@@ -131,7 +131,7 @@ export abstract class Map implements MapInterface {
 
   public apply(patch: Patch): void {
     const state = this.crunchState<Exported>(patch);
-    if(state) {
+    if (state) {
       this.applyState(state);
     }
   }

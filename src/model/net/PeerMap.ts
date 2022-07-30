@@ -1,11 +1,12 @@
 import { Container } from 'typedi';
 import { getEnv } from '@/services/getEnv';
 import { eventBus, EventType as BusEvent } from '@/services/EventBus';
-import { Exported, MapFactory, MapInterface, Patch } from '../map';
+import { Exported, MapFactory, MapInterface } from '../map';
 import { Beacon, SignalData, SignalPayload } from './Beacon';
 import { PeerLogs } from './PeerLogs';
 import { PeerICEError } from './error/PeerICEError';
 import * as Handler from './Handler';
+import { Patch } from '../versioning';
 
 interface Peer {
   connection: RTCPeerConnection;
