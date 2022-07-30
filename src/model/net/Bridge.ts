@@ -1,9 +1,8 @@
-import { MapInterface } from '../map';
 import { Beacon } from './Beacon';
 import { ErrorFactory } from './error/beacon/ErrorFactory';
-import { PeerMap, RequestInitOutput } from './PeerMap';
-import { Event } from './Handler';
-import { Patch, RepositoryInterface } from '../versioning';
+import { PeerMap } from './PeerMap';
+import { Patch } from '../ver';
+import { Event, RequestInitOutput } from './types';
 
 export interface BridgeInterface {
   ready: Promise<void>;

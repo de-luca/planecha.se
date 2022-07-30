@@ -4,8 +4,9 @@ import { diff } from '@n1ru4l/json-patch-plus';
 import { DeckProvider } from '@/services/DeckProvider';
 import { eventBus } from '@/services/EventBus';
 import { Card, Plane } from '../card';
-import { Map, MapSpecs, MapType, Patch } from '.';
+import { Map, MapSpecs, MapType } from '.';
 import { WallStates } from '../wall';
+import { Patch } from '../ver';
 
 class TestMap extends Map {
   public get specs(): MapSpecs {
@@ -151,7 +152,6 @@ describe('Map.apply', () => {
 
     const patch: Patch = {
       event: 'test',
-      playHead: 1,
       delta,
     };
 

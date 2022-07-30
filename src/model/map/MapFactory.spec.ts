@@ -67,11 +67,11 @@ describe('MapFactory.restore', () => {
       hasStarted: true,
       deck: {
         cards: [
-          'ed4f4210-9871-4cec-9b46-100c80f93cd4',
-          '6caf8b21-1807-442c-a461-c89c7591df70',
-          'a1c7f2eb-0654-46f9-ae3d-11efcac837b8',
-          'd6dc655e-d8ef-443a-bb3e-46c7ca1555ba',
-          '56c735c0-9346-431b-869f-3accfa193016',
+          { id: 'ed4f4210-9871-4cec-9b46-100c80f93cd4' },
+          { id: '6caf8b21-1807-442c-a461-c89c7591df70' },
+          { id: 'a1c7f2eb-0654-46f9-ae3d-11efcac837b8' },
+          { id: 'd6dc655e-d8ef-443a-bb3e-46c7ca1555ba' },
+          { id: '56c735c0-9346-431b-869f-3accfa193016' },
         ],
         played: [],
       },
@@ -94,11 +94,11 @@ describe('MapFactory.restore', () => {
       hasStarted: true,
       deck: {
         cards: [
-          'ed4f4210-9871-4cec-9b46-100c80f93cd4',
-          '6caf8b21-1807-442c-a461-c89c7591df70',
-          'a1c7f2eb-0654-46f9-ae3d-11efcac837b8',
-          'd6dc655e-d8ef-443a-bb3e-46c7ca1555ba',
-          '56c735c0-9346-431b-869f-3accfa193016',
+          { id: 'ed4f4210-9871-4cec-9b46-100c80f93cd4' },
+          { id: '6caf8b21-1807-442c-a461-c89c7591df70' },
+          { id: 'a1c7f2eb-0654-46f9-ae3d-11efcac837b8' },
+          { id: 'd6dc655e-d8ef-443a-bb3e-46c7ca1555ba' },
+          { id: '56c735c0-9346-431b-869f-3accfa193016' },
         ],
         played: [],
       },
@@ -130,11 +130,11 @@ describe('MapFactory.restore', () => {
       hasStarted: true,
       deck: {
         cards: [
-          'ed4f4210-9871-4cec-9b46-100c80f93cd4',
-          '6caf8b21-1807-442c-a461-c89c7591df70',
-          'a1c7f2eb-0654-46f9-ae3d-11efcac837b8',
-          'd6dc655e-d8ef-443a-bb3e-46c7ca1555ba',
-          '56c735c0-9346-431b-869f-3accfa193016',
+          { id: 'ed4f4210-9871-4cec-9b46-100c80f93cd4' },
+          { id: '6caf8b21-1807-442c-a461-c89c7591df70' },
+          { id: 'a1c7f2eb-0654-46f9-ae3d-11efcac837b8' },
+          { id: 'd6dc655e-d8ef-443a-bb3e-46c7ca1555ba' },
+          { id: '56c735c0-9346-431b-869f-3accfa193016' },
         ],
         played: [],
       },
@@ -155,8 +155,8 @@ describe('MapFactory.restore', () => {
       }],
       phenomenaDeck: {
         cards: [
-          '42ecb371-53aa-4368-8ddd-88ae8e90ae0c',
-          '56e4874c-9d3d-4a1c-a027-186a33ce0da7',
+          { id: '42ecb371-53aa-4368-8ddd-88ae8e90ae0c' },
+          { id: '56e4874c-9d3d-4a1c-a027-186a33ce0da7' },
         ],
         played: [],
       },

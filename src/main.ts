@@ -23,7 +23,7 @@ createApp(App)
   .use(
     createPinia()
       .use(createFeeder)
-      .use(versionizer)
+      .use(versionizer),
   )
   .use(router)
   .mount('#app');

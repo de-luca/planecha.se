@@ -1,14 +1,14 @@
-import cloneDeep from "lodash.clonedeep";
-import { Delta, patch } from "@n1ru4l/json-patch-plus";
-import { Exported } from "../map";
-import { Patch } from "./Patch";
+import cloneDeep from 'lodash.clonedeep';
+import { Delta, patch } from '@n1ru4l/json-patch-plus';
+import { Exported } from '../map';
+import { Patch } from './Patch';
 
 export interface Clone {
   head: number;
   patches: Array<Patch>;
 }
 
-export interface RepositoryInterface {
+export interface RepoInterface {
   getStash(): Exported | undefined;
   setStash(exported: Exported): void;
   getHead(): number;
@@ -17,7 +17,7 @@ export interface RepositoryInterface {
   clone(): Clone;
 }
 
-export class Repository implements RepositoryInterface {
+export class Repo implements RepoInterface {
   private stash?: Exported;
   private head: number;
   private patches: Array<Patch>;

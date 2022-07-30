@@ -17,7 +17,7 @@ import { Bridge, BridgeInterface } from '@/model/net/Bridge';
 import { ApplyInput } from '@/model/wall';
 import { DualDeck, EncounterInput } from '@/model/map/eternities';
 import { Phenomenon, Plane } from '@/model/card';
-import { Patch, Repository, RepositoryInterface } from '@/model/versioning';
+import { Patch, Repo, RepoInterface } from '@/model/ver';
 
 export enum Op {
   CHAOS = 'chaos',
@@ -47,7 +47,7 @@ export interface JoinPayload {
 export interface State {
   online: boolean;
   map: MapInterface;
-  repository: RepositoryInterface;
+  repo: RepoInterface;
   bridge?: BridgeInterface;
   mates: Map<string, string>;
   feed: Array<string>;
@@ -58,7 +58,7 @@ function getState(): State {
   return {
     online: false,
     map: new EmptyMap(),
-    repository: new Repository(),
+    repo: new Repo(),
     bridge: undefined,
     mates: new Map(),
     feed: [],
@@ -112,7 +112,7 @@ export const useMain = defineStore('main', {
       await this.bridge.ready;
       const [map, repo] = await this.bridge.join(payload.roomId);
       this.map = map;
-      this.repository = repo;
+      this.repo = repo;
     },
 
     leave(): void {
@@ -126,16 +126,16 @@ export const useMain = defineStore('main', {
     },
     apply(patch: Patch): void {
       this.map.apply(patch);
-      this.repository.apply(patch);
-      this.repository.setStash(this.map.export());
+      this.repo.apply(patch);
+      this.repo.setStash(this.map.export());
     },
     revert(index: number): void {
       this.applyRevert(index);
       this.bridge?.revert(index);
     },
     applyRevert(index: number): void {
-      this.map.restore(this.repository.checkout(index));
-      this.repository.setStash(this.map.export());
+      this.map.restore(this.repo.checkout(index));
+      this.repo.setStash(this.map.export());
     },
 
     startGame(): void {

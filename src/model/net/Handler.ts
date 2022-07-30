@@ -1,28 +1,6 @@
 import { useMain } from '@/store/main';
-import { Exported } from '../map';
-import { Clone, Patch } from '../versioning';
-
-export enum Event {
-  REQUEST_INIT = 'REQUEST_INIT',
-  INIT = 'INIT',
-  HEY = 'HEY',
-  SYNC = 'SYNC',
-  REVERT = 'REVERT',
-}
-
-export interface Hey {
-  name: string;
-}
-
-export interface InitPayload {
-  repo: Clone;
-  map: Exported;
-}
-
-export interface Payload<T> {
-  event: Event,
-  data: T,
-}
+import { Patch } from '../ver';
+import { InitPayload, Payload, Event, Hey } from './types';
 
 export function parse<T>(payload: string): Payload<T> {
   return JSON.parse(payload) as Payload<T>;
@@ -43,7 +21,7 @@ export function getHandler(
     switch (payload.event) {
       case Event.REQUEST_INIT: {
         const payload: InitPayload = {
-          repo: store.repository.clone(),
+          repo: store.repo.clone(),
           map: store.map.export(),
         };
         this.send(stringify(Event.INIT, payload));

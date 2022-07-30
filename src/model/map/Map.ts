@@ -17,7 +17,7 @@ import {
   RevealUntilInput,
   ResolveRevealInput,
 } from './MapInterface';
-import { Patch } from '../versioning';
+import { Patch } from '../ver';
 
 
 export interface MapProps {

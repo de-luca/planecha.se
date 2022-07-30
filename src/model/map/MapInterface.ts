@@ -2,7 +2,7 @@ import { Delta } from '@n1ru4l/json-patch-plus';
 import { ExportedWallStates, WallStates } from '../wall';
 import { Card, ExportedCard, Plane } from '../card';
 import { DeckState } from '../deck/Deck';
-import { Patch } from '../versioning/Patch';
+import { Patch } from '../ver/Patch';
 
 export enum MapType {
   EMPTY = 'empty',

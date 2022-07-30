@@ -22,10 +22,10 @@ export function versionizer(context: PiniaPluginContext) {
           const newVersion = store.map.export();
           const patch = {
             event: name,
-            delta: diff({ left: store.repository.getStash(), right: newVersion }),
+            delta: diff({ left: store.repo.getStash(), right: newVersion }),
           };
-          store.repository.apply(patch);
-          store.repository.setStash(newVersion);
+          store.repo.apply(patch);
+          store.repo.setStash(newVersion);
           store.sync(patch);
         });
       }

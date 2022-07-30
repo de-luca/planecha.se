@@ -1,7 +1,7 @@
 import { diff } from '@n1ru4l/json-patch-plus';
 import { describe, it, expect, test } from 'vitest';
 import { Exported, MapType } from '../map';
-import { Repository } from './Repository';
+import { Repo } from './Repo';
 
 const exported: Exported = {
   active: [],
@@ -11,33 +11,33 @@ const exported: Exported = {
   wallStates: [],
 };
 
-describe('Repository.setStash/Repository.getStash', () => {
+describe('Repo.setStash/Repo.getStash', () => {
   it('returns undefined when stash has never been set', () => {
-    const repository = new Repository();
-    expect(repository.getStash()).toBeUndefined();
+    const repo = new Repo();
+    expect(repo.getStash()).toBeUndefined();
   });
 
   it('returns an exported when stash has been set', () => {
-    const repository = new Repository();
-    repository.setStash(exported);
-    expect(repository.getStash()).toEqual(exported);
+    const repo = new Repo();
+    repo.setStash(exported);
+    expect(repo.getStash()).toEqual(exported);
   });
 });
 
-describe('Repository.apply', () => {
+describe('Repo.apply', () => {
   it('returns an increased head pointer', () => {
-    const repository = new Repository();
-    expect(repository.apply({ event: 'test' })).toEqual(0);
-    expect(repository.apply({ event: 'test' })).toEqual(1);
-    expect(repository.apply({ event: 'test' })).toEqual(2);
+    const repo = new Repo();
+    expect(repo.apply({ event: 'test' })).toEqual(0);
+    expect(repo.apply({ event: 'test' })).toEqual(1);
+    expect(repo.apply({ event: 'test' })).toEqual(2);
   });
 });
 
-describe('Repository.checkout', () => {
+describe('Repo.checkout', () => {
   it('returns an increased head pointer', () => {
-    const repository = new Repository();
+    const repo = new Repo();
 
-    repository.apply({
+    repo.apply({
       event: 'test',
       delta: diff({ left: undefined, right: exported }),
     });
@@ -46,7 +46,7 @@ describe('Repository.checkout', () => {
       ...exported,
       active: [{ id: '00000000-0000-0000-0000-000000000000' }],
     };
-    repository.apply({
+    repo.apply({
       event: 'test',
       delta: diff({ left: exported, right: v1 }),
     });
@@ -58,7 +58,7 @@ describe('Repository.checkout', () => {
         { id: '00000000-0000-0000-0000-000000000001' },
       ],
     };
-    repository.apply({
+    repo.apply({
       event: 'test',
       delta: diff({ left: v1, right: v2 }),
     });
@@ -71,11 +71,11 @@ describe('Repository.checkout', () => {
         { id: '00000000-0000-0000-0000-000000000002' },
       ],
     };
-    repository.apply({
+    repo.apply({
       event: 'test',
       delta: diff({ left: v2, right: v3 }),
     });
 
-    expect(repository.checkout(2)).toEqual(v2);
+    expect(repo.checkout(2)).toEqual(v2);
   });
 });

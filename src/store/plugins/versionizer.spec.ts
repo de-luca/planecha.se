@@ -22,7 +22,7 @@ describe('versionizer', () => {
     };
     await store.init(props);
     store.startGame();
-    expect(store.repository.getStash()).not.toBeUndefined();
+    expect(store.repo.getStash()).not.toBeUndefined();
     expect(syncSpy).toBeCalled();
   });
 });
