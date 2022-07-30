@@ -101,8 +101,8 @@ export abstract class EternitiesMap extends Map {
     };
   }
 
-  protected override applyState(state: EternitiesMapExported): void {
-    super.applyState(state);
+  public override restore(state: EternitiesMapExported): void {
+    super.restore(state);
     this._tiles = (state.tiles as Array<ExportedTile>).map(Tile.fromExport);
   }
 }

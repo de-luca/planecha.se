@@ -6,7 +6,12 @@ import { Beacon, SignalData, SignalPayload } from './Beacon';
 import { PeerLogs } from './PeerLogs';
 import { PeerICEError } from './error/PeerICEError';
 import * as Handler from './Handler';
-import { Patch } from '../versioning';
+import { Patch, Repository, RepositoryInterface } from '../versioning';
+
+export type RequestInitOutput = [
+  MapInterface,
+  RepositoryInterface,
+];
 
 interface Peer {
   connection: RTCPeerConnection;
@@ -41,6 +46,7 @@ export class PeerMap {
     });
   }
 
+  public broadcast(event: Handler.Event.REVERT, data: number): void;
   public broadcast(event: Handler.Event.SYNC, data: Patch): void;
   public broadcast(event: Handler.Event.HEY, data: Handler.Hey): void;
   public broadcast(event: Handler.Event, data: any = {}): void {
@@ -54,21 +60,23 @@ export class PeerMap {
     });
   }
 
-  public async requestInit(): Promise<MapInterface> {
+  public async requestInit(): Promise<RequestInitOutput> {
     const p = this.peers.values().next().value as Peer;
     const payload: Handler.Payload<{}> = {
       event: Handler.Event.REQUEST_INIT,
       data: {},
     };
 
-    const initRequest = new Promise<MapInterface>((resolve) => {
+    const initRequest = new Promise<[MapInterface, RepositoryInterface]>((resolve) => {
       const handler = function(this: RTCDataChannel, event: MessageEvent<string>) {
-        const payload = Handler.parse<Exported>(event.data);
+        const payload = Handler.parse<Handler.InitPayload>(event.data);
 
         if (payload.event === Handler.Event.INIT) {
-          const map = Container.get(MapFactory).restore(payload.data);
           p.channel.removeEventListener('message', handler);
-          resolve(map);
+          resolve([
+            Container.get(MapFactory).restore(payload.data.map),
+            new Repository(payload.data.repo),
+          ]);
         }
       };
       p.channel.addEventListener('message', handler);

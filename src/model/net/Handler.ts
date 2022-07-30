@@ -1,15 +1,22 @@
 import { useMain } from '@/store/main';
-import { Patch } from '../versioning';
+import { Exported } from '../map';
+import { Clone, Patch } from '../versioning';
 
 export enum Event {
   REQUEST_INIT = 'REQUEST_INIT',
   INIT = 'INIT',
   HEY = 'HEY',
   SYNC = 'SYNC',
+  REVERT = 'REVERT',
 }
 
 export interface Hey {
   name: string;
+}
+
+export interface InitPayload {
+  repo: Clone;
+  map: Exported;
 }
 
 export interface Payload<T> {
@@ -35,7 +42,11 @@ export function getHandler(
 
     switch (payload.event) {
       case Event.REQUEST_INIT: {
-        this.send(stringify(Event.INIT, store.map.export()));
+        const payload: InitPayload = {
+          repo: store.repository.clone(),
+          map: store.map.export(),
+        };
+        this.send(stringify(Event.INIT, payload));
         break;
       }
 
@@ -50,6 +61,11 @@ export function getHandler(
 
       case Event.SYNC: {
         store.apply(payload.data as Patch);
+        break;
+      }
+
+      case Event.REVERT: {
+        store.applyRevert(payload.data as number);
         break;
       }
     }

@@ -91,4 +91,5 @@ export interface MapInterface {
   updateCounter(input: UpdateCounterInput): void;
   export(): Exported;
   apply(patch: Patch): void;
+  restore(state: Exported): void;
 }

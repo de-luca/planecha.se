@@ -132,7 +132,7 @@ export abstract class Map implements MapInterface {
   public apply(patch: Patch): void {
     const state = this.crunchState<Exported>(patch);
     if (state) {
-      this.applyState(state);
+      this.restore(state);
     }
   }
 
@@ -140,7 +140,7 @@ export abstract class Map implements MapInterface {
     return p.delta ? patch({ left: this.export(), delta: p.delta}) as T : undefined;
   }
 
-  protected applyState(state: Exported): void {
+  public restore(state: Exported): void {
     this._hasStarted = state.hasStarted;
     this._wallStates = new WallStates(state.wallStates);
     this._deck = Container.get(DeckProvider).getDeckFromExport(state.deck);

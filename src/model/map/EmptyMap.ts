@@ -5,7 +5,6 @@ import {
   MapSpecs,
   MapInterface,
   Revealed,
-  Patch,
 } from './MapInterface';
 
 export class EmptyMap implements MapInterface {
@@ -41,7 +40,10 @@ export class EmptyMap implements MapInterface {
   export(): Exported {
     throw new Error('Method not implemented.');
   }
-  apply(patch: Patch): void {
+  apply(): void {
+    throw new Error('Method not implemented.');
+  }
+  restore(): void {
     throw new Error('Method not implemented.');
   }
 }

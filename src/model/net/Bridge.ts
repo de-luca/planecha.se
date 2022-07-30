@@ -1,18 +1,19 @@
 import { MapInterface } from '../map';
 import { Beacon } from './Beacon';
 import { ErrorFactory } from './error/beacon/ErrorFactory';
-import { PeerMap } from './PeerMap';
+import { PeerMap, RequestInitOutput } from './PeerMap';
 import { Event } from './Handler';
-import { Patch } from '../versioning';
+import { Patch, RepositoryInterface } from '../versioning';
 
 export interface BridgeInterface {
   ready: Promise<void>;
   getPlayerName(): string;
   getGameId(): string;
   create(): Promise<string>;
-  join(gameId: string): Promise<MapInterface>;
+  join(gameId: string): Promise<RequestInitOutput>;
   leave(): void;
   sync(payload: any): void;
+  revert(index: number): void;
 }
 
 export class Bridge implements BridgeInterface {
@@ -57,7 +58,7 @@ export class Bridge implements BridgeInterface {
     return createPromise;
   }
 
-  public async join(gameId: string): Promise<MapInterface> {
+  public async join(gameId: string): Promise<RequestInitOutput> {
     const peers = new Promise<Array<string>>((resolve, reject) => {
       this.beacon.addEventListener('joined', ((event: CustomEvent<Array<string>>) => {
         this.gameId = gameId;
@@ -82,5 +83,9 @@ export class Bridge implements BridgeInterface {
 
   public sync(patch: Patch): void {
     this.peers.broadcast(Event.SYNC, patch);
+  }
+
+  public revert(index: number): void {
+    this.peers.broadcast(Event.REVERT, index);
   }
 }

@@ -110,7 +110,9 @@ export const useMain = defineStore('main', {
       this.online = true;
       this.bridge = new Bridge(payload.name);
       await this.bridge.ready;
-      this.map = await this.bridge.join(payload.roomId);
+      const [map, repo] = await this.bridge.join(payload.roomId);
+      this.map = map;
+      this.repository = repo;
     },
 
     leave(): void {
@@ -122,17 +124,18 @@ export const useMain = defineStore('main', {
     sync(patch: Patch): void {
       this.bridge?.sync(patch);
     },
-
     apply(patch: Patch): void {
       this.map.apply(patch);
       this.repository.apply(patch);
       this.repository.setStash(this.map.export());
     },
-
-    undo(): void {
-      // this.map.applyUndo(payload.version);
-      // this.versionBuffer = undefined;
-      // requestIfOnline(this.$state, 'requestUndo', payload);
+    revert(index: number): void {
+      this.applyRevert(index);
+      this.bridge?.revert(index);
+    },
+    applyRevert(index: number): void {
+      this.map.restore(this.repository.checkout(index));
+      this.repository.setStash(this.map.export());
     },
 
     startGame(): void {

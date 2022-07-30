@@ -1,12 +1,20 @@
+import cloneDeep from "lodash.clonedeep";
 import { Delta, patch } from "@n1ru4l/json-patch-plus";
 import { Exported } from "../map";
 import { Patch } from "./Patch";
 
+export interface Clone {
+  head: number;
+  patches: Array<Patch>;
+}
+
 export interface RepositoryInterface {
   getStash(): Exported | undefined;
   setStash(exported: Exported): void;
+  getHead(): number;
   apply(patch: Patch): number;
   checkout(index: number): Exported;
+  clone(): Clone;
 }
 
 export class Repository implements RepositoryInterface {
@@ -14,10 +22,10 @@ export class Repository implements RepositoryInterface {
   private head: number;
   private patches: Array<Patch>;
 
-  public constructor() {
+  public constructor(clone?: Clone) {
     this.stash = undefined;
-    this.head = -1;
-    this.patches = [];
+    this.head = clone?.head ?? -1;
+    this.patches = clone?.patches ?? [];
   }
 
   public getStash(): Exported | undefined {
@@ -28,9 +36,13 @@ export class Repository implements RepositoryInterface {
     this.stash = exported;
   }
 
+  public getHead(): number {
+    return this.head;
+  }
+
   public apply(patch: Patch): number {
     if (this.head !== (this.patches.length - 1)) {
-      this.patches.splice(this.head, this.patches.length - this.head);
+      this.patches.splice(this.head + 1, this.patches.length - this.head);
     }
     this.head = this.patches.push(patch) - 1;
     return this.head;
@@ -42,11 +54,18 @@ export class Repository implements RepositoryInterface {
       if (this.patches[i].delta) {
         base = patch({
           left: base,
-          delta: this.patches[i].delta as Delta,
+          delta: cloneDeep<Delta>(this.patches[i].delta as Delta),
         });
       }
     }
     this.head = index;
     return base as Exported;
+  }
+
+  public clone(): Clone {
+    return {
+      head: this.head,
+      patches: this.patches,
+    };
   }
 }

@@ -202,8 +202,8 @@ export class SingleDeck extends EternitiesMap {
     };
   }
 
-  protected override applyState(state: SingleDeckExported): void {
-    super.applyState(state);
+  public override restore(state: SingleDeckExported): void {
+    super.restore(state);
     this._destination = state.destination;
   }
 }
