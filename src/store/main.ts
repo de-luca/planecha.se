@@ -4,7 +4,6 @@ import { defineStore } from 'pinia';
 import {
   BuildProps,
   ChaosInput,
-  EmptyMap,
   MapFactory,
   MapInterface,
   PlaneswalkInput,
@@ -45,8 +44,8 @@ export interface JoinPayload {
 }
 
 export interface State {
+  _map?: MapInterface;
   online: boolean;
-  map: MapInterface;
   repo: RepoInterface;
   bridge?: BridgeInterface;
   mates: Map<string, string>;
@@ -56,8 +55,8 @@ export interface State {
 
 function getState(): State {
   return {
+    _map: undefined,
     online: false,
-    map: new EmptyMap(),
     repo: new Repo(),
     bridge: undefined,
     mates: new Map(),
@@ -70,6 +69,12 @@ export const useMain = defineStore('main', {
   state: getState,
 
   getters: {
+    map(): MapInterface {
+      if (!this._map) {
+        throw new Error('Map is undefined (store is in unset state)');
+      }
+      return this._map;
+    },
     playerName(state: State): string {
       return state.bridge?.getPlayerName() ?? 'You';
     },
@@ -95,7 +100,7 @@ export const useMain = defineStore('main', {
     async init(payload: BuildProps) {
       this.leave();
 
-      this.map = Container.get(MapFactory).build(payload);
+      this._map = Container.get(MapFactory).build(payload);
       this.online = payload.online;
 
       if (payload.online) {
@@ -111,7 +116,7 @@ export const useMain = defineStore('main', {
       this.bridge = new Bridge(payload.name);
       await this.bridge.ready;
       const [map, repo, feed] = await this.bridge.join(payload.roomId);
-      this.map = map;
+      this._map = map;
       this.repo = repo;
       this.feed = feed;
     },

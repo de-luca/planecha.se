@@ -1,21 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import { Container } from 'typedi';
 import { MapFactory } from './MapFactory';
-import { Classic, EmptyMap, Exported, MapType } from '.';
+import { Classic, Exported, MapType } from '.';
 import { DualDeck, DualDeckExported, EncounterMechanic, EncounterTrigger, EternitiesMapDeckType, EternitiesMapSubType, SingleDeck, SingleDeckExported, TileStatus } from './eternities';
 
 describe('MapFactory.build', () => {
-  it('creates an EmptyMap', () => {
-    const factory = Container.get(MapFactory);
-    const map = factory.build({
-      type: MapType.EMPTY,
-      online: false,
-      advanced: {},
-    });
-
-    expect(map).toBeInstanceOf(EmptyMap);
-  });
-
   it('creates a Classic Map', () => {
     const factory = Container.get(MapFactory);
     const map = factory.build({

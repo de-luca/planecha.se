@@ -3,7 +3,6 @@ import { DeckProvider } from '@/services/DeckProvider';
 import { Card } from '../card';
 import {
   Classic,
-  EmptyMap,
   Exported,
   MapInterface,
   MapType,
@@ -38,8 +37,6 @@ export class MapFactory {
 
   public build({ type, advanced }: BuildProps): MapInterface {
     switch (type) {
-      case MapType.EMPTY:
-        return new EmptyMap();
       case MapType.CLASSIC:
         return new Classic({
           wallStates: new WallStates(),

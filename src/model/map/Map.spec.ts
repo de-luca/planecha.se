@@ -10,7 +10,7 @@ import { Patch } from '../ver';
 
 class TestMap extends Map {
   public get specs(): MapSpecs {
-    return { type: MapType.EMPTY };
+    return { type: MapType.CLASSIC };
   }
   public testActive(): void {
     this._active = [ this._deck.draw() ];
@@ -119,7 +119,7 @@ describe('Map.export', () => {
       wallStates: new WallStates(),
     });
     const exported = map.export();
-    expect(exported.specs.type).toEqual(MapType.EMPTY);
+    expect(exported.specs.type).toEqual(MapType.CLASSIC);
     expect(exported.deck.cards).toHaveLength(map.remaining);
     expect(exported.deck.played).toHaveLength(map.played.length);
     expect(exported.active).toHaveLength(map.active.length);

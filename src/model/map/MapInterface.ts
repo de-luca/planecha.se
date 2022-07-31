@@ -5,7 +5,6 @@ import { DeckState } from '../deck/Deck';
 import { Patch } from '../ver/Patch';
 
 export enum MapType {
-  EMPTY = 'empty',
   CLASSIC = 'classic',
   ETERNITIES = 'eternities',
 }
