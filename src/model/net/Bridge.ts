@@ -13,6 +13,7 @@ export interface BridgeInterface {
   leave(): void;
   sync(payload: any): void;
   revert(index: number): void;
+  syncFeed(log: string): void;
 }
 
 export class Bridge implements BridgeInterface {
@@ -86,5 +87,9 @@ export class Bridge implements BridgeInterface {
 
   public revert(index: number): void {
     this.peers.broadcast(Event.REVERT, index);
+  }
+
+  public syncFeed(log: string): void {
+    this.peers.broadcast(Event.FEED, log);
   }
 }

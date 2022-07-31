@@ -10,9 +10,9 @@ export function stringify(event: Event, data: any = {}): string {
   return JSON.stringify({ event, data });
 }
 
-export function getHandler(
-  myName: string,
-): (this: RTCDataChannel, event: MessageEvent<string>) => any {
+type Handler = (this: RTCDataChannel, event: MessageEvent<string>) => unknown;
+
+export function getHandler(myName: string): Handler {
   const store = useMain();
 
   return function(this: RTCDataChannel, event: MessageEvent<string>) {
@@ -23,6 +23,7 @@ export function getHandler(
         const payload: InitPayload = {
           repo: store.repo.clone(),
           map: store.map.export(),
+          feed: [ ...store.feed ],
         };
         this.send(stringify(Event.INIT, payload));
         break;
@@ -44,6 +45,11 @@ export function getHandler(
 
       case Event.REVERT: {
         store.applyRevert(payload.data as number);
+        break;
+      }
+
+      case Event.FEED: {
+        store.feed.push(payload.data as string);
         break;
       }
     }

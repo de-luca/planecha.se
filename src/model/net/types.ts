@@ -4,6 +4,7 @@ import { Clone, RepoInterface } from '../ver';
 export type RequestInitOutput = [
   MapInterface,
   RepoInterface,
+  Array<string>,
 ];
 
 export enum Event {
@@ -12,6 +13,7 @@ export enum Event {
   HEY = 'HEY',
   SYNC = 'SYNC',
   REVERT = 'REVERT',
+  FEED = 'FEED',
 }
 
 export interface Payload<T> {
@@ -26,4 +28,5 @@ export interface Hey {
 export interface InitPayload {
   repo: Clone;
   map: Exported;
+  feed: Array<string>;
 }

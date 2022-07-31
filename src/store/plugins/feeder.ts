@@ -1,7 +1,12 @@
-import { PiniaPluginContext, StoreGeneric } from 'pinia';
-import { Payload } from '@/store/main';
-import { BuildProps } from '@/model/map';
+import { PiniaPluginContext } from 'pinia';
 import { Card, Plane } from '@/model/card';
+import {
+  BuildProps,
+  ChaosInput,
+  MapType,
+  ResolveRevealInput,
+  UpdateCounterInput,
+} from '@/model/map';
 
 const chaos = '<abbr class="symbol chaos" title="chaos">{CHAOS}</abbr>';
 const plnwlk = '<abbr class="symbol planeswalk" title="planeswalk">{CHAOS}</abbr>';
@@ -11,69 +16,55 @@ export function createFeeder(context: PiniaPluginContext) {
     context.store.$onAction(({ after, name: action, args, store }) => {
       after(() => {
         switch (action) {
-          case 'undo':
-            const payload = args[0] as Payload.Undo;
-            store.feed.push(`<b>${store.playerName}</b> undid last action`);
+          case 'revert':
+            store.pushToFeed(`<b>${store.playerName}</b> undid last action`);
             break;
           case 'init': {
-            const payload = args[0] as BuildProps;
-            const type = payload.type === 'classic'
+            const type = (args[0] as BuildProps).type === MapType.CLASSIC
               ? 'Classic'
               : 'Eternities Map';
-            store.feed.push(`<b>You</b> created new game <b>${type}</b>`);
+            store.pushToFeed(`<b>${store.playerName}</b> created new game <b>${type}</b>`);
             break;
           }
           case 'startGame': {
-            store.feed.push(`Game starts on <b>${store.map.active[0].name}</b>`);
-            break;
-          }
-          case 'hey': {
-            const payload = args[0] as Payload.Hey;
-            store.feed.push(`<b>${payload.name}</b> joined game`);
+            store.pushToFeed(`Game starts on <b>${store.map.active[0].name}</b>`);
             break;
           }
           case 'planeswalk': {
-            const payload = args[0] as Payload.Planeswalk;
-            const message = `<b>${store.playerName}</b> ` +
-              (store.map?.active[0].type === 'plane' ? `${plnwlk} to` : 'encountered') +
-              ` <b>${store.map?.active[0].name}</b>`;
-            store.feed.push(message);
-            break;
-          }
-          case 'customPlaneswalk': {
-            const payload = args[0] as Payload.CustomPlaneswalk;
-            const message = `<b>${store.playerName}</b> ${plnwlk} to ` +
-              `<b>${store.map?.active.map((c: Card) => c.name).join('</b> and <b>')}</b>`;
-            store.feed.push(message);
+            store.pushToFeed(
+              `<b>${store.playerName}</b> ` +
+              (store.map?.active[0] instanceof Plane ? `${plnwlk} to` : 'encountered') +
+              ` <b>${store.map?.active[0].name}</b>`,
+            );
             break;
           }
           case 'chaos': {
-            const payload = args[0] as Payload.Requestable;
-            const message = `<b>${store.playerName}</b> triggered ${chaos} ` +
-              `on <b>${store.map?.active.map((c: Card) => c.name).join('</b> and <b>')}</b>`;
-            store.feed.push(message);
+            store.pushToFeed(
+              `<b>${store.playerName}</b> triggered ${chaos} ` +
+              `on <b>${(args[0] as ChaosInput).card.name}</b>`,
+            );
             break;
           }
           case 'updateCounters': {
-            const payload = args[0] as Payload.Counters;
+            const payload = args[0] as UpdateCounterInput;
             const plane = store.map.active.find((c: Card) => c.id === payload.planeId) as Plane;
             const message = `<b>${store.playerName}</b> ` +
               `${payload.change > 0 ? 'added ' : 'removed '} <b>${Math.abs(payload.change)}</b> ` +
               `(<b>${plane.counter?.value}</b>) counter on ` +
               `<b>${plane.name}</b>`;
-            store.feed.push(message);
+            store.pushToFeed(message);
             break;
           }
           case 'resolveReveal': {
-            const payload = args[0] as Payload.ResolveReveal;
+            const payload = args[0] as ResolveRevealInput;
             if (payload.top.length > 0) {
-              store.feed.push(
+              store.pushToFeed(
                 `<b>${store.playerName}</b> putted on top ` +
                 `<b>${payload.top.map(c => c.name).join('</b>, <b>')}</b>`,
               );
             }
             if (payload.bottom.length > 0) {
-              store.feed.push(
+              store.pushToFeed(
                 `<b>${store.playerName}</b> putted at the bottom ` +
                 `<b>${payload.bottom.map(c => c.name).join('</b>, <b>')}</b>`,
               );

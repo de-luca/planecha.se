@@ -42,6 +42,7 @@ export class PeerMap {
     });
   }
 
+  public broadcast(event: Event.FEED, data: string): void;
   public broadcast(event: Event.REVERT, data: number): void;
   public broadcast(event: Event.SYNC, data: Patch): void;
   public broadcast(event: Event.HEY, data: Hey): void;
@@ -72,6 +73,7 @@ export class PeerMap {
           resolve([
             Container.get(MapFactory).restore(payload.data.map),
             new Repo(payload.data.repo),
+            payload.data.feed,
           ]);
         }
       };

@@ -110,15 +110,21 @@ export const useMain = defineStore('main', {
       this.online = true;
       this.bridge = new Bridge(payload.name);
       await this.bridge.ready;
-      const [map, repo] = await this.bridge.join(payload.roomId);
+      const [map, repo, feed] = await this.bridge.join(payload.roomId);
       this.map = map;
       this.repo = repo;
+      this.feed = feed;
     },
 
     leave(): void {
       this.bridge?.leave();
       this.$reset();
       eventBus.all.clear();
+    },
+
+    pushToFeed(log: string): void {
+      this.feed.push(log);
+      this.bridge?.syncFeed(log);
     },
 
     sync(patch: Patch): void {
