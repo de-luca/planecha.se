@@ -37,7 +37,6 @@ import { useMain } from '@/store/main';
 import { Component } from '@vue/runtime-core';
 import { MapType } from '@/model/map';
 import { EternitiesMapSpecs, EternitiesMapSubType } from '@/model/map/eternities';
-import { eventBus, EventType } from '@/services/EventBus';
 
 import Classic from '@/components/map/classic/Classic.vue';
 import SingleDeck from '@/components/map/eternities/SingleDeck.vue';
@@ -60,17 +59,6 @@ import DiceTray from '@/components/board/DiceTray.vue';
 })
 export default class Board extends Vue {
   private store = useMain();
-
-  public created() {
-    eventBus.on(EventType.BYE, (payload) => {
-      eventBus.emit(EventType.NOTIF, {
-        text: `<b>${this.store.mates.get(payload.mateId)}</b> has left the game`,
-        className: 'is-warning',
-      });
-
-      this.store.bye({ id: payload.mateId });
-    });
-  }
 
   public get mapComponent(): Component {
     const specs = this.store.map.specs;
@@ -170,7 +158,7 @@ export default class Board extends Vue {
   position: absolute;
   bottom: 1rem;
   right: 1rem;
-  width: 30rem;
+  width: 22rem;
 }
 
 #landscape-guard {

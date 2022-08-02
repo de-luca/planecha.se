@@ -1,13 +1,13 @@
 import { Container } from 'typedi';
 import { getEnv } from '@/services/getEnv';
-import { eventBus, EventType as BusEvent } from '@/services/EventBus';
-import { MapFactory, MapInterface } from '../map';
+import { MapFactory } from '../map';
 import { Beacon, SignalData, SignalPayload } from './Beacon';
 import { PeerLogs } from './PeerLogs';
 import { PeerICEError } from './error/PeerICEError';
 import { Patch, Repo } from '../ver';
 import { Event, Hey, InitPayload, Payload, RequestInitOutput } from './types';
 import { getHandler, parse, stringify } from './Handler';
+import { useMain } from '@/store/main';
 
 interface Peer {
   connection: RTCPeerConnection;
@@ -140,7 +140,7 @@ export class PeerMap {
     connection.addEventListener('iceconnectionstatechange', () => {
       if (connection.iceConnectionState === 'failed') {
         this.peers.delete(id);
-        eventBus.emit(BusEvent.BYE, { mateId: id });
+        useMain().bye({ id });
       }
 
       logs.push('iceConnectionState', connection.iceConnectionState);

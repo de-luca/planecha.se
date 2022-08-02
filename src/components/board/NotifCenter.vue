@@ -11,21 +11,49 @@
 
 <script lang="ts">
 import { Vue } from 'vue-class-component';
-import { eventBus, EventType, NotifEventPayload } from '@/services/EventBus';
+import { ByePayload, HeyPayload, useMain } from '@/store/main';
 
-interface Notif extends NotifEventPayload {
+interface Notif {
   id: number;
+  text: string;
+  className: string;
 }
 
 export default class NotifCenter extends Vue {
+  private store = useMain();
   private index = 0;
   private notifs: Map<number, Notif> = new Map();
 
   public created(): void {
-    eventBus.on(EventType.NOTIF, (payload) => {
-      const id = this.index++;
-      this.notifs.set(id, { id, ...payload });
-      setTimeout(() => this.notifs.delete(id), 10000);
+    this.store.$onAction(({ name, args, store, after }) => {
+      switch(name) {
+        case 'hey':
+          after(() => {
+            const id = this.index++;
+            this.notifs.set(
+              id,
+              {
+                id,
+                text: `<b>${(args[0] as HeyPayload).name}</b> has joined the game`,
+                className: 'is-info',
+              },
+            );
+            setTimeout(() => this.notifs.delete(id), 10000);
+          });
+          break;
+        case 'bye':
+          const id = this.index++;
+          this.notifs.set(
+            id,
+            {
+                id,
+                text: `<b>${store.mates.get((args[0] as ByePayload).id) ?? ''}</b> has left the game`,
+                className: 'is-warning',
+            },
+          );
+          setTimeout(() => this.notifs.delete(id), 10000);
+          break;
+      }
     });
   }
 

@@ -1,28 +1,12 @@
 import mitt, { EventHandlerMap } from 'mitt';
 
 export enum EventType {
-  // CARDS EVENTS
   ARETOPOLIS = 'ARETOPOLIS',
   CHAOTIC_AETHER = 'CHAOTIC_AETHER',
   POOL_OF_BECOMING = 'POOL_OF_BECOMING',
   STAIRS_TO_INFINITY = 'STAIRS_TO_INFINITY',
   INTERPLANAR_TUNNEL = 'INTERPLANAR_TUNNEL',
   SPACIAL_MERGING = 'SPACIAL_MERGING',
-
-  // ONLINE EVENTS
-  BYE = 'BYE',
-
-  // NOTIF EVENTS
-  NOTIF = 'NOTIF',
-}
-
-export interface ByeEventPayload {
-  mateId: string;
-}
-
-export interface NotifEventPayload {
-  text: string;
-  className: string;
 }
 
 type Emits<EventType, T> = {
@@ -32,9 +16,6 @@ type Emits<EventType, T> = {
   emit(type: EventType, arg?: T): void;
 };
 
-type Emitter =
-    Emits<EventType.BYE, ByeEventPayload>
-  & Emits<EventType.NOTIF, NotifEventPayload>
-  & Emits<EventType, undefined>;
+type Emitter = Emits<EventType, undefined>;
 
 export const eventBus: Emitter = mitt();
