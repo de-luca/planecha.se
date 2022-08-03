@@ -121,7 +121,7 @@ export default class EncounterSetup extends Vue.with(Props) {
   private readonly helpText: Record<EncounterMechanic, string> = {
     [EncounterMechanic.MANUAL]: 'You\'ll get prompted to roll for the encounter.',
     [EncounterMechanic.AUTO]: 'The encounter will be rolled automaticaly with the probability you defined.',
-  }
+  };
 
   public get setup(): EncounterTriggers {
     return this.modelValue;

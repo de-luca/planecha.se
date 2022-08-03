@@ -12,8 +12,8 @@
 </template>
 
 <script lang="ts">
-import { useMain } from '@/store/main';
 import { Vue } from 'vue-class-component';
+import { useMain } from '@/store/main';
 
 export default class UndoButton extends Vue {
   private store = useMain();

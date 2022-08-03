@@ -1,5 +1,5 @@
-import { shuffle as _shuffle } from '@/services/shuffle';
 import { Card, ExportedCard, Plane } from '../card';
+import { shuffle as shuffleS } from '@/services/shuffle';
 
 export interface DeckState {
   cards: Array<ExportedCard>;
@@ -54,12 +54,12 @@ export class Deck<T extends Card> {
   }
 
   public shuffle(): void {
-    this._cards = _shuffle([...this._cards, ...this._played]);
+    this._cards = shuffleS([...this._cards, ...this._played]);
     this._played = [];
   }
 
   public revealUntil(
-    count: number = 1,
+    count = 1,
     type: typeof Card = Card,
   ): {
     relevant: Array<Card>;

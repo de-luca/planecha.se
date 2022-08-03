@@ -1,10 +1,9 @@
-import _shuffle from 'lodash.shuffle';
 import { patch } from '@n1ru4l/json-patch-plus';
 import { Container } from 'typedi';
-import { DeckProvider } from '@/services/DeckProvider';
 import { Card, Plane } from '../card';
 import { Deck } from '../deck/Deck';
 import { WallStates, StateKey } from '../wall';
+import { Patch } from '../ver';
 import {
   ChaosInput,
   Exported,
@@ -17,7 +16,7 @@ import {
   RevealUntilInput,
   ResolveRevealInput,
 } from './MapInterface';
-import { Patch } from '../ver';
+import { DeckProvider } from '@/services/DeckProvider';
 
 
 export interface MapProps {

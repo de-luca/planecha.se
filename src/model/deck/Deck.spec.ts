@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { Container } from 'typedi';
-import { DeckProvider } from '@/services/DeckProvider';
 import { Card, Plane } from '../card';
+import { DeckProvider } from '@/services/DeckProvider';
 
 const provider = Container.get(DeckProvider);
 

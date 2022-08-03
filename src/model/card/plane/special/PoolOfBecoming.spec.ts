@@ -1,7 +1,7 @@
-import { RevealerMode, RevealerSource, StateKey, WallStates } from '@/model/wall';
-import { eventBus, EventType } from '@/services/EventBus';
 import { describe, it, expect, vi } from 'vitest';
 import { PoolOfBecoming } from './PoolOfBecoming';
+import { RevealerMode, RevealerSource, StateKey, WallStates } from '@/model/wall';
+import { eventBus, EventType } from '@/services/EventBus';
 
 vi.mock('@/services/EventBus');
 

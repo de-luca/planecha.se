@@ -1,4 +1,4 @@
-import { WallStates } from '../wall';
+import type { WallStates } from '../wall';
 
 export interface ExportedCard {
   id: string;

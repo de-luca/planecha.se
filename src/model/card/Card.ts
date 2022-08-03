@@ -1,6 +1,25 @@
 import { WallStates } from '../wall';
-import { Props } from './CardFactory';
 import { CardInterface, ExportedCard } from './CardInterface';
+
+export interface Counter {
+  name: string;
+  value: number;
+  start: number;
+  max: number | null;
+  reset: boolean;
+}
+
+export interface Props {
+  id: string;
+  oracleId: string;
+  multiverseIds: Array<number>;
+  name: string;
+  scryfallUri: string;
+  typeLine: string;
+  oracleText: string;
+  gathererUri: string;
+  counter?: Counter;
+}
 
 export abstract class Card implements CardInterface {
   public readonly id: string;

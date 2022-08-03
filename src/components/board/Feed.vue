@@ -24,10 +24,10 @@
 </template>
 
 <script lang="ts">
-import { useMain } from '@/store/main';
 import { Options, prop, Vue } from 'vue-class-component';
 import DeckStatus from './DeckStatus.vue';
 import UndoButton from './UndoButton.vue';
+import { useMain } from '@/store/main';
 
 class Props {
   public defaultShow = prop<boolean>({ required: true });

@@ -1,5 +1,5 @@
-import { eventBus, EventType } from '@/services/EventBus';
 import { Plane } from '../Plane';
+import { eventBus, EventType } from '@/services/EventBus';
 import {
   WallStates,
   RevealerMode,

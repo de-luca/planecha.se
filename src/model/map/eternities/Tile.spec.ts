@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import Container from 'typedi';
-import { DeckProvider } from '@/services/DeckProvider';
+import { Container } from 'typedi';
 import { Tile, TileStatus } from './Tile';
+import { DeckProvider } from '@/services/DeckProvider';
 
 const deckProvider = Container.get(DeckProvider);
 const cardId = '0b8a0cad-92df-45a1-a3cc-561be2f06778';

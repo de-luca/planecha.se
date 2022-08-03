@@ -1,8 +1,8 @@
+import { Patch } from '../ver';
 import { Beacon } from './Beacon';
 import { ErrorFactory } from './error/beacon/ErrorFactory';
 import { PeerMap } from './PeerMap';
-import { Patch } from '../ver';
-import { Event, RequestInitOutput } from './types';
+import { Event, RequestInitOutput, Store } from './types';
 
 export interface BridgeInterface {
   ready: Promise<void>;
@@ -11,7 +11,7 @@ export interface BridgeInterface {
   create(): Promise<string>;
   join(gameId: string): Promise<RequestInitOutput>;
   leave(): void;
-  sync(payload: any): void;
+  sync(patch: Patch): void;
   revert(index: number): void;
   syncFeed(log: string): void;
 }
@@ -22,7 +22,7 @@ export class Bridge implements BridgeInterface {
   private readyState: Promise<void>;
   private gameId: string;
 
-  public constructor(playerName: string)  {
+  public constructor(playerName: string, store: Store)  {
     this.beacon = new Beacon();
     this.readyState = new Promise<void>((resolve, reject) => {
       this.beacon.addEventListener('ready', _ => resolve(), { once: true });
@@ -30,7 +30,7 @@ export class Bridge implements BridgeInterface {
         reject(ErrorFactory.fromCode(event.detail));
       }) as EventListener, { once: true });
     });
-    this.peers = new PeerMap(this.beacon, playerName);
+    this.peers = new PeerMap(this.beacon, playerName, store);
   }
 
   public get ready(): Promise<void> {

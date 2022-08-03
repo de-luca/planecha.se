@@ -1,7 +1,7 @@
 import { describe, it, vi, Mock, expect } from 'vitest';
-import { getEnv } from '@/services/getEnv';
 import { promisify } from '../../../tests/promisify';
 import { Beacon, SignalData, SignalPayload } from './Beacon';
+import { getEnv } from '@/services/getEnv';
 
 vi.mock('@/services/getEnv');
 

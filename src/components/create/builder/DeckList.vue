@@ -39,11 +39,11 @@
 </template>
 
 <script lang="ts">
-import Container from 'typedi';
+import { Container } from 'typedi';
 import { Options, prop, Vue } from 'vue-class-component';
 import { SavedDeck, Scope } from './types';
 import { useConfig } from '@/store/config';
-import { Card } from '@/model/card';
+import { Card, Phenomenon, Plane } from '@/model/card';
 import { DeckProvider } from '@/services/DeckProvider';
 
 import FeedbackButton from '@/components/FeedbackButton.vue';
@@ -62,10 +62,14 @@ export default class DeckList extends Vue.with(Props) {
     [Scope.PLANES]: 'Only Planes',
     [Scope.PHENOMENA]: 'Only Phenomena',
   };
+  private static readonly scopeMap = {
+    [Scope.PLANES]: Plane,
+    [Scope.PHENOMENA]: Phenomenon,
+  };
 
   private store = useConfig();
   private cards: Array<Card>;
-  private search: string = '';
+  private search = '';
 
   public created() {
     this.cards = Container.get(DeckProvider).getAllCards();
@@ -99,7 +103,7 @@ export default class DeckList extends Vue.with(Props) {
     this.$emit(
       'use',
       this.cards
-        .filter(c => this.scope === Scope.ALL || c.type === this.scope)
+        .filter(c => this.scope === Scope.ALL || c instanceof DeckList.scopeMap[this.scope])
         .filter(c => list.findIndex(id => id === c.id) !== -1),
     );
   }

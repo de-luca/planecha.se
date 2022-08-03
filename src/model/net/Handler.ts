@@ -1,20 +1,17 @@
-import { useMain } from '@/store/main';
 import { Patch } from '../ver';
-import { InitPayload, Payload, Event, Hey } from './types';
+import { InitPayload, Payload, Event, Hey, Store } from './types';
 
 export function parse<T>(payload: string): Payload<T> {
   return JSON.parse(payload) as Payload<T>;
 }
 
-export function stringify(event: Event, data: any = {}): string {
+export function stringify(event: Event, data: unknown = {}): string {
   return JSON.stringify({ event, data });
 }
 
 type Handler = (this: RTCDataChannel, event: MessageEvent<string>) => unknown;
 
-export function getHandler(myName: string): Handler {
-  const store = useMain();
-
+export function getHandler(playerName: string, store: Store): Handler {
   return function(this: RTCDataChannel, event: MessageEvent<string>) {
     const payload = parse(event.data);
 
@@ -33,7 +30,7 @@ export function getHandler(myName: string): Handler {
         if (!store.mates.get(this.label)) {
           const data = payload.data as Hey;
           store.hey({ ...data, id: this.label });
-          this.send(stringify(Event.HEY, { name: myName }));
+          this.send(stringify(Event.HEY, { name: playerName }));
         }
         break;
       }

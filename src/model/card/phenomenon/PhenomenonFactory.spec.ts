@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { Container } from 'typedi';
-import { PhenomenonFactory, Phenomenon } from '.';
-import { InterplanarTunnel } from './special';
 import type { Props } from '..';
+import { InterplanarTunnel } from './special';
+import { PhenomenonFactory, Phenomenon } from '.';
 
 const factory = Container.get(PhenomenonFactory);
 const props: Props = {

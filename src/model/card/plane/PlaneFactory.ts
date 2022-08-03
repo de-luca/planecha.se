@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import type { Counter, Props } from '../CardFactory';
+import { Counter, Props } from '../Card';
 import { Plane } from './Plane';
 import * as Special from './special';
 

@@ -37,7 +37,7 @@ class Props {
   emits: ['update:modelValue'],
 })
 export default class ButtonPicker extends Vue.with(Props) {
-  private id: string = '';
+  private id = '';
 
   public created(): void {
     this.id = Math.random().toString(36).substring(2, 15);

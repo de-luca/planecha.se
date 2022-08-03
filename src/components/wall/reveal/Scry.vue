@@ -52,15 +52,15 @@
 
 <script lang="ts">
 import { mixins, Options } from 'vue-class-component';
-import { Imgable } from '@/components/Imgable';
 import { BaseReveal, PickedLeft } from './BaseReveal';
+import { Imgable } from '@/components/Imgable';
 
 @Options({
   emits: ['done'],
 })
 export default class Scry extends mixins(Imgable).with(BaseReveal) {
   private picked: Record<string, boolean> = {};
-  private id: string = '';
+  private id = '';
 
   public created(): void {
     this.id = Math.random().toString(36).substring(2, 15);

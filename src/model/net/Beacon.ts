@@ -29,7 +29,7 @@ export interface SignalPayload {
   data: SignalData;
 }
 
-type Param = {} | { roomId: string } | SignalData;
+type Param = Record<string, unknown> | { roomId: string } | SignalData;
 
 export class Beacon extends EventTarget {
   private socket: WebSocket;
@@ -89,17 +89,17 @@ export class Beacon extends EventTarget {
 
   private handle(event: MessageEvent<string>): void {
     try {
-      const data = JSON.parse(event.data) as Response<any>;
+      const data = JSON.parse(event.data) as Response<unknown>;
       switch(data.event) {
         case EventType.CREATED:
-          return this.dispatch<string>(EventType.CREATED, data.data);
+          return this.dispatch(EventType.CREATED, data.data as string);
         case EventType.JOINED:
-          return this.dispatch<Array<string>>(EventType.JOINED, data.data);
+          return this.dispatch(EventType.JOINED, data.data as Array<string>);
         case EventType.SIGNAL:
-          return this.dispatch<SignalPayload>(EventType.SIGNAL, data.data);
+          return this.dispatch(EventType.SIGNAL, data.data as SignalPayload);
         case EventType.ERROR:
         default:
-          return this.dispatch<string>(EventType.ERROR, data.data);
+          return this.dispatch(EventType.ERROR, data.data as string);
       }
     } catch(err) {
       this.dispatch<string>(EventType.ERROR, 'UNPROCESSABLE SERVER MESSAGE');

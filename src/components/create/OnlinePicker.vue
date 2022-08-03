@@ -32,8 +32,8 @@
 </template>
 
 <script lang="ts">
-import { Onlineable } from '@/components/Onlineable';
 import { Options, prop, mixins } from 'vue-class-component';
+import { Onlineable } from '@/components/Onlineable';
 
 class Props {
   public modelValue = prop<boolean>({ required: true });
@@ -43,7 +43,7 @@ class Props {
   emits: ['update:modelValue'],
 })
 export default class OnlinePicker extends mixins(Onlineable).with(Props) {
-  private id: string = '';
+  private id = '';
 
   public created(): void {
     this.id = Math.random().toString(36).substring(2, 15);

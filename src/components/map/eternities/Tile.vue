@@ -14,12 +14,12 @@
 <script lang="ts">
 import { Component } from 'vue';
 import { Options, prop, Vue } from 'vue-class-component';
-import { Tile as TileModel } from '@/model/map/eternities';
 
 import Current from './tile/Current.vue';
 import Hellrideable from './tile/Hellrideable.vue';
 import Planewalkable from './tile/Planewalkable.vue';
 import Unreachable from './tile/Unreachable.vue';
+import { Tile as TileModel } from '@/model/map/eternities';
 
 class Props {
   public tile = prop<TileModel>({ required: false });

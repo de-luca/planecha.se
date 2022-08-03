@@ -1,5 +1,8 @@
 import { Exported, MapInterface } from '../map';
 import { Clone, RepoInterface } from '../ver';
+import type { useMain } from '@/store/main';
+
+export type Store = ReturnType<typeof useMain>;
 
 export type RequestInitOutput = [
   MapInterface,

@@ -43,10 +43,10 @@
 
 <script lang="ts">
 import { mixins, Options, prop } from 'vue-class-component';
+import { Imgable } from '../../Imgable';
 import { useMain } from '@/store/main';
 import { Plane } from '@/model/card';
 import { Tile } from '@/model/map/eternities';
-import { Imgable } from '../../Imgable';
 
 import PlaneswalkBtn from '@/components/btn/PlaneswalkBtn.vue';
 

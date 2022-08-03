@@ -1,13 +1,20 @@
-import { Phenomenon, Plane } from '@/model/card';
-import { EternitiesMap, EternitiesMapExported, EternitiesMapProps, EternitiesMapSpecs, EternitiesMapSubType, PlaneswalkInput } from './EternitiesMap';
 import {
   CustomEternitiesPlaneswalkInput,
   EternitiesPlaneswalkInput,
   MapType,
   ResolveInput,
 } from '../MapInterface';
-import { StateKey } from '@/model/wall';
+import {
+  EternitiesMap,
+  EternitiesMapExported,
+  EternitiesMapProps,
+  EternitiesMapSpecs,
+  EternitiesMapSubType,
+  PlaneswalkInput,
+} from './EternitiesMap';
 import { Tile, TileStatus } from './Tile';
+import { Phenomenon, Plane } from '@/model/card';
+import { StateKey } from '@/model/wall';
 
 export interface SingleDeckExported extends EternitiesMapExported {
   destination?: Coordinates;

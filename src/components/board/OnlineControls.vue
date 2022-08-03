@@ -64,10 +64,10 @@
 </template>
 
 <script lang="ts">
-import { useMain } from '@/store/main';
 import { Options, Vue } from 'vue-class-component';
 
 import FeedbackButton from '../FeedbackButton.vue';
+import { useMain } from '@/store/main';
 
 enum BtnText {
   IDLE = 'Copy',
@@ -77,7 +77,7 @@ enum BtnText {
 @Options({ components: { FeedbackButton } })
 export default class OnlineControls extends Vue {
   private store = useMain();
-  private active: boolean = true;
+  private active = true;
   private copyBtnText: BtnText = BtnText.IDLE;
 
   public get playerName(): string {

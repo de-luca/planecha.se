@@ -1,13 +1,12 @@
 import { Container } from 'typedi';
-import { getEnv } from '@/services/getEnv';
 import { MapFactory } from '../map';
+import { Patch, Repo } from '../ver';
 import { Beacon, SignalData, SignalPayload } from './Beacon';
 import { PeerLogs } from './PeerLogs';
 import { PeerICEError } from './error/PeerICEError';
-import { Patch, Repo } from '../ver';
-import { Event, Hey, InitPayload, Payload, RequestInitOutput } from './types';
+import { Event, Hey, InitPayload, Payload, RequestInitOutput, Store } from './types';
 import { getHandler, parse, stringify } from './Handler';
-import { useMain } from '@/store/main';
+import { getEnv } from '@/services/getEnv';
 
 interface Peer {
   connection: RTCPeerConnection;
@@ -30,13 +29,15 @@ export class PeerMap {
 
   private peers: Map<string, Peer>;
   private beacon: Beacon;
+  private store: Store;
 
   public readonly playerName: string;
 
-  public constructor(beacon: Beacon, playerName: string) {
+  public constructor(beacon: Beacon, playerName: string, store: Store) {
     this.peers = new Map();
     this.beacon = beacon;
     this.playerName = playerName;
+    this.store = store;
     this.beacon.addEventListener('signal', (ev) => {
       this.signal((ev as CustomEvent<SignalPayload>).detail);
     });
@@ -46,7 +47,7 @@ export class PeerMap {
   public broadcast(event: Event.REVERT, data: number): void;
   public broadcast(event: Event.SYNC, data: Patch): void;
   public broadcast(event: Event.HEY, data: Hey): void;
-  public broadcast(event: Event, data: any = {}): void {
+  public broadcast(event: Event, data: unknown = {}): void {
     this.peers.forEach(peer => peer.channel.send(stringify(event, data)));
   }
 
@@ -59,7 +60,7 @@ export class PeerMap {
 
   public async requestInit(): Promise<RequestInitOutput> {
     const p = this.peers.values().next().value as Peer;
-    const payload: Payload<{}> = {
+    const payload: Payload<unknown> = {
       event: Event.REQUEST_INIT,
       data: {},
     };
@@ -126,7 +127,7 @@ export class PeerMap {
     const channel = connection.createDataChannel(id, PeerMap.channelConfig);
     const logs = new PeerLogs();
 
-    channel.addEventListener('message', getHandler(this.playerName));
+    channel.addEventListener('message', getHandler(this.playerName, this.store));
 
     connection.addEventListener('icecandidate', ({ candidate }) => {
       if (candidate) {
@@ -140,7 +141,7 @@ export class PeerMap {
     connection.addEventListener('iceconnectionstatechange', () => {
       if (connection.iceConnectionState === 'failed') {
         this.peers.delete(id);
-        useMain().bye({ id });
+        this.store.bye({ id });
       }
 
       logs.push('iceConnectionState', connection.iceConnectionState);

@@ -48,12 +48,12 @@
 </template>
 
 <script lang="ts">
-import { mixins, Options } from 'vue-class-component';
-import { Imgable } from '@/components/Imgable';
+import { mixins } from 'vue-class-component';
 import { BaseReveal } from './BaseReveal';
+import { Imgable } from '@/components/Imgable';
 
 export default class Show extends mixins(Imgable).with(BaseReveal) {
-  private activeTab: string = 'relevant';
+  private activeTab = 'relevant';
 
   public confirm(): void {
     const picked = this.config.sendShownTo === 'top' ? this.revealed.relevant : [];

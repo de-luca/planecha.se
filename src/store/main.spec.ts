@@ -1,7 +1,7 @@
 import { describe, it, beforeEach, expect } from 'vitest';
-import { BuildProps, Classic, MapType } from '@/model/map';
 import { setActivePinia, createPinia } from 'pinia';
 import { useMain } from './main';
+import { BuildProps, Classic, MapType } from '@/model/map';
 
 beforeEach(() => {
   setActivePinia(createPinia());

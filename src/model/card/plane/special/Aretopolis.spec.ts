@@ -1,6 +1,6 @@
-import { eventBus, EventType } from '@/services/EventBus';
 import { describe, it, expect, vi } from 'vitest';
 import { Aretopolis } from './Aretopolis';
+import { eventBus, EventType } from '@/services/EventBus';
 
 vi.mock('@/services/EventBus');
 

@@ -1,14 +1,14 @@
 import { describe, it, expect } from 'vitest';
 import { Container } from 'typedi';
-import { DeckProvider } from '@/services/DeckProvider';
 import { MapType } from '..';
-import { WallStates } from '@/model/wall';
 import {
   EternitiesMap,
   EternitiesMapDeckType,
   EternitiesMapSpecs,
   EternitiesMapSubType,
 } from './EternitiesMap';
+import { DeckProvider } from '@/services/DeckProvider';
+import { WallStates } from '@/model/wall';
 
 class TestMap extends EternitiesMap {
 

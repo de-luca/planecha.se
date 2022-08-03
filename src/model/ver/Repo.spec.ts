@@ -1,5 +1,5 @@
 import { diff } from '@n1ru4l/json-patch-plus';
-import { describe, it, expect, test } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { Exported, MapType } from '../map';
 import { Repo } from './Repo';
 

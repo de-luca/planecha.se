@@ -19,9 +19,9 @@
 
 <script lang="ts">
 import { Options, prop, Vue } from 'vue-class-component';
+import { Scope } from './types';
 import { Card } from '@/model/card';
 import { useConfig } from '@/store/config';
-import { Scope } from './types';
 
 import FeedbackButton from '@/components/FeedbackButton.vue';
 
@@ -33,7 +33,7 @@ class Props {
 @Options({ components: { FeedbackButton } })
 export default class SaveDeck extends Vue.with(Props) {
   private store = useConfig();
-  private deckName: string = '';
+  private deckName = '';
 
   public save(): void {
     this.store.addDeck(this.deckName, {

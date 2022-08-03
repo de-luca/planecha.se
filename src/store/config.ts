@@ -1,5 +1,5 @@
-import { SavedDeck } from '@/components/create/builder/types';
 import { defineStore } from 'pinia';
+import { SavedDeck } from '@/components/create/builder/types';
 
 type State = {
   theme: Theme;

@@ -56,12 +56,12 @@
 
 <script lang="ts">
 import { mixins } from 'vue-class-component';
+import { BaseReveal, PickedLeft } from './BaseReveal';
 import { Card } from '@/model/card';
 import { Imgable } from '@/components/Imgable';
-import { BaseReveal, PickedLeft } from './BaseReveal';
 
 export default class Pick extends mixins(Imgable).with(BaseReveal) {
-  private activeTab: string = 'relevant';
+  private activeTab = 'relevant';
   private selected: Card | null = null;
 
   public confirm(): void {

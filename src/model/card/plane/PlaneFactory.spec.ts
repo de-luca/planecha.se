@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { Container } from 'typedi';
-import { PlaneFactory, Plane } from '.';
-import { PoolOfBecoming, Aretopolis } from './special';
 import type { Props } from '..';
+import { PoolOfBecoming, Aretopolis } from './special';
+import { PlaneFactory, Plane } from '.';
 
 const factory = Container.get(PlaneFactory);
 const props: Props = {

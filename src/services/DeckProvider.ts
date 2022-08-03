@@ -8,10 +8,10 @@ import {
   Phenomenon,
   ExportedCard,
 } from '../model/card';
-import { Deck, DeckState } from '@/model/deck/Deck';
-import { shuffle } from './shuffle';
-
 import cards from '../assets/cards.json';
+import { shuffle } from './shuffle';
+import { Deck, DeckState } from '@/model/deck/Deck';
+
 
 @Service()
 export class DeckProvider {

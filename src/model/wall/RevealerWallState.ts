@@ -1,4 +1,4 @@
-import { WallState } from './WallStates';
+import type { WallState } from './WallStates';
 
 export enum RevealerMode {
   SCRY = 'SCRY',

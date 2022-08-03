@@ -1,15 +1,20 @@
-import { Phenomenon } from '@/model/card';
-import { Deck, DeckState } from '@/model/deck/Deck';
-import { SingleDeckProps, SingleDeck } from './SingleDeck';
+import { Container } from 'typedi';
 import {
   Initable,
   MapType,
   ResolveInput,
 } from '../MapInterface';
-import { EternitiesMapDeckType, EternitiesMapExported, EternitiesMapSpecs, EternitiesMapSubType } from './EternitiesMap';
+import { SingleDeckProps, SingleDeck } from './SingleDeck';
+import {
+  EternitiesMapDeckType,
+  EternitiesMapExported,
+  EternitiesMapSpecs,
+  EternitiesMapSubType,
+} from './EternitiesMap';
+import { Phenomenon } from '@/model/card';
+import { Deck, DeckState } from '@/model/deck/Deck';
 import { StateKey } from '@/model/wall';
 import { DeckProvider } from '@/services/DeckProvider';
-import { Container } from 'typedi';
 
 export enum EncounterTrigger {
   ON_PLANESWALK = 'ON_PLANESWALK',

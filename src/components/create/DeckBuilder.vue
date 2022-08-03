@@ -126,12 +126,12 @@
 <script lang="ts">
 import { Container } from 'typedi';
 import { Options, prop, Vue } from 'vue-class-component';
-import { DeckProvider } from '@/services/DeckProvider';
-import { Card } from '@/model/card';
 import { Scope } from './builder/types';
 
 import SaveDeck from './builder/SaveDeck.vue';
 import DeckList from './builder/DeckList.vue';
+import { Card } from '@/model/card';
+import { DeckProvider } from '@/services/DeckProvider';
 
 class Props {
   public baseDeck = prop<Array<Card>>({ required: false, default: [] });
@@ -146,7 +146,7 @@ export default class DeckBuilder extends Vue.with(Props) {
   private selectedGroup: Scope = this.scope;
   private deckProvider: DeckProvider;
   private cards: Array<Card>;
-  private search: string = '';
+  private search = '';
   private deck: Array<Card> = [];
 
   public created() {

@@ -1,6 +1,6 @@
-import { eventBus, EventType } from '@/services/EventBus';
-import { Counter } from '../../CardFactory';
+import { Counter } from '../../Card';
 import { Plane } from '../Plane';
+import { eventBus, EventType } from '@/services/EventBus';
 
 /**
  * When you planeswalk to Aretopolis or at the beginning of your upkeep,

@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import { Container } from 'typedi';
-import { DeckProvider } from '@/services/DeckProvider';
-import { SingleDeck } from './SingleDeck';
 import { MapType } from '..';
-import { WallStates } from '@/model/wall';
+import { SingleDeck } from './SingleDeck';
 import { EternitiesMapDeckType, EternitiesMapSubType } from './EternitiesMap';
+import { DeckProvider } from '@/services/DeckProvider';
+import { WallStates } from '@/model/wall';
 
 describe('SingleDeck.specs', () => {
   it('returns the type', () => {

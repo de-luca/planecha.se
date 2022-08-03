@@ -9,8 +9,8 @@ import { Vue } from 'vue-class-component';
 export default class Maze extends Vue {
   private static readonly rows = 10;
 
-  private glyphs: string = '';
-  private cols: number = 0;
+  private glyphs = '';
+  private cols = 0;
 
   public created(): void {
     this.glyphs = Math.random().toString(36).substring(2, 6);

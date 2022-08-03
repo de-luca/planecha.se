@@ -1,9 +1,9 @@
-import _shuffle from 'lodash.shuffle';
-import { Plane, PoolOfBecoming, StairsToInfinity } from '@/model/card';
-import { Op, useMain } from '@/store/main';
-import { mixins, Vue } from 'vue-class-component';
+import shuffle from 'lodash.shuffle';
+import { mixins } from 'vue-class-component';
 import { PickedLeft } from '../wall/reveal/BaseReveal';
 import { Imgable } from '../Imgable';
+import { Op, useMain } from '@/store/main';
+import { Plane, PoolOfBecoming, StairsToInfinity } from '@/model/card';
 
 export abstract class Map extends mixins(Imgable) {
   protected store = useMain();
@@ -33,7 +33,7 @@ export abstract class Map extends mixins(Imgable) {
   protected putBack(choices: PickedLeft): void {
     const payload = {
       top: choices.picked,
-      bottom: _shuffle(choices.left),
+      bottom: shuffle(choices.left),
     };
 
     this.store.resolveReveal(payload);

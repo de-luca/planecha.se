@@ -1,4 +1,4 @@
-import Container from 'typedi';
+import { Container } from 'typedi';
 import { defineStore } from 'pinia';
 
 import {
@@ -51,7 +51,7 @@ export interface State {
   mates: Map<string, string>;
   feed: Array<string>;
   opStack: Array<OpRequest>;
-};
+}
 
 function getState(): State {
   return {
@@ -104,7 +104,7 @@ export const useMain = defineStore('main', {
       this.online = payload.online;
 
       if (payload.online) {
-        this.bridge = new Bridge(payload.advanced.name as string);
+        this.bridge = new Bridge(payload.advanced.name as string, this);
         await this.bridge.ready;
         await this.bridge.create();
       }
@@ -113,7 +113,7 @@ export const useMain = defineStore('main', {
     async join(payload: JoinPayload) {
       this.leave();
       this.online = true;
-      this.bridge = new Bridge(payload.name);
+      this.bridge = new Bridge(payload.name, this);
       await this.bridge.ready;
       const [map, repo, feed] = await this.bridge.join(payload.roomId);
       this._map = map;
@@ -194,6 +194,7 @@ export const useMain = defineStore('main', {
     },
     resolveOpStack() {
       const opr = this.opStack.pop();
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       opr && this[opr.op](opr.payload);
     },

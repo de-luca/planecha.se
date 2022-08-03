@@ -30,9 +30,9 @@
 </template>
 
 <script lang="ts">
+import { Vue } from 'vue-class-component';
 import { DualDeck } from '@/model/map/eternities';
 import { useMain } from '@/store/main';
-import { Vue } from 'vue-class-component';
 
 export default class DeckStatus extends Vue {
   private store = useMain();

@@ -1,12 +1,12 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 
-import { useMain } from '@/store/main';
 
 import Home from '../views/Home.vue';
 import About from '../views/About.vue';
 import JoinGame from '../views/JoinGame.vue';
 import CreateGame from '../views/CreateGame.vue';
 import Board from '../views/Board.vue';
+import { useMain } from '@/store/main';
 
 const routes: Array<RouteRecordRaw> = [
   {

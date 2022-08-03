@@ -1,12 +1,12 @@
-import { Plane } from '@/model/card';
 import { Map, MapProps } from '../Map';
-import { Tile, TileStatus, ExportedTile } from './Tile';
 import {
   CustomEternitiesPlaneswalkInput,
   EternitiesPlaneswalkInput,
   Exported,
   MapSpecs,
 } from '../MapInterface';
+import { Tile, TileStatus, ExportedTile } from './Tile';
+import { Plane } from '@/model/card';
 
 export enum EternitiesMapSubType {
   SINGLE_DECK = 'SINGLE_DECK',

@@ -1,7 +1,7 @@
 import cloneDeep from 'lodash.clonedeep';
 import { Delta, patch } from '@n1ru4l/json-patch-plus';
-import { Exported } from '../map';
-import { Patch } from './Patch';
+import type { Exported } from '../map';
+import type { Patch } from './Patch';
 
 export interface Clone {
   head: number;

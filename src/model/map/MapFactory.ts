@@ -1,19 +1,15 @@
 import { Inject, Service } from 'typedi';
-import { DeckProvider } from '@/services/DeckProvider';
 import { Card } from '../card';
-import {
-  Classic,
-  Exported,
-  MapInterface,
-  MapType,
-} from '.';
+import { WallStates } from '../wall';
 import {
   EncounterTriggers,
   EternitiesMapExported,
   EternitiesMapFactory,
   EternitiesMapSpecs,
 } from './eternities';
-import { WallStates } from '../wall';
+import { Classic } from './Classic';
+import { Exported, MapInterface, MapType } from './MapInterface';
+import { DeckProvider } from '@/services/DeckProvider';
 
 export interface AdvancedOptions {
   name?: string;

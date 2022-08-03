@@ -1,9 +1,9 @@
 import { describe, it, beforeEach, expect, vi } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
 import { createApp } from 'vue';
-import { BuildProps, MapType } from '@/model/map';
 import { useMain } from '../main';
 import { versionizer } from './versionizer';
+import { BuildProps, MapType } from '@/model/map';
 
 beforeEach(() => {
   const pinia = createPinia().use(versionizer);

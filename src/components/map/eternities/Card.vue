@@ -21,10 +21,10 @@
 </template>
 
 <script lang="ts">
-import { Plane } from '@/model/card';
-import { useMain } from '@/store/main';
 import { prop, mixins } from 'vue-class-component';
 import { Imgable } from '../../Imgable';
+import { Plane } from '@/model/card';
+import { useMain } from '@/store/main';
 
 class Props {
   public card = prop<Plane>({ required: true });

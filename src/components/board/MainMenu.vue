@@ -44,8 +44,8 @@
 </template>
 
 <script lang="ts">
-import { useMain } from '@/store/main';
 import { Options, Vue } from 'vue-class-component';
+import { useMain } from '@/store/main';
 
 import ThemeSelector from '@/components/ThemeSelector.vue';
 import CloseModal from '@/components/board/CloseModal.vue';
@@ -55,7 +55,7 @@ import CloseModal from '@/components/board/CloseModal.vue';
 })
 export default class MainMenu extends Vue {
   private store = useMain();
-  private active: boolean = false;
+  private active = false;
   private closeModal = false;
 
   public get online(): boolean {

@@ -1,14 +1,12 @@
 import { Inject, Service } from 'typedi';
-import { DeckProvider } from '@/services/DeckProvider';
+import { MapInterface } from '../MapInterface';
 import { SingleDeck, SingleDeckExported, SingleDeckProps } from './SingleDeck';
 import { DualDeck, DualDeckExported, EncounterTriggers } from './DualDeck';
-import {
-  MapInterface,
-} from '../MapInterface';
 import { Tile } from './Tile';
+import { EternitiesMapDeckType, EternitiesMapExported, EternitiesMapSpecs, EternitiesMapSubType } from './EternitiesMap';
+import { DeckProvider } from '@/services/DeckProvider';
 import { Card, Plane } from '@/model/card';
 import { Deck } from '@/model/deck/Deck';
-import { EternitiesMapDeckType, EternitiesMapExported, EternitiesMapSpecs, EternitiesMapSubType } from './EternitiesMap';
 import { WallStates } from '@/model/wall';
 
 @Service()

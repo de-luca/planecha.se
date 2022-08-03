@@ -1,11 +1,11 @@
-import { Phenomenon, Plane } from '@/model/card';
-import { StateKey, WallStates } from '@/model/wall';
-import { DeckProvider } from '@/services/DeckProvider';
-import Container from 'typedi';
+import { Container } from 'typedi';
 import { describe, expect, it, vi } from 'vitest';
 import { MapType } from '../MapInterface';
 import { DualDeck, EncounterMechanic } from './DualDeck';
 import { EternitiesMapDeckType, EternitiesMapSubType } from './EternitiesMap';
+import { DeckProvider } from '@/services/DeckProvider';
+import { StateKey, WallStates } from '@/model/wall';
+import { Phenomenon, Plane } from '@/model/card';
 
 describe('DualDeck.specs', () => {
   it('returns a tile from an exported payload', () => {

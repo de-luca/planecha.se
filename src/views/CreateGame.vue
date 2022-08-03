@@ -149,10 +149,10 @@ export default class CreateGame extends Vue {
   private mainStore = useMain();
   private configStore = useConfig();
 
-  private openDeckBuilder: boolean = false;
-  private creating: boolean = false;
+  private openDeckBuilder = false;
+  private creating = false;
 
-  private online: boolean = false;
+  private online = false;
   private mapType: MapType = MapType.CLASSIC;
   private subType: EternitiesMapSubType = EternitiesMapSubType.SINGLE_DECK;
   private deckType: EternitiesMapDeckType = EternitiesMapDeckType.PLANES;
@@ -170,8 +170,8 @@ export default class CreateGame extends Vue {
     },
   };
 
-  private name: string = '';
-  private saveName: boolean = false;
+  private name = '';
+  private saveName = false;
   private deck: Array<Card> = [];
 
   public created() {

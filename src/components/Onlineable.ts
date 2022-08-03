@@ -1,10 +1,10 @@
-import { Beacon } from '@/model/net/Beacon';
 import { Vue } from 'vue-class-component';
+import { Beacon } from '@/model/net/Beacon';
 
 export class Onlineable extends Vue {
   protected online: boolean = navigator.onLine;
-  protected loading: boolean = true;
-  protected available: boolean = false;
+  protected loading = true;
+  protected available = false;
 
   protected get helpText(): string {
     if (!window.WebSocket) {

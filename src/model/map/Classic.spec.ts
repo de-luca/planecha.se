@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import { Container } from 'typedi';
-import { DeckProvider } from '@/services/DeckProvider';
-import { Classic, MapType } from '.';
 import { Plane } from '../card';
 import { WallStates } from '../wall';
+import { Classic, MapType } from '.';
+import { DeckProvider } from '@/services/DeckProvider';
 
 describe('Classic.type', () => {
   it('returns the type', () => {

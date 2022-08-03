@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { Container } from 'typedi';
 import { MapFactory } from './MapFactory';
-import { Classic, Exported, MapType } from '.';
 import { DualDeck, DualDeckExported, EncounterMechanic, EncounterTrigger, EternitiesMapDeckType, EternitiesMapSubType, SingleDeck, SingleDeckExported, TileStatus } from './eternities';
+import { Classic, Exported, MapType } from '.';
 
 describe('MapFactory.build', () => {
   it('creates a Classic Map', () => {

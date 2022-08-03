@@ -66,8 +66,8 @@
 
 <script lang="ts">
 import { mixins, Options, prop } from 'vue-class-component';
-import { WallProps } from './WallProps';
 import { Imgable } from '../Imgable';
+import { WallProps } from './WallProps';
 import { EncounterMechanic, TriggerConfig, TriggerConfigEnabled } from '@/model/map/eternities';
 
 class Props extends WallProps {
@@ -79,7 +79,7 @@ class Props extends WallProps {
   emits: [ 'planeswalk', 'encounter' ],
 })
 export default class EncounterWall extends mixins(Imgable).with(Props) {
-  private rolled: number = 0;
+  private rolled = 0;
 
   public get title(): string {
     return this.triggerConfig.enabled &&

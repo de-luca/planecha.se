@@ -1,4 +1,3 @@
-import { Delta } from '@n1ru4l/json-patch-plus';
 import { ExportedWallStates, WallStates } from '../wall';
 import { Card, ExportedCard, Plane } from '../card';
 import { DeckState } from '../deck/Deck';
@@ -35,7 +34,7 @@ export interface ChaosInput extends Initable {
   card: Card;
 }
 
-export interface ClassicPlaneswalkInput extends Initable {}
+export type ClassicPlaneswalkInput = Initable
 
 export interface CustomClassicPlaneswalkInput extends ClassicPlaneswalkInput {
   planes: Array<Plane>;

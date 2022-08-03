@@ -40,10 +40,10 @@
 </template>
 
 <script lang="ts">
-import _shuffle from 'lodash.shuffle';
-import { Map } from '../Map';
+import shuffle from 'lodash.shuffle';
 import { mixins, Options } from 'vue-class-component';
 import { Component } from '@vue/runtime-core';
+import { Map } from '../Map';
 import { Op } from '@/store/main';
 import { Card as ModelCard, Plane } from '@/model/card';
 import { eventBus, EventType } from '@/services/EventBus';
@@ -135,17 +135,17 @@ export default class Classic extends mixins(Map) {
       case RevealerSource.STAIRS_TO_INFINITY:
         return {
           ...config,
-          seeder: () => {},
+          seeder: () => { /* NOOP */ },
           resolver: this.putBack,
         };
       case RevealerSource.POOL_OF_BECOMING:
         return {
           ...config,
-          seeder: () => {},
+          seeder: () => { /* NOOP */ },
           resolver: (choices: PickedLeft) => {
             this.store.pushOpToStack(Op.RESOLVE_REVEAL,{
               top: choices.picked,
-              bottom: _shuffle(choices.left),
+              bottom: shuffle(choices.left),
             });
             choices.left.forEach(card => this.store.pushOpToStack(Op.CHAOS, { card }));
             this.store.resolveOpStack();

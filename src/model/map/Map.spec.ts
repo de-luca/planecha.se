@@ -1,12 +1,12 @@
 import { describe, it, vi, expect } from 'vitest';
 import { Container } from 'typedi';
 import { diff } from '@n1ru4l/json-patch-plus';
-import { DeckProvider } from '@/services/DeckProvider';
-import { eventBus } from '@/services/EventBus';
 import { Card, Plane } from '../card';
-import { Map, MapSpecs, MapType } from '.';
 import { WallStates } from '../wall';
 import { Patch } from '../ver';
+import { Map, MapSpecs, MapType } from '.';
+import { eventBus } from '@/services/EventBus';
+import { DeckProvider } from '@/services/DeckProvider';
 
 class TestMap extends Map {
   public get specs(): MapSpecs {

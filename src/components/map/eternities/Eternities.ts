@@ -1,10 +1,10 @@
-import _shuffle from 'lodash.shuffle';
 import { Component } from 'vue';
-import { eventBus, EventType } from '@/services/EventBus';
-import { Phenomenon, Plane } from '@/model/card';
 import { PickedLeft, RevealConfig } from '../../wall/reveal/BaseReveal';
 import { RevealFactory } from '../../wall/reveal/RevealFactory';
 import { WallConfig } from '../../wall/WallProps';
+import { Map } from '../Map';
+import { eventBus, EventType } from '@/services/EventBus';
+import { Phenomenon, Plane } from '@/model/card';
 import { Revealed } from '@/model/map';
 import {
   RevealerWallState,
@@ -14,7 +14,6 @@ import {
 } from '@/model/wall';
 
 import { EternitiesMap as EternitiesMapModel, SingleDeck, Tile } from '@/model/map/eternities';
-import { Map } from '../Map';
 
 
 interface LocalRevealerConfig {
@@ -67,7 +66,7 @@ export class Eternities extends Map {
       case RevealerSource.POOL_OF_BECOMING:
         return {
           ...config,
-          seeder: () => {},
+          seeder: () => { /* NOOP */ },
           resolver: this.putBack,
         };
       case RevealerSource.INTERPLANAR_TUNNEL:

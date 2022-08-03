@@ -1,6 +1,6 @@
-import { DeckProvider } from '@/services/DeckProvider';
 import { Container } from 'typedi';
 import { ExportedCard, Plane } from '../../card';
+import { DeckProvider } from '@/services/DeckProvider';
 
 export enum TileStatus {
   ACTIVE = 'active',

@@ -27,10 +27,10 @@
 </template>
 
 <script lang="ts">
-import { PeerICEError } from '@/model/net/error/PeerICEError';
 import { Options, prop, Vue } from 'vue-class-component';
 
 import FeedbackButton from './FeedbackButton.vue';
+import { PeerICEError } from '@/model/net/error/PeerICEError';
 
 class Props {
   public error = prop<Error>({ required: true });
