@@ -16,15 +16,15 @@
           </li>
           <li>
             <a
-              @click="selectedGroup = 'plane'"
-              :class="{'is-active': selectedGroup === 'plane'}"
+              @click="selectedGroup = 'planes'"
+              :class="{'is-active': selectedGroup === 'planes'}"
             >Planes</a>
           </li>
           <li>
             <a
               v-if="scope === 'all'"
-              @click="selectedGroup = 'phenomenon'"
-              :class="{'is-active': selectedGroup === 'phenomenon'}"
+              @click="selectedGroup = 'phenomena'"
+              :class="{'is-active': selectedGroup === 'phenomena'}"
             >Phenomenon</a>
           </li>
           <li>
@@ -44,13 +44,13 @@
             :class="{'is-active': selectedGroup === 'all'}"
           >All cards</a>
           <a
-            @click="selectedGroup = 'plane'"
-            :class="{'is-active': selectedGroup === 'plane'}"
+            @click="selectedGroup = 'planes'"
+            :class="{'is-active': selectedGroup === 'planes'}"
           >Planes</a>
           <a
             v-if="scope === 'all'"
-            @click="selectedGroup = 'phenomenon'"
-            :class="{'is-active': selectedGroup === 'phenomenon'}"
+            @click="selectedGroup = 'phenomena'"
+            :class="{'is-active': selectedGroup === 'phenomena'}"
           >Phenomenon</a>
           <span></span>
           <a @click="selectedGroup = 'decks'" :class="{'is-active': selectedGroup === 'decks'}">Decks</a>
@@ -126,7 +126,7 @@
 <script lang="ts">
 import { Container } from 'typedi';
 import { Options, prop, Vue } from 'vue-class-component';
-import { Scope } from './builder/types';
+import { Scope, scopeMap } from './types';
 
 import SaveDeck from './builder/SaveDeck.vue';
 import DeckList from './builder/DeckList.vue';
@@ -163,7 +163,7 @@ export default class DeckBuilder extends Vue.with(Props) {
 
   public get filtered(): Array<Card> {
     return this.cards
-      .filter(c => this.selectedGroup === Scope.ALL || c.type === this.selectedGroup)
+      .filter(c => c instanceof scopeMap[this.selectedGroup])
       .filter(c => c.name.toLowerCase().includes(this.search));
   }
 

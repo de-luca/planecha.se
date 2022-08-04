@@ -156,9 +156,9 @@ export default class Board extends Vue {
 
 .notif-center {
   position: absolute;
-  bottom: 1rem;
-  right: 1rem;
-  width: 22rem;
+  bottom: calc(3.5rem + (.5rem / 2));
+  right: calc(1rem + (.5rem / 2));
+  width: calc(22rem - .5rem);
 }
 
 #landscape-guard {

@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { Options, prop, Vue } from 'vue-class-component';
-import { Scope } from './types';
+import { Scope } from '../types';
 import { Card } from '@/model/card';
 import { useConfig } from '@/store/config';
 

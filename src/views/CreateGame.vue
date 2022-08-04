@@ -96,17 +96,23 @@ import { MapType } from '@/model/map';
 import {
   EncounterMechanic,
   EncounterTrigger,
-  EncounterTriggers,
   EternitiesMapDeckType,
   EternitiesMapSubType,
 } from '@/model/map/eternities';
 import { Card, Plane } from '@/model/card';
-import { Scope } from '@/components/create/builder/types';
+import { Scope } from '@/components/create/types';
 import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';
 import DeckBuilder from '@/components/create/DeckBuilder.vue';
 import OnlinePicker from '@/components/create/OnlinePicker.vue';
 import EncounterSetup from '@/components/create/EncounterSetup.vue';
 import BrandedFooter from '@/components/BrandedFooter.vue';
+
+interface TriggerConfig {
+  enabled: boolean;
+  mechanic: EncounterMechanic;
+  ratio: number;
+}
+type Triggers = Record<EncounterTrigger, TriggerConfig>;
 
 @Options({
   components: {
@@ -157,7 +163,7 @@ export default class CreateGame extends Vue {
   private subType: EternitiesMapSubType = EternitiesMapSubType.SINGLE_DECK;
   private deckType: EternitiesMapDeckType = EternitiesMapDeckType.PLANES;
 
-  private encounterConfig: EncounterTriggers = {
+  private encounterConfig: Triggers = {
     [EncounterTrigger.ON_PLANESWALK]: {
       enabled: false,
       mechanic: EncounterMechanic.MANUAL,
