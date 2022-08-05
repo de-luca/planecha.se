@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import './main.scss';
 import './fa';
+import VueTippy from 'vue-tippy';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import {
@@ -26,4 +27,5 @@ createApp(App)
       .use(versionizer),
   )
   .use(router)
+  .use(VueTippy)
   .mount('#app');

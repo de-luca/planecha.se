@@ -81,12 +81,18 @@
           </div>
           <div class="card-list">
             <template v-for="card in filtered" :key="card.id">
-              <label class="panel-block">
-                <span class="panel-icon">
-                  <input type="checkbox" :value="card" v-model="deck">
-                </span>
-                <span>{{ card.name }}</span>
-              </label>
+              <tippy placement="bottom-end" duration="0" touch="false" hideOnClick="false">
+                <label class="panel-block">
+                  <span class="panel-icon">
+                    <input type="checkbox" :value="card" v-model="deck">
+                  </span>
+                  <span>{{ card.name }}</span>
+                </label>
+
+                <template #content>
+                  <img class="card-preview" :src="buildImgSrc(card)">
+                </template>
+              </tippy>
             </template>
           </div>
           <save-deck
@@ -125,13 +131,15 @@
 
 <script lang="ts">
 import { Container } from 'typedi';
-import { Options, prop, Vue } from 'vue-class-component';
+import { mixins, Options, prop } from 'vue-class-component';
+import { Tippy } from 'vue-tippy';
+import { Imgable } from '../Imgable';
 import { Scope, scopeMap } from './types';
-
 import SaveDeck from './builder/SaveDeck.vue';
 import DeckList from './builder/DeckList.vue';
 import { Card } from '@/model/card';
 import { DeckProvider } from '@/services/DeckProvider';
+
 
 class Props {
   public baseDeck = prop<Array<Card>>({ required: false, default: [] });
@@ -140,9 +148,9 @@ class Props {
 
 @Options({
   emits: ['done'],
-  components: { DeckList, SaveDeck },
+  components: { DeckList, SaveDeck, Tippy },
 })
-export default class DeckBuilder extends Vue.with(Props) {
+export default class DeckBuilder extends mixins(Imgable).with(Props) {
   private selectedGroup: Scope = this.scope;
   private deckProvider: DeckProvider;
   private cards: Array<Card>;
@@ -159,6 +167,10 @@ export default class DeckBuilder extends Vue.with(Props) {
     if (this.baseDeck.length === 0) {
       this.all();
     }
+  }
+
+  public buildImgSrc(card: Card): string {
+    return `/cards/${card.id}.jpg`;
   }
 
   public get filtered(): Array<Card> {
@@ -206,7 +218,7 @@ export default class DeckBuilder extends Vue.with(Props) {
     width: 100%;
     margin: 0;
     padding: 0;
-    background-color: #ffffff;
+    background-color: var(--bg-color);
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: 1fr auto auto;
@@ -223,6 +235,7 @@ export default class DeckBuilder extends Vue.with(Props) {
   max-width: 800px;
   max-height: 100vh;
   height: 100%;
+  width: 100%;
 
   display: flex;
   flex-direction: column;
@@ -343,6 +356,11 @@ export default class DeckBuilder extends Vue.with(Props) {
     overflow: scroll;
     border-bottom: 1px solid var(--border-color);
   }
+}
+
+img.card-preview {
+  filter: drop-shadow(1px 1px 1px #585858);
+  border-radius: var(--card-radius);
 }
 
 .field {

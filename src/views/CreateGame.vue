@@ -52,13 +52,13 @@
           <button class="button is-secondary" @click.prevent="toggleDeckBuilder">
             Open deck customization
           </button>
-          <p class="help is-danger" v-if="!hasRequiredCards.valid">
-            <fa icon="exclamation" fixed-width />
-            Your deck does not have the minimum required
-            <b>Planes</b> cards: <b>{{ hasRequiredCards.minCards }}</b>.<br>
-            <em>(In order not to explode)</em>
-          </p>
         </div>
+        <p class="help is-danger" v-if="!hasRequiredCards.valid">
+          <fa icon="exclamation" fixed-width />
+          Your deck does not have the minimum required
+          <b>Planes</b> cards: <b>{{ hasRequiredCards.minCards }}</b>.<br>
+          <em>(In order not to explode)</em>
+        </p>
       </div>
 
       <deck-builder
@@ -316,6 +316,19 @@ export default class CreateGame extends Vue {
 .main.control {
   display: flex;
   gap: 1rem;
+
+  .box {
+    width: var(--form-btn-width);
+    color: var(--picker-text);
+    background-color: var(--picker-bg);
+    border: solid 1px var(--picker-border);
+    padding-bottom: calc(0.5em - 1px);
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: calc(0.5em - 1px);
+
+    height: 2.5em;
+  }
 
   button {
     @media screen and (max-width: 480px) {
