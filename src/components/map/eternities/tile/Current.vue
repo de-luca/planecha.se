@@ -8,7 +8,7 @@
     <fa
       class="marker"
       icon="map-marker-alt"
-      size="5x"
+      size="2x"
     />
     <card
       v-for="p in tile.plane"
@@ -45,8 +45,8 @@ img {
   .marker {
     z-index: 3;
     position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0);
+    top: 1rem;
+    left: 1rem;
     color: var(--brand-color-secondary);
   }
 
