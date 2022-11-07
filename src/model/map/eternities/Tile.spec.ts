@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { Container } from 'typedi';
 import { Tile, TileStatus } from './Tile';
-import { DeckProvider } from '@/services/DeckProvider';
+import { CardProvider } from '@/services/CardProvider';
 
-const deckProvider = Container.get(DeckProvider);
+const cardProvider = Container.get(CardProvider);
 const cardId = '0b8a0cad-92df-45a1-a3cc-561be2f06778';
 
 describe('Tile.fromExport', () => {
@@ -26,7 +26,7 @@ describe('Tile.export', () => {
     const tile = new Tile(
       { x: 1, y: 0 },
       TileStatus.ACTIVE,
-      [deckProvider.getCard(cardId)],
+      [cardProvider.getCard(cardId)],
     );
 
     expect(tile.export()).toEqual({

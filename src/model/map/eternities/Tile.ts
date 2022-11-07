@@ -1,6 +1,6 @@
 import { Container } from 'typedi';
 import { ExportedCard, Plane } from '../../card';
-import { DeckProvider } from '@/services/DeckProvider';
+import { CardProvider } from '@/services/CardProvider';
 
 export enum TileStatus {
   ACTIVE = 'active',
@@ -52,7 +52,7 @@ export class Tile {
     return new Tile(
       tile.coords,
       tile.state,
-      Container.get(DeckProvider).getPileWithState(tile.plane),
+      Container.get(CardProvider).getCardList(tile.plane),
     );
   }
 

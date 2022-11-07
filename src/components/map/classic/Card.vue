@@ -1,12 +1,12 @@
 <template>
   <div v-if="!hidden" class="card-container">
 
-    <div v-if="hasCounters" class="counters tags has-addons">
+    <div v-if="counters" class="counters tags has-addons">
       <span class="tag is-primary is-medium minus" @click="update(-1)">
         <fa icon="minus" fixed-width />
       </span>
       <span class="tag is-primary is-medium value">
-        {{ card.counter.value }}
+        {{ counters.value }}
       </span>
       <span class="tag is-primary is-medium plus" @click="update(1)">
         <fa icon="plus" fixed-width />
@@ -24,7 +24,7 @@
 <script lang="ts">
 import { prop, mixins } from 'vue-class-component';
 import { Imgable } from '../../Imgable';
-import { Card as ModelCard, Phenomenon, Plane } from '@/model/card';
+import { Card as ModelCard, Counter, Phenomenon, Plane } from '@/model/card';
 import { useMain } from '@/store/main';
 
 class Props {
@@ -39,11 +39,11 @@ export default class Card extends mixins(Imgable).with(Props) {
     return this.buildImgSrc(this.card);
   }
 
-  public get hasCounters(): boolean {
+  public get counters(): Counter | undefined {
     if (this.card instanceof Plane) {
-      return this.card.counter !== undefined;
+      return this.card.counter;
     }
-    return false;
+    return undefined;
   }
 
   public get isPhenomenon(): boolean {
@@ -83,6 +83,10 @@ img {
 
   .tag {
     font-weight: bolder;
+
+    &.value {
+      width: 2rem;
+    }
 
     &.minus, &.plus {
       cursor: pointer;

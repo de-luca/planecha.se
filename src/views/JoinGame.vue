@@ -82,12 +82,12 @@ export default class JoinGame extends mixins(Onlineable) {
   private mainStore = useMain();
   private configStore = useConfig();
 
-  private roomId = '';
-  private name = '';
-  private saveName = false;
-  private joining = false;
+  public roomId = '';
+  public name = '';
+  public saveName = false;
+  public joining = false;
 
-  private error: Error | null = null;
+  public error: Error | null = null;
 
   public created() {
     this.roomId = this.$route.params.roomId as string ?? '';

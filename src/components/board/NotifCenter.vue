@@ -34,7 +34,7 @@ export default class NotifCenter extends Vue {
 
   private store = useMain();
   private index = 0;
-  private notifs: Map<number, Notif> = new Map();
+  public notifs: Map<number, Notif> = new Map();
 
   public created(): void {
     this.store.$onAction(({ name, args, store, after }) => {

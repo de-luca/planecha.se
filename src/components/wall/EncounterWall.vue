@@ -20,24 +20,7 @@
         </div>
       </div>
 
-      <div v-if="config.passive" class="control">
-        <p class="subtitle"><b>{{ mateName }}</b> is rolling.</p>
-      </div>
-      <div v-else-if="triggerConfig.mechanic === 'MANUAL'" class="control">
-        <button
-          class="button is-danger is-medium"
-          @click="encounter"
-        >
-          Encounter Phenomenon
-        </button>
-        <button
-          class="button is-secondary is-medium"
-          @click="planeswalk"
-        >
-          Planeswalk
-        </button>
-      </div>
-      <div v-else class="control">
+      <div class="control">
         <button
           v-if="rolled === 0"
           class="button is-secondary is-medium"
@@ -79,7 +62,7 @@ class Props extends WallProps {
   emits: [ 'planeswalk', 'encounter' ],
 })
 export default class EncounterWall extends mixins(Imgable).with(Props) {
-  private rolled = 0;
+  public rolled = 0;
 
   public get title(): string {
     return this.triggerConfig.enabled &&

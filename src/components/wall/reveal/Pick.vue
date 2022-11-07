@@ -61,8 +61,8 @@ import { Card } from '@/model/card';
 import { Imgable } from '@/components/Imgable';
 
 export default class Pick extends mixins(Imgable).with(BaseReveal) {
-  private activeTab = 'relevant';
-  private selected: Card | null = null;
+  public activeTab = 'relevant';
+  public selected: Card | null = null;
 
   public confirm(): void {
     const result: PickedLeft = {

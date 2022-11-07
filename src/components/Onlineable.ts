@@ -3,10 +3,10 @@ import { Beacon } from '@/model/net/Beacon';
 
 export class Onlineable extends Vue {
   protected online: boolean = navigator.onLine;
-  protected loading = true;
-  protected available = false;
+  public loading = true;
+  public available = false;
 
-  protected get helpText(): string {
+  public get helpText(): string {
     if (!window.WebSocket) {
       return 'Online unavailable. No WebSocket support.';
     }

@@ -29,16 +29,12 @@ interface LocalPhenomenonWallConfig {
 }
 
 export class Eternities extends Map {
-  protected readonly off: number = 4;
-  protected displayedTile: Tile | null = null;
+  public readonly off: number = 4;
+  public displayedTile: Tile | null = null;
 
   protected setUp(): void {
-    eventBus.on(EventType.STAIRS_TO_INFINITY, (): void => {
-      this.store.reveal({ count: 1 });
-    });
-    eventBus.on(EventType.POOL_OF_BECOMING, (): void => {
-      this.store.reveal({ count: 3 });
-    });
+    eventBus.on(EventType.STAIRS_TO_INFINITY, () => this.store.reveal({ count: 1 }));
+    eventBus.on(EventType.POOL_OF_BECOMING, () => this.store.reveal({ count: 3 }));
   }
 
   public get revealed(): Revealed | undefined {

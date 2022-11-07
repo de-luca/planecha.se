@@ -26,7 +26,7 @@
 
         <hr class="dropdown-divider">
 
-        <a @click="closeModal = true" class="dropdown-item">
+        <a @click="closeModalOpened = true" class="dropdown-item">
           {{ online ? 'Leave' : 'Close' }} Game
         </a>
 
@@ -37,8 +37,8 @@
 
   <close-modal
     :online="online"
-    :style="{ display: (closeModal ? 'block' : 'none' ) }"
-    @dismiss="closeModal = false"
+    :style="{ display: (closeModalOpened ? 'block' : 'none' ) }"
+    @dismiss="closeModalOpened = false"
     @close="close()"
   />
 </template>
@@ -55,8 +55,8 @@ import CloseModal from '@/components/board/CloseModal.vue';
 })
 export default class MainMenu extends Vue {
   private store = useMain();
-  private active = false;
-  private closeModal = false;
+  public active = false;
+  public closeModalOpened = false;
 
   public get online(): boolean {
     return this.store.online;

@@ -49,7 +49,7 @@
         </div>
       </div>
 
-      <p class="help">{{ helpText[setup['ON_HELLRIDE'].mechanic] }}</p>
+      <p class="help">{{ helpText[setup['ON_HELLRIDE'].mechanic!] }}</p>
     </div>
 
     <div class="control box" :class="{ active: setup['ON_PLANESWALK'].enabled }">
@@ -99,7 +99,7 @@
         </div>
       </div>
 
-      <p class="help">{{ helpText[setup['ON_PLANESWALK'].mechanic] }}</p>
+      <p class="help">{{ helpText[setup['ON_PLANESWALK'].mechanic!] }}</p>
     </div>
 
   </div>
@@ -118,7 +118,7 @@ class Props {
   emits: ['update:modelValue'],
 })
 export default class EncounterSetup extends Vue.with(Props) {
-  private readonly helpText: Record<EncounterMechanic, string> = {
+  public readonly helpText: Record<EncounterMechanic, string> = {
     [EncounterMechanic.MANUAL]: 'You\'ll get prompted to roll for the encounter.',
     [EncounterMechanic.AUTO]: 'The encounter will be rolled automaticaly with the probability you defined.',
   };

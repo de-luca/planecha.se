@@ -39,7 +39,7 @@ import PlanarDice from '../dices/PlanarDice.vue';
 
 @Options({ components: { Dice, PlanarDice } })
 export default class DiceTray extends Vue {
-  private active = false;
+  public active = false;
 }
 </script>
 

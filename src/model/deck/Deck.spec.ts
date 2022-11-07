@@ -1,9 +1,9 @@
 import { describe, it, expect, vi } from 'vitest';
 import { Container } from 'typedi';
 import { Card, Plane } from '../card';
-import { DeckProvider } from '@/services/DeckProvider';
+import { CardProvider } from '@/services/CardProvider';
 
-const provider = Container.get(DeckProvider);
+const provider = Container.get(CardProvider);
 
 describe('Deck.draw', () => {
   it('draws a card', () => {

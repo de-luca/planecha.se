@@ -1,10 +1,6 @@
 import { Card, Phenomenon, Plane } from '@/model/card';
 
-export enum Scope {
-  ALL = 'all',
-  PLANES = 'planes',
-  PHENOMENA = 'phenomena',
-}
+export type Scope =  'all' | 'planes' | 'phenomena';
 
 export interface SavedDeck {
   list: Array<string>;
@@ -12,7 +8,7 @@ export interface SavedDeck {
 }
 
 export const scopeMap = {
-  [Scope.ALL]: Card,
-  [Scope.PLANES]: Plane,
-  [Scope.PHENOMENA]: Phenomenon,
+  'all': Card,
+  'planes': Plane,
+  'phenomena': Phenomenon,
 };

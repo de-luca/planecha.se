@@ -77,8 +77,8 @@ enum BtnText {
 @Options({ components: { FeedbackButton } })
 export default class OnlineControls extends Vue {
   private store = useMain();
-  private active = true;
   private copyBtnText: BtnText = BtnText.IDLE;
+  public active = true;
 
   public get playerName(): string {
     return this.store.playerName;

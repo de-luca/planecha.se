@@ -7,7 +7,7 @@ import {
   EternitiesMapSpecs,
   EternitiesMapSubType,
 } from './EternitiesMap';
-import { DeckProvider } from '@/services/DeckProvider';
+import { CardProvider } from '@/services/CardProvider';
 import { WallStates } from '@/model/wall';
 
 class TestMap extends EternitiesMap {
@@ -30,7 +30,7 @@ class TestMap extends EternitiesMap {
 describe('EternitiesMap.initializeTiles', () => {
   it('initializes board tiles', () => {
     const map = new TestMap({
-      deck: Container.get(DeckProvider).getDeck(),
+      deck: Container.get(CardProvider).getDeck(),
       wallStates: new WallStates(),
       deckType: EternitiesMapDeckType.ALL,
     });

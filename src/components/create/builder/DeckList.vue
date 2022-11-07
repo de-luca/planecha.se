@@ -44,7 +44,7 @@ import { Options, prop, Vue } from 'vue-class-component';
 import { SavedDeck, Scope, scopeMap } from '../types';
 import { useConfig } from '@/store/config';
 import { Card } from '@/model/card';
-import { DeckProvider } from '@/services/DeckProvider';
+import { CardProvider } from '@/services/CardProvider';
 
 import FeedbackButton from '@/components/FeedbackButton.vue';
 
@@ -57,22 +57,22 @@ class Props {
   components: { FeedbackButton },
 })
 export default class DeckList extends Vue.with(Props) {
-  private static readonly tags = {
-    [Scope.ALL]: 'Planes and Phenomena',
-    [Scope.PLANES]: 'Only Planes',
-    [Scope.PHENOMENA]: 'Only Phenomena',
+  private static readonly tags: Record<Scope, string> = {
+    all: 'Planes and Phenomena',
+    planes: 'Only Planes',
+    phenomena: 'Only Phenomena',
   };
 
   private store = useConfig();
   private cards: Array<Card>;
-  private search = '';
+  public search = '';
 
   public created() {
-    this.cards = Container.get(DeckProvider).getAllCards();
+    this.cards = Container.get(CardProvider).getAllCards();
   }
 
   public get savedDecks(): Map<string, SavedDeck> {
-    if (this.scope !== Scope.ALL) {
+    if (this.scope !== 'all') {
       return new Map(
         [...this.store.decks]
           .filter(([, v]) => v.scope === this.scope)

@@ -2,7 +2,6 @@
   <button
     class="button is-secondary is-rounded"
     :title="title"
-    :disabled="disabled"
     @keyup.space.prevent
   >
     <svg class="control" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 54 100'>
@@ -15,7 +14,6 @@
 import { prop, Vue } from 'vue-class-component';
 
 class Props {
-  public disabled = prop<boolean>({ required: false, default: false });
   public title = prop<string>({ required: false, default: 'Planeswalk' });
 }
 

@@ -37,8 +37,8 @@
 import { Vue } from 'vue-class-component';
 
 export default class PlanarDice extends Vue {
-  private rolled: number | null = null;
   private timeoutId: number | null = null;
+  public rolled: number | null = null;
 
   public roll(): void {
     if (this.timeoutId) {

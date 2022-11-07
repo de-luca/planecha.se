@@ -44,7 +44,7 @@
     :is="revealer.component"
     :revealed="revealed"
     :config="revealer.config"
-    @done="revealer.resolver"
+    @done="revealer!.resolver"
   />
 </template>
 

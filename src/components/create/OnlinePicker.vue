@@ -43,7 +43,7 @@ class Props {
   emits: ['update:modelValue'],
 })
 export default class OnlinePicker extends mixins(Onlineable).with(Props) {
-  private id = '';
+  public id = '';
 
   public created(): void {
     this.id = Math.random().toString(36).substring(2, 15);

@@ -14,7 +14,7 @@ import {
 import { Phenomenon } from '@/model/card';
 import { Deck, DeckState } from '@/model/deck/Deck';
 import { StateKey } from '@/model/wall';
-import { DeckProvider } from '@/services/DeckProvider';
+import { CardProvider } from '@/services/CardProvider';
 
 export enum EncounterTrigger {
   ON_PLANESWALK = 'ON_PLANESWALK',
@@ -26,12 +26,17 @@ export enum EncounterMechanic {
   AUTO = 'AUTO',
 }
 
-export interface TriggerConfigEnabled {
+interface BaseTriggerConfig {
+  enabled: boolean;
+  mechanic?: EncounterMechanic;
+  ratio?: number;
+}
+export interface TriggerConfigEnabled extends BaseTriggerConfig {
   enabled: true;
   mechanic: EncounterMechanic;
   ratio: number;
 }
-export interface TriggerConfigDisabled {
+export interface TriggerConfigDisabled extends BaseTriggerConfig {
   enabled: false;
 }
 
@@ -109,6 +114,6 @@ export class DualDeck extends SingleDeck {
 
   public override restore(state: DualDeckExported): void {
     super.restore(state);
-    this._phenomenaDeck = Container.get(DeckProvider).getDeckFromExport(state.phenomenaDeck);
+    this._phenomenaDeck = Container.get(CardProvider).restoreDeck(state.phenomenaDeck);
   }
 }

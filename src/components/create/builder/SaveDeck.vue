@@ -33,7 +33,7 @@ class Props {
 @Options({ components: { FeedbackButton } })
 export default class SaveDeck extends Vue.with(Props) {
   private store = useConfig();
-  private deckName = '';
+  public deckName = '';
 
   public save(): void {
     this.store.addDeck(this.deckName, {

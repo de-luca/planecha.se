@@ -59,8 +59,8 @@ import { Imgable } from '@/components/Imgable';
   emits: ['done'],
 })
 export default class Scry extends mixins(Imgable).with(BaseReveal) {
-  private picked: Record<string, boolean> = {};
-  private id = '';
+  public picked: Record<string, boolean> = {};
+  public id = '';
 
   public created(): void {
     this.id = Math.random().toString(36).substring(2, 15);

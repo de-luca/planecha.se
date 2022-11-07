@@ -7,7 +7,7 @@ import { Plane, PoolOfBecoming, StairsToInfinity } from '@/model/card';
 
 export abstract class Map extends mixins(Imgable) {
   protected store = useMain();
-  protected showStackWall = false;
+  public showStackWall = false;
 
   public chaos(): void {
     if (

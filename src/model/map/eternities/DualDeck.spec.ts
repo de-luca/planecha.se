@@ -3,15 +3,15 @@ import { describe, expect, it, vi } from 'vitest';
 import { MapType } from '../MapInterface';
 import { DualDeck, EncounterMechanic } from './DualDeck';
 import { EternitiesMapDeckType, EternitiesMapSubType } from './EternitiesMap';
-import { DeckProvider } from '@/services/DeckProvider';
+import { CardProvider } from '@/services/CardProvider';
 import { StateKey, WallStates } from '@/model/wall';
 import { Phenomenon, Plane } from '@/model/card';
 
 describe('DualDeck.specs', () => {
   it('returns a tile from an exported payload', () => {
     const map = new DualDeck({
-      deck: Container.get(DeckProvider).getPlaneDeck(),
-      phenomenaDeck: Container.get(DeckProvider).getPhenomenonDeck(),
+      deck: Container.get(CardProvider).getPlaneDeck(),
+      phenomenaDeck: Container.get(CardProvider).getPhenomenonDeck(),
       deckType: EternitiesMapDeckType.PLANES,
       wallStates: new WallStates(),
       encounterTriggers: {
@@ -41,8 +41,8 @@ describe('DualDeck.specs', () => {
 describe('DualDeck.encounter', () => {
   it('returns a tile from an exported payload', () => {
     const map = new DualDeck({
-      deck: Container.get(DeckProvider).getPlaneDeck(),
-      phenomenaDeck: Container.get(DeckProvider).getPhenomenonDeck(),
+      deck: Container.get(CardProvider).getPlaneDeck(),
+      phenomenaDeck: Container.get(CardProvider).getPhenomenonDeck(),
       deckType: EternitiesMapDeckType.PLANES,
       wallStates: new WallStates(),
       encounterTriggers: {
@@ -71,8 +71,8 @@ describe('DualDeck.encounter', () => {
 describe('DualDeck.resolve', () => {
   it('resolves the current encounter and planeswalk', () => {
     const map = new DualDeck({
-      deck: Container.get(DeckProvider).getPlaneDeck(),
-      phenomenaDeck: Container.get(DeckProvider).getPhenomenonDeck(),
+      deck: Container.get(CardProvider).getPlaneDeck(),
+      phenomenaDeck: Container.get(CardProvider).getPhenomenonDeck(),
       deckType: EternitiesMapDeckType.PLANES,
       wallStates: new WallStates(),
       encounterTriggers: {
@@ -105,8 +105,8 @@ describe('DualDeck.resolve', () => {
 describe('DualDeck.export', () => {
   it('exports the state of the map', () => {
     const map = new DualDeck({
-      deck: Container.get(DeckProvider).getPlaneDeck(),
-      phenomenaDeck: Container.get(DeckProvider).getPhenomenonDeck(),
+      deck: Container.get(CardProvider).getPlaneDeck(),
+      phenomenaDeck: Container.get(CardProvider).getPhenomenonDeck(),
       deckType: EternitiesMapDeckType.PLANES,
       wallStates: new WallStates(),
       encounterTriggers: {

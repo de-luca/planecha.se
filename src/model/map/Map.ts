@@ -16,7 +16,7 @@ import {
   RevealUntilInput,
   ResolveRevealInput,
 } from './MapInterface';
-import { DeckProvider } from '@/services/DeckProvider';
+import { CardProvider } from '@/services/CardProvider';
 
 
 export interface MapProps {
@@ -142,13 +142,13 @@ export abstract class Map implements MapInterface {
   public restore(state: Exported): void {
     this._hasStarted = state.hasStarted;
     this._wallStates = new WallStates(state.wallStates);
-    this._deck = Container.get(DeckProvider).getDeckFromExport(state.deck);
-    this._active = Container.get(DeckProvider).getPileWithState(state.active);
+    this._deck = Container.get(CardProvider).restoreDeck(state.deck);
+    this._active = Container.get(CardProvider).getCardList(state.active);
     this._revealed = state.revealed === undefined
       ? undefined
       : {
-        relevant: Container.get(DeckProvider).getOrderedPile(state.revealed.relevant),
-        others: Container.get(DeckProvider).getOrderedPile(state.revealed.others),
+        relevant: Container.get(CardProvider).getCardList(state.revealed.relevant),
+        others: Container.get(CardProvider).getCardList(state.revealed.others),
       };
   }
 }

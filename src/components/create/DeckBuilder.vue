@@ -138,7 +138,7 @@ import { Scope, scopeMap } from './types';
 import SaveDeck from './builder/SaveDeck.vue';
 import DeckList from './builder/DeckList.vue';
 import { Card } from '@/model/card';
-import { DeckProvider } from '@/services/DeckProvider';
+import { CardProvider } from '@/services/CardProvider';
 
 
 class Props {
@@ -146,20 +146,20 @@ class Props {
   public scope = prop<Scope>({ required: true });
 }
 
+type Group = Scope | 'decks';
+
 @Options({
   emits: ['done'],
   components: { DeckList, SaveDeck, Tippy },
 })
 export default class DeckBuilder extends mixins(Imgable).with(Props) {
-  private selectedGroup: Scope = this.scope;
-  private deckProvider: DeckProvider;
-  private cards: Array<Card>;
-  private search = '';
-  private deck: Array<Card> = [];
+  public selectedGroup: Group = this.scope;
+  public cards: Array<Card>;
+  public search = '';
+  public deck: Array<Card> = [];
 
   public created() {
-    this.deckProvider = Container.get(DeckProvider);
-    this.cards = this.deckProvider.getAllCards();
+    this.cards = Container.get(CardProvider).getAllCards();
     this.deck = [...this.baseDeck];
   }
 
@@ -174,8 +174,12 @@ export default class DeckBuilder extends mixins(Imgable).with(Props) {
   }
 
   public get filtered(): Array<Card> {
+    if (this.selectedGroup === 'decks') {
+      return [];
+    }
+
     return this.cards
-      .filter(c => c instanceof scopeMap[this.selectedGroup])
+      .filter(c => c instanceof scopeMap[this.selectedGroup as Scope])
       .filter(c => c.name.toLowerCase().includes(this.search));
   }
 

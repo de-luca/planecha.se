@@ -18,8 +18,8 @@ class Props {
 }
 
 export default class Dice extends Vue.with(Props) {
-  private rolled: number | null = null;
   private timeoutId: number | null = null;
+  public rolled: number | null = null;
 
   public get icon(): string {
     return this.sides === 6 ? 'dice-d6' : 'dice-d20';

@@ -96,6 +96,7 @@ import { MapType } from '@/model/map';
 import {
   EncounterMechanic,
   EncounterTrigger,
+  EncounterTriggers,
   EternitiesMapDeckType,
   EternitiesMapSubType,
 } from '@/model/map/eternities';
@@ -107,13 +108,6 @@ import OnlinePicker from '@/components/create/OnlinePicker.vue';
 import EncounterSetup from '@/components/create/EncounterSetup.vue';
 import BrandedFooter from '@/components/BrandedFooter.vue';
 
-interface TriggerConfig {
-  enabled: boolean;
-  mechanic: EncounterMechanic;
-  ratio: number;
-}
-type Triggers = Record<EncounterTrigger, TriggerConfig>;
-
 @Options({
   components: {
     ButtonPicker,
@@ -124,7 +118,7 @@ type Triggers = Record<EncounterTrigger, TriggerConfig>;
   },
 })
 export default class CreateGame extends Vue {
-  private readonly mapTypeOptions: Array<Option<string>> = [{
+  public readonly mapTypeOptions: Array<Option<string>> = [{
     label: 'Classic',
     value: MapType.CLASSIC,
     help: 'Rule 901.15. Single Planar Deck Option.',
@@ -133,7 +127,7 @@ export default class CreateGame extends Vue {
     value: MapType.ETERNITIES,
     help: 'The <a target="_blank" rel="noopener noreferrer" href="https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19">Eternities Map</a> variant of Planechase.',
   }];
-  private readonly subTypeOptions: Array<Option<string>> = [{
+  public readonly subTypeOptions: Array<Option<string>> = [{
     label: 'Single Deck',
     value: EternitiesMapSubType.SINGLE_DECK,
     help: 'Use a single planar deck.',
@@ -142,7 +136,7 @@ export default class CreateGame extends Vue {
     value: EternitiesMapSubType.DUAL_DECK,
     help: 'Use two decks, one for Planes, one for Phenomena.',
   }];
-  private readonly deckTypeOptions: Array<Option<string>> = [{
+  public readonly deckTypeOptions: Array<Option<string>> = [{
     label: 'Only Planes',
     value: EternitiesMapDeckType.PLANES,
     help: 'Basic Eternities Map with Planes only.',
@@ -155,15 +149,15 @@ export default class CreateGame extends Vue {
   private mainStore = useMain();
   private configStore = useConfig();
 
-  private openDeckBuilder = false;
-  private creating = false;
+  public openDeckBuilder = false;
+  public creating = false;
 
-  private online = false;
-  private mapType: MapType = MapType.CLASSIC;
-  private subType: EternitiesMapSubType = EternitiesMapSubType.SINGLE_DECK;
-  private deckType: EternitiesMapDeckType = EternitiesMapDeckType.PLANES;
+  public online = false;
+  public mapType: MapType = MapType.CLASSIC;
+  public subType: EternitiesMapSubType = EternitiesMapSubType.SINGLE_DECK;
+  public deckType: EternitiesMapDeckType = EternitiesMapDeckType.PLANES;
 
-  private encounterConfig: Triggers = {
+  public encounterConfig: EncounterTriggers = {
     [EncounterTrigger.ON_PLANESWALK]: {
       enabled: false,
       mechanic: EncounterMechanic.MANUAL,
@@ -176,9 +170,9 @@ export default class CreateGame extends Vue {
     },
   };
 
-  private name = '';
-  private saveName = false;
-  private deck: Array<Card> = [];
+  public name = '';
+  public saveName = false;
+  public deck: Array<Card> = [];
 
   public created() {
     this.name = this.configStore.name ?? '';
@@ -208,8 +202,8 @@ export default class CreateGame extends Vue {
       this.mapType === MapType.ETERNITIES &&
       this.deckType === EternitiesMapDeckType.PLANES
     )
-      ? Scope.PLANES
-      : Scope.ALL;
+      ? 'planes'
+      : 'all';
   }
 
   public get hasRequiredCards(): { valid: boolean, minCards?: number } {

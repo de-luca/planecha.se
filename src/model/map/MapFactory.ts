@@ -9,7 +9,7 @@ import {
 } from './eternities';
 import { Classic } from './Classic';
 import { Exported, MapInterface, MapType } from './MapInterface';
-import { DeckProvider } from '@/services/DeckProvider';
+import { CardProvider } from '@/services/CardProvider';
 
 export interface AdvancedOptions {
   name?: string;
@@ -26,8 +26,8 @@ export interface BuildProps {
 
 @Service()
 export class MapFactory {
-  @Inject(() => DeckProvider)
-  private deckProvider: DeckProvider;
+  @Inject(() => CardProvider)
+  private cardProvider: CardProvider;
   @Inject(() => EternitiesMapFactory)
   private eternitiesMapFactory: EternitiesMapFactory;
 
@@ -37,8 +37,8 @@ export class MapFactory {
         return new Classic({
           wallStates: new WallStates(),
           deck: advanced.cards
-            ? this.deckProvider.getSpecificDeck(advanced.cards)
-            : this.deckProvider.getDeck(),
+            ? this.cardProvider.getCustomDeck(advanced.cards)
+            : this.cardProvider.getDeck(),
         });
       case MapType.ETERNITIES:
         return this.eternitiesMapFactory.build(
@@ -56,14 +56,14 @@ export class MapFactory {
     switch (payload.specs.type) {
       case MapType.CLASSIC:
         return new Classic({
-          deck: this.deckProvider.getDeckFromExport<Card>(payload.deck),
+          deck: this.cardProvider.restoreDeck<Card>(payload.deck),
           wallStates: new WallStates(payload.wallStates),
           hasStarted: payload.hasStarted,
-          active: this.deckProvider.getPileWithState<Card>(payload.active),
+          active: this.cardProvider.getCardList<Card>(payload.active),
           revealed: payload.revealed
             ? {
-              relevant: this.deckProvider.getOrderedPile<Card>(payload.revealed.relevant),
-              others: this.deckProvider.getOrderedPile<Card>(payload.revealed.others),
+              relevant: this.cardProvider.getCardList<Card>(payload.revealed.relevant),
+              others: this.cardProvider.getCardList<Card>(payload.revealed.others),
             }
             : undefined,
         });

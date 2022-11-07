@@ -53,7 +53,7 @@ import { BaseReveal } from './BaseReveal';
 import { Imgable } from '@/components/Imgable';
 
 export default class Show extends mixins(Imgable).with(BaseReveal) {
-  private activeTab = 'relevant';
+  public activeTab = 'relevant';
 
   public confirm(): void {
     const picked = this.config.sendShownTo === 'top' ? this.revealed.relevant : [];

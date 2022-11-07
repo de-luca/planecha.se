@@ -53,7 +53,7 @@
     :is="revealer.component"
     :revealed="revealed"
     :config="revealer.config"
-    @done="revealer.resolver"
+    @done="revealer!.resolver"
   />
 </template>
 
@@ -179,6 +179,7 @@ export default class DualDeck extends mixins(Eternities) {
           val: {
             coords,
             triggerConfig: trigger,
+            initiator: this.store.playerName,
           } as EncounterWallState,
         });
       }

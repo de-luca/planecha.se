@@ -2,9 +2,7 @@
   <div class="map">
     <div class="active">
       <div :class="{ double: active.length > 1 }">
-        <template v-for="a in active" :key="a.id">
-          <card :card="a" :hidden="!hasStarted" />
-        </template>
+        <card v-for="a in active" :key="a.id" :card="a" :hidden="!hasStarted" />
       </div>
     </div>
 
@@ -13,14 +11,10 @@
         <chaos-btn v-if="isPlane" @click="chaos" />
         <planeswalk-btn
           :title="isPlane ? 'Planeswalk' : 'Resolve'"
-          :disabled="revealer && revealer.passive"
           @click="(revealer?.seeder ?? planeswalk)()"
         />
       </template>
-
-      <template v-else>
-        <start-btn />
-      </template>
+      <start-btn v-else />
     </div>
 
     <div class="feed">
@@ -35,7 +29,7 @@
     :is="revealer.component"
     :revealed="revealed"
     :config="revealer.config"
-    @done="revealer.resolver"
+    @done="revealer!.resolver"
   />
 </template>
 

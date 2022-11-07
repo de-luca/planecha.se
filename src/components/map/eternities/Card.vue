@@ -1,19 +1,19 @@
 <template>
   <div class="card-container">
     <div
-      v-if="hasCounters && current && hasStarted"
+      v-if="counters && current && hasStarted"
       class="counters active tags has-addons"
     >
       <span class="tag is-primary minus" @click.stop="update(-1)">-</span>
-      <span class="tag is-primary value">{{ card.counter.value }}</span>
+      <span class="tag is-primary value">{{ counters.value }}</span>
       <span class="tag is-primary plus" @click.stop="update(1)">+</span>
     </div>
 
     <div
-      v-if="hasCounters && !current"
+      v-if="counters && !current"
       class="counters inactive tag is-primary"
     >
-      {{ card.counter.value }}
+      {{ counters.value }}
     </div>
 
     <img :src="imgSrc">
@@ -23,7 +23,7 @@
 <script lang="ts">
 import { prop, mixins } from 'vue-class-component';
 import { Imgable } from '../../Imgable';
-import { Plane } from '@/model/card';
+import { Counter, Plane } from '@/model/card';
 import { useMain } from '@/store/main';
 
 class Props {
@@ -39,8 +39,11 @@ export default class Card extends mixins(Imgable).with(Props) {
     return this.buildImgSrc(this.card);
   }
 
-  public get hasCounters(): boolean {
-    return this.card.counter !== undefined;
+  public get counters(): Counter | undefined {
+    if (this.card instanceof Plane) {
+      return this.card.counter;
+    }
+    return undefined;
   }
 
   public update(change: number): void {

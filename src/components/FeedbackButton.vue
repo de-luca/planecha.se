@@ -18,7 +18,7 @@ class Props {
 }
 
 export default class FeedbackButton extends Vue.with(Props) {
-  private text = this.idleText;
+  public text = this.idleText;
 
   public click(): void {
     this.text = this.actionText;

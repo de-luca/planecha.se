@@ -38,7 +38,7 @@ class Props {
 })
 export default class Feed extends Vue.with(Props) {
   private store = useMain();
-  private show = true;
+  public show = true;
 
   public created() {
     this.show = this.defaultShow;
