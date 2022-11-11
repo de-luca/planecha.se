@@ -30,7 +30,6 @@
 import { Options, prop, Vue } from 'vue-class-component';
 
 import FeedbackButton from './FeedbackButton.vue';
-import { PeerICEError } from '@/model/net/error/PeerICEError';
 
 class Props {
   public error = prop<Error>({ required: true });
@@ -42,9 +41,7 @@ class Props {
 })
 export default class ErrorModal extends Vue.with(Props) {
   public get helpHash(): string | undefined {
-    return this.error instanceof PeerICEError
-      ? this.error.logs.hash()
-      : undefined;
+    return '';
   }
 
   public async copy(): Promise<void> {

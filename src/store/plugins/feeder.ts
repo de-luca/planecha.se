@@ -17,13 +17,13 @@ export function createFeeder(context: PiniaPluginContext) {
       after(() => {
         switch (action) {
           case 'revert':
-            store.pushToFeed(`<b>${store.playerName}</b> undid last action`);
+            store.pushToFeed(`<b>${store.selfName}</b> undid last action`);
             break;
           case 'init': {
             const type = (args[0] as BuildProps).type === MapType.CLASSIC
               ? 'Classic'
               : 'Eternities Map';
-            store.pushToFeed(`<b>${store.playerName}</b> created new game <b>${type}</b>`);
+            store.pushToFeed(`<b>${store.selfName}</b> created new game <b>${type}</b>`);
             break;
           }
           case 'startGame': {
@@ -32,7 +32,7 @@ export function createFeeder(context: PiniaPluginContext) {
           }
           case 'planeswalk': {
             store.pushToFeed(
-              `<b>${store.playerName}</b> ` +
+              `<b>${store.selfName}</b> ` +
               (store.map?.active[0] instanceof Plane ? `${plnwlk} to` : 'encountered') +
               ` <b>${store.map?.active[0].name}</b>`,
             );
@@ -40,7 +40,7 @@ export function createFeeder(context: PiniaPluginContext) {
           }
           case 'chaos': {
             store.pushToFeed(
-              `<b>${store.playerName}</b> triggered ${chaos} ` +
+              `<b>${store.selfName}</b> triggered ${chaos} ` +
               `on <b>${(args[0] as ChaosInput).card.name}</b>`,
             );
             break;
@@ -48,7 +48,7 @@ export function createFeeder(context: PiniaPluginContext) {
           case 'updateCounters': {
             const payload = args[0] as UpdateCounterInput;
             const plane = store.map.active.find((c: Card) => c.id === payload.planeId) as Plane;
-            const message = `<b>${store.playerName}</b> ` +
+            const message = `<b>${store.selfName}</b> ` +
               `${payload.change > 0 ? 'added ' : 'removed '} <b>${Math.abs(payload.change)}</b> ` +
               `(<b>${plane.counter?.value}</b>) counter on ` +
               `<b>${plane.name}</b>`;
@@ -59,13 +59,13 @@ export function createFeeder(context: PiniaPluginContext) {
             const payload = args[0] as ResolveRevealInput;
             if (payload.top.length > 0) {
               store.pushToFeed(
-                `<b>${store.playerName}</b> putted on top ` +
+                `<b>${store.selfName}</b> putted on top ` +
                 `<b>${payload.top.map(c => c.name).join('</b>, <b>')}</b>`,
               );
             }
             if (payload.bottom.length > 0) {
               store.pushToFeed(
-                `<b>${store.playerName}</b> putted at the bottom ` +
+                `<b>${store.selfName}</b> putted at the bottom ` +
                 `<b>${payload.bottom.map(c => c.name).join('</b>, <b>')}</b>`,
               );
             }

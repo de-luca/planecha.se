@@ -12,11 +12,11 @@ import {
   UpdateCounterInput,
 } from '@/model/map';
 import { eventBus } from '@/services/EventBus';
-import { Bridge, BridgeInterface } from '@/model/net/Bridge';
 import { ApplyInput } from '@/model/wall';
 import { DualDeck, EncounterInput } from '@/model/map/eternities';
 import { Phenomenon, Plane } from '@/model/card';
 import { Patch, Repo, RepoInterface } from '@/model/ver';
+import { Game, GameInterface } from '@/model/net/Game';
 
 export enum Op {
   CHAOS = 'chaos',
@@ -45,23 +45,23 @@ export interface JoinPayload {
 
 export interface State {
   _map?: MapInterface;
-  online: boolean;
   repo: RepoInterface;
-  bridge?: BridgeInterface;
-  mates: Map<string, string>;
   feed: Array<string>;
   opStack: Array<OpRequest>;
+  selfName: string;
+  mates: Map<string, string>;
+  game?: GameInterface;
 }
 
 function getState(): State {
   return {
     _map: undefined,
-    online: false,
     repo: new Repo(),
-    bridge: undefined,
-    mates: new Map(),
     feed: [],
     opStack: [],
+    selfName: 'You',
+    mates: new Map(),
+    game: undefined,
   };
 }
 
@@ -75,11 +75,8 @@ export const useMain = defineStore('main', {
       }
       return this._map;
     },
-    playerName(state: State): string {
-      return state.bridge?.getPlayerName() ?? 'You';
-    },
-    gameId(state: State): string {
-      return state.bridge?.getGameId() ?? 'N/A';
+    gameId(state: State): string | undefined {
+      return state.game?.gameId;
     },
   },
 
@@ -99,41 +96,33 @@ export const useMain = defineStore('main', {
 
     async init(payload: BuildProps) {
       this.leave();
-
       this._map = Container.get(MapFactory).build(payload);
-      this.online = payload.online;
-
       if (payload.online) {
-        this.bridge = new Bridge(payload.advanced.name as string, this);
-        await this.bridge.ready;
-        await this.bridge.create();
+        this.selfName = payload.advanced.name!;
+        this.game = new Game(this);
       }
     },
 
     async join(payload: JoinPayload) {
       this.leave();
-      this.online = true;
-      this.bridge = new Bridge(payload.name, this);
-      await this.bridge.ready;
-      const [map, repo, feed] = await this.bridge.join(payload.roomId);
-      this._map = map;
-      this.repo = repo;
-      this.feed = feed;
+      this.selfName = payload.name;
+      this.game = new Game(this, payload.roomId);
+      await this.game.joined;
     },
 
     leave(): void {
-      this.bridge?.leave();
+      this.game?.leave();
       this.$reset();
       eventBus.all.clear();
     },
 
     pushToFeed(log: string): void {
       this.feed.push(log);
-      this.bridge?.syncFeed(log);
+      this.game?.syncFeed(log);
     },
 
     sync(patch: Patch): void {
-      this.bridge?.sync(patch);
+      this.game?.sync(patch);
     },
     apply(patch: Patch): void {
       this.map.apply(patch);
@@ -142,7 +131,7 @@ export const useMain = defineStore('main', {
     },
     revert(index: number): void {
       this.applyRevert(index);
-      this.bridge?.revert(index);
+      this.game?.revert(index);
     },
     applyRevert(index: number): void {
       this.map.restore(this.repo.checkout(index));
@@ -154,7 +143,7 @@ export const useMain = defineStore('main', {
     },
 
     chaos(payload: Omit<ChaosInput, 'initiator'>): void {
-      this.map.chaos({ ...payload, initiator: this.playerName });
+      this.map.chaos({ ...payload, initiator: this.selfName });
       if (
           payload.card instanceof Phenomenon ||
           (payload.card instanceof Plane && !payload.card.chaosRequireInterraction)
@@ -163,10 +152,10 @@ export const useMain = defineStore('main', {
       }
     },
     planeswalk(payload: Omit<PlaneswalkInput, 'initiator'>): void {
-      this.map.planeswalk({ ...payload, initiator: this.playerName });
+      this.map.planeswalk({ ...payload, initiator: this.selfName });
     },
     resolve() {
-      this.map.resolve({ initiator: this.playerName });
+      this.map.resolve({ initiator: this.selfName });
     },
     updateCounters(payload: UpdateCounterInput) {
       this.map.updateCounter(payload);
@@ -185,7 +174,7 @@ export const useMain = defineStore('main', {
 
     encounter(payload: Omit<EncounterInput, 'initiator'>) {
       if (this.map instanceof DualDeck) {
-        this.map.encounter({ ...payload, initiator: this.playerName });
+        this.map.encounter({ ...payload, initiator: this.selfName });
       }
     },
 

@@ -81,7 +81,7 @@ export default class OnlineControls extends Vue {
   public active = true;
 
   public get playerName(): string {
-    return this.store.playerName;
+    return this.store.selfName;
   }
 
   public get roomUrl(): string {

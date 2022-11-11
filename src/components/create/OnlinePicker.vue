@@ -16,24 +16,16 @@
         type="radio"
         :value="true"
         v-model="selected"
-        :disabled="!available"
       >
-      <label
-        class="button"
-        :class="{ 'is-loading': loading }"
-        :for="id + 'online'"
-      >
+      <label class="button" :for="id + 'online'">
         Online
       </label>
     </div>
-
-    <p class="help" v-html="helpText"></p>
   </div>
 </template>
 
 <script lang="ts">
-import { Options, prop, mixins } from 'vue-class-component';
-import { Onlineable } from '@/components/Onlineable';
+import { Options, prop, Vue } from 'vue-class-component';
 
 class Props {
   public modelValue = prop<boolean>({ required: true });
@@ -42,16 +34,11 @@ class Props {
 @Options({
   emits: ['update:modelValue'],
 })
-export default class OnlinePicker extends mixins(Onlineable).with(Props) {
+export default class OnlinePicker extends Vue.with(Props) {
   public id = '';
 
   public created(): void {
     this.id = Math.random().toString(36).substring(2, 15);
-    this.registerOnlineListener();
-  }
-
-  public unmounted(): void {
-    this.removeOnlineListener();
   }
 
   public get selected(): boolean {

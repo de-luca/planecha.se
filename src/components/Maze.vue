@@ -9,7 +9,7 @@ import { Vue } from 'vue-class-component';
 export default class Maze extends Vue {
   private static readonly rows = 10;
 
-  private glyphs = '';
+  public glyphs = '';
   private cols = 0;
 
   public created(): void {

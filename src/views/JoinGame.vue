@@ -20,7 +20,6 @@
             type="text"
             placeholder="00000000-0000-0000-0000-000000000000"
             required
-            pattern="[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
             @blur="parse"
           >
         </div>
@@ -49,17 +48,14 @@
           <button
             class="button is-primary"
             :class="{ 'is-loading': joining }"
-            :disabled="!available"
+            :disabled="joining"
             type="submit"
           >
-            Join game
+            Join game 
           </button>
         </div>
-        <p class="help" v-html="helpText"></p>
       </div>
     </form>
-
-    <error-modal v-if="error" :error="error" @dismiss="error = null" />
   </div>
 
   <branded-footer />

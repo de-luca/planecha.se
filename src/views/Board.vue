@@ -76,7 +76,7 @@ export default class Board extends Vue {
   }
 
   public get online(): boolean {
-    return this.store.online;
+    return !!this.store.game;
   }
 
   public thaNav(): void {

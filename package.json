@@ -19,6 +19,7 @@
     "mitt": "^2.1.0",
     "pinia": "^2.0.2",
     "reflect-metadata": "^0.1.13",
+    "trystero": "^0.11.6",
     "typedi": "^0.10.0",
     "vue": "^3.2.37",
     "vue-class-component": "^8.0.0-rc.1",

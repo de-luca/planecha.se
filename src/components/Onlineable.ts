@@ -1,5 +1,4 @@
 import { Vue } from 'vue-class-component';
-import { Beacon } from '@/model/net/Beacon';
 
 export class Onlineable extends Vue {
   protected online: boolean = navigator.onLine;
@@ -39,8 +38,8 @@ export class Onlineable extends Vue {
 
   protected handleOnline(): void {
     this.online = navigator.onLine;
-    Beacon.check()
-      .then(state => this.available = state)
-      .finally(() => this.loading = false);
+    // Beacon.check()
+    //   .then(state => this.available = state)
+    //   .finally(() => this.loading = false);
   }
 }
