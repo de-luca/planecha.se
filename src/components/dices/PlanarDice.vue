@@ -1,28 +1,26 @@
 <template>
   <button
     class="button is-secondary is-rounded"
+    :class="{ 'is-loading': rolling }"
     title="Roll a Planar Die"
     @click="roll"
     @keyup.space.prevent
   >
-    <template v-if="!rolled">
+    <template v-if="showFace">
       <svg class="control chaos" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 100'>
         <path d='M76.142 0c-36.768 1.68 4.253 32.994-16.484 49.5l-.005.004-.007-.01-.293.129c-14.524 5.879-30.695-17.715-31.166 7.076 7.67-11.506 11.167-.273 23.775-.977-6.123 8.09-3.121 21.664-13.33 23.873-18.65 4.033-32.297-18.639-31.16-32.869 2.525-31.602 27.29-45.969 51.881-44.488-32.55-6.518-60.143 20.309-59.335 48.137.928 31.91 17.857 47.527 43.841 49.625 36.768-1.678-4.253-32.996 16.484-49.5l.005-.004.007.01.294-.129c14.523-5.879 30.696 17.715 31.165-7.076-7.669 11.506-11.167.273-23.775.977 6.123-8.09 3.123-21.664 13.331-23.871 18.651-4.033 32.296 18.637 31.159 32.867-2.523 31.604-27.289 45.969-51.88 44.488 32.55 6.518 60.143-20.309 59.334-48.139-.927-31.908-17.858-47.523-43.841-49.623z' fill='#000'/>
       </svg>
-
-      <fa class="slash" icon="slash" rotation="90" />
-
       <svg class="control planeswalk" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 54 100'>
         <path d='M0 50.247l.156-1.969h-.061l.061-.032 2.059-26.239s1.026 18.147 4.085 23.392c1.313-.519 2.647-.984 4.002-1.403 3.306-8.657 4.467-34.379 4.467-34.379s.772 23.434 3.681 32.529c1.595-.239 3.218-.407 4.872-.51 3.007-11.188 3.824-41.636 3.824-41.636s.991 30.521 3.953 41.673c1.576.114 3.127.292 4.653.528 2.873-9.06 4.024-32.597 4.024-32.597s.931 25.864 3.941 34.449c1.319.409 2.617.871 3.89 1.376 3.338-5.179 4.513-23.388 4.513-23.388l1.592 26.224.067.034h-.063l.118 1.947s-26.689 8.691-26.689 49.485c0-40.601-27.146-49.485-27.146-49.485' fill='#000'/>
       </svg>
     </template>
 
     <template v-else>
-      <svg v-if="rolled === 1" class="control chaos outcome" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 100'>
+      <svg v-if="rolled === 'CHAOS'" class="control chaos outcome" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 100'>
         <path d='M76.142 0c-36.768 1.68 4.253 32.994-16.484 49.5l-.005.004-.007-.01-.293.129c-14.524 5.879-30.695-17.715-31.166 7.076 7.67-11.506 11.167-.273 23.775-.977-6.123 8.09-3.121 21.664-13.33 23.873-18.65 4.033-32.297-18.639-31.16-32.869 2.525-31.602 27.29-45.969 51.881-44.488-32.55-6.518-60.143 20.309-59.335 48.137.928 31.91 17.857 47.527 43.841 49.625 36.768-1.678-4.253-32.996 16.484-49.5l.005-.004.007.01.294-.129c14.523-5.879 30.696 17.715 31.165-7.076-7.669 11.506-11.167.273-23.775.977 6.123-8.09 3.123-21.664 13.331-23.871 18.651-4.033 32.296 18.637 31.159 32.867-2.523 31.604-27.289 45.969-51.88 44.488 32.55 6.518 60.143-20.309 59.334-48.139-.927-31.908-17.858-47.523-43.841-49.623z' fill='#000'/>
       </svg>
 
-      <svg v-else-if="rolled === 6" class="control planeswalk outcome" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 54 100'>
+      <svg v-else-if="rolled === 'PLANESWALK'" class="control planeswalk outcome" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 54 100'>
         <path d='M0 50.247l.156-1.969h-.061l.061-.032 2.059-26.239s1.026 18.147 4.085 23.392c1.313-.519 2.647-.984 4.002-1.403 3.306-8.657 4.467-34.379 4.467-34.379s.772 23.434 3.681 32.529c1.595-.239 3.218-.407 4.872-.51 3.007-11.188 3.824-41.636 3.824-41.636s.991 30.521 3.953 41.673c1.576.114 3.127.292 4.653.528 2.873-9.06 4.024-32.597 4.024-32.597s.931 25.864 3.941 34.449c1.319.409 2.617.871 3.89 1.376 3.338-5.179 4.513-23.388 4.513-23.388l1.592 26.224.067.034h-.063l.118 1.947s-26.689 8.691-26.689 49.485c0-40.601-27.146-49.485-27.146-49.485' fill='#000'/>
       </svg>
 
@@ -34,18 +32,12 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component';
+import { mixins } from 'vue-class-component';
+import { BaseDice } from './BaseDice';
 
-export default class PlanarDice extends Vue {
-  private timeoutId: number | null = null;
-  public rolled: number | null = null;
-
-  public roll(): void {
-    if (this.timeoutId) {
-      clearTimeout(this.timeoutId);
-    }
-    this.rolled = Math.floor(Math.random() * 6) + 1;
-    this.timeoutId = window.setTimeout(() => this.rolled = null, 2000);
+export default class PlanarDice extends mixins(BaseDice<PlanarDiceResult>) {
+  public getResult(): PlanarDiceResult {
+    return this.store.rollPlanarDice();
   }
 }
 </script>
@@ -54,12 +46,12 @@ export default class PlanarDice extends Vue {
 button {
   display: flex;
   flex-direction: row;
-  gap: 1rem;
+  gap: .5rem;
 
   svg {
     &.chaos {
-      width: 25px;
-      height: 25px;
+      width: 30px;
+      height: 30px;
       align-self: flex-start;
 
       &.outcome {
@@ -68,8 +60,8 @@ button {
       }
     }
     &.planeswalk {
-      width: 35px;
-      height: 35px;
+      width: 40px;
+      height: 40px;
       align-self: flex-end;
 
      &.outcome {
@@ -81,11 +73,6 @@ button {
 
   span.outcome.none {
     font-size: .5em;
-  }
-
-  .slash {
-    position: absolute;
-    font-size: 2rem;
   }
 }
 </style>

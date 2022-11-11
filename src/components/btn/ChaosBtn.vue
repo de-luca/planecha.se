@@ -15,3 +15,9 @@ import { Vue } from 'vue-class-component';
 
 export default class ChaosBtn extends Vue {}
 </script>
+
+<style lang="scss" scoped>
+svg.control {
+  width: 100%;
+}
+</style>

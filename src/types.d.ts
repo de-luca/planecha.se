@@ -8,3 +8,7 @@ declare enum Theme {
   DRK = 'drk',
   LGT = 'lgt',
 }
+
+declare type DiceResult = number;
+declare type CoinFlipResult = 'HEADS' | 'TAILS';
+declare type PlanarDiceResult = 'PLANESWALK' | 'CHAOS' | 'NO_EFFECT';

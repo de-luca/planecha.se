@@ -14,7 +14,7 @@ const plnwlk = '<abbr class="symbol planeswalk" title="planeswalk">{CHAOS}</abbr
 export function createFeeder(context: PiniaPluginContext) {
   if (context.store.$id === 'main') {
     context.store.$onAction(({ after, name: action, args, store }) => {
-      after(() => {
+      after((returned) => {
         switch (action) {
           case 'revert':
             store.pushToFeed(`<b>${store.selfName}</b> undid last action`);
@@ -71,6 +71,26 @@ export function createFeeder(context: PiniaPluginContext) {
             }
             break;
           }
+
+          case 'rollDice':
+            store.pushToFeed(`<b>${store.selfName}</b> rolled a D${args[0]} and got <b>${returned}</b>`);
+            break;
+          case 'rollPlanarDice':
+            store.pushToFeed(
+              `<b>${store.selfName}</b> rolled the Planar die and got <b>${
+                (returned as PlanarDiceResult) === 'PLANESWALK'
+                  ? plnwlk
+                  : (returned as PlanarDiceResult) === 'CHAOS' ? chaos : 'No Effect'
+              }</b>`,
+            );
+            break;
+          case 'flipCoin':
+            store.pushToFeed(
+              `<b>${store.selfName}</b> flipped a coin and got <b>${
+                (returned as CoinFlipResult) === 'HEADS' ? 'Heads' : 'Tails'
+              }</b>`,
+            );
+            break;
         }
       });
     }, true);

@@ -51,7 +51,7 @@
             :disabled="joining"
             type="submit"
           >
-            Join game 
+            Join game
           </button>
         </div>
       </div>

@@ -187,5 +187,18 @@ export const useMain = defineStore('main', {
       // @ts-ignore
       opr && this[opr.op](opr.payload);
     },
+
+    rollDice(sides: number): DiceResult {
+      return Math.floor(Math.random() * sides) + 1;
+    },
+    rollPlanarDice(): PlanarDiceResult {
+      const rolled = Math.floor(Math.random() * 6) + 1;
+      return rolled === 1
+        ? 'CHAOS'
+        : rolled === 6 ? 'PLANESWALK' : 'NO_EFFECT';
+    },
+    flipCoin(): CoinFlipResult  {
+      return Boolean(Math.round(Math.random())) ? 'HEADS' : 'TAILS';
+    },
   },
 });
