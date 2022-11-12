@@ -41,50 +41,34 @@
     <branded-footer>
       <p>
         Planecha.se is unofficial Fan Content permitted under the
-        <a
-          href="https://company.wizards.com/en/legal/fancontentpolicy"
-          rel="noopener noreferrer"
-          target="_blank"
-        >Fan Content Policy</a>. Not approved/endorsed by Wizards.<br>
+        <a href="https://company.wizards.com/en/legal/fancontentpolicy" rel="noopener noreferrer" target="_blank">Fan Content Policy</a>.
+        Not approved/endorsed by Wizards.<br>
         Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC.
       </p>
       <p>
         Card data are provided by
-        <a
-          href="https://scryfall.com"
-          rel="noopener noreferrer"
-          target="_blank"
-        >Scryfall</a>.
+        <a href="https://scryfall.com" rel="noopener noreferrer" target="_blank">Scryfall</a>.
       </p>
       <p>
         Planecha.se uses icons provided by
-        <a
-          href="https://fontawesome.com"
-          rel="noopener noreferrer"
-          target="_blank"
-        >Font Awesome</a>
+        <a href="https://fontawesome.com" rel="noopener noreferrer" target="_blank">Font Awesome</a>
         according to the
-        <a
-          href="https://fontawesome.com/license"
-          rel="noopener noreferrer"
-          target="_blank"
-        >Font Awesome License</a>.
+        <a href="https://fontawesome.com/license" rel="noopener noreferrer" target="_blank">Font Awesome License</a>.
+      </p>
+      <p>
+        Dices icons by Fritz Duggan from
+        <a href="https://thenounproject.com/browse/collection-icon/dice-150631/" rel="noopener noreferrer" target="_blank">Noun Project</a>.
+        <br/>
+        Coin icon by Iain Hector from
+        <a href="https://thenounproject.com/icon/coin-55698/" rel="noopener noreferrer" target="_blank">Noun Project</a>.
       </p>
       <p>
         The "maze" background font is from
-        <a
-          href="http://mazeletter.xyz/"
-          rel="noopener noreferrer"
-          target="_blank"
-        >Mazeletter</a>.
+        <a href="http://mazeletter.xyz/" rel="noopener noreferrer" target="_blank">Mazeletter</a>.
       </p>
       <p>
         Build version:
-        <a
-          :href="'https://github.com/de-luca/planecha.se/tree/' + sha"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
+        <a :href="'https://github.com/de-luca/planecha.se/tree/' + sha" rel="noopener noreferrer" target="_blank">
           <code>{{ sha }}</code>
         </a>
       </p>
