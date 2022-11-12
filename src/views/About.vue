@@ -15,14 +15,11 @@
         remotely without the need to currate a Planar deck or a dedicated setup for it.
       </p>
       <p>
-        It can be used in combination with
-        <a href="https://www.spelltable.com" rel="noopener noreferrer" target="_blank">SpellTable</a>
-        for fully remote game or locally when you don't have a deck or
-        when you need that precious space on your table.
+        It can be used in combination with <l href="https://www.spelltable.com">SpellTable</l>
+        for fully remote game or locally when you don't have a deck or when you need that precious space on your table.
       </p>
       <p>
-        <em>Planecha.se</em> is open source and its code can be found
-        <a href="https://github.com/de-luca/planecha.se" rel="noopener noreferrer" target="_blank">here</a>.
+        <em>Planecha.se</em> is open source and its code can be found <l href="https://github.com/de-luca/planecha.se">here</l>.
       </p>
 
       <h2>What does it do?</h2>
@@ -33,14 +30,12 @@
         <dt><b>Classic Planechase</b></dt>
         <dd>
           The "Single Planar Deck Option" described in
-          <a href="https://magic.wizards.com/en/game-info/gameplay/rules-and-formats/rules" rel="noopener noreferrer" target="_blank">rule</a>
-          901.15.
+          <l href="https://magic.wizards.com/en/game-info/gameplay/rules-and-formats/rules">rule</l> 901.15.
         </dd>
         <dt><b>Eternities Map</b></dt>
         <dd>
-          The Planechase variant described
-          <a href="https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19" rel="noopener noreferrer" target="_blank">here</a>
-          or in the <a href="https://youtu.be/TGJaJ29Zs6o" rel="noopener noreferrer" target="_blank">Professor's video</a>.<br>
+          The Planechase variant described <l href="https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19">here</l>
+          or in the <l href="https://youtu.be/TGJaJ29Zs6o">Professor's video</l>.<br>
           Multiple variants and configurations are also availables such as Phenomena encountering and dedicated Phenomena deck.
         </dd>
       </dl>
@@ -61,17 +56,12 @@
 
       <h2>How does that work?</h2>
       <p>
-        <em>Planecha.se</em> uses
-        <a href="https://en.wikipedia.org/wiki/WebRTC" rel="noopener noreferrer" target="_blank">WebRTC</a>
-        to transmit the game between players in the same game.<br>
-        In order for users to connect with each other, a "signaling server" is used.
-        This allows them to find the route to connect through the maze of the internet.
+        <em>Planecha.se</em> uses <l href="https://github.com/dmotz/trystero">Trystero</l>
+        to connect and transmit data between player within a game.
       </p>
       <p>
         The app does not require you to create an account, login or any personal informations from players
-        and aim to be as privacy friendly as possible.<br>
-        The only server connection is with the "signaling server" and can be audited
-        <a href="https://github.com/de-luca/beacon" rel="noopener noreferrer" target="_blank">here</a>.
+        and aim to be as privacy friendly as possible.
       </p>
 
       <h2>But why?</h2>

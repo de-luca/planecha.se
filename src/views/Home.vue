@@ -41,36 +41,27 @@
     <branded-footer>
       <p>
         Planecha.se is unofficial Fan Content permitted under the
-        <a href="https://company.wizards.com/en/legal/fancontentpolicy" rel="noopener noreferrer" target="_blank">Fan Content Policy</a>.
+        <l href="https://company.wizards.com/en/legal/fancontentpolicy">Fan Content Policy</l>.
         Not approved/endorsed by Wizards.<br>
         Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC.
       </p>
       <p>
-        Card data are provided by
-        <a href="https://scryfall.com" rel="noopener noreferrer" target="_blank">Scryfall</a>.
+        Card data are provided by <l href="https://scryfall.com">Scryfall</l>.
       </p>
       <p>
-        Planecha.se uses icons provided by
-        <a href="https://fontawesome.com" rel="noopener noreferrer" target="_blank">Font Awesome</a>
-        according to the
-        <a href="https://fontawesome.com/license" rel="noopener noreferrer" target="_blank">Font Awesome License</a>.
+        Planecha.se uses icons provided by <l href="https://fontawesome.com">Font Awesome</l>
+        according to the <l href="https://fontawesome.com/license">Font Awesome License</l>.
       </p>
       <p>
-        Dices icons by Fritz Duggan from
-        <a href="https://thenounproject.com/browse/collection-icon/dice-150631/" rel="noopener noreferrer" target="_blank">Noun Project</a>.
+        Dices icons by Fritz Duggan from <l href="https://thenounproject.com/browse/collection-icon/dice-150631/">Noun Project</l>.
         <br/>
-        Coin icon by Iain Hector from
-        <a href="https://thenounproject.com/icon/coin-55698/" rel="noopener noreferrer" target="_blank">Noun Project</a>.
+        Coin icon by Iain Hector from <l href="https://thenounproject.com/icon/coin-55698/">Noun Project</l>.
       </p>
       <p>
-        The "maze" background font is from
-        <a href="http://mazeletter.xyz/" rel="noopener noreferrer" target="_blank">Mazeletter</a>.
+        The "maze" background font is from <l href="http://mazeletter.xyz/">Mazeletter</l>.
       </p>
       <p>
-        Build version:
-        <a :href="'https://github.com/de-luca/planecha.se/tree/' + sha" rel="noopener noreferrer" target="_blank">
-          <code>{{ sha }}</code>
-        </a>
+        Build version: <l :href="'https://github.com/de-luca/planecha.se/tree/' + sha"><code>{{ sha }}</code></l>
       </p>
     </branded-footer>
   </div>

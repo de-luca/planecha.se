@@ -13,9 +13,9 @@
             Planecha<span class="dot">.</span>se
           </div>
         </div>
-        <a href="https://github.com/de-luca/planecha.se" rel="noopener noreferrer" target="_blank">
+        <l href="https://github.com/de-luca/planecha.se">
           <fa :icon="['fab', 'github']" fixed-width size="lg"/>
-        </a>
+        </l>
         <div class="theme-container">
           <theme-selector />
         </div>
