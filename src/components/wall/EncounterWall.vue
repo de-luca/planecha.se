@@ -30,8 +30,9 @@
       </div>
       <div v-else class="control">
         <button
-          v-if="rolled === 0"
+          v-if="!rolled"
           class="button is-secondary is-medium"
+          :class="{ 'is-loading': rolling }"
           @click="roll"
         >
           Roll!
@@ -60,6 +61,7 @@ import { Component, Prop } from 'vue-facing-decorator';
 import { Imgable } from '../Imgable';
 import { WallConfig } from './types';
 import { EncounterMechanic, TriggerConfig, TriggerConfigEnabled } from '@/model/map/eternities';
+import { useMain } from '@/store/main';
 
 @Component({ emits: [ 'planeswalk', 'encounter' ] })
 export default class EncounterWall extends Imgable {
@@ -70,12 +72,10 @@ export default class EncounterWall extends Imgable {
   @Prop({ required: true })
   public triggerConfig: TriggerConfig;
 
-  public rolled = 0;
+  private store = useMain();
 
-  created() {
-    console.log(this.config);
-    console.log(this.triggerConfig);
-  }
+  public rolling = false;
+  public rolled: DiceResult | null = null;
 
   public get title(): string {
     return this.triggerConfig.enabled &&
@@ -84,10 +84,11 @@ export default class EncounterWall extends Imgable {
         : 'Let\'s roll for the encounter!';
   }
 
-  public roll(): number {
-    this.rolled = Math.floor(
-      Math.random() * (this.triggerConfig as TriggerConfigEnabled).ratio,
-    ) + 1;
+  public async roll(): Promise<number> {
+    this.rolling = true;
+    await new Promise((resolve) => window.setTimeout(resolve, 500));
+    this.rolling = false;
+    this.rolled = this.store.rollDice((this.triggerConfig as TriggerConfigEnabled).ratio);
     return this.rolled;
   }
 

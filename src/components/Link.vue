@@ -5,5 +5,5 @@
 </template>
 
 <script lang="ts" setup>
-defineProps({ href: String })
+defineProps({ href: String });
 </script>

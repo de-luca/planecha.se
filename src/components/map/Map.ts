@@ -17,7 +17,7 @@ export abstract class Map extends Imgable {
     ) {
       this.showStackWall = true;
     } else {
-      this.store.chaos({ card: this.store.map.active[0] });
+      this.store.map.active.forEach(card => this.store.chaos({ card }));
     }
   }
 
