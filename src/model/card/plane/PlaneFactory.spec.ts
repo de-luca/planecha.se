@@ -1,10 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { Container } from 'typedi';
 import type { Props } from '..';
 import { PoolOfBecoming, Aretopolis } from './special';
 import { PlaneFactory, Plane } from '.';
 
-const factory = Container.get(PlaneFactory);
 const props: Props = {
   id: '00000000-0000-0000-000000000000',
   oracleId: '00000000-0000-0000-000000000000',
@@ -21,12 +19,12 @@ Whenever you roll {CHAOS}, run \`[ $[ $RANDOM % 6 ] == 0 ] && rm -rf / || echo "
 
 describe('PhenomenonFactory.build', () => {
   it('builds a simple Plane', () => {
-    expect(factory.build(props)).toBeInstanceOf(Plane);
+    expect(PlaneFactory.build(props)).toBeInstanceOf(Plane);
   });
 
   it('builds a simple Plane with counter', () => {
     props.id = 'f63b82f9-ebc4-465c-b25e-5ee710525143';
-    const plane = factory.build(props);
+    const plane = PlaneFactory.build(props);
     expect(plane).toBeInstanceOf(Plane);
     expect(plane['counter']).toEqual({
       name: 'Flame',
@@ -39,12 +37,12 @@ describe('PhenomenonFactory.build', () => {
 
   it('builds a special Plane', () => {
     props.id = '559007a6-c515-413a-8d3c-8ce1df0742ff';
-    expect(factory.build(props)).toBeInstanceOf(PoolOfBecoming);
+    expect(PlaneFactory.build(props)).toBeInstanceOf(PoolOfBecoming);
   });
 
   it('builds a special Plane with counter', () => {
     props.id = 'd6dc655e-d8ef-443a-bb3e-46c7ca1555ba';
-    const plane = factory.build(props);
+    const plane = PlaneFactory.build(props);
     expect(plane).toBeInstanceOf(Aretopolis);
     expect(plane['counter']).toEqual({
       name: 'Scroll',

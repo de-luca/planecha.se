@@ -92,20 +92,10 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-
+<script lang="ts" setup>
 import Maze from '@/components/Maze.vue';
 import BrandedFooter from '@/components/BrandedFooter.vue';
-
-@Options({
-  components: { Maze, BrandedFooter },
-})
-export default class Home extends Vue {
-  public get sha(): string {
-    return import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA;
-  }
-}
+const sha = import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA;
 </script>
 
 <style lang="scss" scoped>

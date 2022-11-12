@@ -12,14 +12,14 @@
 </template>
 
 <script lang="ts">
-import { mixins, prop } from 'vue-class-component';
+import { Component, Prop } from 'vue-facing-decorator';
 import { BaseDice } from './BaseDice';
 
-class Props {
-  public sides = prop<number>({ required: true });
-}
+@Component
+export default class Dice extends BaseDice<DiceResult> {
+  @Prop({ required: true })
+  public sides: number;
 
-export default class Dice extends mixins(BaseDice<DiceResult>).with(Props) {
   public getResult(): DiceResult {
     return this.store.rollDice(this.sides);
   }

@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Component, Vue } from 'vue-facing-decorator';
 import { useMain } from '@/store/main';
 import { useConfig } from '@/store/config';
 import { MapType } from '@/model/map';
@@ -108,7 +108,7 @@ import OnlinePicker from '@/components/create/OnlinePicker.vue';
 import EncounterSetup from '@/components/create/EncounterSetup.vue';
 import BrandedFooter from '@/components/BrandedFooter.vue';
 
-@Options({
+@Component({
   components: {
     ButtonPicker,
     OnlinePicker,

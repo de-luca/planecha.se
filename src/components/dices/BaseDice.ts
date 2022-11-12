@@ -1,7 +1,10 @@
-import { Vue } from 'vue-class-component';
+import { Vue } from 'vue-facing-decorator';
 import { useMain } from '@/store/main';
 
-export class BaseDice<T> extends Vue {
+const STALL_TIME = 500;
+const CLEAN_TIME = 2000;
+
+export abstract class BaseDice<T> extends Vue {
   protected store = useMain();
   public rolling = false;
   public rolled: T | null = null;
@@ -10,18 +13,16 @@ export class BaseDice<T> extends Vue {
     return !this.rolled && !this.rolling;
   }
 
-  public getResult(): T {
-    throw 'IMPLEMENT ME';
-  }
+  public abstract getResult(): T;
 
   public async fakeStall(): Promise<void> {
     this.rolling = true;
-    await new Promise((resolve) => window.setTimeout(resolve, 1000));
+    await new Promise((resolve) => window.setTimeout(resolve, STALL_TIME));
     this.rolling = false;
   }
 
   public async cleanResult(): Promise<void> {
-    await new Promise((resolve) => window.setTimeout(resolve, 2000));
+    await new Promise((resolve) => window.setTimeout(resolve, CLEAN_TIME));
     this.rolled = null;
   }
 

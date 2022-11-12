@@ -1,4 +1,3 @@
-import { Container } from 'typedi';
 import {
   Initable,
   MapType,
@@ -114,6 +113,6 @@ export class DualDeck extends SingleDeck {
 
   public override restore(state: DualDeckExported): void {
     super.restore(state);
-    this._phenomenaDeck = Container.get(CardProvider).restoreDeck(state.phenomenaDeck);
+    this._phenomenaDeck = CardProvider.restoreDeck(state.phenomenaDeck);
   }
 }

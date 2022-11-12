@@ -17,20 +17,21 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component';
+import { Component, Vue } from 'vue-facing-decorator';
 import { useConfig } from '@/store/config';
 
-export default class ThemeSelector extends Vue {
-  private static readonly icons: Record<Theme, string> = {
-    sys: 'cog',
-    drk: 'moon',
-    lgt: 'sun',
-  };
+const ICONS = {
+  sys: 'cog',
+  drk: 'moon',
+  lgt: 'sun',
+};
 
+@Component
+export default class ThemeSelector extends Vue {
   private store = useConfig();
 
   public get icon(): string {
-    return ThemeSelector.icons[this.theme];
+    return ICONS[this.theme];
   }
 
   public get theme(): Theme {

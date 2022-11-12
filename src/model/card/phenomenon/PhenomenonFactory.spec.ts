@@ -1,10 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { Container } from 'typedi';
 import type { Props } from '..';
 import { InterplanarTunnel } from './special';
 import { PhenomenonFactory, Phenomenon } from '.';
 
-const factory = Container.get(PhenomenonFactory);
 const props: Props = {
   id: '00000000-0000-0000-000000000000',
   oracleId: '00000000-0000-0000-000000000000',
@@ -18,11 +16,11 @@ const props: Props = {
 
 describe('PhenomenonFactory.build', () => {
   it('builds a simple Phenomenon', () => {
-    expect(factory.build(props)).toBeInstanceOf(Phenomenon);
+    expect(PhenomenonFactory.build(props)).toBeInstanceOf(Phenomenon);
   });
 
   it('builds a special Phenomenon', () => {
     props.id = '56e4874c-9d3d-4a1c-a027-186a33ce0da7';
-    expect(factory.build(props)).toBeInstanceOf(InterplanarTunnel);
+    expect(PhenomenonFactory.build(props)).toBeInstanceOf(InterplanarTunnel);
   });
 });

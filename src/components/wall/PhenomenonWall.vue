@@ -10,23 +10,25 @@
 </template>
 
 <script lang="ts">
-import { mixins, Options, prop } from 'vue-class-component';
+import { Component, Prop } from 'vue-facing-decorator';
 import { Imgable } from '../Imgable';
-import { WallProps } from './WallProps';
+import { WallConfig } from './types';
 import { Phenomenon } from '@/model/card';
 
 import PlaneswalkBtn from '@/components/btn/PlaneswalkBtn.vue';
 
-class Props extends WallProps {
-  public phenomenon = prop<Phenomenon>({ required: true });
-  public resolver = prop<() => void>({ required: false });
-}
-
-@Options({
+@Component({
   emits: [ 'resolve' ],
   components: { PlaneswalkBtn },
 })
-export default class PhenomenonWall extends mixins(Imgable).with(Props) {
+export default class PhenomenonWall extends Imgable {
+  @Prop({ required: true })
+  public config: WallConfig;
+  @Prop({ required: true })
+  public phenomenon: Phenomenon;
+  @Prop({ required: false })
+  public resolver?: () => void;
+
   public get imgSrc(): string {
     return this.buildImgSrc(this.phenomenon);
   }

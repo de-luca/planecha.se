@@ -1,7 +1,7 @@
 import { Component } from 'vue';
-import { PickedLeft, RevealConfig } from '../../wall/reveal/BaseReveal';
+import { PickedLeft, RevealConfig } from '../../wall/reveal/types';
 import { RevealFactory } from '../../wall/reveal/RevealFactory';
-import { WallConfig } from '../../wall/WallProps';
+import { WallConfig } from '../../wall/types';
 import { Map } from '../Map';
 import { eventBus, EventType } from '@/services/EventBus';
 import { Phenomenon, Plane } from '@/model/card';
@@ -28,11 +28,11 @@ interface LocalPhenomenonWallConfig {
   phenomenon: Phenomenon;
 }
 
-export class Eternities extends Map {
+export abstract class Eternities extends Map {
   public readonly off: number = 4;
   public displayedTile: Tile | null = null;
 
-  protected setUp(): void {
+  public created(): void {
     eventBus.on(EventType.STAIRS_TO_INFINITY, () => this.store.reveal({ count: 1 }));
     eventBus.on(EventType.POOL_OF_BECOMING, () => this.store.reveal({ count: 3 }));
   }

@@ -1,11 +1,9 @@
-import { Service } from 'typedi';
 import { Props } from '../Card';
 import { Phenomenon } from './Phenomenon';
 import * as Special from './special';
 
 type SpecialConstructor = { new(props: Props): Phenomenon };
 
-@Service()
 export class PhenomenonFactory {
   private static readonly specials: Map<string, SpecialConstructor> = new Map([
     ['42ecb371-53aa-4368-8ddd-88ae8e90ae0c', Special.ChaoticAether],
@@ -13,7 +11,7 @@ export class PhenomenonFactory {
     ['de44957b-3dcb-45db-a6a7-b5c6e64b582a', Special.SpatialMerging],
   ]);
 
-  public build(props: Props): Phenomenon {
-    return new (PhenomenonFactory.specials.get(props.id) ?? Phenomenon)(props);
+  public static build(props: Props): Phenomenon {
+    return new (this.specials.get(props.id) ?? Phenomenon)(props);
   }
 }

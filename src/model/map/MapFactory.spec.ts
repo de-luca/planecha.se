@@ -1,13 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { Container } from 'typedi';
 import { MapFactory } from './MapFactory';
 import { DualDeck, DualDeckExported, EncounterMechanic, EncounterTrigger, EternitiesMapDeckType, EternitiesMapSubType, SingleDeck, SingleDeckExported, TileStatus } from './eternities';
 import { Classic, Exported, MapType } from '.';
 
 describe('MapFactory.build', () => {
   it('creates a Classic Map', () => {
-    const factory = Container.get(MapFactory);
-    const map = factory.build({
+    const map = MapFactory.build({
       type: MapType.CLASSIC,
       online: false,
       advanced: {},
@@ -17,8 +15,7 @@ describe('MapFactory.build', () => {
   });
 
   it('creates a SingleDeck Map', async () => {
-    const factory = Container.get(MapFactory);
-    const map = factory.build({
+    const map = MapFactory.build({
       type: MapType.ETERNITIES,
       online: false,
       advanced: {
@@ -33,8 +30,7 @@ describe('MapFactory.build', () => {
   });
 
   it('creates a DualDeck Map', async () => {
-    const factory = Container.get(MapFactory);
-    const map = factory.build({
+    const map = MapFactory.build({
       type: MapType.ETERNITIES,
       online: false,
       advanced: {
@@ -72,8 +68,7 @@ describe('MapFactory.restore', () => {
       },
     };
 
-    const factory = Container.get(MapFactory);
-    const map = factory.restore(exported);
+    const map = MapFactory.restore(exported);
     expect(map).toBeInstanceOf(Classic);
   });
 
@@ -108,8 +103,7 @@ describe('MapFactory.restore', () => {
       }],
     };
 
-    const factory = Container.get(MapFactory);
-    const map = factory.restore(exported);
+    const map = MapFactory.restore(exported);
     expect(map).toBeInstanceOf(SingleDeck);
   });
 
@@ -163,8 +157,7 @@ describe('MapFactory.restore', () => {
       },
     };
 
-    const factory = Container.get(MapFactory);
-    const map = factory.restore(exported);
+    const map = MapFactory.restore(exported);
     expect(map).toBeInstanceOf(DualDeck);
   });
 });

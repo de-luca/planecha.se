@@ -1,4 +1,3 @@
-import { Inject, Service } from 'typedi';
 import { Card } from '../card';
 import { WallStates } from '../wall';
 import {
@@ -24,24 +23,18 @@ export interface BuildProps {
   advanced: AdvancedOptions,
 }
 
-@Service()
 export class MapFactory {
-  @Inject(() => CardProvider)
-  private cardProvider: CardProvider;
-  @Inject(() => EternitiesMapFactory)
-  private eternitiesMapFactory: EternitiesMapFactory;
-
-  public build({ type, advanced }: BuildProps): MapInterface {
+  public static build({ type, advanced }: BuildProps): MapInterface {
     switch (type) {
       case MapType.CLASSIC:
         return new Classic({
           wallStates: new WallStates(),
           deck: advanced.cards
-            ? this.cardProvider.getCustomDeck(advanced.cards)
-            : this.cardProvider.getDeck(),
+            ? CardProvider.getCustomDeck(advanced.cards)
+            : CardProvider.getDeck(),
         });
       case MapType.ETERNITIES:
-        return this.eternitiesMapFactory.build(
+        return EternitiesMapFactory.build(
           {
             type,
             ...advanced.specs as Omit<EternitiesMapSpecs, 'type'>,
@@ -52,23 +45,23 @@ export class MapFactory {
     }
   }
 
-  public restore(payload: Exported): MapInterface {
+  public static restore(payload: Exported): MapInterface {
     switch (payload.specs.type) {
       case MapType.CLASSIC:
         return new Classic({
-          deck: this.cardProvider.restoreDeck<Card>(payload.deck),
+          deck: CardProvider.restoreDeck<Card>(payload.deck),
           wallStates: new WallStates(payload.wallStates),
           hasStarted: payload.hasStarted,
-          active: this.cardProvider.getCardList<Card>(payload.active),
+          active: CardProvider.getCardList<Card>(payload.active),
           revealed: payload.revealed
             ? {
-              relevant: this.cardProvider.getCardList<Card>(payload.revealed.relevant),
-              others: this.cardProvider.getCardList<Card>(payload.revealed.others),
+              relevant: CardProvider.getCardList<Card>(payload.revealed.relevant),
+              others: CardProvider.getCardList<Card>(payload.revealed.others),
             }
             : undefined,
         });
       case MapType.ETERNITIES:
-        return this.eternitiesMapFactory.restore(payload as EternitiesMapExported);
+        return EternitiesMapFactory.restore(payload as EternitiesMapExported);
       default:
         throw new Error('Incompatible');
     }

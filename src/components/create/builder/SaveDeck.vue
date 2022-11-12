@@ -18,20 +18,20 @@
 </template>
 
 <script lang="ts">
-import { Options, prop, Vue } from 'vue-class-component';
+import { Component, Prop, Vue } from 'vue-facing-decorator';
 import { Scope } from '../types';
 import { Card } from '@/model/card';
 import { useConfig } from '@/store/config';
 
 import FeedbackButton from '@/components/FeedbackButton.vue';
 
-class Props {
-  public scope = prop<Scope>({ required: true });
-  public deck = prop<Array<Card>>({ required: true });
-}
+@Component({ components: { FeedbackButton } })
+export default class SaveDeck extends Vue {
+  @Prop({ required: true })
+  public scope: Scope;
+  @Prop({ required: true })
+  public deck: Array<Card>;
 
-@Options({ components: { FeedbackButton } })
-export default class SaveDeck extends Vue.with(Props) {
   private store = useConfig();
   public deckName = '';
 

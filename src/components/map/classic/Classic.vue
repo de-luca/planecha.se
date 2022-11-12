@@ -35,8 +35,8 @@
 
 <script lang="ts">
 import shuffle from 'lodash.shuffle';
-import { mixins, Options } from 'vue-class-component';
-import { Component } from '@vue/runtime-core';
+import { Component } from 'vue-facing-decorator';
+import { Component as VueComponent } from '@vue/runtime-core';
 import { Map } from '../Map';
 import { Op } from '@/store/main';
 import { Card as ModelCard, Plane } from '@/model/card';
@@ -49,7 +49,7 @@ import {
 } from '@/model/wall';
 
 import { RevealFactory } from '@/components/wall/reveal/RevealFactory';
-import { PickedLeft, RevealConfig } from '@/components/wall/reveal/BaseReveal';
+import { PickedLeft, RevealConfig } from '@/components/wall/reveal/types';
 
 import StackWall from '@/components/wall/StackWall.vue';
 import ChaosBtn from '@/components/btn/ChaosBtn.vue';
@@ -63,13 +63,13 @@ import Show from '@/components/wall/reveal/Show.vue';
 
 
 type LocalRevealerConfig = {
-  component: Component;
+  component: VueComponent;
   seeder: () => void;
   resolver: (choices: PickedLeft) => void;
   config: RevealConfig;
 }
 
-@Options({
+@Component({
   components: {
     Card, Feed,
     ChaosBtn, StartBtn, PlaneswalkBtn,
@@ -77,7 +77,7 @@ type LocalRevealerConfig = {
     StackWall,
   },
 })
-export default class Classic extends mixins(Map) {
+export default class Classic extends Map {
   public created() {
     eventBus.on(EventType.STAIRS_TO_INFINITY, (): void => {
       this.store.reveal({ count: 1 });

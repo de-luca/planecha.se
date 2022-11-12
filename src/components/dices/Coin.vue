@@ -14,10 +14,11 @@
 </template>
 
 <script lang="ts">
-import { mixins } from 'vue-class-component';
+import { Component } from 'vue-facing-decorator';
 import { BaseDice } from './BaseDice';
 
-export default class Coin extends mixins(BaseDice<CoinFlipResult>) {
+@Component
+export default class Coin extends BaseDice<CoinFlipResult> {
   public getResult(): CoinFlipResult {
     return this.store.flipCoin();
   }

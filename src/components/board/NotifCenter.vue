@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component';
+import { Component, Vue } from 'vue-facing-decorator';
 import { ByePayload, HeyPayload, useMain } from '@/store/main';
 
 interface Notif {
@@ -28,10 +28,11 @@ interface Notif {
   interval?: number;
 }
 
-export default class NotifCenter extends Vue {
-  private static readonly defaultTime = 10000;
-  private static readonly timeStep = 10;
+const DEFAULT_TIME = 10000;
+const TIME_STEP = 10;
 
+@Component
+export default class NotifCenter extends Vue {
   private store = useMain();
   private index = 0;
   public notifs: Map<number, Notif> = new Map();
@@ -45,9 +46,9 @@ export default class NotifCenter extends Vue {
               id: this.index++,
               text: `<b>${(args[0] as HeyPayload).name}</b> has joined the game`,
               className: 'is-info',
-              time: NotifCenter.defaultTime,
+              time: DEFAULT_TIME,
             };
-            notif.interval = window.setInterval(() => this.updateTime(notif.id), NotifCenter.timeStep);
+            notif.interval = window.setInterval(() => this.updateTime(notif.id), TIME_STEP);
             this.notifs.set(notif.id, notif);
           });
           break;
@@ -56,9 +57,9 @@ export default class NotifCenter extends Vue {
             id: this.index++,
             text: `<b>${store.mates.get((args[0] as ByePayload).id) ?? ''}</b> has left the game`,
             className: 'is-warning',
-            time: NotifCenter.defaultTime,
+            time: DEFAULT_TIME,
           };
-          notif.interval = window.setInterval(() => this.updateTime(notif.id), NotifCenter.timeStep);
+          notif.interval = window.setInterval(() => this.updateTime(notif.id), TIME_STEP);
           this.notifs.set(notif.id, notif);
           break;
       }
@@ -78,7 +79,7 @@ export default class NotifCenter extends Vue {
       return;
     }
 
-    notif.time = notif.time - NotifCenter.timeStep;
+    notif.time = notif.time - TIME_STEP;
   }
 }
 </script>

@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { mixins, Options, prop } from 'vue-class-component';
+import { Component, Prop } from 'vue-facing-decorator';
 import { Imgable } from '../../Imgable';
 import { useMain } from '@/store/main';
 import { Plane } from '@/model/card';
@@ -50,15 +50,14 @@ import { Tile } from '@/model/map/eternities';
 
 import PlaneswalkBtn from '@/components/btn/PlaneswalkBtn.vue';
 
-class Props {
-  public tile = prop<Tile>({ required: true });
-}
-
-@Options({
+@Component({
   emits: [ 'close', 'planeswalk' ],
   components: { PlaneswalkBtn },
 })
-export default class TileDetails extends mixins(Imgable).with(Props) {
+export default class TileDetails extends Imgable {
+  @Prop({ required: true })
+  public tile: Tile;
+
   private store = useMain();
 
   public get current(): boolean {

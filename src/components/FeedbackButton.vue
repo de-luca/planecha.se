@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, prop } from 'vue-class-component';
+import { Vue, Prop, Component } from 'vue-facing-decorator';
 
 export interface Option<T> {
   label?: string;
@@ -11,14 +11,20 @@ export interface Option<T> {
   help?: string;
 }
 
-class Props {
-  public idleText = prop<string>({ required: true });
-  public actionText = prop<string>({ required: true });
-  public timeout = prop<number>({ required: true });
-}
+@Component
+export default class FeedbackButton extends Vue {
+  @Prop({ required: true })
+  public idleText: string;
+  @Prop({ required: true })
+  public actionText: string;
+  @Prop({ required: true })
+  public timeout: number;
 
-export default class FeedbackButton extends Vue.with(Props) {
-  public text = this.idleText;
+  public text = '';
+
+  public created(): void {
+    this.text = this.idleText;
+  }
 
   public click(): void {
     this.text = this.actionText;

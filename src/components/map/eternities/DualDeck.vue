@@ -58,9 +58,9 @@
 </template>
 
 <script lang="ts">
-import { mixins, Options } from 'vue-class-component';
+import { Component } from 'vue-facing-decorator';
 import { Eternities } from '@/components/map/eternities/Eternities';
-import { WallConfig } from '@/components/wall/WallProps';
+import { WallConfig } from '@/components/wall/types';
 import {
   EncounterWallState,
   StateKey,
@@ -85,14 +85,13 @@ import Pick from '@/components/wall/reveal/Pick.vue';
 import Show from '@/components/wall/reveal/Show.vue';
 import Scry from '@/components/wall/reveal/Scry.vue';
 
-
 interface LocalEncounterWallConfig {
   config: WallConfig;
   coords: Coordinates;
   triggerConfig: TriggerConfig;
 }
 
-@Options({
+@Component({
   components: {
     Tile, ChaosBtn, StartBtn, Feed,
     PhenomenonWall, EncounterWall,
@@ -100,11 +99,11 @@ interface LocalEncounterWallConfig {
     TileDetails,
   },
 })
-export default class DualDeck extends mixins(Eternities) {
+export default class DualDeck extends Eternities {
   private triggers: EncounterTriggers;
 
   public created(): void {
-    this.setUp();
+    super.created();
     this.triggers = (this.store.map as DualDeckMap).encounterTriggers;
   }
 
@@ -179,7 +178,7 @@ export default class DualDeck extends mixins(Eternities) {
           val: {
             coords,
             triggerConfig: trigger,
-            initiator: this.store.playerName,
+            initiator: this.store.selfName,
           } as EncounterWallState,
         });
       }

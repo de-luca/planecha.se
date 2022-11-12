@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "license": "AGPL-3.0-or-later",
   "private": true,
+  "type": "module",
   "scripts": {
     "serve": "vite",
     "serve:docker": "vite --port 8080 --host 0.0.0.0",
@@ -22,7 +23,7 @@
     "trystero": "^0.11.6",
     "typedi": "^0.10.0",
     "vue": "^3.2.37",
-    "vue-class-component": "^8.0.0-rc.1",
+    "vue-facing-decorator": "^2.1.12",
     "vue-router": "^4.0.11",
     "vue-tippy": "^6.0.0-alpha.63",
     "vuedraggable": "^4.1.0"

@@ -90,7 +90,7 @@
                 </label>
 
                 <template #content>
-                  <img class="card-preview" :src="buildImgSrc(card)">
+                  <img loading="lazy" class="card-preview" :src="buildImgSrc(card)">
                 </template>
               </tippy>
             </template>
@@ -130,8 +130,7 @@
 </template>
 
 <script lang="ts">
-import { Container } from 'typedi';
-import { mixins, Options, prop } from 'vue-class-component';
+import { Component, Prop } from 'vue-facing-decorator';
 import { Tippy } from 'vue-tippy';
 import { Imgable } from '../Imgable';
 import { Scope, scopeMap } from './types';
@@ -140,26 +139,25 @@ import DeckList from './builder/DeckList.vue';
 import { Card } from '@/model/card';
 import { CardProvider } from '@/services/CardProvider';
 
-
-class Props {
-  public baseDeck = prop<Array<Card>>({ required: false, default: [] });
-  public scope = prop<Scope>({ required: true });
-}
-
 type Group = Scope | 'decks';
 
-@Options({
+@Component({
   emits: ['done'],
   components: { DeckList, SaveDeck, Tippy },
 })
-export default class DeckBuilder extends mixins(Imgable).with(Props) {
-  public selectedGroup: Group = this.scope;
-  public cards: Array<Card>;
+export default class DeckBuilder extends Imgable {
+  @Prop({ required: false, default: [] })
+  public baseDeck: Array<Card>;
+  @Prop({ required: true })
+  public scope: Scope;
+
+  public cards: Array<Card> = CardProvider.getAllCards();
   public search = '';
   public deck: Array<Card> = [];
+  public selectedGroup: Group;
 
   public created() {
-    this.cards = Container.get(CardProvider).getAllCards();
+    this.selectedGroup = this.scope;
     this.deck = [...this.baseDeck];
   }
 

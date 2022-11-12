@@ -24,19 +24,16 @@
 </template>
 
 <script lang="ts">
-import { Options, prop, Vue } from 'vue-class-component';
+import { Component, Prop, Vue } from 'vue-facing-decorator';
 import DeckStatus from './DeckStatus.vue';
 import UndoButton from './UndoButton.vue';
 import { useMain } from '@/store/main';
 
-class Props {
-  public defaultShow = prop<boolean>({ required: true });
-}
+@Component({ components: { DeckStatus, UndoButton } })
+export default class Feed extends Vue {
+  @Prop({ required: true })
+  public defaultShow: boolean;
 
-@Options({
-  components: { DeckStatus, UndoButton },
-})
-export default class Feed extends Vue.with(Props) {
   private store = useMain();
   public show = true;
 

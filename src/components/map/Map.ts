@@ -1,11 +1,10 @@
 import shuffle from 'lodash.shuffle';
-import { mixins } from 'vue-class-component';
-import { PickedLeft } from '../wall/reveal/BaseReveal';
+import { PickedLeft } from '../wall/reveal/types';
 import { Imgable } from '../Imgable';
 import { Op, useMain } from '@/store/main';
 import { Plane, PoolOfBecoming, StairsToInfinity } from '@/model/card';
 
-export abstract class Map extends mixins(Imgable) {
+export abstract class Map extends Imgable {
   protected store = useMain();
   public showStackWall = false;
 

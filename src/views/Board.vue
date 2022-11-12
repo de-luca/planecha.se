@@ -32,8 +32,8 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import { Component } from '@vue/runtime-core';
+import { Component, Vue } from 'vue-facing-decorator';
+import { Component as VueComponent } from '@vue/runtime-core';
 import { useMain } from '@/store/main';
 import { MapType } from '@/model/map';
 import { EternitiesMapSpecs, EternitiesMapSubType } from '@/model/map/eternities';
@@ -49,7 +49,7 @@ import OnlineControls from '@/components/board/OnlineControls.vue';
 import DiceTray from '@/components/board/DiceTray.vue';
 
 
-@Options({
+@Component({
   components: {
     Classic, SingleDeck, DualDeck,
     NotifCenter,
@@ -60,7 +60,7 @@ import DiceTray from '@/components/board/DiceTray.vue';
 export default class Board extends Vue {
   private store = useMain();
 
-  public get mapComponent(): Component {
+  public get mapComponent(): VueComponent {
     const specs = this.store.map.specs;
 
     switch (specs.type) {

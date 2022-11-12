@@ -12,9 +12,10 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component';
+import { Component, Vue } from 'vue-facing-decorator';
 import { useMain } from '@/store/main';
 
+@Component
 export default class UndoButton extends Vue {
   private store = useMain();
 

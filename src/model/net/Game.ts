@@ -1,5 +1,4 @@
 import { ActionSender, joinRoom, Room, selfId } from 'trystero';
-import { Container } from 'typedi';
 import { Exported, MapFactory } from '../map';
 import { Clone, Patch, Repo } from '../ver';
 import type { useMain } from '@/store/main';
@@ -94,7 +93,7 @@ export class Game implements GameInterface {
 
     this.joined = new Promise((resolve) => {
       initReceiver(once((data) => {
-        this.store._map = Container.get(MapFactory).restore(data.map);
+        this.store._map = MapFactory.restore(data.map);
         this.store.repo = new Repo(data.repo);
         this.store.feed = data.feed;
         this.ready = true;

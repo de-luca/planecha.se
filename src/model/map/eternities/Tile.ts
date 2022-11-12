@@ -1,4 +1,3 @@
-import { Container } from 'typedi';
 import { ExportedCard, Plane } from '../../card';
 import { CardProvider } from '@/services/CardProvider';
 
@@ -52,7 +51,7 @@ export class Tile {
     return new Tile(
       tile.coords,
       tile.state,
-      Container.get(CardProvider).getCardList(tile.plane),
+      CardProvider.getCardList(tile.plane),
     );
   }
 

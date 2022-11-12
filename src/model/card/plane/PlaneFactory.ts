@@ -1,11 +1,9 @@
-import { Service } from 'typedi';
 import { Counter, Props } from '../Card';
 import { Plane } from './Plane';
 import * as Special from './special';
 
 type SpecialConstructor = { new(props: Props): Plane };
 
-@Service()
 export class PlaneFactory {
   private static readonly specials: Map<string, SpecialConstructor> = new Map([
     ['d6dc655e-d8ef-443a-bb3e-46c7ca1555ba', Special.Aretopolis],
@@ -47,10 +45,10 @@ export class PlaneFactory {
   /**
    * I made it! I created the most cursed and stupid factory!
    */
-  public build(props: Props): Plane {
-    return new (PlaneFactory.specials.get(props.id) ?? Plane)({
+  public static build(props: Props): Plane {
+    return new (this.specials.get(props.id) ?? Plane)({
       ...props,
-      counter: PlaneFactory.counter.get(props.id),
+      counter: this.counter.get(props.id),
     });
   }
 }

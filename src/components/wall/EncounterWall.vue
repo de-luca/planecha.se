@@ -15,12 +15,20 @@
 
       <div class="roll-placeholder">
         <fa class="dice" icon="dice-d20" />
-        <div v-if="rolled !== 0" class="roll" :class="{one: rolled === 1}">
+        <div v-if="rolled !== 0" class="roll" :class="{ one: rolled === 1 }">
           {{ rolled }}
         </div>
       </div>
 
-      <div class="control">
+      <div v-if="triggerConfig.mechanic === 'MANUAL'" class="control">
+        <button class="button is-danger is-medium" @click="encounter">
+          Encounter Phenomenon
+        </button>
+        <button class="button is-secondary is-medium" @click="planeswalk">
+          Planeswalk
+        </button>
+      </div>
+      <div v-else class="control">
         <button
           v-if="rolled === 0"
           class="button is-secondary is-medium"
@@ -48,21 +56,26 @@
 </template>
 
 <script lang="ts">
-import { mixins, Options, prop } from 'vue-class-component';
+import { Component, Prop } from 'vue-facing-decorator';
 import { Imgable } from '../Imgable';
-import { WallProps } from './WallProps';
+import { WallConfig } from './types';
 import { EncounterMechanic, TriggerConfig, TriggerConfigEnabled } from '@/model/map/eternities';
 
-class Props extends WallProps {
-  public coords = prop<Coordinates>({ required: true });
-  public triggerConfig = prop<TriggerConfig>({ required: true });
-}
+@Component({ emits: [ 'planeswalk', 'encounter' ] })
+export default class EncounterWall extends Imgable {
+  @Prop({ required: true })
+  public config: WallConfig;
+  @Prop({ required: true })
+  public coords: Coordinates;
+  @Prop({ required: true })
+  public triggerConfig: TriggerConfig;
 
-@Options({
-  emits: [ 'planeswalk', 'encounter' ],
-})
-export default class EncounterWall extends mixins(Imgable).with(Props) {
   public rolled = 0;
+
+  created() {
+    console.log(this.config);
+    console.log(this.triggerConfig);
+  }
 
   public get title(): string {
     return this.triggerConfig.enabled &&
@@ -116,6 +129,7 @@ export default class EncounterWall extends mixins(Imgable).with(Props) {
 
   .roll-placeholder {
     height: 25%;
+    width: 100%;
     text-align: center;
     position: relative;
 

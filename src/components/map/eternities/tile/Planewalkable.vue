@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="!hidden"
+    v-if="!hidden && tile"
     title="Planeswalk"
     class="planeswalkable"
     :class="{ multi: tile.plane.length > 1 }"
@@ -18,16 +18,21 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import { Props } from './Props';
+import { Component, Prop, Vue } from 'vue-facing-decorator';
 
 import Card from '@/components/map/eternities/Card.vue';
+import { Tile } from '@/model/map/eternities';
 
-@Options({
+@Component({
   emits: [ 'show' ],
   components: { Card },
 })
-export default class Planeswalkable extends Vue.with(Props) {}
+export default class Planeswalkable extends Vue {
+  @Prop({ required: false })
+  public tile: Tile;
+  @Prop({ required: true })
+  public hidden: boolean;
+}
 </script>
 
 <style lang="scss" scoped>

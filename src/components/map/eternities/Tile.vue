@@ -12,23 +12,17 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue';
-import { Options, prop, Vue } from 'vue-class-component';
+import { Component as VueComponent } from 'vue';
+import { Component, Prop, Vue } from 'vue-facing-decorator';
 
 import Current from './tile/Current.vue';
 import Hellrideable from './tile/Hellrideable.vue';
 import Planewalkable from './tile/Planewalkable.vue';
 import Unreachable from './tile/Unreachable.vue';
+
 import { Tile as TileModel } from '@/model/map/eternities';
 
-class Props {
-  public tile = prop<TileModel>({ required: false });
-  public x = prop<number>({ required: true });
-  public y = prop<number>({ required: true });
-  public hidden = prop<boolean>({ required: true });
-}
-
-@Options({
+@Component({
   emits: [ 'show', 'hellride' ],
   components: {
     Current,
@@ -37,8 +31,17 @@ class Props {
     Unreachable,
   },
 })
-export default class Tile extends Vue.with(Props) {
-  public get tileComponent(): Component | undefined {
+export default class Tile extends Vue {
+  @Prop({ required: false })
+  public tile?: TileModel;
+  @Prop({ required: true })
+  public x: number;
+  @Prop({ required: true })
+  public y: number;
+  @Prop({ required: true })
+  public hidden: boolean;
+
+  public get tileComponent(): VueComponent | undefined {
     if (this.tile) {
       if (Math.abs(this.x) + Math.abs(this.y) === 0) {
         return Current;

@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { mixins, Options } from 'vue-class-component';
+import { Component } from 'vue-facing-decorator';
 import { Eternities } from '@/components/map/eternities/Eternities';
 
 import ChaosBtn from '@/components/btn/ChaosBtn.vue';
@@ -62,7 +62,7 @@ import Pick from '@/components/wall/reveal/Pick.vue';
 import Show from '@/components/wall/reveal/Show.vue';
 import Scry from '@/components/wall/reveal/Scry.vue';
 
-@Options({
+@Component({
   inheritAttrs: false,
   components: {
     ChaosBtn, StartBtn,
@@ -71,11 +71,7 @@ import Scry from '@/components/wall/reveal/Scry.vue';
     Feed,
   },
 })
-export default class EternitiesMapSingleDeck extends mixins(Eternities) {
-  public created(): void {
-    this.setUp();
-  }
-
+export default class EternitiesMapSingleDeck extends Eternities {
   public planeswalk(coords: Coordinates): void {
     this.hideTileDetails();
     this.store.planeswalk({ coords });

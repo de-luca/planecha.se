@@ -1,5 +1,4 @@
 import { describe, it, vi, expect } from 'vitest';
-import { Container } from 'typedi';
 import { diff } from '@n1ru4l/json-patch-plus';
 import { Card, Plane } from '../card';
 import { WallStates } from '../wall';
@@ -29,7 +28,7 @@ class TestMap extends Map {
 describe('Map.ready', () => {
   it('resolves', async() => {
     const map = new TestMap({
-      deck: Container.get(CardProvider).getDeck(),
+      deck: CardProvider.getDeck(),
       wallStates: new WallStates(),
     });
 
@@ -46,7 +45,7 @@ describe('Map.ready', () => {
 describe('Map.chaos', () => {
   it('triggers chaos', () => {
     const map = new TestMap({
-      deck: Container.get(CardProvider).getDeck(),
+      deck: CardProvider.getDeck(),
       wallStates: new WallStates(),
     });
     map.testActive();
@@ -59,7 +58,7 @@ describe('Map.chaos', () => {
 describe('Map.updateCounter', () => {
   it('updates card counters', () => {
     const map = new TestMap({
-      deck: Container.get(CardProvider).getPlaneDeck(),
+      deck: CardProvider.getPlaneDeck(),
       wallStates: new WallStates(),
     });
     map.testActive();
@@ -76,7 +75,7 @@ describe('Map.updateCounter', () => {
 describe('Map.revealUntil', () => {
   it('reveals a given number of requested Card', () => {
     const map = new TestMap({
-      deck: Container.get(CardProvider).getDeck(),
+      deck: CardProvider.getDeck(),
       wallStates: new WallStates(),
     });
     map.revealUntil({ count: 2 });
@@ -91,7 +90,7 @@ describe('Map.revealUntil', () => {
 describe('Map.resolveReveal', () => {
   it('puts back cards on top and bottom', () => {
     const map = new TestMap({
-      deck: Container.get(CardProvider).getDeck(),
+      deck: CardProvider.getDeck(),
       wallStates: new WallStates(),
     });
 
@@ -115,7 +114,7 @@ describe('Map.resolveReveal', () => {
 describe('Map.export', () => {
   it('exports the state of the map', () => {
     const map = new TestMap({
-      deck: Container.get(CardProvider).getDeck(),
+      deck: CardProvider.getDeck(),
       wallStates: new WallStates(),
     });
     const exported = map.export();
@@ -132,7 +131,7 @@ describe('Map.export', () => {
 describe('Map.apply', () => {
   it('applies patch the states of the map', () => {
     const map = new TestMap({
-      deck: Container.get(CardProvider).getDeck(),
+      deck: CardProvider.getDeck(),
       wallStates: new WallStates(),
     });
 

@@ -106,22 +106,18 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue, prop } from 'vue-class-component';
+import { Component, Vue, Prop } from 'vue-facing-decorator';
 import { EncounterMechanic, EncounterTriggers } from '@/model/map/eternities';
 
-
-class Props {
-  public modelValue = prop<EncounterTriggers>({ required: true });
-}
-
-@Options({
-  emits: ['update:modelValue'],
-})
-export default class EncounterSetup extends Vue.with(Props) {
+@Component({ emits: ['update:modelValue'] })
+export default class EncounterSetup extends Vue {
   public readonly helpText: Record<EncounterMechanic, string> = {
     [EncounterMechanic.MANUAL]: 'You\'ll get prompted to roll for the encounter.',
     [EncounterMechanic.AUTO]: 'The encounter will be rolled automaticaly with the probability you defined.',
   };
+
+  @Prop({ required: true })
+  public modelValue: EncounterTriggers;
 
   public get setup(): EncounterTriggers {
     return this.modelValue;

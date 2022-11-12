@@ -1,4 +1,3 @@
-import { Inject, Service } from 'typedi';
 import { MapInterface } from '../MapInterface';
 import { SingleDeck, SingleDeckExported, SingleDeckProps } from './SingleDeck';
 import { DualDeck, DualDeckExported, EncounterTriggers } from './DualDeck';
@@ -9,12 +8,8 @@ import { Card, Plane } from '@/model/card';
 import { Deck } from '@/model/deck/Deck';
 import { WallStates } from '@/model/wall';
 
-@Service()
 export class EternitiesMapFactory {
-  @Inject(() => CardProvider)
-  private cardProvider: CardProvider;
-
-  public build(
+  public static build(
     specs: EternitiesMapSpecs,
     encounterTriggers?: EncounterTriggers,
     cards?: Array<string>,
@@ -34,36 +29,36 @@ export class EternitiesMapFactory {
       deck,
       wallStates: state,
       deckType: EternitiesMapDeckType.PLANES,
-      phenomenaDeck: this.cardProvider.getPhenomenonDeck(),
+      phenomenaDeck: CardProvider.getPhenomenonDeck(),
       encounterTriggers: encounterTriggers as EncounterTriggers,
     });
   }
 
-  private getDeck(specs: EternitiesMapSpecs, cards?: Array<string>): Deck<Card> {
+  private static getDeck(specs: EternitiesMapSpecs, cards?: Array<string>): Deck<Card> {
     switch (true) {
       case cards !== undefined:
-        return this.cardProvider.getCustomDeck(cards as Array<string>);
+        return CardProvider.getCustomDeck(cards as Array<string>);
       case specs.subType === EternitiesMapSubType.DUAL_DECK:
-        return this.cardProvider.getPlaneDeck();
+        return CardProvider.getPlaneDeck();
       case specs.deckType === EternitiesMapDeckType.ALL:
-        return this.cardProvider.getDeck();
+        return CardProvider.getDeck();
       default:
-        return this.cardProvider.getPlaneDeck();
+        return CardProvider.getPlaneDeck();
     }
   }
 
-  public restore(payload: EternitiesMapExported): MapInterface {
+  public static restore(payload: EternitiesMapExported): MapInterface {
     const specs = payload.specs as EternitiesMapSpecs;
     const props: SingleDeckProps = {
       wallStates: new WallStates(payload.wallStates),
       hasStarted: payload.hasStarted,
       deckType: specs.deckType,
-      deck: this.cardProvider.restoreDeck<Plane>(payload.deck),
-      active: this.cardProvider.getCardList<Plane>(payload.active),
+      deck: CardProvider.restoreDeck<Plane>(payload.deck),
+      active: CardProvider.getCardList<Plane>(payload.active),
       revealed: payload.revealed
         ? {
-          relevant: this.cardProvider.getCardList<Card>(payload.revealed.relevant),
-          others: this.cardProvider.getCardList<Card>(payload.revealed.others),
+          relevant: CardProvider.getCardList<Card>(payload.revealed.relevant),
+          others: CardProvider.getCardList<Card>(payload.revealed.others),
         }
         : undefined,
       tiles: payload.tiles?.map(Tile.fromExport),
@@ -79,8 +74,7 @@ export class EternitiesMapFactory {
     return new DualDeck({
       ...props,
       deckType: EternitiesMapDeckType.PLANES,
-      phenomenaDeck:
-        this.cardProvider.restoreDeck((payload as DualDeckExported).phenomenaDeck),
+      phenomenaDeck: CardProvider.restoreDeck((payload as DualDeckExported).phenomenaDeck),
       encounterTriggers: (payload as DualDeckExported).encounterTriggers,
     });
   }

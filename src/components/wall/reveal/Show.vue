@@ -48,12 +48,23 @@
 </template>
 
 <script lang="ts">
-import { mixins } from 'vue-class-component';
-import { BaseReveal } from './BaseReveal';
+import { Component, Prop } from 'vue-facing-decorator';
+import { RevealConfig } from './types';
 import { Imgable } from '@/components/Imgable';
+import { Revealed } from '@/model/map';
 
-export default class Show extends mixins(Imgable).with(BaseReveal) {
+@Component({ emits: ['done'] })
+export default class Show extends Imgable {
+  @Prop({ required: true })
+  public revealed: Revealed;
+  @Prop({ required: true })
+  public config: RevealConfig;
+
   public activeTab = 'relevant';
+
+  created() {
+    console.log(this.revealed, this.config);
+  }
 
   public confirm(): void {
     const picked = this.config.sendShownTo === 'top' ? this.revealed.relevant : [];

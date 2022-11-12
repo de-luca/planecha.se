@@ -1,4 +1,3 @@
-import { Inject, Service } from 'typedi';
 import {
   CardFactory,
   Card,
@@ -13,25 +12,19 @@ import { Deck, DeckState } from '@/model/deck/Deck';
 
 type ListInput = ExportedCard | string;
 
-@Service()
 export class CardProvider {
-  @Inject(() => CardFactory)
-  private factory: CardFactory;
-  private raw: Map<string, Props>;
+  private static raw: Map<string, Props> =
+    (cards as Array<Props>).reduce((acc, p) => acc.set(p.id, p), new Map<string, Props>);
 
-  public constructor() {
-    this.raw = (cards as Array<Props>).reduce((acc, p) => acc.set(p.id, p), new Map<string, Props>);
+  public static getCard<T extends Card>(id: string): T {
+    return CardFactory.build((this.raw.get(id) as Props)) as T;
   }
 
-  public getCard<T extends Card>(id: string): T {
-    return this.factory.build((this.raw.get(id) as Props)) as T;
+  public static getAllCards(): Array<Card> {
+    return [...this.raw.values()].map(r => CardFactory.build(r));
   }
 
-  public getAllCards(): Array<Card> {
-    return [...this.raw.values()].map(r => this.factory.build(r));
-  }
-
-  public getCardList<T extends Card>(list: Array<ListInput>): Array<T> {
+  public static getCardList<T extends Card>(list: Array<ListInput>): Array<T> {
     return list.map(item => {
       if (typeof item === 'string') {
         return this.getCard<T>(item);
@@ -46,35 +39,35 @@ export class CardProvider {
     });
   }
 
-  public getPlaneCards(): Array<Plane> {
+  public static getPlaneCards(): Array<Plane> {
     return [...this.raw.values()]
       .filter(r => r.typeLine !== 'Phenomenon')
-      .map(r => this.factory.build(r) as Plane);
+      .map(r => CardFactory.build(r) as Plane);
   }
 
-  public getPhenomenonCards(): Array<Phenomenon> {
+  public static getPhenomenonCards(): Array<Phenomenon> {
     return [...this.raw.values()]
       .filter(r => r.typeLine === 'Phenomenon')
-      .map(r => this.factory.build(r) as Phenomenon);
+      .map(r => CardFactory.build(r) as Phenomenon);
   }
 
-  public getDeck(): Deck<Card> {
+  public static getDeck(): Deck<Card> {
     return new Deck<Card>(shuffle(this.getAllCards()));
   }
 
-  public getPlaneDeck(): Deck<Plane> {
+  public static getPlaneDeck(): Deck<Plane> {
     return new Deck<Plane>(shuffle(this.getPlaneCards()));
   }
 
-  public getPhenomenonDeck(): Deck<Phenomenon> {
+  public static getPhenomenonDeck(): Deck<Phenomenon> {
     return new Deck<Phenomenon>(shuffle(this.getPhenomenonCards()));
   }
 
-  public getCustomDeck(list: Array<ListInput>): Deck<Card> {
+  public static getCustomDeck(list: Array<ListInput>): Deck<Card> {
     return new Deck<Card>(shuffle(this.getCardList<Card>(list)));
   }
 
-  public restoreDeck<T extends Card>(state: DeckState): Deck<T> {
+  public static restoreDeck<T extends Card>(state: DeckState): Deck<T> {
     return new Deck<T>(
       this.getCardList(state.cards),
       this.getCardList(state.played),

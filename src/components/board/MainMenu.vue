@@ -44,15 +44,13 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Component, Vue } from 'vue-facing-decorator';
 import { useMain } from '@/store/main';
 
 import ThemeSelector from '@/components/ThemeSelector.vue';
 import CloseModal from '@/components/board/CloseModal.vue';
 
-@Options({
-  components: { ThemeSelector, CloseModal },
-})
+@Component({ components: { ThemeSelector, CloseModal } })
 export default class MainMenu extends Vue {
   private store = useMain();
   public active = false;

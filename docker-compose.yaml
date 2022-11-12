@@ -8,6 +8,8 @@ services:
       - 8080:8080
     volumes:
       - ./:/scripts:rw
+    environment: 
+      VITE_VERCEL_GIT_COMMIT_SHA: HEAD
     working_dir: /scripts
     entrypoint: ["yarn"]
     command: ["serve:docker"]

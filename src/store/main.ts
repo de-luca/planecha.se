@@ -1,4 +1,3 @@
-import { Container } from 'typedi';
 import { defineStore } from 'pinia';
 
 import {
@@ -96,7 +95,7 @@ export const useMain = defineStore('main', {
 
     async init(payload: BuildProps) {
       this.leave();
-      this._map = Container.get(MapFactory).build(payload);
+      this._map = MapFactory.build(payload);
       if (payload.online) {
         this.selfName = payload.advanced.name!;
         this.game = new Game(this);

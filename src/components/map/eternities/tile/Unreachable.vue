@@ -1,26 +1,31 @@
 <template>
   <div
     class="unreachable"
-    :class="{ multi: tile.plane.length > 1 }"
+    :class="{ multi: tile!.plane.length > 1 }"
     @click="$emit('show')"
   >
-    <template v-for="p in tile.plane" :key="p">
+    <template v-for="p in tile!.plane" :key="p">
       <card :card="p" />
     </template>
   </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import { Props } from './Props';
+import { Component, Prop, Vue } from 'vue-facing-decorator';
 
 import Card from '@/components/map/eternities/Card.vue';
+import { Tile } from '@/model/map/eternities';
 
-@Options({
+@Component({
   emits: [ 'show' ],
   components: { Card },
 })
-export default class Unreachable extends Vue.with(Props) {}
+export default class Unreachable extends Vue {
+  @Prop({ required: false })
+  public tile: Tile;
+  @Prop({ required: true })
+  public hidden: boolean;
+}
 </script>
 
 <style lang="scss" scoped>

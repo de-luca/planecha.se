@@ -11,13 +11,16 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import { Props } from './Props';
+import { Component, Prop, Vue } from 'vue-facing-decorator';
+import { Tile } from '@/model/map/eternities';
 
-@Options({
-  emits: [ 'hellride' ],
-})
-export default class Hellrideable extends Vue.with(Props) {}
+@Component({ emits: [ 'hellride' ] })
+export default class Hellrideable extends Vue {
+  @Prop({ required: false })
+  public tile?: Tile;
+  @Prop({ required: true })
+  public hidden: boolean;
+}
 </script>
 
 <style lang="scss" scoped>

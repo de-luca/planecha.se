@@ -30,10 +30,11 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component';
+import { Vue, Component } from 'vue-facing-decorator';
 import { DualDeck } from '@/model/map/eternities';
 import { useMain } from '@/store/main';
 
+@Component
 export default class DeckStatus extends Vue {
   private store = useMain();
 

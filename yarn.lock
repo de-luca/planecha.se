@@ -6126,11 +6126,6 @@ vitest@^0.18.0:
     tinyspy "^1.0.0"
     vite "^2.9.12 || ^3.0.0-0"
 
-vue-class-component@^8.0.0-rc.1:
-  version "8.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-8.0.0-rc.1.tgz#db692cd97656eb9a08206c03d0b7398cdb1d9420"
-  integrity sha512-w1nMzsT/UdbDAXKqhwTmSoyuJzUXKrxLE77PCFVuC6syr8acdFDAq116xgvZh9UCuV0h+rlCtxXolr3Hi3HyPQ==
-
 vue-demi@*:
   version "0.13.11"
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.13.11.tgz#7d90369bdae8974d87b1973564ad390182410d99"
@@ -6148,6 +6143,11 @@ vue-eslint-parser@^7.10.0:
     esquery "^1.4.0"
     lodash "^4.17.21"
     semver "^6.3.0"
+
+vue-facing-decorator@^2.1.12:
+  version "2.1.12"
+  resolved "https://registry.yarnpkg.com/vue-facing-decorator/-/vue-facing-decorator-2.1.12.tgz#403fcba43578f02a2e9679112cc833937cd773ec"
+  integrity sha512-W3Ndjtvd7ibN4XL6ScUpiUuFrlNv924tGUj13xNrqcPpsNAkiRtky/HgNqqOjGDjSbfzdePw6geCRoiZg+hEaw==
 
 vue-router@^4.0.11:
   version "4.1.6"

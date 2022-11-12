@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import { Container } from 'typedi';
 import { MapType } from '../MapInterface';
 import { EternitiesMapDeckType, EternitiesMapSubType } from './EternitiesMap';
 import { EternitiesMapFactory } from './EternitiesMapFactory';
@@ -10,8 +9,7 @@ import { Phenomenon, Plane } from '@/model/card';
 
 describe('EternitiesMapFactory.build', () => {
   it('creates a SingleDeck without Phenomena', () => {
-    const factory = Container.get(EternitiesMapFactory);
-    const map = factory.build({
+    const map = EternitiesMapFactory.build({
       type: MapType.ETERNITIES,
       subType: EternitiesMapSubType.SINGLE_DECK,
       deckType: EternitiesMapDeckType.PLANES,
@@ -24,8 +22,7 @@ describe('EternitiesMapFactory.build', () => {
   });
 
   it('creates a SingleDeck with Phenomena', () => {
-    const factory = Container.get(EternitiesMapFactory);
-    const map = factory.build({
+    const map = EternitiesMapFactory.build({
       type: MapType.ETERNITIES,
       subType: EternitiesMapSubType.SINGLE_DECK,
       deckType: EternitiesMapDeckType.ALL,
@@ -35,8 +32,7 @@ describe('EternitiesMapFactory.build', () => {
   });
 
   it('creates a DualDeck', async () => {
-    const factory = Container.get(EternitiesMapFactory);
-    const map = factory.build({
+    const map = EternitiesMapFactory.build({
       type: MapType.ETERNITIES,
       subType: EternitiesMapSubType.DUAL_DECK,
       deckType: EternitiesMapDeckType.PLANES,
@@ -84,8 +80,7 @@ describe('EternitiesMapFactory.restore', () => {
       }],
     };
 
-    const factory = Container.get(EternitiesMapFactory);
-    const map = factory.restore(exported);
+    const map = EternitiesMapFactory.restore(exported);
     expect(map).toBeInstanceOf(SingleDeck);
   });
 
@@ -139,8 +134,7 @@ describe('EternitiesMapFactory.restore', () => {
       },
     };
 
-    const factory = Container.get(EternitiesMapFactory);
-    const map = factory.restore(exported);
+    const map = EternitiesMapFactory.restore(exported);
     expect(map).toBeInstanceOf(DualDeck);
   });
 });

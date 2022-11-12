@@ -64,7 +64,7 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Component, Vue } from 'vue-facing-decorator';
 
 import FeedbackButton from '../FeedbackButton.vue';
 import { useMain } from '@/store/main';
@@ -74,7 +74,7 @@ enum BtnText {
   SUCCESS = 'Copied!',
 }
 
-@Options({ components: { FeedbackButton } })
+@Component({ components: { FeedbackButton } })
 export default class OnlineControls extends Vue {
   private store = useMain();
   private copyBtnText: BtnText = BtnText.IDLE;

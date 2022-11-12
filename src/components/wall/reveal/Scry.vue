@@ -51,19 +51,23 @@
 </template>
 
 <script lang="ts">
-import { mixins, Options } from 'vue-class-component';
-import { BaseReveal, PickedLeft } from './BaseReveal';
+import { Component, Prop } from 'vue-facing-decorator';
+import { PickedLeft, RevealConfig } from './types';
 import { Imgable } from '@/components/Imgable';
+import { Revealed } from '@/model/map';
 
-@Options({
-  emits: ['done'],
-})
-export default class Scry extends mixins(Imgable).with(BaseReveal) {
+@Component({ emits: ['done'] })
+export default class Scry extends Imgable {
+  @Prop({ required: true })
+  public revealed: Revealed;
+  @Prop({ required: true })
+  public config: RevealConfig;
+
   public picked: Record<string, boolean> = {};
-  public id = '';
+  public id = Math.random().toString(36).substring(2, 15);
 
-  public created(): void {
-    this.id = Math.random().toString(36).substring(2, 15);
+  created() {
+    console.log(this.revealed, this.config);
   }
 
   public get allSet(): boolean {

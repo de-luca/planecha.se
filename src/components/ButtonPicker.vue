@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue, prop } from 'vue-class-component';
+import { Component, Vue, Prop } from 'vue-facing-decorator';
 
 export interface Option<T> {
   label?: string;
@@ -27,21 +27,16 @@ export interface Option<T> {
   help?: string;
 }
 
-class Props {
-  public modelValue = prop<string>({ required: true });
-  public label = prop<string>({ required: false });
-  public options = prop<Array<Option<string>>>({ required: true });
-}
+@Component({ emits: ['update:modelValue'] })
+export default class ButtonPicker extends Vue {
+  @Prop({ required: true })
+  public modelValue: string;
+  @Prop({ required: false })
+  public label?: string;
+  @Prop({ required: true })
+  public options: Array<Option<string>>;
 
-@Options({
-  emits: ['update:modelValue'],
-})
-export default class ButtonPicker extends Vue.with(Props) {
-  public id = '';
-
-  public created(): void {
-    this.id = Math.random().toString(36).substring(2, 15);
-  }
+  public id = Math.random().toString(36).substring(2, 15);
 
   public get selected(): string {
     return this.modelValue;

@@ -22,17 +22,18 @@
 </template>
 
 <script lang="ts">
-import { prop, mixins } from 'vue-class-component';
+import { Component, Prop } from 'vue-facing-decorator';
 import { Imgable } from '../../Imgable';
 import { Card as ModelCard, Counter, Phenomenon, Plane } from '@/model/card';
 import { useMain } from '@/store/main';
 
-class Props {
-  public card = prop<ModelCard>({ required: true });
-  public hidden = prop<boolean>({ required: false, default: false });
-}
+@Component
+export default class Card extends Imgable {
+  @Prop({ required: true })
+  public card: ModelCard;
+  @Prop({ required: false, default: false })
+  public hidden: boolean;
 
-export default class Card extends mixins(Imgable).with(Props) {
   private store = useMain();
 
   public get imgSrc(): string {

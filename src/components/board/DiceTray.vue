@@ -67,17 +67,12 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+<script lang="ts" setup>
+import { ref } from 'vue';
 import Coin from '../dices/Coin.vue';
 import Dice from '../dices/Dice.vue';
 import PlanarDice from '../dices/PlanarDice.vue';
-
-
-@Options({ components: { Coin, Dice, PlanarDice } })
-export default class DiceTray extends Vue {
-  public active = false;
-}
+let active = ref(false);
 </script>
 
 <style lang="scss" scoped>

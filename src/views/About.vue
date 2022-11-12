@@ -101,12 +101,8 @@
   <branded-footer />
 </template>
 
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+<script lang="ts" setup>
 import BrandedFooter from '@/components/BrandedFooter.vue';
-
-@Options({ components: { BrandedFooter } })
-export default class About extends Vue {}
 </script>
 
 <style lang="scss" scoped>

@@ -1,7 +1,7 @@
-import { Vue } from 'vue-class-component';
+import { Vue } from 'vue-facing-decorator';
 import { Card } from '@/model/card';
 
-export class Imgable extends Vue {
+export abstract class Imgable extends Vue {
   public buildImgSrc(card: Card): string {
     return `/cards/${card.id}.jpg`;
   }

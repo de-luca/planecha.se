@@ -35,21 +35,17 @@
 
 <script lang="ts">
 import * as draggable from 'vuedraggable';
-import { mixins, Options } from 'vue-class-component';
+import { Component } from 'vue-facing-decorator';
 import { Imgable } from '@/components/Imgable';
 import { useMain } from '@/store/main';
 import { Card as ModelCard } from '@/model/card';
 
-@Options({
+@Component({
   emits: [ 'done' ],
   components: { draggable },
 })
-export default class StackWall extends mixins(Imgable) {
-  public active: Array<ModelCard> = [];
-
-  public created() {
-    this.active = [...useMain().map.active];
-  }
+export default class StackWall extends Imgable {
+  public active: Array<ModelCard> = [...useMain().map.active];
 
   public done(): void {
     this.$emit('done', this.active);

@@ -32,10 +32,11 @@
 </template>
 
 <script lang="ts">
-import { mixins } from 'vue-class-component';
+import { Component } from 'vue-facing-decorator';
 import { BaseDice } from './BaseDice';
 
-export default class PlanarDice extends mixins(BaseDice<PlanarDiceResult>) {
+@Component
+export default class PlanarDice extends BaseDice<PlanarDiceResult> {
   public getResult(): PlanarDiceResult {
     return this.store.rollPlanarDice();
   }

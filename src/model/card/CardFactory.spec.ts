@@ -1,12 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { Container } from 'typedi';
 import { CardFactory, Plane, Phenomenon } from '.';
-
-const factory = Container.get(CardFactory);
 
 describe('PhenomenonFactory.build', () => {
   it('builds a Plane', () => {
-    expect(factory.build({
+    expect(CardFactory.build({
       id: '00000000-0000-0000-000000000000',
       oracleId: '00000000-0000-0000-000000000000',
       multiverseIds: [12345],
@@ -22,7 +19,7 @@ Whenever you roll {CHAOS}, run \`[ $[ $RANDOM % 6 ] == 0 ] && rm -rf / || echo "
   });
 
   it('builds a Phenomenon', () => {
-    expect(factory.build({
+    expect(CardFactory.build({
       id: '00000000-0000-0000-000000000000',
       oracleId: '00000000-0000-0000-000000000000',
       multiverseIds: [12345],

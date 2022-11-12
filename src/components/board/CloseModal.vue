@@ -20,14 +20,12 @@
 </template>
 
 <script lang="ts">
-import { Options, prop, Vue } from 'vue-class-component';
+import { Component, Prop, Vue } from 'vue-facing-decorator';
 
-class Props {
-  public online = prop<boolean>({ required: true });
-}
-
-@Options({ emits: ['dismiss', 'close'] })
-export default class CloseModal extends Vue.with(Props) {
+@Component({ emits: ['dismiss', 'close'] })
+export default class CloseModal extends Vue {
+  @Prop({ required: true })
+  public online: boolean;
 }
 </script>
 

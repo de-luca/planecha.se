@@ -25,21 +25,14 @@
 </template>
 
 <script lang="ts">
-import { Options, prop, Vue } from 'vue-class-component';
+import { Component, Prop, Vue } from 'vue-facing-decorator';
 
-class Props {
-  public modelValue = prop<boolean>({ required: true });
-}
+@Component({ emits: ['update:modelValue'] })
+export default class OnlinePicker extends Vue {
+  @Prop({ required: true })
+  public modelValue: boolean;
 
-@Options({
-  emits: ['update:modelValue'],
-})
-export default class OnlinePicker extends Vue.with(Props) {
-  public id = '';
-
-  public created(): void {
-    this.id = Math.random().toString(36).substring(2, 15);
-  }
+  public id = Math.random().toString(36).substring(2, 15);
 
   public get selected(): boolean {
     return this.modelValue;

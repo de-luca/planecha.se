@@ -10,7 +10,7 @@ beforeEach(() => {
 describe('default state', () => {
   it('has empty data', () => {
     const store = useMain();
-    expect(store.online).toBe(false);
+    expect(store.game).toBeUndefined();
     expect(() => { store.map; }).toThrow();
     expect(store.mates.size).toBe(0);
     expect(store.feed).toHaveLength(0);
@@ -26,7 +26,7 @@ describe('init', () => {
       advanced: {},
     };
     await store.init(props);
-    expect(store.online).toBe(false);
+    expect(store.game).toBeUndefined();
     expect(store.map).toBeInstanceOf(Classic);
     expect(store.mates.size).toBe(0);
     expect(store.feed).toHaveLength(0);
@@ -43,7 +43,7 @@ describe('leave', () => {
     };
     await store.init(props);
     store.leave();
-    expect(store.online).toBe(false);
+    expect(store.game).toBeUndefined();
     expect(() => { store.map; }).toThrow();
     expect(store.mates.size).toBe(0);
     expect(store.feed).toHaveLength(0);

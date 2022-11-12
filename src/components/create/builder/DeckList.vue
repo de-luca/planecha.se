@@ -39,8 +39,7 @@
 </template>
 
 <script lang="ts">
-import { Container } from 'typedi';
-import { Options, prop, Vue } from 'vue-class-component';
+import { Component, Prop, Vue } from 'vue-facing-decorator';
 import { SavedDeck, Scope, scopeMap } from '../types';
 import { useConfig } from '@/store/config';
 import { Card } from '@/model/card';
@@ -48,28 +47,23 @@ import { CardProvider } from '@/services/CardProvider';
 
 import FeedbackButton from '@/components/FeedbackButton.vue';
 
-class Props {
-  public scope = prop<Scope>({ required: true });
-}
+const TAGS = {
+  all: 'Planes and Phenomena',
+  planes: 'Only Planes',
+  phenomena: 'Only Phenomena',
+};
 
-@Options({
+@Component({
   emits: ['use'],
   components: { FeedbackButton },
 })
-export default class DeckList extends Vue.with(Props) {
-  private static readonly tags: Record<Scope, string> = {
-    all: 'Planes and Phenomena',
-    planes: 'Only Planes',
-    phenomena: 'Only Phenomena',
-  };
+export default class DeckList extends Vue {
+  @Prop({ required: true })
+  public scope: Scope;
 
   private store = useConfig();
-  private cards: Array<Card>;
+  private cards: Array<Card> = CardProvider.getAllCards();
   public search = '';
-
-  public created() {
-    this.cards = Container.get(CardProvider).getAllCards();
-  }
 
   public get savedDecks(): Map<string, SavedDeck> {
     if (this.scope !== 'all') {
@@ -87,7 +81,7 @@ export default class DeckList extends Vue.with(Props) {
   }
 
   public getTag(scope: Scope): string {
-    return DeckList.tags[scope];
+    return TAGS[scope];
   }
 
   public deleteDeck(name: string): void {

@@ -1,8 +1,9 @@
 <template>
   <div
+    v-if="tile"
     title="You are here ;)"
     class="current"
-    :class="{ multi: tile.plane.length > 1 }"
+    :class="{ multi: tile!.plane.length > 1 }"
     @click="$emit('show')"
   >
     <fa
@@ -11,7 +12,7 @@
       size="2x"
     />
     <card
-      v-for="p in tile.plane"
+      v-for="p in tile!.plane"
       :key="p"
       :card="p"
       :current="true"
@@ -21,16 +22,20 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import { Props } from './Props';
-
+import { Component, Prop, Vue } from 'vue-facing-decorator';
 import Card from '@/components/map/eternities/Card.vue';
+import { Tile } from '@/model/map/eternities';
 
-@Options({
+@Component({
   emits: [ 'show' ],
   components: { Card },
 })
-export default class Current extends Vue.with(Props) {}
+export default class Current extends Vue {
+  @Prop({ required: false })
+  public tile: Tile;
+  @Prop({ required: true })
+  public hidden: boolean;
+}
 </script>
 
 <style lang="scss" scoped>

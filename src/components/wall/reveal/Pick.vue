@@ -55,14 +55,25 @@
 </template>
 
 <script lang="ts">
-import { mixins } from 'vue-class-component';
-import { BaseReveal, PickedLeft } from './BaseReveal';
+import { Component, Prop } from 'vue-facing-decorator';
+import { PickedLeft, RevealConfig } from './types';
 import { Card } from '@/model/card';
+import { Revealed } from '@/model/map';
 import { Imgable } from '@/components/Imgable';
 
-export default class Pick extends mixins(Imgable).with(BaseReveal) {
+@Component({ emits: ['done'] })
+export default class Pick extends Imgable {
+  @Prop({ required: true })
+  public revealed: Revealed;
+  @Prop({ required: true })
+  public config: RevealConfig;
+
   public activeTab = 'relevant';
   public selected: Card | null = null;
+
+  created() {
+    console.log(this.revealed, this.config);
+  }
 
   public confirm(): void {
     const result: PickedLeft = {

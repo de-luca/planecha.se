@@ -11,11 +11,11 @@
 </template>
 
 <script lang="ts">
-import { prop, Vue } from 'vue-class-component';
+import { Component, Prop, Vue } from 'vue-facing-decorator';
 
-class Props {
-  public title = prop<string>({ required: false, default: 'Planeswalk' });
+@Component
+export default class PlaneswalkBtn extends Vue {
+  @Prop({ required: false, default: 'Planeswalk' })
+  public title: string;
 }
-
-export default class PlaneswalkBtn extends Vue.with(Props) {}
 </script>

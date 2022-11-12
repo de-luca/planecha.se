@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import { Container } from 'typedi';
 import { Plane } from '../card';
 import { WallStates } from '../wall';
 import { Classic, MapType } from '.';
@@ -8,7 +7,7 @@ import { CardProvider } from '@/services/CardProvider';
 describe('Classic.type', () => {
   it('returns the type', () => {
     const map = new Classic({
-      deck: Container.get(CardProvider).getDeck(),
+      deck: CardProvider.getDeck(),
       wallStates: new WallStates(),
     });
 
@@ -19,7 +18,7 @@ describe('Classic.type', () => {
 describe('Classic.planeswalk', () => {
   it('changes active card', () => {
     const map = new Classic({
-      deck: Container.get(CardProvider).getDeck(),
+      deck: CardProvider.getDeck(),
       wallStates: new WallStates(),
     });
     const startCard = map.active;
@@ -35,7 +34,7 @@ describe('Classic.planeswalk', () => {
 
   it('changes active card to given planes', () => {
     const map = new Classic({
-      deck: Container.get(CardProvider).getDeck(),
+      deck: CardProvider.getDeck(),
       wallStates: new WallStates(),
     });
     const startCard = map.active;

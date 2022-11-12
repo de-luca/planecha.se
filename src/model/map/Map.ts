@@ -1,5 +1,4 @@
 import { patch } from '@n1ru4l/json-patch-plus';
-import { Container } from 'typedi';
 import { Card, Plane } from '../card';
 import { Deck } from '../deck/Deck';
 import { WallStates, StateKey } from '../wall';
@@ -142,13 +141,13 @@ export abstract class Map implements MapInterface {
   public restore(state: Exported): void {
     this._hasStarted = state.hasStarted;
     this._wallStates = new WallStates(state.wallStates);
-    this._deck = Container.get(CardProvider).restoreDeck(state.deck);
-    this._active = Container.get(CardProvider).getCardList(state.active);
+    this._deck = CardProvider.restoreDeck(state.deck);
+    this._active = CardProvider.getCardList(state.active);
     this._revealed = state.revealed === undefined
       ? undefined
       : {
-        relevant: Container.get(CardProvider).getCardList(state.revealed.relevant),
-        others: Container.get(CardProvider).getCardList(state.revealed.others),
+        relevant: CardProvider.getCardList(state.revealed.relevant),
+        others: CardProvider.getCardList(state.revealed.others),
       };
   }
 }

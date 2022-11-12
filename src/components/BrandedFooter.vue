@@ -24,12 +24,8 @@
   </footer>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+<script lang="ts" setup>
 import ThemeSelector from '@/components/ThemeSelector.vue';
-
-@Options({ components: { ThemeSelector } })
-export default class BrandedFooter extends Vue {}
 </script>
 
 <style lang="scss" scoped>

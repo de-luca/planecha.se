@@ -18,7 +18,7 @@
             v-model="roomId"
             class="input"
             type="text"
-            placeholder="00000000-0000-0000-0000-000000000000"
+            placeholder="WhatAGreatGameIdHere"
             required
             @blur="parse"
           >
@@ -62,19 +62,16 @@
 </template>
 
 <script lang="ts">
-import { mixins, Options } from 'vue-class-component';
+import { Component, Vue } from 'vue-facing-decorator';
 import { useMain } from '@/store/main';
 import { useConfig } from '@/store/config';
-import { Onlineable } from '@/components/Onlineable';
 
 import BrandedFooter from '@/components/BrandedFooter.vue';
-import ErrorModal from '@/components/ErrorModal.vue';
 
-@Options({ components: { BrandedFooter, ErrorModal } })
-export default class JoinGame extends mixins(Onlineable) {
-  private static readonly urlRegex =
-    /https?:\/\/.+\/#\/join\/(?<room>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/;
+const URL_REGEX = /https?:\/\/.+\/#\/join\/(?<room>[[0-9a-zA-Z]]{20})/;
 
+@Component({ components: { BrandedFooter } })
+export default class JoinGame extends Vue {
   private mainStore = useMain();
   private configStore = useConfig();
 
@@ -89,15 +86,10 @@ export default class JoinGame extends mixins(Onlineable) {
     this.roomId = this.$route.params.roomId as string ?? '';
     this.name = this.configStore.name ?? '';
     this.saveName = this.name !== '';
-    this.registerOnlineListener();
-  }
-
-  public unmounted(): void {
-    this.removeOnlineListener();
   }
 
   public parse(): void {
-    const match = this.roomId.match(JoinGame.urlRegex);
+    const match = this.roomId.match(URL_REGEX);
     if (match && match.groups?.room) {
       this.roomId = match.groups?.room;
     }

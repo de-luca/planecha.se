@@ -4,13 +4,14 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component';
+import { Component, Vue } from 'vue-facing-decorator';
 
+const ROWS = 10;
+
+@Component
 export default class Maze extends Vue {
-  private static readonly rows = 10;
-
-  public glyphs = '';
   private cols = 0;
+  public glyphs = '';
 
   public created(): void {
     this.glyphs = Math.random().toString(36).substring(2, 6);
@@ -31,7 +32,7 @@ export default class Maze extends Vue {
 
   public get pattern(): string {
     let pattern = '';
-    for (let r = 0; r < Maze.rows; r++) {
+    for (let r = 0; r < ROWS; r++) {
       for(let c = 0; c < this.cols; c++) {
         pattern += this.glyphs;
       }

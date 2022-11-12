@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import { Container } from 'typedi';
 import { MapType } from '..';
 import {
   EternitiesMap,
@@ -30,7 +29,7 @@ class TestMap extends EternitiesMap {
 describe('EternitiesMap.initializeTiles', () => {
   it('initializes board tiles', () => {
     const map = new TestMap({
-      deck: Container.get(CardProvider).getDeck(),
+      deck: CardProvider.getDeck(),
       wallStates: new WallStates(),
       deckType: EternitiesMapDeckType.ALL,
     });

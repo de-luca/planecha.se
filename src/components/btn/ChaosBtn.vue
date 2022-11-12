@@ -10,10 +10,7 @@
   </button>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-class-component';
-
-export default class ChaosBtn extends Vue {}
+<script lang="ts" setup>
 </script>
 
 <style lang="scss" scoped>
