@@ -15,7 +15,7 @@
   </div>
   <div class="deck-list">
     <template v-for="[name, deck] in savedDecks" :key="name">
-      <div class="panel-block">
+      <div class="panel-block" :class="{ disabled: scope !== 'all' && deck.scope !== scope }">
         <span><strong>{{ name }}</strong></span>
         <span>{{ deck.list.length }} cards</span>
         <span>
@@ -32,6 +32,7 @@
           idleText="Apply"
           actionText="Applied!"
           timeout="1000"
+          :disabled="scope !== 'all' && deck.scope !== scope"
         />
       </div>
     </template>
@@ -41,7 +42,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-facing-decorator';
 import { SavedDeck, Scope, scopeMap } from '../types';
-import { useConfig } from '@/store/config';
+import { useMain } from '@/store/main';
 import { Card } from '@/model/card';
 import { CardProvider } from '@/services/CardProvider';
 
@@ -61,19 +62,11 @@ export default class DeckList extends Vue {
   @Prop({ required: true })
   public scope: Scope;
 
-  private store = useConfig();
+  private store = useMain();
   private cards: Array<Card> = CardProvider.getAllCards();
   public search = '';
 
   public get savedDecks(): Map<string, SavedDeck> {
-    if (this.scope !== 'all') {
-      return new Map(
-        [...this.store.decks]
-          .filter(([, v]) => v.scope === this.scope)
-          .filter(([k]) => k.toLowerCase().includes(this.search)),
-      );
-    }
-
     return new Map(
       [...this.store.decks]
         .filter(([k]) => k.toLowerCase().includes(this.search)),
@@ -108,6 +101,10 @@ export default class DeckList extends Vue {
 .panel-block {
   color: var(--text-color);
   gap: 5px;
+
+  &.disabled {
+    opacity: 20%;
+  }
 
   &.static:hover {
     background-color: unset;

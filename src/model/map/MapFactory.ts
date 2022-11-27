@@ -10,37 +10,31 @@ import { Classic } from './Classic';
 import { Exported, MapInterface, MapType } from './MapInterface';
 import { CardProvider } from '@/services/CardProvider';
 
-export interface AdvancedOptions {
-  name?: string;
+export interface BuildProps {
+  type: MapType,
   cards?: Array<string>;
   specs?: Omit<EternitiesMapSpecs, 'type'>;
   encounterTriggers?: EncounterTriggers;
 }
 
-export interface BuildProps {
-  type: MapType,
-  online: boolean,
-  advanced: AdvancedOptions,
-}
-
 export class MapFactory {
-  public static build({ type, advanced }: BuildProps): MapInterface {
-    switch (type) {
+  public static build(props: BuildProps): MapInterface {
+    switch (props.type) {
       case MapType.CLASSIC:
         return new Classic({
           wallStates: new WallStates(),
-          deck: advanced.cards
-            ? CardProvider.getCustomDeck(advanced.cards)
+          deck: props.cards
+            ? CardProvider.getCustomDeck(props.cards)
             : CardProvider.getDeck(),
         });
       case MapType.ETERNITIES:
         return EternitiesMapFactory.build(
           {
-            type,
-            ...advanced.specs as Omit<EternitiesMapSpecs, 'type'>,
+            type: props.type,
+            ...props.specs as Omit<EternitiesMapSpecs, 'type'>,
           },
-          advanced.encounterTriggers,
-          advanced.cards,
+          props.encounterTriggers,
+          props.cards,
         );
     }
   }

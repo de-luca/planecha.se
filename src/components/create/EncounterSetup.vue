@@ -2,15 +2,19 @@
   <div class="field">
     <label class="label">Setup Phenomena encounter:</label>
 
-    <div class="control box" :class="{ active: setup['ON_HELLRIDE'].enabled }">
-      <label class="checkbox label">
+    <div
+      class="control box"
+      :class="{ active: setup['ON_HELLRIDE'].enabled }"
+      @click="setup['ON_HELLRIDE'].enabled = !setup['ON_HELLRIDE'].enabled"
+    >
+      <label class="checkbox label" @click.stop>
         <input type="checkbox" v-model="setup['ON_HELLRIDE'].enabled">
-        On <abbr title="When planeswalking to an empty space (override On Planeswalk probability)">Hellriding</abbr>
+        On <abbr title="When planeswalking to an empty space">Hellriding</abbr>
       </label>
 
       <div class="phenomena-trigger">
         <div class="manual">
-          <label class="radio" :disabled="!setup['ON_HELLRIDE'].enabled">
+          <label class="radio" :disabled="!setup['ON_HELLRIDE'].enabled" @click.stop>
             <input
               type="radio"
               name="hellride-trigger"
@@ -23,7 +27,7 @@
         </div>
 
         <div class="automatic">
-          <label class="radio" :disabled="!setup['ON_HELLRIDE'].enabled">
+          <label class="radio" :disabled="!setup['ON_HELLRIDE'].enabled" @click.stop>
             <input
               type="radio"
               name="hellride-trigger"
@@ -33,7 +37,7 @@
             >
             Automatic encounter
           </label>
-          <div class="field has-addons">
+          <div class="field has-addons" @click.stop>
             <p class="control">
               <a class="button is-static is-small">1 chance /</a>
             </p>
@@ -52,15 +56,19 @@
       <p class="help">{{ helpText[setup['ON_HELLRIDE'].mechanic!] }}</p>
     </div>
 
-    <div class="control box" :class="{ active: setup['ON_PLANESWALK'].enabled }">
-      <label class="checkbox label">
+    <div
+      class="control box"
+      :class="{ active: setup['ON_PLANESWALK'].enabled }"
+      @click="setup['ON_PLANESWALK'].enabled = !setup['ON_PLANESWALK'].enabled"
+    >
+      <label class="checkbox label" @click.stop>
         <input type="checkbox" v-model="setup['ON_PLANESWALK'].enabled">
-        On <abbr title="All planeswalking actions (including hellriding)">Planeswalk</abbr>
+        On <abbr title="All planeswalking actions">Planeswalk</abbr>
       </label>
 
       <div class="phenomena-trigger">
         <div class="manual">
-          <label class="radio" :disabled="!setup['ON_PLANESWALK'].enabled">
+          <label class="radio" :disabled="!setup['ON_PLANESWALK'].enabled" @click.stop>
             <input
               type="radio"
               name="planeswalk-trigger"
@@ -73,7 +81,7 @@
         </div>
 
         <div class="automatic">
-          <label class="radio" :disabled="!setup['ON_PLANESWALK'].enabled">
+          <label class="radio" :disabled="!setup['ON_PLANESWALK'].enabled" @click.stop>
             <input
               type="radio"
               name="planeswalk-trigger"
@@ -83,7 +91,7 @@
             >
             Automatic encounter
           </label>
-          <div class="field has-addons">
+          <div class="field has-addons" @click.stop>
             <p class="control">
               <a class="button is-static is-small">1 chance /</a>
             </p>
@@ -112,7 +120,7 @@ import { EncounterMechanic, EncounterTriggers } from '@/model/map/eternities';
 @Component({ emits: ['update:modelValue'] })
 export default class EncounterSetup extends Vue {
   public readonly helpText: Record<EncounterMechanic, string> = {
-    [EncounterMechanic.MANUAL]: 'You\'ll get prompted to roll for the encounter.',
+    [EncounterMechanic.MANUAL]: 'You\'ll get prompted to roll for the encounter and decide of the outcome.',
     [EncounterMechanic.AUTO]: 'The encounter will be rolled automaticaly with the probability you defined.',
   };
 
@@ -138,6 +146,13 @@ export default class EncounterSetup extends Vue {
 
   .radio {
     color: var(--text-color);
+  }
+
+  > *:hover {
+    cursor: initial;
+  }
+  &:hover {
+    cursor: pointer;
   }
 
   &.active {

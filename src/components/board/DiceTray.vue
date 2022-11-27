@@ -69,9 +69,9 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import Coin from '../dices/Coin.vue';
-import Dice from '../dices/Dice.vue';
-import PlanarDice from '../dices/PlanarDice.vue';
+import Coin from './dices/Coin.vue';
+import Dice from './dices/Dice.vue';
+import PlanarDice from './dices/PlanarDice.vue';
 let active = ref(false);
 </script>
 

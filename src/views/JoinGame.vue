@@ -12,21 +12,6 @@
 
     <form @submit.prevent="join">
       <div class="field">
-        <label class="label">Game ID:</label>
-        <div class="control">
-          <input
-            v-model="roomId"
-            class="input"
-            type="text"
-            placeholder="WhatAGreatGameIdHere"
-            required
-            @blur="parse"
-          >
-        </div>
-        <p class="help">That's the part your friend should give you.</p>
-      </div>
-
-      <div class="field">
         <label class="label">Your player name:</label>
         <div class="control">
           <input
@@ -38,9 +23,6 @@
           >
         </div>
         <p class="help">The name people in the game will see you as.</p>
-        <label class="checkbox">
-          <input type="checkbox" v-model="saveName"> Save name for future online games
-        </label>
       </div>
 
       <div class="field join-game">
@@ -64,28 +46,23 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
 import { useMain } from '@/store/main';
-import { useConfig } from '@/store/config';
 
 import BrandedFooter from '@/components/BrandedFooter.vue';
 
-const URL_REGEX = /https?:\/\/.+\/#\/join\/(?<room>[[0-9a-zA-Z]]{20})/;
+const URL_REGEX = /https?:\/\/.+\/#\/join\/(?<room>[0-9a-zA-Z]{20})/;
 
 @Component({ components: { BrandedFooter } })
 export default class JoinGame extends Vue {
-  private mainStore = useMain();
-  private configStore = useConfig();
+  private store = useMain();
 
+  public name = useMain().selfName ?? '';
   public roomId = '';
-  public name = '';
-  public saveName = false;
   public joining = false;
 
   public error: Error | null = null;
 
-  public created() {
+  public created(): void {
     this.roomId = this.$route.params.roomId as string ?? '';
-    this.name = this.configStore.name ?? '';
-    this.saveName = this.name !== '';
   }
 
   public parse(): void {
@@ -97,18 +74,13 @@ export default class JoinGame extends Vue {
 
   public async join() {
     this.joining = true;
-
-    this.saveName
-      ? this.configStore.setName(this.name)
-      : this.configStore.removeName();
-
+    this.store.setName(this.name);
     try {
-      await this.mainStore.join({ roomId: this.roomId, name: this.name });
+      await this.store.join({ roomId: this.roomId, name: this.name });
       this.$router.push('/board');
     } catch (err) {
       this.error = err as Error;
     }
-
     this.joining = false;
   }
 }
@@ -116,13 +88,12 @@ export default class JoinGame extends Vue {
 
 <style lang="scss" scoped>
 .title {
-  display: flex;
+  text-align: center;
 
  .brand {
-    align-self: center;
-    margin-right: 1rem;
+    display: inline-block;
+    font-size: 6rem;
     color: var(--brand-color-primary);
-
     &:hover {
       color: var(--brand-color-secondary);
     }
@@ -136,22 +107,28 @@ export default class JoinGame extends Vue {
   width: auto;
   max-width: 800px;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-input.input {
-  width: calc(2 * var(--form-btn-width) + 1rem);
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
-.field.join-game {
+.field {
+  width: 100%;
   margin-bottom: 1rem;
 
+  input.input {
+    width: 100%;
+  }
+
   button {
-    @media screen and (max-width: 480px) {
-      & {
-        width: 100%;
-      }
-    }
-    width: var(--form-btn-width);
+    width: 100%;
   }
 
   .control {

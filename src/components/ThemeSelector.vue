@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
-import { useConfig } from '@/store/config';
+import { useMain } from '@/store/main';
 
 const ICONS = {
   sys: 'cog',
@@ -28,7 +28,7 @@ const ICONS = {
 
 @Component
 export default class ThemeSelector extends Vue {
-  private store = useConfig();
+  private store = useMain();
 
   public get icon(): string {
     return ICONS[this.theme];

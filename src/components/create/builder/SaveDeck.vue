@@ -21,7 +21,7 @@
 import { Component, Prop, Vue } from 'vue-facing-decorator';
 import { Scope } from '../types';
 import { Card } from '@/model/card';
-import { useConfig } from '@/store/config';
+import { useMain } from '@/store/main';
 
 import FeedbackButton from '@/components/FeedbackButton.vue';
 
@@ -32,7 +32,7 @@ export default class SaveDeck extends Vue {
   @Prop({ required: true })
   public deck: Array<Card>;
 
-  private store = useConfig();
+  private store = useMain();
   public deckName = '';
 
   public save(): void {

@@ -10,7 +10,7 @@
           :value="option.value"
           v-model="selected"
         >
-        <label class="button" :for="id + index" v-html="option.label"></label>
+        <label class="button is-fullwidth" :for="id + index" v-html="option.label"></label>
       </template>
     </div>
 
@@ -54,16 +54,12 @@ export default class ButtonPicker extends Vue {
 
 <style lang="scss" scoped>
 .field {
-  button {
-    width: var(--form-btn-width);
-  }
-
+  width: 100%;
   .control {
     display: flex;
     gap: 1rem;
 
     label {
-      width: var(--form-btn-width);
       color: var(--picker-color);
       background-color: var(--picker-bg);
       border-color: var(--picker-border);

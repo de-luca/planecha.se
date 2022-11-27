@@ -21,67 +21,93 @@
 
     <div class="dropdown-menu" id="dropdown-menu" role="menu">
       <div class="dropdown-content">
-        <div class="dropdown-item">
+        <div v-if="!online" class="dropdown-item">
           <div class="field">
             <label class="label">
-              <fa icon="user-plus" fixed-width />
-              Invite players
+              <fa icon="torii-gate" fixed-width />
+              Open Game
             </label>
-            <div class="field has-addons">
+            <div class="field">
               <div class="control is-expanded">
-                <input class="input" type="text" :value="roomUrl" readonly>
-              </div>
-              <div class="control">
-                <feedback-button
-                  @click="copy"
-                  id="copy"
-                  class="button"
-                  idleText="Copy"
-                  actionText="Copied!"
-                  timeout="5000"
-                />
+                <button class="button is-secondary is-fullwidth" @click="open">
+                  Open Game to Multiplayer
+                </button>
               </div>
             </div>
-            <p class="help">Give this thing to people!</p>
+            <p class="help">You need to open your game to invite people to join.</p>
           </div>
         </div>
 
-        <hr class="dropdown-divider">
+        <template v-else>
+          <div class="dropdown-item">
+            <div class="field">
+              <label class="label">
+                <fa icon="user-plus" fixed-width />
+                Invite players
+              </label>
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <input class="input" type="text" :value="roomUrl" readonly>
+                </div>
+                <div class="control">
+                  <feedback-button
+                    @click="copy"
+                    id="copy"
+                    class="button"
+                    idleText="Copy"
+                    actionText="Copied!"
+                    timeout="5000"
+                  />
+                </div>
+              </div>
+              <p class="help">Give this thing to people!</p>
+            </div>
+          </div>
 
-        <div class="dropdown-item">
-          <p class="label">
-            <fa icon="users" fixed-width />
-            Current Players
-          </p>
-          <p>{{ playerName }}</p>
-          <template v-for="[id, name] in mates" :key="id">
-            <p>{{ name }}</p>
-          </template>
-        </div>
+          <hr class="dropdown-divider">
+
+          <div class="dropdown-item">
+            <p class="label">
+              <fa icon="users" fixed-width />
+              Current Players
+            </p>
+            <p>{{ playerName }} (You)</p>
+            <p v-for="[id, name] in mates" v-bind:key="id">{{ name }}</p>
+          </div>
+        </template>
       </div>
     </div>
   </div>
+
+  <name-modal v-model:active="nameModalActive" @done="open" />
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
-
 import FeedbackButton from '../FeedbackButton.vue';
 import { useMain } from '@/store/main';
+
+import NameModal from '@/components/board/modals/NameModal.vue';
 
 enum BtnText {
   IDLE = 'Copy',
   SUCCESS = 'Copied!',
 }
 
-@Component({ components: { FeedbackButton } })
+@Component({ components: { FeedbackButton, NameModal } })
 export default class OnlineControls extends Vue {
   private store = useMain();
   private copyBtnText: BtnText = BtnText.IDLE;
-  public active = true;
+
+  public active = false;
+  public nameModalActive = false;
+
+  public get online(): boolean {
+    return !!this.store.game;
+  }
 
   public get playerName(): string {
-    return this.store.selfName;
+    return this.store.selfName!;
   }
 
   public get roomUrl(): string {
@@ -90,6 +116,15 @@ export default class OnlineControls extends Vue {
 
   public get mates(): Map<string, string> {
     return this.store.mates;
+  }
+
+  public open(): void {
+    if (!this.store.selfName) {
+      this.nameModalActive = true;
+      return;
+    }
+    this.store.open();
+    this.copy();
   }
 
   public async copy(): Promise<void> {

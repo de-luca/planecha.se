@@ -17,7 +17,7 @@
 
       <div class="spacer"></div>
 
-      <online-controls v-if="online" />
+      <online-controls />
       <dice-tray />
       <main-menu />
     </div>
@@ -47,7 +47,6 @@ import ThemeSelector from '@/components/ThemeSelector.vue';
 import MainMenu from '@/components/board/MainMenu.vue';
 import OnlineControls from '@/components/board/OnlineControls.vue';
 import DiceTray from '@/components/board/DiceTray.vue';
-
 
 @Component({
   components: {

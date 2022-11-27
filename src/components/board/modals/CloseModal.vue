@@ -1,5 +1,5 @@
 <template>
-  <div class="modal">
+  <div class="modal" :class="{ active }">
     <div class="modal-background"></div>
     <div class="modal-content">
       <div class="box">
@@ -10,7 +10,7 @@
           <button class="button is-danger" @click="$emit('close')">
             {{ online ? 'Leave' : 'Close' }} Game
           </button>
-          <button class="button is-light" @click="$emit('dismiss')">
+          <button class="button is-light" @click="$emit('update:active', false)">
             Cancel
           </button>
         </div>
@@ -22,8 +22,10 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-facing-decorator';
 
-@Component({ emits: ['dismiss', 'close'] })
+@Component({ emits: ['update:active', 'close'] })
 export default class CloseModal extends Vue {
+  @Prop({ required: true })
+  public active: boolean;
   @Prop({ required: true })
   public online: boolean;
 }
@@ -62,6 +64,10 @@ button {
       background-color: var(--btn-danger-active-bg);
     }
   }
+}
+
+.modal.active {
+  display: block;
 }
 
 .modal-content {

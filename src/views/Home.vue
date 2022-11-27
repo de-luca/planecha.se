@@ -18,9 +18,6 @@
           A Planechase companion app for people playing remotely (or locally)
         </h2>
         <div class="btn-grp">
-          <router-link class="button is-secondary" to="/join">
-            Join game
-          </router-link>
           <router-link class="button is-primary" to="/create">
             Create game
           </router-link>

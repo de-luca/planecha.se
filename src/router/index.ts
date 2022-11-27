@@ -19,7 +19,7 @@ const routes: Array<RouteRecordRaw> = [
     component: About,
   },
   {
-    path: '/join/:roomId?',
+    path: '/join/:roomId([0-9a-zA-Z]{20})',
     name: 'JoinGame',
     component: JoinGame,
   },
@@ -41,6 +41,11 @@ const routes: Array<RouteRecordRaw> = [
         return '/create';
       }
     },
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: '404',
+    redirect: '/',
   },
 ];
 

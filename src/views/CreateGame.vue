@@ -4,17 +4,14 @@
       <router-link class="brand" title="Back Home" to="/">⟁</router-link>
       <div>
         <h1>CREATE GAME</h1>
-        <h2 class="subtitle">
-          or <router-link to="/join">Join a game</router-link>
-        </h2>
       </div>
     </div>
 
     <form @submit.prevent="create">
 
-      <online-picker v-model="online" />
+      <!-- <online-picker v-model="online" /> -->
 
-      <div class="field" v-if="requireName">
+      <!-- <div class="field" v-if="requireName">
         <label class="label">Your player name:</label>
         <div class="control">
           <input v-model="name" id="player-name" class="input" type="text" placeholder="Super Cake" required>
@@ -23,7 +20,7 @@
         <label class="checkbox">
           <input type="checkbox" v-model="saveName"> Save name for future online games
         </label>
-      </div>
+      </div> -->
 
       <button-picker
         label="Game mode:"
@@ -56,7 +53,7 @@
         <p class="help is-danger" v-if="!hasRequiredCards.valid">
           <fa icon="exclamation" fixed-width />
           Your deck does not have the minimum required
-          <b>Planes</b> cards: <b>{{ hasRequiredCards.minCards }}</b>.<br>
+          <b>Plane</b> cards: <b>{{ hasRequiredCards.minCards }}</b>.
           <em>(In order not to explode)</em>
         </p>
       </div>
@@ -91,7 +88,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
 import { useMain } from '@/store/main';
-import { useConfig } from '@/store/config';
 import { MapType } from '@/model/map';
 import {
   EncounterMechanic,
@@ -102,6 +98,7 @@ import {
 } from '@/model/map/eternities';
 import { Card, Plane } from '@/model/card';
 import { Scope } from '@/components/create/types';
+
 import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';
 import DeckBuilder from '@/components/create/DeckBuilder.vue';
 import OnlinePicker from '@/components/create/OnlinePicker.vue';
@@ -143,16 +140,14 @@ export default class CreateGame extends Vue {
   }, {
     label: 'Planes and Phenomena',
     value: EternitiesMapDeckType.ALL,
-    help: 'Planes and Phenomnena mixed in the same deck. Phenomena are encountered when drawn.',
+    help: 'Planes and Phenomnena mixed in the same deck. Phenomena are encountered as they\'re drawn.',
   }];
 
-  private mainStore = useMain();
-  private configStore = useConfig();
+  private store = useMain();
 
   public openDeckBuilder = false;
   public creating = false;
 
-  public online = false;
   public mapType: MapType = MapType.CLASSIC;
   public subType: EternitiesMapSubType = EternitiesMapSubType.SINGLE_DECK;
   public deckType: EternitiesMapDeckType = EternitiesMapDeckType.PLANES;
@@ -170,18 +165,7 @@ export default class CreateGame extends Vue {
     },
   };
 
-  public name = '';
-  public saveName = false;
   public deck: Array<Card> = [];
-
-  public created() {
-    this.name = this.configStore.name ?? '';
-    this.saveName = this.name !== '';
-  }
-
-  public get requireName(): boolean {
-    return this.online;
-  }
 
   public get showSubType(): boolean {
     return this.mapType === MapType.ETERNITIES;
@@ -239,24 +223,13 @@ export default class CreateGame extends Vue {
   public async create() {
     this.creating = true;
 
-    if (this.online && this.name && this.saveName) {
-      this.configStore.setName(this.name);
-    }
-    if (this.online && this.name && !this.saveName) {
-      this.configStore.removeName();
-    }
-
-    await this.mainStore.init({
+    await this.store.init({
       type: this.mapType,
-      online: this.online,
-      advanced: {
-        name: this.name,
-        cards: this.deck.length !== 0 ? this.deck.map(c => c.id) : undefined,
-        encounterTriggers: this.encounterConfig,
-        specs: {
-          subType: this.subType,
-          deckType: this.deckType,
-        },
+      cards: this.deck.length !== 0 ? this.deck.map(c => c.id) : undefined,
+      encounterTriggers: this.encounterConfig,
+      specs: {
+        subType: this.subType,
+        deckType: this.deckType,
       },
     });
 
@@ -269,14 +242,13 @@ export default class CreateGame extends Vue {
 
 <style lang="scss" scoped>
 .title {
-  display: flex;
+  text-align: center;
 
  .brand {
-    align-self: center;
-    margin-right: 1rem;
+    display: inline-block;
+    font-size: 6rem;
     transform: rotate(180deg);
     color: var(--brand-color-primary);
-
     &:hover {
       color: var(--brand-color-secondary);
     }
@@ -290,21 +262,16 @@ export default class CreateGame extends Vue {
   width: auto;
   max-width: 800px;
   min-height: 100vh;
-}
-
-.scope-block {
   display: flex;
-  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
 }
 
-.advanced-block {
-  label.checkbox {
-    display: block;
-  }
-}
-
-#player-name {
-  width: calc(2 * var(--form-btn-width) + 1rem);
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .main.control {
@@ -325,17 +292,22 @@ export default class CreateGame extends Vue {
   }
 
   button {
-    @media screen and (max-width: 480px) {
-      & {
-        width: 100%;
-      }
-    }
-    width: var(--form-btn-width);
+    width: 100%;
+    // @media screen and (max-width: 480px) {
+    //   & {
+    //     width: 100%;
+    //   }
+    // }
+    // width: var(--form-btn-width);
   }
 }
 
-.field:last-of-type {
-  margin-bottom: 1rem;
+
+.field {
+  width: inherit;
+  &:last-of-type {
+    margin-bottom: 1rem;
+  }
 }
 
 .deck-custom {

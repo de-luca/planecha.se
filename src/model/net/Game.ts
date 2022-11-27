@@ -38,6 +38,7 @@ function once<T extends Fun>(fun: T): T {
 export interface GameInterface {
   gameId: string;
   joined: Promise<void>;
+  hey(data: Hey): void;
   sync(patch: Patch): void;
   revert(index: number): void;
   syncFeed(log: string): void;
@@ -58,6 +59,7 @@ export class Game implements GameInterface {
   public readonly joined: Promise<void>;
   private ready: boolean;
 
+  public readonly hey: ActionSender<Hey>;
   public readonly sync: ActionSender<Patch>;
   public readonly revert: ActionSender<number>;
   public readonly syncFeed: ActionSender<string>;
@@ -75,6 +77,7 @@ export class Game implements GameInterface {
     const [revertSender, revertReceiver] = this.room.makeAction<number>(EventType.REVERT);
     const [feedSender, feedReceiver] = this.room.makeAction<string>(EventType.FEED);
 
+    this.hey = heySender;
     this.sync = syncSender;
     this.revert = revertSender;
     this.syncFeed = feedSender;
@@ -87,7 +90,7 @@ export class Game implements GameInterface {
           feed: [...this.store.feed],
         }, peerId);
       }
-      heySender({ name: this.store.selfName }, peerId);
+      heySender({ name: this.store.selfName! }, peerId);
     });
     this.room.onPeerLeave((peerId) => this.store.bye({ id: peerId }));
 
@@ -101,9 +104,11 @@ export class Game implements GameInterface {
       }));
     });
     heyReceiver((data, peerId) => {
-      if (!this.store.mates.get(peerId)) {
+      if (this.store.mates.has(peerId)) {
+        this.store.mates.set(peerId, data.name);
+      } else {
         this.store.hey({ ...data, id: peerId });
-        heySender({ name: this.store.selfName }, peerId);
+        heySender({ name: this.store.selfName! }, peerId);
       }
     });
     syncReceiver((data) => this.store.apply(data));

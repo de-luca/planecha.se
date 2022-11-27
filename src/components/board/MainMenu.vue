@@ -1,6 +1,5 @@
 <template>
   <div :class="{ 'is-active': active }" class="dropdown is-right">
-
     <div class="dropdown-trigger">
       <button
         @click="active = !active"
@@ -26,38 +25,51 @@
 
         <hr class="dropdown-divider">
 
-        <a @click="closeModalOpened = true" class="dropdown-item">
+        <div class="dropdown-item spaced">
+          <span>Your Name:</span>
+          <button
+            class="button is-secondary is-small name"
+            title="Edit your name"
+            @click="nameModalActive = true"
+          >
+            {{ selfName ?? 'Not set' }}
+          </button>
+        </div>
+
+        <hr class="dropdown-divider">
+
+        <a class="dropdown-item" @click="closeModalActive = true">
           {{ online ? 'Leave' : 'Close' }} Game
         </a>
-
       </div>
     </div>
-
   </div>
 
-  <close-modal
-    :online="online"
-    :style="{ display: (closeModalOpened ? 'block' : 'none' ) }"
-    @dismiss="closeModalOpened = false"
-    @close="close()"
-  />
+  <name-modal v-model:active="nameModalActive" />
+  <close-modal v-model:active="closeModalActive" :online="online" @close="close" />
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
+import CloseModal from './modals/CloseModal.vue';
+import NameModal from './modals/NameModal.vue';
 import { useMain } from '@/store/main';
 
 import ThemeSelector from '@/components/ThemeSelector.vue';
-import CloseModal from '@/components/board/CloseModal.vue';
 
-@Component({ components: { ThemeSelector, CloseModal } })
+@Component({ components: { ThemeSelector, CloseModal, NameModal } })
 export default class MainMenu extends Vue {
   private store = useMain();
   public active = false;
-  public closeModalOpened = false;
+  public nameModalActive = false;
+  public closeModalActive = false;
 
   public get online(): boolean {
     return !!this.store.game;
+  }
+
+  public get selfName(): string | null {
+    return this.store.selfName;
   }
 
   public async close(): Promise<void> {
@@ -83,8 +95,12 @@ export default class MainMenu extends Vue {
   display: block;
 }
 
+button.button.is-secondary.is-small.name {
+  border-radius: 4px;
+}
+
 .dropdown-menu {
-  width: 15rem;
+  min-width: 15rem;
 
   .dropdown-content {
     color: var(--text-color);
@@ -102,6 +118,11 @@ export default class MainMenu extends Vue {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 1rem;
+
+        span {
+          white-space: nowrap;
+        }
       }
     }
 
