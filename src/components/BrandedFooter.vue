@@ -17,7 +17,7 @@
           <fa :icon="['fab', 'github']" fixed-width size="lg"/>
         </l>
         <div class="theme-container">
-          <theme-selector />
+          <main-menu />
         </div>
       </div>
     </div>
@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import ThemeSelector from '@/components/ThemeSelector.vue';
+import MainMenu from '@/components/board/MainMenu.vue';
 </script>
 
 <style lang="scss" scoped>

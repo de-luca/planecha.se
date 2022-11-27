@@ -1,17 +1,17 @@
 <template>
-  <div :class="{ 'is-active': active }" class="dropdown is-right">
+  <div :class="{ 'is-active': active, 'is-up': !inGame }" class="dropdown is-right">
     <div class="dropdown-trigger">
-      <button
+      <a
         @click="active = !active"
         @keyup.space.prevent
-        class="button is-outlined"
+        :class="{ 'button is-outlined': inGame, 'not-button': !inGame }"
         aria-haspopup="true"
         aria-controls="main-menu"
       >
         <span class="icon is-medium">
           <fa icon="cogs" fixed-width />
         </span>
-      </button>
+      </a>
     </div>
 
     <div id="click-trap" @click="active = false"></div>
@@ -36,11 +36,13 @@
           </button>
         </div>
 
-        <hr class="dropdown-divider">
+        <template v-if="inGame">
+          <hr class="dropdown-divider">
 
-        <a class="dropdown-item" @click="closeModalActive = true">
-          {{ online ? 'Leave' : 'Close' }} Game
-        </a>
+          <a class="dropdown-item" @click="closeModalActive = true">
+            {{ online ? 'Leave' : 'Close' }} Game
+          </a>
+        </template>
       </div>
     </div>
   </div>
@@ -63,6 +65,10 @@ export default class MainMenu extends Vue {
   public active = false;
   public nameModalActive = false;
   public closeModalActive = false;
+
+  public get inGame(): boolean {
+    return !!this.store._map;
+  }
 
   public get online(): boolean {
     return !!this.store.game;
@@ -97,6 +103,14 @@ export default class MainMenu extends Vue {
 
 button.button.is-secondary.is-small.name {
   border-radius: 4px;
+}
+
+a.not-button {
+  color: var(--brand-color-secondary);
+
+  &:hover {
+    color: var(--brand-color-primary);
+  }
 }
 
 .dropdown-menu {
