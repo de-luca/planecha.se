@@ -67,6 +67,7 @@ export default class NotifCenter extends Vue {
   }
 
   public dismiss(id: number): void {
+    window.clearInterval(this.notifs.get(id)?.interval);
     this.notifs.delete(id);
   }
 
