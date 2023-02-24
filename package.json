@@ -24,8 +24,8 @@
     "typedi": "^0.10.0",
     "vue": "^3.2.37",
     "vue-facing-decorator": "^2.1.12",
-    "vue-router": "^4.0.11",
-    "vue-tippy": "^6.0.0-alpha.63",
+    "vue-router": "^4.1.6",
+    "vue-tippy": "^6.0.0",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
@@ -38,7 +38,7 @@
     "@types/node": "^15.0.3",
     "@typescript-eslint/eslint-plugin": "^5.32.0",
     "@typescript-eslint/parser": "^5.32.0",
-    "@vitejs/plugin-vue": "^3.0.0",
+    "@vitejs/plugin-vue": "^4.0.0",
     "@vue/compiler-sfc": "^3.2.6",
     "eslint": "^8.21.0",
     "eslint-import-resolver-typescript": "^3.4.0",
@@ -48,7 +48,7 @@
     "sass": "^1.32.4",
     "tslib": "^2.4.0",
     "typescript": "^4.7.4",
-    "vite": "^3.0.0",
-    "vitest": "^0.18.0"
+    "vite": "^4.1.4",
+    "vitest": "^0.28.5"
   }
 }

@@ -18,6 +18,7 @@ export default defineConfig({
     setupFiles: ['./tests/setup-file.ts'],
     deps: {
       inline: [
+        "trystero",
         "simple-peer-light",
       ],
     },
