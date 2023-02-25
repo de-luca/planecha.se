@@ -10,13 +10,9 @@ describe('StairsToInfinity.chaos', () => {
     const walls = new WallStates();
     const stairsToInfinity = new StairsToInfinity({
       id: '00000000-0000-0000-0000-000000000000',
-      oracleId: '12345',
-      multiverseIds: [1, 2, 3],
       name: 'Test Plane',
-      scryfallUri: 'https://test.plane/',
       typeLine: 'test plane',
       oracleText: 'some test text',
-      gathererUri: 'https://test.plane/',
     });
     stairsToInfinity.chaos(walls, 'foo');
     expect(walls.get(StateKey.REVEALER)).toEqual({

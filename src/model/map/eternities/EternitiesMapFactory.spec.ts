@@ -55,16 +55,16 @@ describe('EternitiesMapFactory.restore', () => {
       hasStarted: true,
       deck: {
         cards: [
-          { id: 'ed4f4210-9871-4cec-9b46-100c80f93cd4' },
-          { id: '6caf8b21-1807-442c-a461-c89c7591df70' },
-          { id: 'a1c7f2eb-0654-46f9-ae3d-11efcac837b8' },
-          { id: 'd6dc655e-d8ef-443a-bb3e-46c7ca1555ba' },
-          { id: '56c735c0-9346-431b-869f-3accfa193016' },
+          { id: '15b979de-c8ee-4664-9ca7-6c4eb3346967' },
+          { id: '38f84e55-049c-441e-b4e2-1e207ab5dbe5' },
+          { id: '25650a32-4014-4065-ad01-7357c3ad3995' },
+          { id: 'd6ab4159-e04e-4991-8a9b-9da302c98e9d' },
+          { id: '805f9dc2-e172-481d-bae7-9a136a3d1e49' },
         ],
         played: [],
       },
       active: [{
-        id: '434a2d09-5776-4168-b863-f3b0a736d19b',
+        id: '82e67c57-6d7a-44cc-ba63-77ce887ab075',
       }],
       specs: {
         type: MapType.ETERNITIES,
@@ -75,7 +75,7 @@ describe('EternitiesMapFactory.restore', () => {
         coords: { x: 0, y: 0 },
         state: TileStatus.ACTIVE,
         plane: [{
-          id: '434a2d09-5776-4168-b863-f3b0a736d19b',
+          id: '82e67c57-6d7a-44cc-ba63-77ce887ab075',
         }],
       }],
     };
@@ -90,16 +90,16 @@ describe('EternitiesMapFactory.restore', () => {
       hasStarted: true,
       deck: {
         cards: [
-          { id: 'ed4f4210-9871-4cec-9b46-100c80f93cd4' },
-          { id: '6caf8b21-1807-442c-a461-c89c7591df70' },
-          { id: 'a1c7f2eb-0654-46f9-ae3d-11efcac837b8' },
-          { id: 'd6dc655e-d8ef-443a-bb3e-46c7ca1555ba' },
-          { id: '56c735c0-9346-431b-869f-3accfa193016' },
+          { id: '15b979de-c8ee-4664-9ca7-6c4eb3346967' },
+          { id: '38f84e55-049c-441e-b4e2-1e207ab5dbe5' },
+          { id: '25650a32-4014-4065-ad01-7357c3ad3995' },
+          { id: 'd6ab4159-e04e-4991-8a9b-9da302c98e9d' },
+          { id: '805f9dc2-e172-481d-bae7-9a136a3d1e49' },
         ],
         played: [],
       },
       active: [{
-        id: '434a2d09-5776-4168-b863-f3b0a736d19b',
+        id: '82e67c57-6d7a-44cc-ba63-77ce887ab075',
       }],
       specs: {
         type: MapType.ETERNITIES,
@@ -110,13 +110,13 @@ describe('EternitiesMapFactory.restore', () => {
         coords: { x: 0, y: 0 },
         state: TileStatus.ACTIVE,
         plane: [{
-          id: '434a2d09-5776-4168-b863-f3b0a736d19b',
+          id: '82e67c57-6d7a-44cc-ba63-77ce887ab075',
         }],
       }],
       phenomenaDeck: {
         cards: [
-          { id: '42ecb371-53aa-4368-8ddd-88ae8e90ae0c' },
-          { id: '56e4874c-9d3d-4a1c-a027-186a33ce0da7' },
+          { id: '6dc67a65-31bf-4535-9e02-8f6d6ecefde5' },
+          { id: '7812174b-2dc1-43e8-b98f-639905e20ab7' },
         ],
         played: [],
       },

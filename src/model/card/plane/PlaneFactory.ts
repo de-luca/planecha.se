@@ -6,34 +6,38 @@ type SpecialConstructor = { new(props: Props): Plane };
 
 export class PlaneFactory {
   private static readonly specials: Map<string, SpecialConstructor> = new Map([
-    ['d6dc655e-d8ef-443a-bb3e-46c7ca1555ba', Special.Aretopolis],
-    ['559007a6-c515-413a-8d3c-8ce1df0742ff', Special.PoolOfBecoming],
-    ['eceba6df-8821-499b-b3c2-4d54c6eab257', Special.StairsToInfinity],
+    ['d6ab4159-e04e-4991-8a9b-9da302c98e9d', Special.Aretopolis],
+    ['f133e42a-2962-4781-b413-ce2127f17c26', Special.PoolsOfBecoming],
+    ['7a425df4-7010-462e-9cb5-20389bac721c', Special.StairsToInfinity],
   ]);
 
   private static readonly counter: Map<string, Counter> = new Map([
-    ['d6dc655e-d8ef-443a-bb3e-46c7ca1555ba', {
+    // Aretopolis
+    ['d6ab4159-e04e-4991-8a9b-9da302c98e9d', {
       name: 'Scroll',
       value: 0,
       start: 0,
       max: 10,
       reset: true,
     }],
-    ['93f386a5-08ce-4f76-944f-f38620a41027', {
+    // Kilnspire District
+    ['fc650404-991c-4639-b311-c35df81a254a', {
       name: 'Charge',
       value: 0,
       start: 0,
       max: null,
       reset: false,
     }],
-    ['a4d3edeb-4a78-4de3-a167-4565c494ba23', {
+    // Mount Keralia
+    ['e0dc9986-1099-4189-bfff-8f41bab9019d', {
       name: 'Pressure',
       value: 0,
       start: 0,
       max: null,
       reset: false,
     }],
-    ['f63b82f9-ebc4-465c-b25e-5ee710525143', {
+    // Naar Isle
+    ['fc650404-991c-4639-b311-c35df81a254a', {
       name: 'Flame',
       value: 0,
       start: 0,

@@ -76,11 +76,7 @@ export abstract class Map implements MapInterface {
   }
 
   public chaos(input: ChaosInput): void {
-    if ('card' in input) {
-      return input.card.chaos(this._wallStates, input.initiator);
-    } else {
-      this._active.forEach(c => c.chaos(this._wallStates, input.initiator));
-    }
+    return input.card.chaos(this._wallStates, input.initiator);
   }
 
   public abstract planeswalk(input: PlaneswalkInput): void;

@@ -5,13 +5,9 @@ import { PhenomenonFactory, Phenomenon } from '.';
 
 const props: Props = {
   id: '00000000-0000-0000-000000000000',
-  oracleId: '00000000-0000-0000-000000000000',
-  multiverseIds: [12345],
   name: 'Sip Coffee',
-  scryfallUri: 'https://fake.tld/phenomenon/sip-coffee',
   typeLine: 'Phenomenon',
   oracleText: 'When you encounter Sip Coffee, take a sip of coffee.',
-  gathererUri: 'https://gatherer.tld/12345',
 };
 
 describe('PhenomenonFactory.build', () => {
@@ -20,7 +16,7 @@ describe('PhenomenonFactory.build', () => {
   });
 
   it('builds a special Phenomenon', () => {
-    props.id = '56e4874c-9d3d-4a1c-a027-186a33ce0da7';
+    props.id = '7812174b-2dc1-43e8-b98f-639905e20ab7';
     expect(PhenomenonFactory.build(props)).toBeInstanceOf(InterplanarTunnel);
   });
 });

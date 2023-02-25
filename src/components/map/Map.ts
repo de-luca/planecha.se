@@ -2,7 +2,7 @@ import shuffle from 'lodash.shuffle';
 import { PickedLeft } from '../wall/reveal/types';
 import { Imgable } from '../Imgable';
 import { Op, useMain } from '@/store/main';
-import { Plane, PoolOfBecoming, StairsToInfinity } from '@/model/card';
+import { Plane, PoolsOfBecoming, StairsToInfinity } from '@/model/card';
 
 export abstract class Map extends Imgable {
   protected store = useMain();
@@ -12,7 +12,7 @@ export abstract class Map extends Imgable {
     if (
       this.store.map.active.length > 1 &&
       this.store.map.active.every(
-        c => c instanceof PoolOfBecoming || c instanceof StairsToInfinity,
+        c => c instanceof PoolsOfBecoming || c instanceof StairsToInfinity,
       )
     ) {
       this.showStackWall = true;

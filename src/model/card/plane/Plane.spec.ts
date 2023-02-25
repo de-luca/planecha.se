@@ -5,13 +5,9 @@ describe('Plane.initCounter', () => {
   it('sets counter value to its start', () => {
     const plane = new Plane({
       id: '00000000-0000-0000-0000-000000000000',
-      oracleId: '12345',
-      multiverseIds: [1, 2, 3],
       name: 'Test Plane',
-      scryfallUri: 'https://test.plane/',
       typeLine: 'test plane',
       oracleText: 'some test text',
-      gathererUri: 'https://test.plane/',
       counter: {
         max: 10,
         name: 'test counter',
@@ -30,13 +26,9 @@ describe('Plane.updateCounter', () => {
   it('updates counter value', () => {
     const plane = new Plane({
       id: '00000000-0000-0000-0000-000000000000',
-      oracleId: '12345',
-      multiverseIds: [1, 2, 3],
       name: 'Test Plane',
-      scryfallUri: 'https://test.plane/',
       typeLine: 'test plane',
       oracleText: 'some test text',
-      gathererUri: 'https://test.plane/',
       counter: {
         max: 10,
         name: 'test counter',
@@ -52,13 +44,9 @@ describe('Plane.updateCounter', () => {
   it('updates counter value not less that 0', () => {
     const plane = new Plane({
       id: '00000000-0000-0000-0000-000000000000',
-      oracleId: '12345',
-      multiverseIds: [1, 2, 3],
       name: 'Test Plane',
-      scryfallUri: 'https://test.plane/',
       typeLine: 'test plane',
       oracleText: 'some test text',
-      gathererUri: 'https://test.plane/',
       counter: {
         max: 10,
         name: 'test counter',
@@ -76,13 +64,9 @@ describe('Plane.leave', () => {
   it('resets counter to start value if resetable', () => {
     const plane = new Plane({
       id: '00000000-0000-0000-0000-000000000000',
-      oracleId: '12345',
-      multiverseIds: [1, 2, 3],
       name: 'Test Plane',
-      scryfallUri: 'https://test.plane/',
       typeLine: 'test plane',
       oracleText: 'some test text',
-      gathererUri: 'https://test.plane/',
       counter: {
         max: 10,
         name: 'test counter',
@@ -99,13 +83,9 @@ describe('Plane.leave', () => {
   it('keeps counter to old value if not resetable', () => {
     const plane = new Plane({
       id: '00000000-0000-0000-0000-000000000000',
-      oracleId: '12345',
-      multiverseIds: [1, 2, 3],
       name: 'Test Plane',
-      scryfallUri: 'https://test.plane/',
       typeLine: 'test plane',
       oracleText: 'some test text',
-      gathererUri: 'https://test.plane/',
       counter: {
         max: 10,
         name: 'test counter',
@@ -124,13 +104,9 @@ describe('Plane.export', () => {
   it('exports the state of the plane (no counters)', () => {
     const plane = new Plane({
       id: '00000000-0000-0000-0000-000000000000',
-      oracleId: '12345',
-      multiverseIds: [1, 2 ,3],
       name: 'Test Plane',
-      scryfallUri: 'https://test.plane/',
       typeLine: 'test plane',
       oracleText: 'some test text',
-      gathererUri: 'https://test.plane/',
     });
 
     expect(plane.export()).toEqual({
@@ -141,13 +117,9 @@ describe('Plane.export', () => {
   it('exports the state of the plane (with counters)', () => {
     const plane = new Plane({
       id: '00000000-0000-0000-0000-000000000000',
-      oracleId: '12345',
-      multiverseIds: [1, 2, 3],
       name: 'Test Plane',
-      scryfallUri: 'https://test.plane/',
       typeLine: 'test plane',
       oracleText: 'some test text',
-      gathererUri: 'https://test.plane/',
       counter: {
         max: 10,
         name: 'test counter',

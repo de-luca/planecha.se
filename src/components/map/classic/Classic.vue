@@ -82,7 +82,7 @@ export default class Classic extends Map {
     eventBus.on(EventType.STAIRS_TO_INFINITY, (): void => {
       this.store.reveal({ count: 1 });
     });
-    eventBus.on(EventType.POOL_OF_BECOMING, (): void => {
+    eventBus.on(EventType.POOLS_OF_BECOMING, (): void => {
       this.store.reveal({ count: 3 });
     });
   }
@@ -132,7 +132,7 @@ export default class Classic extends Map {
           seeder: () => { /* NOOP */ },
           resolver: this.putBack,
         };
-      case RevealerSource.POOL_OF_BECOMING:
+      case RevealerSource.POOLS_OF_BECOMING:
         return {
           ...config,
           seeder: () => { /* NOOP */ },

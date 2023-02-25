@@ -6,9 +6,9 @@ type SpecialConstructor = { new(props: Props): Phenomenon };
 
 export class PhenomenonFactory {
   private static readonly specials: Map<string, SpecialConstructor> = new Map([
-    ['42ecb371-53aa-4368-8ddd-88ae8e90ae0c', Special.ChaoticAether],
-    ['56e4874c-9d3d-4a1c-a027-186a33ce0da7', Special.InterplanarTunnel],
-    ['de44957b-3dcb-45db-a6a7-b5c6e64b582a', Special.SpatialMerging],
+    ['6dc67a65-31bf-4535-9e02-8f6d6ecefde5', Special.ChaoticAether],
+    ['7812174b-2dc1-43e8-b98f-639905e20ab7', Special.InterplanarTunnel],
+    ['aa166578-b13b-4adb-a78e-d5183e987112', Special.SpatialMerging],
   ]);
 
   public static build(props: Props): Phenomenon {

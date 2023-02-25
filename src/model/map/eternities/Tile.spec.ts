@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { Tile, TileStatus } from './Tile';
 import { CardProvider } from '@/services/CardProvider';
 
-const cardId = '0b8a0cad-92df-45a1-a3cc-561be2f06778';
+const cardId = '15b979de-c8ee-4664-9ca7-6c4eb3346967';
 
 describe('Tile.fromExport', () => {
   it('returns a tile from an exported payload', () => {

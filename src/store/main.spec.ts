@@ -20,11 +20,7 @@ describe('default state', () => {
 describe('init', () => {
   it('inits with a map and data', async() => {
     const store = useMain();
-    const props: BuildProps = {
-      online: false,
-      type: MapType.CLASSIC,
-      advanced: {},
-    };
+    const props: BuildProps = { type: MapType.CLASSIC };
     await store.init(props);
     expect(store.game).toBeUndefined();
     expect(store.map).toBeInstanceOf(Classic);
@@ -36,11 +32,7 @@ describe('init', () => {
 describe('leave', () => {
   it('cleans store', async () => {
     const store = useMain();
-    const props: BuildProps = {
-      online: false,
-      type: MapType.CLASSIC,
-      advanced: {},
-    };
+    const props: BuildProps = { type: MapType.CLASSIC };
     await store.init(props);
     store.leave();
     expect(store.game).toBeUndefined();

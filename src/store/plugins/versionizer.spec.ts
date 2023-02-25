@@ -15,11 +15,7 @@ describe('versionizer', () => {
   it('stores last version of the map', async() => {
     const store = useMain();
     const syncSpy = vi.spyOn(store, 'sync');
-    const props: BuildProps = {
-      online: false,
-      type: MapType.CLASSIC,
-      advanced: {},
-    };
+    const props: BuildProps = { type: MapType.CLASSIC };
     await store.init(props);
     store.startGame();
     expect(store.repo.getStash()).not.toBeUndefined();

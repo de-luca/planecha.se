@@ -34,7 +34,7 @@ export abstract class Eternities extends Map {
 
   public created(): void {
     eventBus.on(EventType.STAIRS_TO_INFINITY, () => this.store.reveal({ count: 1 }));
-    eventBus.on(EventType.POOL_OF_BECOMING, () => this.store.reveal({ count: 3 }));
+    eventBus.on(EventType.POOLS_OF_BECOMING, () => this.store.reveal({ count: 3 }));
   }
 
   public get revealed(): Revealed | undefined {
@@ -59,7 +59,7 @@ export abstract class Eternities extends Map {
 
     switch (revealer.source) {
       case RevealerSource.STAIRS_TO_INFINITY:
-      case RevealerSource.POOL_OF_BECOMING:
+      case RevealerSource.POOLS_OF_BECOMING:
         return {
           ...config,
           seeder: () => { /* NOOP */ },

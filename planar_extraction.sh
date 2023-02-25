@@ -6,8 +6,7 @@ CARDS_JSON="src/assets/cards.json"
 CARDS_DIR="public/cards/"
 
 function prepare {
-  curl -s https://api.scryfall.com/cards/search?q=t%3Aplane+or+t%3Aphenomenon > $TMP_RAW_JSON
-  jq -r '.data[].id' $TMP_RAW_JSON | sort > $TMP_CARD_IDS
+  curl -s 'https://api.scryfall.com/cards/search?q=t%3Aplane+or+t%3Aphenomenon' > $TMP_RAW_JSON
 }
 
 function clean {
@@ -20,8 +19,9 @@ function build_all {
 
   build_json
   build_back
-  for id in $(jq -r '.data[].id' $TMP_RAW_JSON); do
-    build_card "$id"
+  jq -cr '.data[] | [.id, .oracle_id, .name] | @tsv' $TMP_RAW_JSON \
+  | while IFS=$'\t' read -r id oracle name; do
+    build_card "$id" "$oracle" "$name"
   done
 }
 
@@ -30,15 +30,10 @@ function build_json {
     .data 
         | [.[] 
         | {
-            id: .id, 
-            oracleId: .oracle_id, 
-            multiverseIds: .multiverse_ids, 
+            id: .oracle_id, 
             name: .name, 
-            scryfallUri: .scryfall_uri, 
             typeLine: .type_line, 
-            oracleText: .oracle_text, 
-            gathererUri: .related_uris.gatherer,
-            rulingsUri: .rulings_uri,
+            oracleText: .oracle_text
           }
         ]
     ' $TMP_RAW_JSON > $CARDS_JSON
@@ -47,15 +42,15 @@ function build_json {
 }
 
 function build_back {
-  curl -sL 'https://c1.scryfall.com/file/scryfall-card-backs/normal/78/7840c131-f96b-4700-9347-2215c43156e6.jpg' | \
-    convert - -rotate 90 $BACK_IMG
+  curl -sL 'https://backs.scryfall.io/large/7/8/7840c131-f96b-4700-9347-2215c43156e6.jpg' | \
+    convert - -resize 680 -rotate 90 $BACK_IMG
   echo "Built back img"
 }
 
 function build_card {
   curl -sL "https://api.scryfall.com/cards/$1?format=image&version=normal" | \
-    convert - -rotate 90 "$CARDS_DIR$1.jpg"
-  echo "Built card ${id}"
+    convert - -resize 680 -rotate 90 "$CARDS_DIR$2.jpg"
+  echo "Built card: ${3}"
 }
 
 function main {
