@@ -170,15 +170,14 @@ export const useMain = defineStore('main', {
     apply(patch: Patch): void {
       this.map.apply(patch);
       this.repo.apply(patch);
-      this.repo.setStash(this.map.export());
     },
-    revert(index: number): void {
-      this.applyRevert(index);
-      this.game?.revert(index);
+    undo(): void {
+      const index = this.repo.getStableIndex();
+      this.applyUndo(index);
+      this.game?.undo(index);
     },
-    applyRevert(index: number): void {
+    applyUndo(index: number): void {
       this.map.restore(this.repo.checkout(index));
-      this.repo.setStash(this.map.export());
     },
 
     startGame(): void {

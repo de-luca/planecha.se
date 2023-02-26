@@ -1,5 +1,5 @@
 import cloneDeep from 'lodash.clonedeep';
-import { Delta, patch } from '@n1ru4l/json-patch-plus';
+import { Delta, diff, patch } from '@n1ru4l/json-patch-plus';
 import type { Exported } from '../map';
 import type { Patch } from './Patch';
 
@@ -9,63 +9,89 @@ export interface Clone {
 }
 
 export interface RepoInterface {
-  getStash(): Exported | undefined;
-  setStash(exported: Exported): void;
-  getHead(): number;
+  head: number;
+  getStableIndex(index?: number): number;
+  commit(event: string, newVersion: Exported): Patch;
   apply(patch: Patch): number;
   checkout(index: number): Exported;
   clone(): Clone;
 }
 
+type MaybeExported = Exported | Record<string, never> | undefined;
+
 export class Repo implements RepoInterface {
-  private stash?: Exported;
-  private head: number;
-  private patches: Array<Patch>;
+  private static readonly UNSTABLE_EVENT = ['reveal', 'updateWallState'];
+
+  private _stage?: Exported;
+  private _head: number;
+  private _patches: Array<Patch>;
 
   public constructor(clone?: Clone) {
-    this.stash = undefined;
-    this.head = clone?.head ?? -1;
-    this.patches = clone?.patches ?? [];
+    this._stage = undefined;
+    this._head = clone?.head ?? -1;
+    this._patches = clone?.patches ?? [];
   }
 
-  public getStash(): Exported | undefined {
-    return this.stash;
+  public static diff(a: MaybeExported, b: MaybeExported): Delta {
+    return diff({ left: a, right: b });
   }
 
-  public setStash(exported: Exported): void {
-    this.stash = exported;
+  public static patch(base: NonNullable<MaybeExported>, delta: Delta): Exported {
+    return patch({ left: base, delta: cloneDeep(delta) }) as Exported;
   }
 
-  public getHead(): number {
-    return this.head;
+  public get head(): number {
+    return this._head;
   }
 
-  public apply(patch: Patch): number {
-    if (this.head !== (this.patches.length - 1)) {
-      this.patches.splice(this.head + 1, this.patches.length - this.head);
+  public getStableIndex(from?: number): number {
+    let i = from ?? (this._head - 1);
+    while (Repo.UNSTABLE_EVENT.includes(this._patches[i].event)) {
+      i--;
     }
-    this.head = this.patches.push(patch) - 1;
-    return this.head;
+    return i;
+  }
+
+  public commit(event: string, newVersion: Exported): Patch {
+    const patch = {
+      event,
+      delta: Repo.diff(this._stage, newVersion),
+    };
+    this._stage = newVersion;
+    this.apply(patch, false);
+    return patch;
+  }
+
+  public apply(patch: Patch, setStage = true): number {
+    if (this._head !== (this._patches.length - 1)) {
+      this._patches.splice(this._head + 1, this._patches.length - this._head);
+    }
+    if (setStage && patch.delta) {
+      this._stage = Repo.patch(this._stage ?? {}, patch.delta);
+    }
+    this._head = this._patches.push(patch) - 1;
+    return this._head;
   }
 
   public checkout(index: number): Exported {
     let base = {};
     for (let i = 0; i <= index; i++) {
-      if (this.patches[i].delta) {
-        base = patch({
-          left: base,
-          delta: cloneDeep<Delta>(this.patches[i].delta as Delta),
-        });
+      if (this._patches[i].delta) {
+        base = Repo.patch(
+          base,
+          cloneDeep<Delta>(this._patches[i].delta!),
+        );
       }
     }
-    this.head = index;
+    this._head = index;
+    this._stage = base as Exported;
     return base as Exported;
   }
 
   public clone(): Clone {
     return {
-      head: this.head,
-      patches: this.patches,
+      head: this._head,
+      patches: this._patches,
     };
   }
 }

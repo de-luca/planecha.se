@@ -1,4 +1,3 @@
-import { diff } from '@n1ru4l/json-patch-plus';
 import { describe, it, expect } from 'vitest';
 import { Exported, MapType } from '../map';
 import { Repo } from './Repo';
@@ -11,16 +10,46 @@ const exported: Exported = {
   wallStates: [],
 };
 
-describe('Repo.setStash/Repo.getStash', () => {
-  it('returns undefined when stash has never been set', () => {
+describe('Repo.getStableIndex', () => {
+  it('returns the default index if stable', () => {
     const repo = new Repo();
-    expect(repo.getStash()).toBeUndefined();
+    repo.apply({ event: 'test' });
+    repo.apply({ event: 'test' });
+    repo.apply({ event: 'test' });
+    expect(repo.getStableIndex()).toEqual(1);
   });
 
-  it('returns an exported when stash has been set', () => {
+  it('returns the first stable index', () => {
     const repo = new Repo();
-    repo.setStash(exported);
-    expect(repo.getStash()).toEqual(exported);
+    repo.apply({ event: 'test' });
+    repo.apply({ event: 'reveal' });
+    repo.apply({ event: 'test' });
+    expect(repo.getStableIndex()).toEqual(0);
+  });
+
+  it('returns the given index if stable', () => {
+    const repo = new Repo();
+    repo.apply({ event: 'test' });
+    repo.apply({ event: 'test' });
+    repo.apply({ event: 'test' });
+    expect(repo.getStableIndex(1)).toEqual(1);
+  });
+
+  it('returns the first stable index from given index', () => {
+    const repo = new Repo();
+    repo.apply({ event: 'test' });
+    repo.apply({ event: 'reveal' });
+    repo.apply({ event: 'test' });
+    expect(repo.getStableIndex(1)).toEqual(0);
+  });
+});
+
+describe('Repo.commit', () => {
+  it('returns an a patch after applying it', () => {
+    const repo = new Repo();
+    const patch = repo.commit('test', exported);
+    expect(patch.event).toEqual('test');
+    expect(patch.delta).not.toBeUndefined();
   });
 });
 
@@ -37,9 +66,10 @@ describe('Repo.checkout', () => {
   it('returns an increased head pointer', () => {
     const repo = new Repo();
 
+    const v0 = { ...exported };
     repo.apply({
       event: 'test',
-      delta: diff({ left: undefined, right: exported }),
+      delta: Repo.diff(undefined, v0),
     });
 
     const v1: Exported = {
@@ -48,7 +78,7 @@ describe('Repo.checkout', () => {
     };
     repo.apply({
       event: 'test',
-      delta: diff({ left: exported, right: v1 }),
+      delta: Repo.diff(v0, v1),
     });
 
     const v2: Exported = {
@@ -60,7 +90,7 @@ describe('Repo.checkout', () => {
     };
     repo.apply({
       event: 'test',
-      delta: diff({ left: v1, right: v2 }),
+      delta: Repo.diff(v1, v2),
     });
 
     const v3: Exported = {
@@ -73,7 +103,7 @@ describe('Repo.checkout', () => {
     };
     repo.apply({
       event: 'test',
-      delta: diff({ left: v2, right: v3 }),
+      delta: Repo.diff(v2, v3),
     });
 
     expect(repo.checkout(2)).toEqual(v2);

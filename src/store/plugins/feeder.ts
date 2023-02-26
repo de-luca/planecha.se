@@ -16,7 +16,7 @@ export function createFeeder(context: PiniaPluginContext) {
     context.store.$onAction(({ after, name: action, args, store }) => {
       after((returned) => {
         switch (action) {
-          case 'revert':
+          case 'undo':
             store.pushToFeed(`<b>${store.logName}</b> undid last action`);
             break;
           case 'init': {

@@ -11,7 +11,7 @@ export enum EventType {
   INIT = 'INIT',
   HEY = 'HEY',
   SYNC = 'SYNC',
-  REVERT = 'REVERT',
+  UNDO = 'UNDO',
   FEED = 'FEED',
 }
 
@@ -40,7 +40,7 @@ export interface GameInterface {
   joined: Promise<void>;
   hey(data: Hey): void;
   sync(patch: Patch): void;
-  revert(index: number): void;
+  undo(index: number): void;
   syncFeed(log: string): void;
   leave(): void;
 }
@@ -61,7 +61,7 @@ export class Game implements GameInterface {
 
   public readonly hey: ActionSender<Hey>;
   public readonly sync: ActionSender<Patch>;
-  public readonly revert: ActionSender<number>;
+  public readonly undo: ActionSender<number>;
   public readonly syncFeed: ActionSender<string>;
 
   public constructor(store: Store, gameId?: string) {
@@ -74,12 +74,12 @@ export class Game implements GameInterface {
     const [initSender, initReceiver] = this.room.makeAction<InitPayload>(EventType.INIT);
     const [heySender, heyReceiver] = this.room.makeAction<Hey>(EventType.HEY);
     const [syncSender, syncReceiver] = this.room.makeAction<Patch>(EventType.SYNC);
-    const [revertSender, revertReceiver] = this.room.makeAction<number>(EventType.REVERT);
+    const [undoSender, undoReceiver] = this.room.makeAction<number>(EventType.UNDO);
     const [feedSender, feedReceiver] = this.room.makeAction<string>(EventType.FEED);
 
     this.hey = heySender;
     this.sync = syncSender;
-    this.revert = revertSender;
+    this.undo = undoSender;
     this.syncFeed = feedSender;
 
     this.room.onPeerJoin((peerId) => {
@@ -112,7 +112,7 @@ export class Game implements GameInterface {
       }
     });
     syncReceiver((data) => this.store.apply(data));
-    revertReceiver((data) => this.store.applyRevert(data));
+    undoReceiver((data) => this.store.applyUndo(data));
     feedReceiver((data) => this.store.feed.push(data));
   }
 

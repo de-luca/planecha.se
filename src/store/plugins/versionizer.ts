@@ -1,5 +1,4 @@
 import { PiniaPluginContext } from 'pinia';
-import { diff } from '@n1ru4l/json-patch-plus';
 
 const actions = [
   'init',
@@ -18,16 +17,9 @@ export function versionizer(context: PiniaPluginContext) {
   if (context.store.$id === 'main') {
     context.store.$onAction(({ after, store, name }) => {
       if (actions.includes(name)) {
-        after(() => {
-          const newVersion = store.map.export();
-          const patch = {
-            event: name,
-            delta: diff({ left: store.repo.getStash(), right: newVersion }),
-          };
-          store.repo.apply(patch);
-          store.repo.setStash(newVersion);
-          store.sync(patch);
-        });
+        after(() => store.sync(
+          store.repo.commit(name, store.map.export()),
+        ));
       }
     }, true);
   }

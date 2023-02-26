@@ -20,11 +20,11 @@ export default class UndoButton extends Vue {
   private store = useMain();
 
   public get canUndo(): boolean {
-    return this.store.repo.getHead() > 0;
+    return this.store.repo.head > 0;
   }
 
   public undo(): void {
-    this.store.revert(this.store.repo.getHead() - 1);
+    this.store.undo();
   }
 }
 </script>
