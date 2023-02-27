@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import {
   BuildProps,
   ChaosInput,
+  Exported,
   MapFactory,
   MapInterface,
   PlaneswalkInput,
@@ -14,7 +15,7 @@ import { eventBus } from '@/services/EventBus';
 import { ApplyInput } from '@/model/wall';
 import { DualDeck, EncounterInput } from '@/model/map/eternities';
 import { Phenomenon, Plane } from '@/model/card';
-import { Patch, Repo, RepoInterface } from '@/model/ver';
+import { Clone, Patch, Repo, RepoInterface } from '@/model/ver';
 import { Game, GameInterface } from '@/model/net/Game';
 import { SavedDeck } from '@/components/create/types';
 
@@ -43,8 +44,16 @@ export interface JoinPayload {
   name: string;
 }
 
+export interface InitPayload {
+  mapConfig: BuildProps;
+  repo: Clone;
+  map: Exported;
+  feed: Array<string>;
+}
+
 export interface State {
   _map?: MapInterface;
+  _mapConf?: BuildProps;
   repo: RepoInterface;
   feed: Array<string>;
   opStack: Array<OpRequest>;
@@ -62,6 +71,8 @@ function getState(): State {
 
   return {
     _map: undefined,
+    _mapConf: undefined,
+
     repo: new Repo(),
     feed: [],
     opStack: [],
@@ -87,11 +98,25 @@ export const useMain = defineStore('main', {
       }
       return this._map;
     },
+    mapConf(): BuildProps {
+      if (!this._mapConf) {
+        throw new Error('Map is undefined (store is in unset state)');
+      }
+      return this._mapConf;
+    },
     logName(): string {
       return this.game ? this.selfName! : 'You';
     },
-    gameId(state: State): string | undefined {
-      return state.game?.gameId;
+    gameId(): string | undefined {
+      return this.game?.gameId;
+    },
+    initPayload(): InitPayload {
+      return {
+        mapConfig: this.mapConf,
+        repo: this.repo.clone(),
+        map: this.map.export(),
+        feed: [...this.feed],
+      };
     },
   },
 
@@ -135,11 +160,8 @@ export const useMain = defineStore('main', {
 
     async init(payload: BuildProps) {
       this.leave();
+      this._mapConf = payload;
       this._map = MapFactory.build(payload);
-      // if (payload.online) {
-      //   this.selfName = payload.advanced.name!;
-      //   this.game = new Game(this);
-      // }
     },
 
     open() {
@@ -150,7 +172,12 @@ export const useMain = defineStore('main', {
       this.leave();
       this.selfName = payload.name;
       this.game = new Game(this, payload.roomId);
-      await this.game.joined;
+      try {
+        await this.game.joined;
+      } catch(e) {
+        console.dir(e);
+      }
+
     },
 
     leave(): void {
@@ -178,6 +205,18 @@ export const useMain = defineStore('main', {
     },
     applyUndo(index: number): void {
       this.map.restore(this.repo.checkout(index));
+    },
+    reset(): void {
+      this._map = MapFactory.build(this.mapConf);
+      this.repo = new Repo();
+      this.feed = [];
+      this.game?.reset(this.initPayload);
+    },
+    applyReset(payload: InitPayload): void {
+      this._mapConf = payload.mapConfig;
+      this._map = MapFactory.restore(payload.map);
+      this.repo = new Repo(payload.repo);
+      this.feed = payload.feed;
     },
 
     startGame(): void {

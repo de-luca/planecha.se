@@ -38,7 +38,10 @@
 
         <template v-if="inGame">
           <hr class="dropdown-divider">
-
+          <a class="dropdown-item" @click="resetModalActive = true">
+            Reset Game
+          </a>
+          <hr class="dropdown-divider">
           <a class="dropdown-item" @click="closeModalActive = true">
             {{ online ? 'Leave' : 'Close' }} Game
           </a>
@@ -49,22 +52,25 @@
 
   <name-modal v-model:active="nameModalActive" />
   <close-modal v-model:active="closeModalActive" :online="online" @close="close" />
+  <reset-modal v-model:active="resetModalActive" @close="reset" />
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
 import CloseModal from './modals/CloseModal.vue';
+import ResetModal from './modals/ResetModal.vue';
 import NameModal from './modals/NameModal.vue';
 import { useMain } from '@/store/main';
 
 import ThemeSelector from '@/components/ThemeSelector.vue';
 
-@Component({ components: { ThemeSelector, CloseModal, NameModal } })
+@Component({ components: { ThemeSelector, CloseModal, NameModal, ResetModal } })
 export default class MainMenu extends Vue {
   private store = useMain();
   public active = false;
   public nameModalActive = false;
   public closeModalActive = false;
+  public resetModalActive = false;
 
   public get inGame(): boolean {
     return !!this.store._map;
@@ -81,6 +87,11 @@ export default class MainMenu extends Vue {
   public async close(): Promise<void> {
     await this.$router.push('/');
     this.store.leave();
+  }
+
+  public reset(): void {
+    this.store.reset();
+    this.resetModalActive = false;
   }
 }
 </script>

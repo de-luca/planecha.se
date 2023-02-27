@@ -19,6 +19,13 @@ export function createFeeder(context: PiniaPluginContext) {
           case 'undo':
             store.pushToFeed(`<b>${store.logName}</b> undid last action`);
             break;
+          case 'reset': {
+            const type = store.mapConf.type === MapType.CLASSIC
+              ? 'Classic'
+              : 'Eternities Map';
+            store.pushToFeed(`<b>${store.logName}</b> created new game <b>${type}</b>`);
+            break;
+          }
           case 'init': {
             const type = (args[0] as BuildProps).type === MapType.CLASSIC
               ? 'Classic'

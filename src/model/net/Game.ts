@@ -1,7 +1,6 @@
 import { ActionSender, joinRoom, Room, selfId } from 'trystero';
-import { Exported, MapFactory } from '../map';
-import { Clone, Patch, Repo } from '../ver';
-import type { useMain } from '@/store/main';
+import { Patch } from '../ver';
+import type { InitPayload, useMain } from '@/store/main';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Fun<TA extends any[] = any[], TR = any> = (...args: TA) => TR;
@@ -13,16 +12,11 @@ export enum EventType {
   SYNC = 'SYNC',
   UNDO = 'UNDO',
   FEED = 'FEED',
+  RESET = 'RESET',
 }
 
 export interface Hey {
   name: string;
-}
-
-export interface InitPayload {
-  repo: Clone;
-  map: Exported;
-  feed: Array<string>;
 }
 
 function once<T extends Fun>(fun: T): T {
@@ -42,6 +36,7 @@ export interface GameInterface {
   sync(patch: Patch): void;
   undo(index: number): void;
   syncFeed(log: string): void;
+  reset(payload: InitPayload): void;
   leave(): void;
 }
 
@@ -63,6 +58,7 @@ export class Game implements GameInterface {
   public readonly sync: ActionSender<Patch>;
   public readonly undo: ActionSender<number>;
   public readonly syncFeed: ActionSender<string>;
+  public readonly reset: ActionSender<InitPayload>;
 
   public constructor(store: Store, gameId?: string) {
     this.ready = !gameId;
@@ -76,19 +72,17 @@ export class Game implements GameInterface {
     const [syncSender, syncReceiver] = this.room.makeAction<Patch>(EventType.SYNC);
     const [undoSender, undoReceiver] = this.room.makeAction<number>(EventType.UNDO);
     const [feedSender, feedReceiver] = this.room.makeAction<string>(EventType.FEED);
+    const [resetSender, resetReceiver] = this.room.makeAction<InitPayload>(EventType.RESET);
 
     this.hey = heySender;
     this.sync = syncSender;
     this.undo = undoSender;
     this.syncFeed = feedSender;
+    this.reset = resetSender;
 
     this.room.onPeerJoin((peerId) => {
       if (this.ready) {
-        initSender({
-          repo: this.store.repo.clone(),
-          map: this.store.map.export(),
-          feed: [...this.store.feed],
-        }, peerId);
+        initSender(this.store.initPayload, peerId);
       }
       heySender({ name: this.store.selfName! }, peerId);
     });
@@ -96,9 +90,8 @@ export class Game implements GameInterface {
 
     this.joined = new Promise((resolve) => {
       initReceiver(once((data) => {
-        this.store._map = MapFactory.restore(data.map);
-        this.store.repo = new Repo(data.repo);
-        this.store.feed = data.feed;
+        this.store.applyReset(data);
+        console.log('after apply');
         this.ready = true;
         resolve();
       }));
@@ -114,6 +107,7 @@ export class Game implements GameInterface {
     syncReceiver((data) => this.store.apply(data));
     undoReceiver((data) => this.store.applyUndo(data));
     feedReceiver((data) => this.store.feed.push(data));
+    resetReceiver((data) => this.store.applyReset(data));
   }
 
   private static genId(): string {
