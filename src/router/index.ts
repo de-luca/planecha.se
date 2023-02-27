@@ -2,8 +2,8 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 
 import Home from '../views/Home.vue';
 import About from '../views/About.vue';
-import JoinGame from '../views/JoinGame.vue';
-import CreateGame from '../views/CreateGame.vue';
+import Join from '../views/Join.vue';
+import Create from '../views/Create.vue';
 import Board from '../views/Board.vue';
 import { useMain } from '@/store/main';
 
@@ -20,13 +20,13 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/join/:roomId([0-9a-zA-Z]{20})',
-    name: 'JoinGame',
-    component: JoinGame,
+    name: 'Join',
+    component: Join,
   },
   {
     path: '/create',
-    name: 'CreateGame',
-    component: CreateGame,
+    name: 'Create',
+    component: Create,
   },
   {
     path: '/board',

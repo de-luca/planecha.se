@@ -52,7 +52,7 @@ import BrandedFooter from '@/components/BrandedFooter.vue';
 const URL_REGEX = /https?:\/\/.+\/#\/join\/(?<room>[0-9a-zA-Z]{20})/;
 
 @Component({ components: { BrandedFooter } })
-export default class JoinGame extends Vue {
+export default class Join extends Vue {
   private store = useMain();
 
   public name = useMain().selfName ?? '';

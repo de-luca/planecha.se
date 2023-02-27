@@ -114,7 +114,7 @@ import BrandedFooter from '@/components/BrandedFooter.vue';
     BrandedFooter,
   },
 })
-export default class CreateGame extends Vue {
+export default class Create extends Vue {
   public readonly mapTypeOptions: Array<Option<string>> = [{
     label: 'Classic',
     value: MapType.CLASSIC,
