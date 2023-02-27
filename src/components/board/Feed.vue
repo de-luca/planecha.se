@@ -1,9 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="logs box" :class="{ shown: show, hidden: !show }">
-      <template v-for="m in messages.slice().reverse()" :key="m">
-        <p v-html="m"></p>
-      </template>
+      <p v-for="m in messages.slice().reverse()" :key="m" v-html="m"></p>
     </div>
 
     <div class="status-bar" :class="{ shown: show, hidden: !show }">
@@ -154,14 +152,17 @@ export default class Feed extends Vue {
 
   animation: close .10s ease-in forwards;
 
+  display: flex;
+  flex: 1;
+  flex-direction: column-reverse;
+
   &.shown {
 	  animation: open .10s ease-in forwards;
   }
 
   p {
     padding: .3rem .75rem;
-
-    &:not(:last-child) {
+    &:not(:first-child) {
       border-bottom: 1px solid var(--border-color);
     }
   }
