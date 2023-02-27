@@ -80,7 +80,7 @@ img {
   position: absolute;
   right: 0;
   top: calc(-25px - 1rem);
-  z-index: 421;
+  z-index: 10;
 
   .tag {
     font-weight: bolder;
