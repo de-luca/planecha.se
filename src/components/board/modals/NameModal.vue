@@ -5,19 +5,7 @@
       <div class="box">
         <p class="subtitle">Update your Name</p>
         <form @submit.prevent="save">
-          <div class="field">
-            <label class="label">Name:</label>
-            <div class="control">
-              <input
-                v-model="name"
-                class="input"
-                type="text"
-                placeholder="Super Cake"
-                required
-              >
-            </div>
-          </div>
-
+          <name-input v-model="name" label="Name:" required></name-input>
           <div class="field submit">
             <div class="control">
               <button class="button is-primary" type="submit">
@@ -35,7 +23,12 @@
 import { Component, Prop, Vue } from 'vue-facing-decorator';
 import { useMain } from '@/store/main';
 
-@Component({ emits: ['update:active', 'done'] })
+import NameInput from '@/components/join/NameInput.vue';
+
+@Component({
+  components: { NameInput },
+  emits: ['update:active', 'done'],
+})
 export default class NameModal extends Vue {
   @Prop({ required: true })
   public active: boolean;

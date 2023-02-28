@@ -11,19 +11,12 @@
     </div>
 
     <form @submit.prevent="join">
-      <div class="field">
-        <label class="label">Your player name:</label>
-        <div class="control">
-          <input
-            v-model="name"
-            class="input"
-            type="text"
-            placeholder="Super Cake"
-            required
-          >
-        </div>
-        <p class="help">The name people in the game will see you as.</p>
-      </div>
+      <name-input
+        v-model="name"
+        label="Your player name:"
+        help="The name people in the game will see you as."
+        required
+      ></name-input>
 
       <div class="field join-game">
         <div class="control">
@@ -47,11 +40,12 @@
 import { Component, Vue } from 'vue-facing-decorator';
 import { useMain } from '@/store/main';
 
+import NameInput from '@/components/join/NameInput.vue';
 import BrandedFooter from '@/components/BrandedFooter.vue';
 
 const URL_REGEX = /https?:\/\/.+\/#\/join\/(?<room>[0-9a-zA-Z]{20})/;
 
-@Component({ components: { BrandedFooter } })
+@Component({ components: { BrandedFooter, NameInput } })
 export default class Join extends Vue {
   private store = useMain();
 
