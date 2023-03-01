@@ -11,7 +11,7 @@ import {
 import { router } from './router';
 import { createFeeder } from './store/plugins/feeder';
 import { versionizer } from './store/plugins/versionizer';
-import Link from './components/Link.vue';
+import Link from './components/controls/Link.vue';
 import App from './App.vue';
 
 document.documentElement.setAttribute(

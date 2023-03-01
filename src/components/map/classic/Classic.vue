@@ -52,11 +52,11 @@ import { RevealFactory } from '@/components/wall/reveal/RevealFactory';
 import { PickedLeft, RevealConfig } from '@/components/wall/reveal/types';
 
 import StackWall from '@/components/wall/StackWall.vue';
-import ChaosBtn from '@/components/btn/ChaosBtn.vue';
-import StartBtn from '@/components/btn/StartBtn.vue';
-import PlaneswalkBtn from '@/components/btn/PlaneswalkBtn.vue';
+import ChaosBtn from '@/components/controls/ChaosBtn.vue';
+import StartBtn from '@/components/controls/StartBtn.vue';
+import PlaneswalkBtn from '@/components/controls/PlaneswalkBtn.vue';
 import Card from '@/components/map/classic/Card.vue';
-import Feed from '@/components/board/Feed.vue';
+import Feed from '@/components/board/feed/Feed.vue';
 import Pick from '@/components/wall/reveal/Pick.vue';
 import Scry from '@/components/wall/reveal/Scry.vue';
 import Show from '@/components/wall/reveal/Show.vue';

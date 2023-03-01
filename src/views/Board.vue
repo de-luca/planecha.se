@@ -42,11 +42,11 @@ import Classic from '@/components/map/classic/Classic.vue';
 import SingleDeck from '@/components/map/eternities/SingleDeck.vue';
 import DualDeck from '@/components/map/eternities/DualDeck.vue';
 import NotifCenter from '@/components/board/NotifCenter.vue';
-import ThemeSelector from '@/components/ThemeSelector.vue';
+import ThemeSelector from '@/components/controls/ThemeSelector.vue';
 
-import MainMenu from '@/components/board/MainMenu.vue';
-import OnlineControls from '@/components/board/OnlineControls.vue';
-import DiceTray from '@/components/board/DiceTray.vue';
+import MainMenu from '@/components/board/menu/MainMenu.vue';
+import OnlineControls from '@/components/board/menu/OnlineControls.vue';
+import DiceTray from '@/components/board/menu/DiceTray.vue';
 
 @Component({
   components: {

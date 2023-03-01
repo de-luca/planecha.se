@@ -99,7 +99,7 @@ import {
 import { Card, Plane } from '@/model/card';
 import { Scope } from '@/components/create/types';
 
-import ButtonPicker, { Option } from '@/components/ButtonPicker.vue';
+import ButtonPicker, { Option } from '@/components/controls/ButtonPicker.vue';
 import DeckBuilder from '@/components/create/DeckBuilder.vue';
 import OnlinePicker from '@/components/create/OnlinePicker.vue';
 import EncounterSetup from '@/components/create/EncounterSetup.vue';

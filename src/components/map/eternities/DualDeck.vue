@@ -74,11 +74,11 @@ import {
   TriggerConfig,
 } from '@/model/map/eternities';
 
-import ChaosBtn from '@/components/btn/ChaosBtn.vue';
-import StartBtn from '@/components/btn/StartBtn.vue';
+import ChaosBtn from '@/components/controls/ChaosBtn.vue';
+import StartBtn from '@/components/controls/StartBtn.vue';
 import Tile from '@/components/map/eternities/Tile.vue';
 import TileDetails from '@/components/map/eternities/TileDetails.vue';
-import Feed from '@/components/board/Feed.vue';
+import Feed from '@/components/board/feed/Feed.vue';
 import PhenomenonWall from '@/components/wall/PhenomenonWall.vue';
 import EncounterWall from '@/components/wall/EncounterWall.vue';
 import Pick from '@/components/wall/reveal/Pick.vue';

@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import MainMenu from '@/components/board/MainMenu.vue';
+import MainMenu from '@/components/board/menu/MainMenu.vue';
 </script>
 
 <style lang="scss" scoped>

@@ -23,7 +23,7 @@
 import { Component, Prop, Vue } from 'vue-facing-decorator';
 import { useMain } from '@/store/main';
 
-import NameInput from '@/components/join/NameInput.vue';
+import NameInput from '@/components/controls/NameInput.vue';
 
 @Component({
   components: { NameInput },

@@ -40,7 +40,7 @@
 import { Component, Vue } from 'vue-facing-decorator';
 import { useMain } from '@/store/main';
 
-import NameInput from '@/components/join/NameInput.vue';
+import NameInput from '@/components/controls/NameInput.vue';
 import BrandedFooter from '@/components/BrandedFooter.vue';
 
 const URL_REGEX = /https?:\/\/.+\/#\/join\/(?<room>[0-9a-zA-Z]{20})/;

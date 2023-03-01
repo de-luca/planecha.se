@@ -15,7 +15,7 @@ import { Imgable } from '../Imgable';
 import { WallConfig } from './types';
 import { Phenomenon } from '@/model/card';
 
-import PlaneswalkBtn from '@/components/btn/PlaneswalkBtn.vue';
+import PlaneswalkBtn from '@/components/controls/PlaneswalkBtn.vue';
 
 @Component({
   emits: [ 'resolve' ],

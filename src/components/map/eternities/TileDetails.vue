@@ -48,7 +48,7 @@ import { useMain } from '@/store/main';
 import { Plane } from '@/model/card';
 import { Tile } from '@/model/map/eternities';
 
-import PlaneswalkBtn from '@/components/btn/PlaneswalkBtn.vue';
+import PlaneswalkBtn from '@/components/controls/PlaneswalkBtn.vue';
 
 @Component({
   emits: [ 'close', 'planeswalk' ],

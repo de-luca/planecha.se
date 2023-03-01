@@ -84,10 +84,10 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
-import FeedbackButton from '../FeedbackButton.vue';
 import { useMain } from '@/store/main';
 
-import NameModal from '@/components/board/modals/NameModal.vue';
+import FeedbackButton from '@/components/controls/FeedbackButton.vue';
+import NameModal from '@/components/board/menu/modals/NameModal.vue';
 
 enum BtnText {
   IDLE = 'Copy',

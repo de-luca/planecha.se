@@ -62,7 +62,7 @@ import ResetModal from './modals/ResetModal.vue';
 import NameModal from './modals/NameModal.vue';
 import { useMain } from '@/store/main';
 
-import ThemeSelector from '@/components/ThemeSelector.vue';
+import ThemeSelector from '@/components/controls/ThemeSelector.vue';
 
 @Component({ components: { ThemeSelector, CloseModal, NameModal, ResetModal } })
 export default class MainMenu extends Vue {

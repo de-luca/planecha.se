@@ -23,7 +23,7 @@ import { Scope } from '../types';
 import { Card } from '@/model/card';
 import { useMain } from '@/store/main';
 
-import FeedbackButton from '@/components/FeedbackButton.vue';
+import FeedbackButton from '@/components/controls/FeedbackButton.vue';
 
 @Component({ components: { FeedbackButton } })
 export default class SaveDeck extends Vue {

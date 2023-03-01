@@ -15,10 +15,10 @@
 import { Component as VueComponent } from 'vue';
 import { Component, Prop, Vue } from 'vue-facing-decorator';
 
-import Current from './tile/Current.vue';
-import Hellrideable from './tile/Hellrideable.vue';
-import Planewalkable from './tile/Planewalkable.vue';
-import Unreachable from './tile/Unreachable.vue';
+import Current from './tiles/Current.vue';
+import Hellrideable from './tiles/Hellrideable.vue';
+import Planewalkable from './tiles/Planewalkable.vue';
+import Unreachable from './tiles/Unreachable.vue';
 
 import { Tile as TileModel } from '@/model/map/eternities';
 
