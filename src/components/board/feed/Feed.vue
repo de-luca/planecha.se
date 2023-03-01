@@ -23,10 +23,10 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-facing-decorator';
-import { useMain } from '@/store/main';
 
 import DeckStatus from './DeckStatus.vue';
 import UndoButton from './UndoButton.vue';
+import { useMain } from '@/store/main';
 
 @Component({ components: { DeckStatus, UndoButton } })
 export default class Feed extends Vue {
