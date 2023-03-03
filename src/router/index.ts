@@ -2,10 +2,10 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 
 import Home from '../views/Home.vue';
 import About from '../views/About.vue';
-import Join from '../views/Join.vue';
 import Create from '../views/Create.vue';
-import Board from '../views/Board.vue';
-import { useMain } from '@/store/main';
+import Game from '../views/Game.vue';
+
+import { useMain } from '#/store/main';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -19,19 +19,19 @@ const routes: Array<RouteRecordRaw> = [
     component: About,
   },
   {
-    path: '/join/:roomId([0-9a-zA-Z]{20})',
-    name: 'Join',
-    component: Join,
-  },
-  {
     path: '/create',
     name: 'Create',
     component: Create,
   },
   {
-    path: '/board',
-    name: 'Board',
-    component: Board,
+    path: '/game/:roomId([0-9a-zA-Z]{20})',
+    name: 'Join',
+    component: Game,
+  },
+  {
+    path: '/game',
+    name: 'Game',
+    component: Game,
     beforeEnter: () => {
       try {
         useMain().map;

@@ -71,7 +71,7 @@ export default class NameInput extends Vue {
   @Prop({ required: false })
   public help: string;
 
-    @Prop({ required: false, default: false })
+  @Prop({ required: false, default: false })
   public required: boolean;
 
   public get name(): string {

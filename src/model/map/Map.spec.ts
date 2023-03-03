@@ -4,8 +4,8 @@ import { Card, Plane } from '../card';
 import { WallStates } from '../wall';
 import { Patch } from '../ver';
 import { Map, MapSpecs, MapType } from '.';
-import { eventBus } from '@/services/EventBus';
-import { CardProvider } from '@/services/CardProvider';
+import { eventBus } from '#/services/EventBus';
+import { CardProvider } from '#/services/CardProvider';
 
 class TestMap extends Map {
   public get specs(): MapSpecs {

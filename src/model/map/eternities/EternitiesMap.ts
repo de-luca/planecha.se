@@ -6,7 +6,7 @@ import {
   MapSpecs,
 } from '../MapInterface';
 import { Tile, TileStatus, ExportedTile } from './Tile';
-import { Plane } from '@/model/card';
+import { Plane } from '#/model/card';
 
 export enum EternitiesMapSubType {
   SINGLE_DECK = 'SINGLE_DECK',

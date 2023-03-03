@@ -1,5 +1,5 @@
 import shffl from 'lodash.shuffle';
-import type { Card } from '@/model/card';
+import type { Card } from '#/model/card';
 
 const loops = 10;
 

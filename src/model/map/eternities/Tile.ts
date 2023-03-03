@@ -1,5 +1,5 @@
 import { ExportedCard, Plane } from '../../card';
-import { CardProvider } from '@/services/CardProvider';
+import { CardProvider } from '#/services/CardProvider';
 
 export enum TileStatus {
   ACTIVE = 'active',

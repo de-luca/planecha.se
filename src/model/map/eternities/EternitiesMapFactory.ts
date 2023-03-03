@@ -3,10 +3,10 @@ import { SingleDeck, SingleDeckExported, SingleDeckProps } from './SingleDeck';
 import { DualDeck, DualDeckExported, EncounterTriggers } from './DualDeck';
 import { Tile } from './Tile';
 import { EternitiesMapDeckType, EternitiesMapExported, EternitiesMapSpecs, EternitiesMapSubType } from './EternitiesMap';
-import { CardProvider } from '@/services/CardProvider';
-import { Card, Plane } from '@/model/card';
-import { Deck } from '@/model/deck/Deck';
-import { WallStates } from '@/model/wall';
+import { CardProvider } from '#/services/CardProvider';
+import { Card, Plane } from '#/model/card';
+import { Deck } from '#/model/deck/Deck';
+import { WallStates } from '#/model/wall';
 
 export class EternitiesMapFactory {
   public static build(

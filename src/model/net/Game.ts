@@ -1,6 +1,6 @@
 import { ActionSender, joinRoom, Room, selfId } from 'trystero';
 import { Patch } from '../ver';
-import type { InitPayload, useMain } from '@/store/main';
+import type { InitPayload, useMain } from '#/store/main';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Fun<TA extends any[] = any[], TR = any> = (...args: TA) => TR;

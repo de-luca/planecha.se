@@ -6,8 +6,8 @@ import {
   EternitiesMapSpecs,
   EternitiesMapSubType,
 } from './EternitiesMap';
-import { CardProvider } from '@/services/CardProvider';
-import { WallStates } from '@/model/wall';
+import { CardProvider } from '#/services/CardProvider';
+import { WallStates } from '#/model/wall';
 
 class TestMap extends EternitiesMap {
 

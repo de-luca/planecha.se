@@ -1,4 +1,4 @@
-import { Card, Phenomenon, Plane } from '@/model/card';
+import { Card, Phenomenon, Plane } from '#/model/card';
 
 export type Scope =  'all' | 'planes' | 'phenomena';
 

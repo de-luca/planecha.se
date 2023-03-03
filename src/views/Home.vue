@@ -65,8 +65,8 @@
 </template>
 
 <script lang="ts" setup>
-import Maze from '@/components/Maze.vue';
-import BrandedFooter from '@/components/BrandedFooter.vue';
+import Maze from '#/components/Maze.vue';
+import BrandedFooter from '#/components/BrandedFooter.vue';
 const sha = import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA;
 </script>
 

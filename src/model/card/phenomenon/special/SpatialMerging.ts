@@ -5,7 +5,7 @@ import {
   RevealerSource,
   RevealerWallState,
   StateKey,
-} from '@/model/wall';
+} from '#/model/wall';
 
 /**
  * When you encounter Spatial Merging,

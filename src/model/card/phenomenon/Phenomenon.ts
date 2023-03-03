@@ -1,5 +1,5 @@
 import { Card } from '../Card';
-import { WallStates } from '@/model/wall';
+import { WallStates } from '#/model/wall';
 
 export class Phenomenon extends Card {
   public chaos(): void {

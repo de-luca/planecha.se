@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
 import { Aretopolis } from './Aretopolis';
-import { eventBus, EventType } from '@/services/EventBus';
+import { eventBus, EventType } from '#/services/EventBus';
 
-vi.mock('@/services/EventBus');
+vi.mock('#/services/EventBus');
 
 describe('Aretopolis.chaos', () => {
   it('increase counter value of 1', () => {

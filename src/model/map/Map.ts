@@ -15,7 +15,7 @@ import {
   RevealUntilInput,
   ResolveRevealInput,
 } from './MapInterface';
-import { CardProvider } from '@/services/CardProvider';
+import { CardProvider } from '#/services/CardProvider';
 
 
 export interface MapProps {

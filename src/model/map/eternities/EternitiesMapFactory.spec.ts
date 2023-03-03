@@ -5,7 +5,7 @@ import { EternitiesMapFactory } from './EternitiesMapFactory';
 import { SingleDeck, SingleDeckExported } from './SingleDeck';
 import { DualDeck, DualDeckExported, EncounterMechanic, EncounterTrigger } from './DualDeck';
 import { TileStatus } from './Tile';
-import { Phenomenon, Plane } from '@/model/card';
+import { Phenomenon, Plane } from '#/model/card';
 
 describe('EternitiesMapFactory.build', () => {
   it('creates a SingleDeck without Phenomena', () => {

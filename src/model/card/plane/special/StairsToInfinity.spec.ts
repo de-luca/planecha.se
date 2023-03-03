@@ -1,9 +1,9 @@
 import { describe, it, expect, vi } from 'vitest';
 import { StairsToInfinity } from './StairsToInfinity';
-import { RevealerMode, RevealerSource, StateKey, WallStates } from '@/model/wall';
-import { eventBus, EventType } from '@/services/EventBus';
+import { RevealerMode, RevealerSource, StateKey, WallStates } from '#/model/wall';
+import { eventBus, EventType } from '#/services/EventBus';
 
-vi.mock('@/services/EventBus');
+vi.mock('#/services/EventBus');
 
 describe('StairsToInfinity.chaos', () => {
   it('sets a wall and emit its event', () => {

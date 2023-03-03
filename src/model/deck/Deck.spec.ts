@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { Card, Plane } from '../card';
-import { CardProvider } from '@/services/CardProvider';
+import { CardProvider } from '#/services/CardProvider';
 
 describe('Deck.draw', () => {
   it('draws a card', () => {

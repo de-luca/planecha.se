@@ -1,7 +1,7 @@
 <template>
   <button
     class="button is-secondary is-rounded"
-    :title="title"
+    :title="title ?? 'Planeswalk'"
     @keyup.space.prevent
   >
     <svg class="control" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 54 100'>
@@ -10,12 +10,6 @@
   </button>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from 'vue-facing-decorator';
-
-@Component
-export default class PlaneswalkBtn extends Vue {
-  @Prop({ required: false, default: 'Planeswalk' })
-  public title: string;
-}
+<script lang="ts" setup>
+defineProps({ title: String });
 </script>

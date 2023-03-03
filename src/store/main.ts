@@ -10,14 +10,14 @@ import {
   ResolveRevealInput,
   RevealUntilInput,
   UpdateCounterInput,
-} from '@/model/map';
-import { eventBus } from '@/services/EventBus';
-import { ApplyInput } from '@/model/wall';
-import { DualDeck, EncounterInput } from '@/model/map/eternities';
-import { Phenomenon, Plane } from '@/model/card';
-import { Clone, Patch, Repo, RepoInterface } from '@/model/ver';
-import { Game, GameInterface } from '@/model/net/Game';
-import { SavedDeck } from '@/components/create/types';
+} from '#/model/map';
+import { eventBus } from '#/services/EventBus';
+import { ApplyInput } from '#/model/wall';
+import { DualDeck, EncounterInput } from '#/model/map/eternities';
+import { Phenomenon, Plane } from '#/model/card';
+import { Clone, Patch, Repo, RepoInterface } from '#/model/ver';
+import { Game, GameInterface } from '#/model/net/Game';
+import { SavedDeck } from '#/components/create/types';
 
 export enum Op {
   CHAOS = 'chaos',

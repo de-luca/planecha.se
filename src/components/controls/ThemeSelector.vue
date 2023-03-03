@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
-import { useMain } from '@/store/main';
+import { useMain } from '#/store/main';
 
 const ICONS = {
   sys: 'cog',

@@ -1,6 +1,6 @@
 import { Card, Counter, Props } from '../Card';
 import { ExportedCard } from '../CardInterface';
-import type { WallStates } from '@/model/wall';
+import type { WallStates } from '#/model/wall';
 
 export class Plane extends Card {
   protected _counter?: Counter;

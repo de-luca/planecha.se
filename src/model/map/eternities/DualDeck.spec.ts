@@ -2,9 +2,9 @@ import { describe, expect, it, vi } from 'vitest';
 import { MapType } from '../MapInterface';
 import { DualDeck, EncounterMechanic } from './DualDeck';
 import { EternitiesMapDeckType, EternitiesMapSubType } from './EternitiesMap';
-import { CardProvider } from '@/services/CardProvider';
-import { StateKey, WallStates } from '@/model/wall';
-import { Phenomenon, Plane } from '@/model/card';
+import { CardProvider } from '#/services/CardProvider';
+import { StateKey, WallStates } from '#/model/wall';
+import { Phenomenon, Plane } from '#/model/card';
 
 describe('DualDeck.specs', () => {
   it('returns a tile from an exported payload', () => {

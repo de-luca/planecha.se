@@ -115,7 +115,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-facing-decorator';
-import { EncounterMechanic, EncounterTriggers } from '@/model/map/eternities';
+import { EncounterMechanic, EncounterTriggers } from '#/model/map/eternities';
 
 @Component({ emits: ['update:modelValue'] })
 export default class EncounterSetup extends Vue {

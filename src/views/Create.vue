@@ -87,28 +87,26 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
-import { useMain } from '@/store/main';
-import { MapType } from '@/model/map';
+import { useMain } from '#/store/main';
+import { MapType } from '#/model/map';
 import {
   EncounterMechanic,
   EncounterTrigger,
   EncounterTriggers,
   EternitiesMapDeckType,
   EternitiesMapSubType,
-} from '@/model/map/eternities';
-import { Card, Plane } from '@/model/card';
-import { Scope } from '@/components/create/types';
+} from '#/model/map/eternities';
+import { Card, Plane } from '#/model/card';
+import { Scope } from '#/components/create/types';
 
-import ButtonPicker, { Option } from '@/components/controls/ButtonPicker.vue';
-import DeckBuilder from '@/components/create/DeckBuilder.vue';
-import OnlinePicker from '@/components/create/OnlinePicker.vue';
-import EncounterSetup from '@/components/create/EncounterSetup.vue';
-import BrandedFooter from '@/components/BrandedFooter.vue';
+import ButtonPicker, { Option } from '#/components/controls/ButtonPicker.vue';
+import DeckBuilder from '#/components/create/DeckBuilder.vue';
+import EncounterSetup from '#/components/create/EncounterSetup.vue';
+import BrandedFooter from '#/components/BrandedFooter.vue';
 
 @Component({
   components: {
     ButtonPicker,
-    OnlinePicker,
     EncounterSetup,
     DeckBuilder,
     BrandedFooter,
@@ -235,7 +233,7 @@ export default class Create extends Vue {
 
     this.creating = false;
 
-    this.$router.push('/board');
+    this.$router.push({ name: 'Game' });
   }
 }
 </script>

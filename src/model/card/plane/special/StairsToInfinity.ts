@@ -1,12 +1,12 @@
 import { Plane } from '../Plane';
-import { eventBus, EventType } from '@/services/EventBus';
+import { eventBus, EventType } from '#/services/EventBus';
 import {
   WallStates,
   RevealerMode,
   RevealerSource,
   RevealerWallState,
   StateKey,
-} from '@/model/wall';
+} from '#/model/wall';
 
 /**
  * Players have no maximum hand size.

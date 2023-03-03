@@ -132,12 +132,12 @@
 <script lang="ts">
 import { Component, Prop } from 'vue-facing-decorator';
 import { Tippy } from 'vue-tippy';
-import { Imgable } from '../Imgable';
 import { Scope, scopeMap } from './types';
 import SaveDeck from './builder/SaveDeck.vue';
 import DeckList from './builder/DeckList.vue';
-import { Card } from '@/model/card';
-import { CardProvider } from '@/services/CardProvider';
+import { Imgable } from '#/components/Imgable';
+import { Card } from '#/model/card';
+import { CardProvider } from '#/services/CardProvider';
 
 
 type Group = Scope | 'decks';

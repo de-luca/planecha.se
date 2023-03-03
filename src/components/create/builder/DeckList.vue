@@ -42,11 +42,11 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-facing-decorator';
 import { SavedDeck, Scope, scopeMap } from '../types';
-import { useMain } from '@/store/main';
-import { Card } from '@/model/card';
-import { CardProvider } from '@/services/CardProvider';
+import { useMain } from '#/store/main';
+import { Card } from '#/model/card';
+import { CardProvider } from '#/services/CardProvider';
 
-import FeedbackButton from '@/components/controls/FeedbackButton.vue';
+import FeedbackButton from '#/components/controls/FeedbackButton.vue';
 
 const TAGS = {
   all: 'Planes and Phenomena',

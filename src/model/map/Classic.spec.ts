@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { Plane } from '../card';
 import { WallStates } from '../wall';
 import { Classic, MapType } from '.';
-import { CardProvider } from '@/services/CardProvider';
+import { CardProvider } from '#/services/CardProvider';
 
 describe('Classic.type', () => {
   it('returns the type', () => {

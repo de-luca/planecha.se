@@ -13,8 +13,8 @@ import {
   PlaneswalkInput,
 } from './EternitiesMap';
 import { Tile, TileStatus } from './Tile';
-import { Phenomenon, Plane } from '@/model/card';
-import { StateKey } from '@/model/wall';
+import { Phenomenon, Plane } from '#/model/card';
+import { StateKey } from '#/model/wall';
 
 export interface SingleDeckExported extends EternitiesMapExported {
   destination?: Coordinates;

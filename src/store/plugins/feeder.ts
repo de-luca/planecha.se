@@ -1,12 +1,12 @@
 import { PiniaPluginContext } from 'pinia';
-import { Card, Plane } from '@/model/card';
+import { Card, Plane } from '#/model/card';
 import {
   BuildProps,
   ChaosInput,
   MapType,
   ResolveRevealInput,
   UpdateCounterInput,
-} from '@/model/map';
+} from '#/model/map';
 
 const chaos = '<abbr class="symbol chaos" title="chaos">{CHAOS}</abbr>';
 const plnwlk = '<abbr class="symbol planeswalk" title="planeswalk">{CHAOS}</abbr>';

@@ -20,10 +20,10 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-facing-decorator';
 import { Scope } from '../types';
-import { Card } from '@/model/card';
-import { useMain } from '@/store/main';
+import { Card } from '#/model/card';
+import { useMain } from '#/store/main';
 
-import FeedbackButton from '@/components/controls/FeedbackButton.vue';
+import FeedbackButton from '#/components/controls/FeedbackButton.vue';
 
 @Component({ components: { FeedbackButton } })
 export default class SaveDeck extends Vue {

@@ -10,10 +10,10 @@ import {
   EternitiesMapSpecs,
   EternitiesMapSubType,
 } from './EternitiesMap';
-import { Phenomenon } from '@/model/card';
-import { Deck, DeckState } from '@/model/deck/Deck';
-import { StateKey } from '@/model/wall';
-import { CardProvider } from '@/services/CardProvider';
+import { Phenomenon } from '#/model/card';
+import { Deck, DeckState } from '#/model/deck/Deck';
+import { StateKey } from '#/model/wall';
+import { CardProvider } from '#/services/CardProvider';
 
 export enum EncounterTrigger {
   ON_PLANESWALK = 'ON_PLANESWALK',

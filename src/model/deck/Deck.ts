@@ -1,5 +1,5 @@
 import { Card, ExportedCard, Plane } from '../card';
-import { shuffle as shuffleS } from '@/services/shuffle';
+import { shuffle as shuffleS } from '#/services/shuffle';
 
 export interface DeckState {
   cards: Array<ExportedCard>;

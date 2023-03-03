@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { InterplanarTunnel } from './InterplanarTunnel';
-import { RevealerMode, RevealerSource, StateKey, WallStates } from '@/model/wall';
+import { RevealerMode, RevealerSource, StateKey, WallStates } from '#/model/wall';
 
 describe('SpatialMerging.enter', () => {
   it('sets a wall and emit its event', () => {

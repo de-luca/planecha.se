@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { Tile, TileStatus } from './Tile';
-import { CardProvider } from '@/services/CardProvider';
+import { CardProvider } from '#/services/CardProvider';
 
 const cardId = '15b979de-c8ee-4664-9ca7-6c4eb3346967';
 

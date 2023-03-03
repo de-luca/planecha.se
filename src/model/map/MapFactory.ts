@@ -8,7 +8,7 @@ import {
 } from './eternities';
 import { Classic } from './Classic';
 import { Exported, MapInterface, MapType } from './MapInterface';
-import { CardProvider } from '@/services/CardProvider';
+import { CardProvider } from '#/services/CardProvider';
 
 export interface BuildProps {
   type: MapType,
