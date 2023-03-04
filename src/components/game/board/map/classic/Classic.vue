@@ -48,18 +48,18 @@ import {
   StateKey,
 } from '#/model/wall';
 
-import { RevealFactory } from '#/components/game/board/wall/reveal/RevealFactory';
-import { PickedLeft, RevealConfig } from '#/components/game/board/wall/reveal/types';
+import { RevealFactory } from '#board/wall/reveal/RevealFactory';
+import { PickedLeft, RevealConfig } from '#board/wall/reveal/types';
 
-import StackWall from '#/components/game/board/wall/StackWall.vue';
+import StackWall from '#board/wall/StackWall.vue';
 import ChaosBtn from '#/components/controls/ChaosBtn.vue';
 import StartBtn from '#/components/controls/StartBtn.vue';
 import PlaneswalkBtn from '#/components/controls/PlaneswalkBtn.vue';
-import Card from '#/components/game/board/map/classic/Card.vue';
-import Feed from '#/components/game/board/feed/Feed.vue';
-import Pick from '#/components/game/board/wall/reveal/Pick.vue';
-import Scry from '#/components/game/board/wall/reveal/Scry.vue';
-import Show from '#/components/game/board/wall/reveal/Show.vue';
+import Card from '#board/map/classic/Card.vue';
+import Feed from '#board/feed/Feed.vue';
+import Pick from '#board/wall/reveal/Pick.vue';
+import Scry from '#board/wall/reveal/Scry.vue';
+import Show from '#board/wall/reveal/Show.vue';
 
 
 type LocalRevealerConfig = {

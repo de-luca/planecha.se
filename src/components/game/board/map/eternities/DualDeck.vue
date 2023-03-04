@@ -59,8 +59,8 @@
 
 <script lang="ts">
 import { Component } from 'vue-facing-decorator';
-import { Eternities } from '#/components/game/board/map/eternities/Eternities';
-import { WallConfig } from '#/components/game/board/wall/types';
+import { Eternities } from '#board/map/eternities/Eternities';
+import { WallConfig } from '#board/wall/types';
 import {
   EncounterWallState,
   StateKey,
@@ -76,14 +76,14 @@ import {
 
 import ChaosBtn from '#/components/controls/ChaosBtn.vue';
 import StartBtn from '#/components/controls/StartBtn.vue';
-import Tile from '#/components/game/board/map/eternities/Tile.vue';
-import TileDetails from '#/components/game/board/map/eternities/TileDetails.vue';
-import Feed from '#/components/game/board/feed/Feed.vue';
-import PhenomenonWall from '#/components/game/board/wall/PhenomenonWall.vue';
-import EncounterWall from '#/components/game/board/wall/EncounterWall.vue';
-import Pick from '#/components/game/board/wall/reveal/Pick.vue';
-import Show from '#/components/game/board/wall/reveal/Show.vue';
-import Scry from '#/components/game/board/wall/reveal/Scry.vue';
+import Tile from '#board/map/eternities/Tile.vue';
+import TileDetails from '#board/map/eternities/TileDetails.vue';
+import Feed from '#board/feed/Feed.vue';
+import PhenomenonWall from '#board/wall/PhenomenonWall.vue';
+import EncounterWall from '#board/wall/EncounterWall.vue';
+import Pick from '#board/wall/reveal/Pick.vue';
+import Show from '#board/wall/reveal/Show.vue';
+import Scry from '#board/wall/reveal/Scry.vue';
 
 interface LocalEncounterWallConfig {
   config: WallConfig;

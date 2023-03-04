@@ -22,9 +22,8 @@
       "vitest/globals"
     ],
     "paths": {
-      "#/*": [
-        "src/*"
-      ]
+      "#/*": ["src/*"],
+      "#board/*": ["src/components/game/board/*"]
     },
     "lib": [
       "esnext",

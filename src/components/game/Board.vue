@@ -38,15 +38,15 @@ import { useMain } from '#/store/main';
 import { MapType } from '#/model/map';
 import { EternitiesMapSpecs, EternitiesMapSubType } from '#/model/map/eternities';
 
-import Classic from '#/components/game/board/map/classic/Classic.vue';
-import SingleDeck from '#/components/game/board/map/eternities/SingleDeck.vue';
-import DualDeck from '#/components/game/board/map/eternities/DualDeck.vue';
-import NotifCenter from '#/components/game/board/NotifCenter.vue';
+import Classic from '#board/map/classic/Classic.vue';
+import SingleDeck from '#board/map/eternities/SingleDeck.vue';
+import DualDeck from '#board/map/eternities/DualDeck.vue';
+import NotifCenter from '#board/NotifCenter.vue';
 import ThemeSelector from '#/components/controls/ThemeSelector.vue';
 
-import MainMenu from '#/components/game/board/menu/MainMenu.vue';
-import OnlineControls from '#/components/game/board/menu/OnlineControls.vue';
-import DiceTray from '#/components/game/board/menu/DiceTray.vue';
+import MainMenu from '#board/menu/MainMenu.vue';
+import OnlineControls from '#board/menu/OnlineControls.vue';
+import DiceTray from '#board/menu/DiceTray.vue';
 
 @Component({
   components: {

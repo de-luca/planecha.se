@@ -1,8 +1,8 @@
 import { Component } from 'vue';
 import { Map } from '../Map';
-import { PickedLeft, RevealConfig } from '#/components/game/board/wall/reveal/types';
-import { RevealFactory } from '#/components/game/board/wall/reveal/RevealFactory';
-import { WallConfig } from '#/components/game/board/wall/types';
+import { PickedLeft, RevealConfig } from '#board/wall/reveal/types';
+import { RevealFactory } from '#board/wall/reveal/RevealFactory';
+import { WallConfig } from '#board/wall/types';
 import { eventBus, EventType } from '#/services/EventBus';
 import { Phenomenon, Plane } from '#/model/card';
 import { Revealed } from '#/model/map';

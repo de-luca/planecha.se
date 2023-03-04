@@ -1,16 +1,18 @@
 /// <reference types="vitest" />
 
+import { resolve, join } from 'path';
 import { defineConfig } from 'vite';
 import Vue from '@vitejs/plugin-vue';
-import path from 'path';
 
-const pathSrc = path.resolve(__dirname, '/src');
+const pathSrc = resolve(__dirname, 'src');
+const pathBoard = join(pathSrc, 'components', 'game', 'board');
 
 export default defineConfig({
   plugins: [Vue()],
   resolve: {
     alias: {
       '#': pathSrc,
+      '#board': pathBoard,
     },
   },
   test: {
@@ -18,8 +20,8 @@ export default defineConfig({
     setupFiles: ['./tests/setup-file.ts'],
     deps: {
       inline: [
-        "trystero",
-        "simple-peer-light",
+        'trystero',
+        'simple-peer-light',
       ],
     },
   },
