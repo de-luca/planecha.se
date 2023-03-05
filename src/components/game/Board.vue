@@ -1,18 +1,11 @@
 <template>
   <div class="board">
 
-    <!-- <div id="landscape-guard">
-      <h1 class="title">
-        Ya might wanna turn that thing sideways, Mate!
-      </h1>
-      <fa icon="mobile" size="4x" fixed-width spin></fa>
-    </div> -->
-
     <div class="nav">
-      <div class="brand" @click="thaNav">
-        <div title="F">⟁</div>
-        <div title="D">⟁</div>
-        <div title="F">⟁</div>
+      <div class="brand">
+        <div>⟁</div>
+        <div>⟁</div>
+        <div>⟁</div>
       </div>
 
       <div class="spacer"></div>
@@ -76,10 +69,6 @@ export default class Board extends Vue {
 
   public get online(): boolean {
     return !!this.store.game;
-  }
-
-  public thaNav(): void {
-    console.log('Fucking Dumpster Fire (FDF)');
   }
 }
 </script>
@@ -158,32 +147,5 @@ export default class Board extends Vue {
   bottom: 1rem;
   left: 1rem;
   width: calc(22rem - .5rem);
-}
-
-#landscape-guard {
-  @media screen and (max-width: 480px) and (orientation: portrait) {
-    & {
-      display: flex;
-    }
-  }
-
-  display: none;
-  background-color: rgba(10, 10, 10, .95);
-  z-index: 4269;
-  bottom: 0;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-
-  .title {
-    text-align: center;
-    padding: 0 1rem;
-  }
 }
 </style>

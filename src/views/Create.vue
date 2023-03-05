@@ -9,19 +9,6 @@
 
     <form @submit.prevent="create">
 
-      <!-- <online-picker v-model="online" /> -->
-
-      <!-- <div class="field" v-if="requireName">
-        <label class="label">Your player name:</label>
-        <div class="control">
-          <input v-model="name" id="player-name" class="input" type="text" placeholder="Super Cake" required>
-        </div>
-        <p class="help">The name people in the game will see you as.</p>
-        <label class="checkbox">
-          <input type="checkbox" v-model="saveName"> Save name for future online games
-        </label>
-      </div> -->
-
       <button-picker
         label="Game mode:"
         :options="mapTypeOptions"
@@ -276,27 +263,8 @@ form {
   display: flex;
   gap: 1rem;
 
-  .box {
-    width: var(--form-btn-width);
-    color: var(--picker-text);
-    background-color: var(--picker-bg);
-    border: solid 1px var(--picker-border);
-    padding-bottom: calc(0.5em - 1px);
-    padding-left: 1em;
-    padding-right: 1em;
-    padding-top: calc(0.5em - 1px);
-
-    height: 2.5em;
-  }
-
   button {
     width: 100%;
-    // @media screen and (max-width: 480px) {
-    //   & {
-    //     width: 100%;
-    //   }
-    // }
-    // width: var(--form-btn-width);
   }
 }
 
@@ -306,11 +274,5 @@ form {
   &:last-of-type {
     margin-bottom: 1rem;
   }
-}
-
-.deck-custom {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
 }
 </style>
