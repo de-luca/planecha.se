@@ -88,7 +88,12 @@ export class Game implements GameInterface {
     });
     this.room.onPeerLeave((peerId) => this.store.bye({ id: peerId }));
 
-    this.joined = new Promise((resolve) => {
+    this.joined = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.room.leave();
+        reject(new Error('Operation timed out. The game might not exists anymore.'));
+      }, 5000);
+
       initReceiver(once((data) => {
         this.store.applyReset(data);
         console.log('after apply');

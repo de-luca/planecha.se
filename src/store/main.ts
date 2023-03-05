@@ -172,12 +172,7 @@ export const useMain = defineStore('main', {
       this.leave();
       this.selfName = payload.name;
       this.game = new Game(this, payload.roomId);
-      try {
-        await this.game.joined;
-      } catch(e) {
-        console.dir(e);
-      }
-
+      return this.game.joined;
     },
 
     leave(): void {

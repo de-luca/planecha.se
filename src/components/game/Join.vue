@@ -29,6 +29,7 @@
             Join game
           </button>
         </div>
+        <p class="help is-danger" v-if="error" v-html="error.message"></p>
       </div>
     </form>
   </div>
@@ -42,8 +43,6 @@ import { useMain } from '#/store/main';
 
 import NameInput from '#/components/controls/NameInput.vue';
 import BrandedFooter from '#/components/BrandedFooter.vue';
-
-const URL_REGEX = /https?:\/\/.+\/#\/join\/(?<room>[0-9a-zA-Z]{20})/;
 
 @Component({ components: { BrandedFooter, NameInput } })
 export default class Join extends Vue {
@@ -59,19 +58,13 @@ export default class Join extends Vue {
     this.roomId = this.$route.params.roomId as string ?? '';
   }
 
-  public parse(): void {
-    const match = this.roomId.match(URL_REGEX);
-    if (match && match.groups?.room) {
-      this.roomId = match.groups?.room;
-    }
-  }
-
   public async join() {
     this.joining = true;
     this.store.setName(this.name);
     try {
       await this.store.join({ roomId: this.roomId, name: this.name });
     } catch (err) {
+      this.store.leave();
       this.error = err as Error;
     }
     this.joining = false;

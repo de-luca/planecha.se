@@ -91,7 +91,11 @@ export default class NameInput extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.field.has-addons .control:first-child {
-  flex-grow: 1;
+.field.has-addons {
+  margin-bottom: 0;
+
+  .control:first-child {
+    flex-grow: 1;
+  }
 }
 </style>
