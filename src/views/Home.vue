@@ -28,6 +28,7 @@
         <nav class="tabs is-right">
           <div class="container">
             <ul>
+              <li><l href="https://dungeon.planecha.se">Dungeon</l></li>
               <li><router-link to="/about">About</router-link></li>
             </ul>
           </div>
