@@ -1,37 +1,32 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 
-import Home from '../views/Home.vue';
-import About from '../views/About.vue';
-import Create from '../views/Create.vue';
-import Game from '../views/Game.vue';
-
 import { useMain } from '#/store/main';
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    component: () => import('#/views/Home.vue'),
   },
   {
     path: '/about',
     name: 'About',
-    component: About,
+    component: () => import('#/views/About.vue'),
   },
   {
     path: '/create',
     name: 'Create',
-    component: Create,
+    component: () => import('#/views/Create.vue'),
   },
   {
     path: '/game/:roomId([0-9a-zA-Z]{20})',
     name: 'Join',
-    component: Game,
+    component: () => import('#/views/Game.vue'),
   },
   {
     path: '/game',
     name: 'Game',
-    component: Game,
+    component: () => import('#/views/Game.vue'),
     beforeEnter: () => {
       try {
         useMain().map;

@@ -16,7 +16,7 @@ import Link from './components/controls/Link.vue';
 import App from './App.vue';
 
 
-registerSW();
+registerSW({ immediate: true });
 
 document.documentElement.setAttribute(
   'data-theme',

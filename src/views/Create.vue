@@ -1,7 +1,5 @@
 <template>
   <div class="wrapper">
-    <reload-prompt />
-
     <div class="title">
       <router-link class="brand" title="Back Home" to="/">⟁</router-link>
       <div>
@@ -92,7 +90,6 @@ import ButtonPicker, { Option } from '#/components/controls/ButtonPicker.vue';
 import DeckBuilder from '#/components/create/DeckBuilder.vue';
 import EncounterSetup from '#/components/create/EncounterSetup.vue';
 import BrandedFooter from '#/components/BrandedFooter.vue';
-import ReloadPrompt from '#/components/ReloadPrompt.vue';
 
 @Component({
   components: {
@@ -100,7 +97,6 @@ import ReloadPrompt from '#/components/ReloadPrompt.vue';
     EncounterSetup,
     DeckBuilder,
     BrandedFooter,
-    ReloadPrompt,
   },
 })
 export default class Create extends Vue {

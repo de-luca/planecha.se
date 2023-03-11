@@ -1,7 +1,5 @@
 <template>
   <div class="wrapper">
-    <reload-prompt />
-
     <h1 class="title">
       <router-link class="brand" title="Back Home" to="/">
         <div>⟁</div>
@@ -95,7 +93,6 @@
 
 <script lang="ts" setup>
 import BrandedFooter from '#/components/BrandedFooter.vue';
-import ReloadPrompt from '#/components/ReloadPrompt.vue';
 </script>
 
 <style lang="scss" scoped>

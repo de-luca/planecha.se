@@ -1,7 +1,5 @@
 <template>
   <div class="wrapper">
-    <reload-prompt/>
-
     <div class="title">
       <router-link class="brand" title="Back Home" to="/">⟁</router-link>
       <div>
@@ -45,9 +43,8 @@ import { useMain } from '#/store/main';
 
 import NameInput from '#/components/controls/NameInput.vue';
 import BrandedFooter from '#/components/BrandedFooter.vue';
-import ReloadPrompt from '#/components/ReloadPrompt.vue';
 
-@Component({ components: { BrandedFooter, NameInput, ReloadPrompt } })
+@Component({ components: { BrandedFooter, NameInput } })
 export default class Join extends Vue {
   private store = useMain();
 

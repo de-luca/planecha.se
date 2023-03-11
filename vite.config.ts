@@ -13,9 +13,10 @@ export default defineConfig({
     Vue(),
     VitePWA({
       base: '/',
-      strategies: 'generateSW',
       srcDir: 'src',
       includeAssets: 'cards/*',
+      strategies: 'generateSW',
+      registerType: 'autoUpdate',
       manifest: {
         name: 'Planecha.se',
         short_name: 'Planecha.se',
@@ -43,8 +44,8 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globPatterns: ['**/*.*']
-      }
+        globPatterns: ['**/*.*'],
+      },
     }),
   ],
   resolve: {
