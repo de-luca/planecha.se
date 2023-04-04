@@ -72,6 +72,12 @@
     "oracleText": "Whenever a player taps a permanent for mana, that player adds one mana of any type that permanent produced.\nWhenever you roll {CHAOS}, target player can't cast spells until a player planeswalks."
   },
   {
+    "id": "4eebfaf3-18da-4661-b6a5-d874585e170a",
+    "name": "Esper",
+    "typeLine": "Plane — Alara",
+    "oracleText": "Artifact spells cost {1} less to cast.\nWhenever chaos ensues, creatures you control that are white, blue, and/or black become artifacts in addition to other types until end of turn. Then each artifact creature you control gains vigilance, menace, and lifelink until end of turn."
+  },
+  {
     "id": "b1eff630-b56c-48a5-ac21-836a60157b35",
     "name": "Feeding Grounds",
     "typeLine": "Plane — Muraganda",
@@ -274,6 +280,12 @@
     "name": "Norn's Dominion",
     "typeLine": "Plane — New Phyrexia",
     "oracleText": "When you planeswalk away from Norn's Dominion, destroy each nonland permanent without a fate counter on it, then remove all fate counters from all permanents.\nWhenever you roll {CHAOS}, you may put a fate counter on target permanent."
+  },
+  {
+    "id": "6552e3dd-ce35-4267-a25e-f5d4dceb8311",
+    "name": "Nyx",
+    "typeLine": "Plane — Theros",
+    "oracleText": "Nontoken creatures are enchantments in addition to their other types.\nConstellation — Whenever an enchantment enters the battlefield under your control, you gain 1 life.\nWhenever chaos ensues, choose a color. Add an amount of mana of that color equal to your devotion to that color."
   },
   {
     "id": "69f06edb-dade-4e94-b563-e36a05e567f0",
