@@ -72,6 +72,12 @@
     "oracleText": "Whenever a player taps a permanent for mana, that player adds one mana of any type that permanent produced.\nWhenever you roll {CHAOS}, target player can't cast spells until a player planeswalks."
   },
   {
+    "id": "93b3acc1-2d41-4f5f-9225-7a30ea2d8158",
+    "name": "Enigma Ridges",
+    "typeLine": "Plane — Echoir",
+    "oracleText": "When you planeswalk to Enigma Ridges, each player who controls fewer lands than the player who controls the most lands searches their library for a number of basic land cards less than or equal to the difference, reveals them, puts them into their hand, then shuffles.\nWhenever chaos ensues, draw a card, then you may put a land card from your hand onto the battlefield."
+  },
+  {
     "id": "4eebfaf3-18da-4661-b6a5-d874585e170a",
     "name": "Esper",
     "typeLine": "Plane — Alara",
@@ -100,6 +106,12 @@
     "name": "Gavony",
     "typeLine": "Plane — Innistrad",
     "oracleText": "All creatures have vigilance.\nWhenever you roll {CHAOS}, creatures you control gain indestructible until end of turn."
+  },
+  {
+    "id": "a7c6b72c-f9ec-4048-8e4c-99210e4e7b85",
+    "name": "Ghirapur",
+    "typeLine": "Plane — Kaladesh",
+    "oracleText": "At the beginning of combat on your turn, until end of turn, each noncreature, non-Vehicle artifact you control becomes a 5/3 Vehicle in addition to its other types and gains trample, haste, and crew 2.\nWhenever chaos ensues, return target noncreature artifact card from your graveyard to your hand."
   },
   {
     "id": "662e5245-73e4-49ba-aece-c73f1bea7b6a",
@@ -162,6 +174,12 @@
     "oracleText": "When you encounter Interplanar Tunnel, reveal cards from the top of your planar deck until you reveal five plane cards. Put a plane card from among them on top of your planar deck, then put the rest of the revealed cards on the bottom in a random order. (Then planeswalk away from this phenomenon.)"
   },
   {
+    "id": "61c5f2cb-f39c-487c-9786-a8dad4663f4f",
+    "name": "Inys Haen",
+    "typeLine": "Plane — Cridhe",
+    "oracleText": "When you planeswalk to Ins Haen and at the beginning of your upkeep, mill three cards.\nWhen you planeswalk away from Ins Haen, each player returns all land cards from their graveyard to the battlefield tapped\nWhenever chaos ensues, return target nonland card from your graveyard to your hand."
+  },
+  {
     "id": "f017380f-97db-4a36-b111-b257aa17ebaf",
     "name": "Isle of Vesuva",
     "typeLine": "Plane — Dominaria",
@@ -184,6 +202,12 @@
     "name": "Kessig",
     "typeLine": "Plane — Innistrad",
     "oracleText": "Prevent all combat damage that would be dealt by non-Werewolf creatures.\nWhenever you roll {CHAOS}, each creature you control gets +2/+2, gains trample, and becomes a Werewolf in addition to its other types until end of turn."
+  },
+  {
+    "id": "f3b27908-ca10-4793-ab8e-6639c73cfadd",
+    "name": "Ketria",
+    "typeLine": "Plane — Ikoria",
+    "oracleText": "When you planeswalk to Ketria and at the beginning of your upkeep, put your choice of vigilance, menace, or trample counter on target creature you control.\nWhenever chaos ensues, exile cards from the top of your library until you exile a nonland permanent card. Put that card onto the battlefield or into your hand."
   },
   {
     "id": "256770fe-c17d-45dd-bf05-36eeee240324",
@@ -216,10 +240,22 @@
     "oracleText": "At the beginning of your upkeep, mill ten cards.\nWhenever you roll {CHAOS}, target player mills ten cards."
   },
   {
+    "id": "0ff2bbed-e435-4108-b02a-564a75abba40",
+    "name": "Littiara",
+    "typeLine": "Plane — Kaldheim",
+    "oracleText": "When you planeswalk to Littjara and at the beginning of your upkeep, create a 2/2 blue Shapeshifter creature token with changeling. (It is every creature type.)\nWhenever chaos ensues, choose a creature type. Put a +1/+1 counter on each creature you control of that type."
+  },
+  {
     "id": "11b3fcb2-0b66-4d8b-8e66-a21a5da1c1f5",
     "name": "Llanowar",
     "typeLine": "Plane — Dominaria",
     "oracleText": "All creatures have \"{T}: Add {G}{G}.\"\nWhenever you roll {CHAOS}, untap all creatures you control."
+  },
+  {
+    "id": "c907333b-eae8-444f-9da3-b193289f19e2",
+    "name": "Megaflora Jungle",
+    "typeLine": "Plane — Garganitkar",
+    "oracleText": "Each creature with mana value 2 or less gets +2/+2.\nWhenever chaos ensues, create a 1/1 green Insect creature token with flying named Butterfly."
   },
   {
     "id": "6491f511-87e6-4504-84f5-fe5cf44768d7",
@@ -264,6 +300,12 @@
     "oracleText": "At the beginning of your upkeep, put a flame counter on Naar Isle, then Naar Isle deals damage to you equal to the number of flame counters on it.\nWhenever you roll {CHAOS}, Naar Isle deals 3 damage to target player or planeswalker."
   },
   {
+    "id": "a2048704-0d22-435d-b819-269291f2981e",
+    "name": "Naktamun",
+    "typeLine": "Plane — Amonkhet",
+    "oracleText": "Each creature card in your graveyard has embalm. Its embalm cost is equal to its mana cost. (Exile a creature card from your graveyard and pay its embalm cost: Create a token that's a copy of it, except it's a white Zombie in addition to its other types with no mana cost. Embalm only as a sorcery.)\nWhenever chaos ensues, you may discard a card. If you do, draw a card."
+  },
+  {
     "id": "5ed6be01-af06-4f3d-8b43-ef8993c52c97",
     "name": "Naya",
     "typeLine": "Plane — Alara",
@@ -276,10 +318,22 @@
     "oracleText": "At the beginning of your end step, mill seven cards. Then return a card at random from your graveyard to your hand.\nWhenever you roll {CHAOS}, return target card from your graveyard to your hand."
   },
   {
+    "id": "08427dab-3874-4a29-bd63-cbd16c1d229d",
+    "name": "New Argive",
+    "typeLine": "Plane — Dominaria",
+    "oracleText": "Whenever a historic creature you control attacks, it gets +2/+2 until end of turn. (Artifacts, legendaries, and Sagas are historic.)\nWhenever chaos ensues, reveal cards from the top of your library until you reveal a historic card. Put that card into your hand and the rest on the bottom of your library in a random order."
+  },
+  {
     "id": "9d58f647-3f83-4f65-a944-c6236db7c422",
     "name": "Norn's Dominion",
     "typeLine": "Plane — New Phyrexia",
     "oracleText": "When you planeswalk away from Norn's Dominion, destroy each nonland permanent without a fate counter on it, then remove all fate counters from all permanents.\nWhenever you roll {CHAOS}, you may put a fate counter on target permanent."
+  },
+  {
+    "id": "ab72ff80-738a-4468-aecf-5d806143f791",
+    "name": "Norn's Seedcore",
+    "typeLine": "Plane — New Phyrexia",
+    "oracleText": "When you planeswalk to Norn's Seedcore, chaos ensues.\nWhenever chaos ensues, reveal cards from the top of your planar deck until you reveal a plane card. Planeswalk to it, except don't planeswalk away from any plane. Put the rest of the revealed cards on the bottom of vour planar deck in any order."
   },
   {
     "id": "6552e3dd-ce35-4267-a25e-f5d4dceb8311",
@@ -310,6 +364,12 @@
     "name": "Otaria",
     "typeLine": "Plane — Dominaria",
     "oracleText": "Instant and sorcery cards in graveyards have flashback. The flashback cost is equal to the card's mana cost. (Its owner may cast the card from their graveyard for its mana cost. Then they exile it.)\nWhenever you roll {CHAOS}, take an extra turn after this one."
+  },
+  {
+    "id": "c5f0da12-b76f-42fb-a52e-cd09535e72fb",
+    "name": "Paliano",
+    "typeLine": "Plane — Fiora",
+    "oracleText": "When one or more creatures you control deal combat damage to a player, if there is no monarch, you become the monarch.\nWhenever chaos ensues, create a 1/1 black Assassin creature token with deathtouch and haste."
   },
   {
     "id": "cd8ce6f1-9753-40a7-a625-5ed63c15c29e",
@@ -352,6 +412,12 @@
     "name": "Reality Shaping",
     "typeLine": "Phenomenon",
     "oracleText": "When you encounter Reality Shaping, starting with you, each player may put a permanent card from their hand onto the battlefield. (Then planeswalk away from this phenomenon.)"
+  },
+  {
+    "id": "91fe554b-13db-451d-ab25-717ab2b70649",
+    "name": "Riptide Island",
+    "typeLine": "Plane — Dominaria",
+    "oracleText": "When you planeswalk to Riptide Island and at the beginning of your upkeep, create two 1/1 colorless Sliver creature tokens.\nWhenever chaos ensues, Slivers you control gain haste and get +X/+X until end of turn, where X is the number of Slivers you control."
   },
   {
     "id": "f0c8ce35-b627-485c-bd64-d7eae47b8efa",
@@ -408,6 +474,12 @@
     "oracleText": "Whenever a creature deals damage to one or more players for the first time each turn, put a +1/+1 counter on it.\nWhenever you roll {CHAOS}, each creature you control gains \"{T}: This creature deals 1 damage to target player or planeswalker\" until end of turn."
   },
   {
+    "id": "022e38c3-fcea-428f-a0d0-a6cca057faa3",
+    "name": "Strixhaven",
+    "typeLine": "Plane — Arcavios",
+    "oracleText": "Instant and sorcery spells players cast have demonstrate. (Whenever a player casts an instant or sorcery spell, they may copy it. If they do, they choose an opponent to also copy it. Players may choose new targets for their copies.)\nWhenever chaos ensues, return up to one target instant or sorcery card from a graveyard to its owner's hand"
+  },
+  {
     "id": "ff76b576-8ad3-44f9-8043-80003a078e84",
     "name": "Stronghold Furnace",
     "typeLine": "Plane — Rath",
@@ -438,10 +510,22 @@
     "oracleText": "Whenever a player taps a land for mana, Tember City deals 1 damage to that player.\nWhenever you roll {CHAOS}, each other player sacrifices a nonland permanent."
   },
   {
+    "id": "a0cb118e-6af1-41d2-847f-d685ced2165d",
+    "name": "Ten Wizards Mountain",
+    "typeLine": "Plane — Shenmeng",
+    "oracleText": "Whenever you roll the planar die, put a +1/+1 counter on up to one target creature.\nWhenever chaos ensues, creatures you control gain flying until end of turn."
+  },
+  {
     "id": "8eb442a9-5e61-4e2e-983d-b49b04be2575",
     "name": "The Aether Flues",
     "typeLine": "Plane — Iquatana",
     "oracleText": "When you planeswalk to The Aether Flues or at the beginning of your upkeep, you may sacrifice a creature. If you do, reveal cards from the top of your library until you reveal a creature card, put that card onto the battlefield, then shuffle all other cards revealed this way into your library.\nWhenever you roll {CHAOS}, you may put a creature card from your hand onto the battlefield."
+  },
+  {
+    "id": "86534917-5d51-4eba-9bf5-f9fc93c83c80",
+    "name": "The Caldaia",
+    "typeLine": "Plane — Capenna",
+    "oracleText": "Creature spells you cast from your hand have blitz {3}. (If you cast a spell for its blitz cost, it gains haste and \"When this creature dies, draw a card.\" Sacrifice it at the beginning of the next end step.)\nWhenever chaos ensues, return target creature card from your graveyard to your hand."
   },
   {
     "id": "5503c308-560d-4d5f-a86a-4b06d9947ddc",
@@ -456,10 +540,28 @@
     "oracleText": "Players skip their untap steps.\nWhenever you roll {CHAOS}, untap all permanents you control."
   },
   {
+    "id": "2f3e71b6-0fd6-4ac5-a265-faaabe21177b",
+    "name": "The Fertile Lands of Saulvinia",
+    "typeLine": "Plane — Antausia",
+    "oracleText": "Whenever a player taps a land for mana, that player adds one mana of any type that land produced.\nWhenever chaos ensues, reveal cards from the top of your planar deck until you reveal a plane card. Chaos ensues on that plane. Then put all cards revealed this way on the bottom of your planar deck in an order."
+  },
+  {
     "id": "13e801cd-e537-4ea6-8c3d-21b142bdc026",
     "name": "The Fourth Sphere",
     "typeLine": "Plane — Phyrexia",
     "oracleText": "At the beginning of your upkeep, sacrifice a nonblack creature.\nWhenever you roll {CHAOS}, create a 2/2 black Zombie creature token."
+  },
+  {
+    "id": "3c200cc0-02b1-4a32-a910-5cd3c4d716b7",
+    "name": "The Golden City of Orazca",
+    "typeLine": "Plane — Ixalan",
+    "oracleText": "Ascend (If you control ten or more permanents, you get the city's blessing for the rest of the game.)\nWhenever one or more creatures you control deal combat damage to a player, create a Treasure token. Then draw a card if you have the city's blessing.\nWhenever chaos ensues, you may put a permanent card from your hand onto the battlefield tapped."
+  },
+  {
+    "id": "00f00001-bd84-4dbf-a707-f4b1549100d4",
+    "name": "The Great Aerie",
+    "typeLine": "Plane — Tarkir",
+    "oracleText": "When you planeswalk to The Great Aerie and at the beginning of your upkeep, bolster 3. (Choose a creature with the least toughness among creatures you control and put three +1/+1 counters on it.)\nWhenever chaos ensues, choose up to one target creature you control and up to one target creature an opponent controls. Each of those creatures deals damage equal to its toughness to the other."
   },
   {
     "id": "8c56bb41-a8d8-4b0f-bbb7-be8466dc9ed1",
@@ -478,6 +580,24 @@
     "name": "The Maelstrom",
     "typeLine": "Plane — Alara",
     "oracleText": "When you planeswalk to The Maelstrom or at the beginning of your upkeep, you may reveal the top card of your library. If it's a permanent card, you may put it onto the battlefield. If you revealed a card but didn't put it onto the battlefield, put it on the bottom of your library.\nWhenever you roll {CHAOS}, return target permanent card from your graveyard to the battlefield."
+  },
+  {
+    "id": "b60e8617-fc35-4c8a-beb0-4688b88484c4",
+    "name": "The Pit",
+    "typeLine": "Plane — The Abyss",
+    "oracleText": "When you planeswalk to The Pit, each player creates their choice of a 3/3 white Angel creature token with flying or a 6/6 black Demon creature token with flying, trample, and \"At the beginning of your upkeep, sacrifice another creature. If you can't, this creature deals 6 damage to you.\"\nWhenever chaos ensues, each player sacrifices a nontoken creature."
+  },
+  {
+    "id": "4abae901-eb47-4318-bf64-322a893c2833",
+    "name": "The Western Cloud",
+    "typeLine": "Plane — Gobakhan",
+    "oracleText": "Prevent all damage that would be dealt to creatures and planeswalkers you control.\nWhenever chaos ensues, create three tapped Treasure tokens. They each deal 1 damage to each creature and each planeswalker."
+  },
+  {
+    "id": "cb7ae16a-9982-4782-9e20-07bb771d0601",
+    "name": "The Wilds",
+    "typeLine": "Plane — Eldraine",
+    "oracleText": "When you planeswalk to The Wilds and at the beginning of your upkeep, create a Food token.\nWhenever chaos ensues, target player sacrifices a creature. If they do, you create a Food token. You create two Food tokens instead if the sacrificed creature's toughness was 4 or greater."
   },
   {
     "id": "2d84be6d-49a5-4200-8cd3-d8653dfd0899",
@@ -520,6 +640,18 @@
     "name": "Undercity Reaches",
     "typeLine": "Plane — Ravnica",
     "oracleText": "Whenever a creature deals combat damage to a player, its controller may draw a card.\nWhenever you roll {CHAOS}, you have no maximum hand size for the rest of the game."
+  },
+  {
+    "id": "503fcc43-dafd-484b-a97f-bbd11eed66de",
+    "name": "Unyaro",
+    "typeLine": "Plane — Zhalfir",
+    "oracleText": "At the beginning of your end step, if you planeswalked to Unyaro this turn, untap all creatures. They phase out until a player planeswalks. (Treat them and anything attached to them as though they didn't exist.)\nWhenever chaos ensues, create two 2/2 white and blue Knight creature tokens with vigilance."
+  },
+  {
+    "id": "61b5984a-de6a-4d5a-8b20-e2fb3b553a34",
+    "name": "Valor's Reach",
+    "typeLine": "Plane — KylemI",
+    "oracleText": "Whenever your team attacks with exactly two creatures, those creatures gain double strike until end of turn.\nWhenever chaos ensues, untap up to two target creatures your team controls. If it's a main phase, there is an additional combat phase after this phase, followed by an additional main phase."
   },
   {
     "id": "1c4e174e-19fb-4c0a-b762-ef6d927392c9",
