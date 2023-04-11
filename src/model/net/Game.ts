@@ -1,12 +1,14 @@
-import { ActionSender, joinRoom, Room, selfId } from 'trystero';
+import { ActionSender, ActionReceiver, joinRoom, Room, selfId } from 'trystero';
 import { Patch } from '../ver';
-import type { InitPayload, useMain } from '#/store/main';
+import type { InitPayload, PreflightPayload, useMain } from '#/store/main';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Fun<TA extends any[] = any[], TR = any> = (...args: TA) => TR;
 type Store = ReturnType<typeof useMain>;
 
 export enum EventType {
+  PREFLIGHT = 'PREFLIGHT',
+  JOIN = 'JOIN',
   INIT = 'INIT',
   HEY = 'HEY',
   SYNC = 'SYNC',
@@ -31,7 +33,8 @@ function once<T extends Fun>(fun: T): T {
 
 export interface GameInterface {
   gameId: string;
-  joined: Promise<void>;
+  connected: Promise<PreflightPayload | void>;
+  join(): Promise<void>;
   hey(data: Hey): void;
   sync(patch: Patch): void;
   undo(index: number): void;
@@ -51,8 +54,11 @@ export class Game implements GameInterface {
   private store: Store;
   private room: Room;
 
-  public readonly joined: Promise<void>;
+  public readonly connected: Promise<PreflightPayload | void>;
   private ready: boolean;
+
+  private readonly joinSender: ActionSender<Record<string, never>>;
+  private readonly initReceiver: ActionReceiver<InitPayload>;
 
   public readonly hey: ActionSender<Hey>;
   public readonly sync: ActionSender<Patch>;
@@ -67,12 +73,17 @@ export class Game implements GameInterface {
     this.store = store;
     this.room = joinRoom({ appId: Game.appId }, this.gameId);
 
+    const [preflightSender, preflightReceiver] = this.room.makeAction<PreflightPayload>(EventType.PREFLIGHT);
+    const [joinSender, joinReceiver] = this.room.makeAction<Record<string, never>>(EventType.JOIN);
     const [initSender, initReceiver] = this.room.makeAction<InitPayload>(EventType.INIT);
     const [heySender, heyReceiver] = this.room.makeAction<Hey>(EventType.HEY);
     const [syncSender, syncReceiver] = this.room.makeAction<Patch>(EventType.SYNC);
     const [undoSender, undoReceiver] = this.room.makeAction<number>(EventType.UNDO);
     const [feedSender, feedReceiver] = this.room.makeAction<string>(EventType.FEED);
     const [resetSender, resetReceiver] = this.room.makeAction<InitPayload>(EventType.RESET);
+
+    this.joinSender = joinSender;
+    this.initReceiver = initReceiver;
 
     this.hey = heySender;
     this.sync = syncSender;
@@ -82,25 +93,40 @@ export class Game implements GameInterface {
 
     this.room.onPeerJoin((peerId) => {
       if (this.ready) {
+        preflightSender(this.store.gameStatus, peerId);
+      }
+    });
+
+    this.room.onPeerLeave(peerId => this.store.bye({ id: peerId }));
+
+    joinReceiver((_, peerId) => {
+      if (this.ready) {
         initSender(this.store.initPayload, peerId);
       }
       heySender({ name: this.store.selfName! }, peerId);
     });
-    this.room.onPeerLeave((peerId) => this.store.bye({ id: peerId }));
 
-    this.joined = new Promise((resolve, reject) => {
-      setTimeout(() => {
+
+    this.connected = new Promise<PreflightPayload | void>((resolve, reject) => {
+      if (!gameId) {
+        resolve();
+        return;
+      }
+
+      const timeout = setTimeout(() => {
         this.room.leave();
-        reject(new Error('Operation timed out. The game might not exists anymore.'));
+        reject(new Error(
+          'The game could not be found.',
+          { cause: 'Operation timed out. The game might not exists anymore.' },
+        ));
       }, 5000);
 
-      initReceiver(once((data) => {
-        this.store.applyReset(data);
-        console.log('after apply');
-        this.ready = true;
-        resolve();
+      preflightReceiver(once((data) => {
+        clearTimeout(timeout);
+        resolve(data);
       }));
     });
+
     heyReceiver((data, peerId) => {
       if (this.store.mates.has(peerId)) {
         this.store.mates.set(peerId, data.name);
@@ -115,14 +141,35 @@ export class Game implements GameInterface {
     resetReceiver((data) => this.store.applyReset(data));
   }
 
+  public join(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        this.room.leave();
+        reject(new Error(
+          'Could not retrieve game state.',
+          { cause: 'Operation timed out. An error occured while getting the game state.'},
+        ));
+      }, 5000);
+
+      this.initReceiver(once((data) => {
+        clearTimeout(timeout);
+        this.store.applyReset(data);
+        this.ready = true;
+        resolve();
+      }));
+
+      this.joinSender({});
+    });
+  }
+
+  public leave(): void {
+    this.room.leave();
+  }
+
   private static genId(): string {
     return new Array(this.gameIdLength)
       .fill('')
       .map(() => this.gameIdCharSet[Math.floor(Math.random() * this.gameIdCharSet.length)])
       .join('');
-  }
-
-  public leave(): void {
-    this.room.leave();
   }
 }

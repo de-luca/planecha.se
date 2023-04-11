@@ -6,6 +6,7 @@ import {
   Exported,
   MapFactory,
   MapInterface,
+  MapType,
   PlaneswalkInput,
   ResolveRevealInput,
   RevealUntilInput,
@@ -49,6 +50,12 @@ export interface InitPayload {
   repo: Clone;
   map: Exported;
   feed: Array<string>;
+}
+
+export interface PreflightPayload {
+  mapType: MapType;
+  hasStarted: boolean;
+  players: Array<string>;
 }
 
 export interface State {
@@ -118,6 +125,16 @@ export const useMain = defineStore('main', {
         feed: [...this.feed],
       };
     },
+    gameStatus(): PreflightPayload {
+      return {
+        mapType: this.mapConf.type,
+        hasStarted: this.map.hasStarted,
+        players: [
+          this.selfName!,
+          ...this.mates.values(),
+        ],
+      };
+    },
   },
 
   actions: {
@@ -158,7 +175,7 @@ export const useMain = defineStore('main', {
       this.mates.delete(payload.id);
     },
 
-    async init(payload: BuildProps) {
+    init(payload: BuildProps) {
       this.leave();
       this._mapConf = payload;
       this._map = MapFactory.build(payload);
@@ -168,11 +185,13 @@ export const useMain = defineStore('main', {
       this.game = new Game(this);
     },
 
-    async join(payload: JoinPayload) {
+    preJoin(roomId: string) {
       this.leave();
-      this.selfName = payload.name;
-      this.game = new Game(this, payload.roomId);
-      return this.game.joined;
+      this.game = new Game(this, roomId);
+      return this.game.connected;
+    },
+    join() {
+      return this.game!.join();
     },
 
     leave(): void {
