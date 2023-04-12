@@ -31,7 +31,7 @@ import { useMain } from '#/store/main';
 import { MapType } from '#/model/map';
 import { EternitiesMapSpecs, EternitiesMapSubType } from '#/model/map/eternities';
 
-import Classic from '#board/map/classic/Classic.vue';
+import Single from '#board/map/single/Single.vue';
 import SingleDeck from '#board/map/eternities/SingleDeck.vue';
 import DualDeck from '#board/map/eternities/DualDeck.vue';
 import NotifCenter from '#board/NotifCenter.vue';
@@ -43,7 +43,7 @@ import DiceTray from '#board/menu/DiceTray.vue';
 
 @Component({
   components: {
-    Classic, SingleDeck, DualDeck,
+    Single, SingleDeck, DualDeck,
     NotifCenter,
     ThemeSelector, MainMenu, OnlineControls,
     DiceTray,
@@ -56,8 +56,8 @@ export default class Board extends Vue {
     const specs = this.store.map.specs;
 
     switch (specs.type) {
-      case MapType.CLASSIC:
-        return Classic;
+      case MapType.SINGLE:
+        return Single;
       case MapType.ETERNITIES:
         return (specs as EternitiesMapSpecs).subType === EternitiesMapSubType.SINGLE_DECK
           ? SingleDeck

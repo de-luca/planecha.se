@@ -1,23 +1,23 @@
 import { describe, it, expect } from 'vitest';
-import { Plane } from '../card';
-import { WallStates } from '../wall';
-import { Classic, MapType } from '.';
+import { Plane } from '../../card';
+import { WallStates } from '../../wall';
+import { Single, MapType } from '..';
 import { CardProvider } from '#/services/CardProvider';
 
-describe('Classic.type', () => {
+describe('Single.type', () => {
   it('returns the type', () => {
-    const map = new Classic({
+    const map = new Single({
       deck: CardProvider.getDeck(),
       wallStates: new WallStates(),
     });
 
-    expect(map.specs.type).toEqual(MapType.CLASSIC);
+    expect(map.specs.type).toEqual(MapType.SINGLE);
   });
 });
 
-describe('Classic.planeswalk', () => {
+describe('Single.planeswalk', () => {
   it('changes active card', () => {
-    const map = new Classic({
+    const map = new Single({
       deck: CardProvider.getDeck(),
       wallStates: new WallStates(),
     });
@@ -33,7 +33,7 @@ describe('Classic.planeswalk', () => {
   });
 
   it('changes active card to given planes', () => {
-    const map = new Classic({
+    const map = new Single({
       deck: CardProvider.getDeck(),
       wallStates: new WallStates(),
     });

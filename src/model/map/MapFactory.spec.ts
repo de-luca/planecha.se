@@ -1,18 +1,18 @@
 import { describe, it, expect } from 'vitest';
 import { MapFactory } from './MapFactory';
 import { DualDeck, DualDeckExported, EncounterMechanic, EncounterTrigger, EternitiesMapDeckType, EternitiesMapSubType, SingleDeck, SingleDeckExported, TileStatus } from './eternities';
-import { Classic, Exported, MapType } from '.';
+import { Single, Exported, MapType } from '.';
 
 describe('MapFactory.build', () => {
-  it('creates a Classic Map', () => {
+  it('creates a Single deck Map', () => {
     const map = MapFactory.build({
-      type: MapType.CLASSIC,
+      type: MapType.SINGLE,
     });
 
-    expect(map).toBeInstanceOf(Classic);
+    expect(map).toBeInstanceOf(Single);
   });
 
-  it('creates a SingleDeck Map', async () => {
+  it('creates an EternitesMap with SingleDeck', async () => {
     const map = MapFactory.build({
       type: MapType.ETERNITIES,
       specs: {
@@ -24,7 +24,7 @@ describe('MapFactory.build', () => {
     expect(map).toBeInstanceOf(SingleDeck);
   });
 
-  it('creates a DualDeck Map', async () => {
+  it('creates an EternitesMap with DualDeck', async () => {
     const map = MapFactory.build({
       type: MapType.ETERNITIES,
       specs: {
@@ -38,7 +38,7 @@ describe('MapFactory.build', () => {
 });
 
 describe('MapFactory.restore', () => {
-  it('restores a Classic Map', () => {
+  it('restores a Single deck Map', () => {
     const exported: Exported = {
       wallStates: [],
       hasStarted: true,
@@ -56,15 +56,15 @@ describe('MapFactory.restore', () => {
         id: '82e67c57-6d7a-44cc-ba63-77ce887ab075',
       }],
       specs: {
-        type: MapType.CLASSIC,
+        type: MapType.SINGLE,
       },
     };
 
     const map = MapFactory.restore(exported);
-    expect(map).toBeInstanceOf(Classic);
+    expect(map).toBeInstanceOf(Single);
   });
 
-  it('restores a SingleDeck', () => {
+  it('restores an EternitesMap with SingleDeck', () => {
     const exported: SingleDeckExported = {
       wallStates: [],
       hasStarted: true,
@@ -99,7 +99,7 @@ describe('MapFactory.restore', () => {
     expect(map).toBeInstanceOf(SingleDeck);
   });
 
-  it('restores a DualDeck', () => {
+  it('restores an EternitesMap with DualDeck', () => {
     const exported: DualDeckExported = {
       wallStates: [],
       hasStarted: true,

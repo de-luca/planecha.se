@@ -4,7 +4,8 @@ import { DeckState } from '../deck/Deck';
 import { Patch } from '../ver/Patch';
 
 export enum MapType {
-  CLASSIC = 'classic',
+  SINGLE = 'single',
+  MULTI = 'multi',
   ETERNITIES = 'eternities',
 }
 
@@ -34,9 +35,9 @@ export interface ChaosInput extends Initable {
   card: Card;
 }
 
-export type ClassicPlaneswalkInput = Initable
+export type SinglePlaneswalkInput = Initable
 
-export interface CustomClassicPlaneswalkInput extends ClassicPlaneswalkInput {
+export interface CustomSinglePlaneswalkInput extends SinglePlaneswalkInput {
   planes: Array<Plane>;
 }
 
@@ -64,8 +65,8 @@ export interface ResolveRevealInput {
 }
 
 export type PlaneswalkInput =
-  ClassicPlaneswalkInput |
-  CustomClassicPlaneswalkInput |
+  SinglePlaneswalkInput |
+  CustomSinglePlaneswalkInput |
   EternitiesPlaneswalkInput |
   CustomEternitiesPlaneswalkInput;
 export type ResolveInput = Initable;

@@ -101,8 +101,8 @@ import BrandedFooter from '#/components/BrandedFooter.vue';
 })
 export default class Create extends Vue {
   public readonly mapTypeOptions: Array<Option<string>> = [{
-    label: 'Classic',
-    value: MapType.CLASSIC,
+    label: 'Single Deck',
+    value: MapType.SINGLE,
     help: 'Rule 901.15. Single Planar Deck Option.',
   }, {
     label: 'Eternities Map',
@@ -133,7 +133,7 @@ export default class Create extends Vue {
   public openDeckBuilder = false;
   public creating = false;
 
-  public mapType: MapType = MapType.CLASSIC;
+  public mapType: MapType = MapType.SINGLE;
   public subType: EternitiesMapSubType = EternitiesMapSubType.SINGLE_DECK;
   public deckType: EternitiesMapDeckType = EternitiesMapDeckType.PLANES;
 
@@ -181,7 +181,7 @@ export default class Create extends Vue {
     }
 
     switch (this.mapType) {
-      case MapType.CLASSIC:
+      case MapType.SINGLE:
         return {
           valid: this.deck.filter(c => c instanceof Plane).length >= 5,
           minCards: 5,

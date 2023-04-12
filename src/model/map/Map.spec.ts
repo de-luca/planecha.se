@@ -9,7 +9,7 @@ import { CardProvider } from '#/services/CardProvider';
 
 class TestMap extends Map {
   public get specs(): MapSpecs {
-    return { type: MapType.CLASSIC };
+    return { type: MapType.SINGLE };
   }
   public testActive(): void {
     this._active = [ this._deck.draw() ];
@@ -118,7 +118,7 @@ describe('Map.export', () => {
       wallStates: new WallStates(),
     });
     const exported = map.export();
-    expect(exported.specs.type).toEqual(MapType.CLASSIC);
+    expect(exported.specs.type).toEqual(MapType.SINGLE);
     expect(exported.deck.cards).toHaveLength(map.remaining);
     expect(exported.deck.played).toHaveLength(map.played.length);
     expect(exported.active).toHaveLength(map.active.length);

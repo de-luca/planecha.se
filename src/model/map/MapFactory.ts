@@ -6,7 +6,7 @@ import {
   EternitiesMapFactory,
   EternitiesMapSpecs,
 } from './eternities';
-import { Classic } from './Classic';
+import { Single } from './single/Single';
 import { Exported, MapInterface, MapType } from './MapInterface';
 import { CardProvider } from '#/services/CardProvider';
 
@@ -20,8 +20,8 @@ export interface BuildProps {
 export class MapFactory {
   public static build(props: BuildProps): MapInterface {
     switch (props.type) {
-      case MapType.CLASSIC:
-        return new Classic({
+      case MapType.SINGLE:
+        return new Single({
           wallStates: new WallStates(),
           deck: props.cards
             ? CardProvider.getCustomDeck(props.cards)
@@ -36,13 +36,15 @@ export class MapFactory {
           props.encounterTriggers,
           props.cards,
         );
+      default:
+        throw new Error('Incompatible');
     }
   }
 
   public static restore(payload: Exported): MapInterface {
     switch (payload.specs.type) {
-      case MapType.CLASSIC:
-        return new Classic({
+      case MapType.SINGLE:
+        return new Single({
           deck: CardProvider.restoreDeck<Card>(payload.deck),
           wallStates: new WallStates(payload.wallStates),
           hasStarted: payload.hasStarted,

@@ -55,7 +55,7 @@ import StackWall from '#board/wall/StackWall.vue';
 import ChaosBtn from '#/components/controls/ChaosBtn.vue';
 import StartBtn from '#/components/controls/StartBtn.vue';
 import PlaneswalkBtn from '#/components/controls/PlaneswalkBtn.vue';
-import Card from '#board/map/classic/Card.vue';
+import Card from '#board/map/single/Card.vue';
 import Feed from '#board/feed/Feed.vue';
 import Pick from '#board/wall/reveal/Pick.vue';
 import Scry from '#board/wall/reveal/Scry.vue';
@@ -77,7 +77,7 @@ type LocalRevealerConfig = {
     StackWall,
   },
 })
-export default class Classic extends Map {
+export default class Single extends Map {
   public created() {
     eventBus.on(EventType.STAIRS_TO_INFINITY, (): void => {
       this.store.reveal({ count: 1 });

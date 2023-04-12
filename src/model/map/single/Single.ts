@@ -1,14 +1,14 @@
-import { Map, MapProps } from './Map';
-import { MapSpecs, MapType, PlaneswalkInput, ResolveInput } from './MapInterface';
+import { Map, MapProps } from '../Map';
+import { MapSpecs, MapType, PlaneswalkInput, ResolveInput } from '../MapInterface';
 
-export class Classic extends Map {
+export class Single extends Map {
   public constructor(props: MapProps) {
     super(props);
     this._active = props.active ?? [this._deck.drawPlane()];
   }
 
   public get specs(): MapSpecs {
-    return { type: MapType.CLASSIC };
+    return { type: MapType.SINGLE };
   }
 
   public planeswalk(input: PlaneswalkInput): void {

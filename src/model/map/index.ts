@@ -1,4 +1,4 @@
 export * from './Map';
-export * from './Classic';
+export * from './single/Single';
 export * from './MapInterface';
 export * from './MapFactory';

@@ -6,7 +6,7 @@ const exported: Exported = {
   active: [],
   deck: { cards: [], played: [] },
   hasStarted: true,
-  specs: { type: MapType.CLASSIC },
+  specs: { type: MapType.SINGLE },
   wallStates: [],
 };
 
