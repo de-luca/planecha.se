@@ -77,7 +77,7 @@ export default class MainMenu extends Vue {
   }
 
   public get online(): boolean {
-    return !!this.store.game;
+    return !!this.store.net;
   }
 
   public get selfName(): string | null {

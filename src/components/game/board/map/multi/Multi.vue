@@ -1,8 +1,11 @@
 <template>
   <div class="map">
-    <div class="active">
-      <div :class="{ double: active.length > 1 }">
-        <card v-for="a in active" :key="a.id" :card="a" :hidden="!hasStarted" />
+    <div class="active-wrapper x4">
+      <div class="active" v-for="a in actives">
+        <div :class="{ double: a.active.length > 1 }">
+          <card v-for="card in a.active" :key="card.id" :card="card" :hidden="!hasStarted" />
+        </div>
+        <h1>{{ a.mate }}</h1>
       </div>
     </div>
 
@@ -42,6 +45,7 @@ import { Op } from '#/store/main';
 import { Card as ModelCard, Plane } from '#/model/card';
 import { eventBus, EventType } from '#/services/EventBus';
 import { Revealed } from '#/model/map';
+import { Multi as MultiMap } from '#/model/map/multi/Multi';
 import {
   RevealerWallState,
   RevealerSource,
@@ -55,7 +59,7 @@ import StackWall from '#board/wall/StackWall.vue';
 import ChaosBtn from '#/components/controls/ChaosBtn.vue';
 import StartBtn from '#/components/controls/StartBtn.vue';
 import PlaneswalkBtn from '#/components/controls/PlaneswalkBtn.vue';
-import Card from '#board/map/single/Card.vue';
+import Card from '#board/map/multi/Card.vue';
 import Feed from '#board/feed/Feed.vue';
 import Pick from '#board/wall/reveal/Pick.vue';
 import Scry from '#board/wall/reveal/Scry.vue';
@@ -77,7 +81,7 @@ type LocalRevealerConfig = {
     StackWall,
   },
 })
-export default class Single extends Map {
+export default class Multi extends Map {
   public created() {
     eventBus.on(EventType.STAIRS_TO_INFINITY, (): void => {
       this.store.reveal({ count: 1 });
@@ -93,8 +97,17 @@ export default class Single extends Map {
     ).matches;
   }
 
-  public get active(): Array<ModelCard> {
-    return this.store.map.active;
+  public get actives(): Array<{ mate: string, active: Array<ModelCard> }> {
+    return [{
+      mate: this.store.getMateName(),
+      active: this.store.map.active,
+    }].concat(
+      [...(this.store.map as MultiMap).mateStates.entries()]
+        .map(([peer, map]) => ({
+          mate: this.store.getMateName(peer),
+          active: map.active,
+        })),
+    );
   }
 
   public get revealed(): Revealed | undefined {
@@ -203,35 +216,54 @@ export default class Single extends Map {
   height: calc(100vh - 3rem - (3 * 1rem));
 }
 
-.active {
+.active-wrapper {
   grid-area: active;
+  display: grid;
+  grid-auto-flow: dense;
+  gap: 1rem;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  max-height: calc(100vh - 3rem - (3 * 1rem));
 
-  .double {
-    height: 100%;
-    position: relative;
+  &.x4 {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
 
-    .card-container {
-      width: 75%;
+  &.x9 {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
 
-      &:hover {
-        z-index: 2;
-      }
-      &:not(:hover) {
-        z-index: 1;
-      }
-      &:last-child {
-        position: absolute;
-        bottom: 0;
-        right: 0;
+
+  .active {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .double {
+      height: 100%;
+      position: relative;
+
+      .card-container {
+        width: 75%;
+
+        &:hover {
+          z-index: 2;
+        }
+        &:not(:hover) {
+          z-index: 1;
+        }
+        &:last-child {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+        }
       }
     }
   }
 }
+
 
 .controls {
   grid-area: controls;

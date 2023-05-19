@@ -1,7 +1,7 @@
 import { ExportedWallStates, WallStates } from '../wall';
 import { Card, ExportedCard, Plane } from '../card';
 import { DeckState } from '../deck/Deck';
-import { Patch } from '../ver/Patch';
+import { Patch } from '#/utils/delta';
 
 export enum MapType {
   SINGLE = 'single',
@@ -89,6 +89,7 @@ export interface MapInterface {
   resolve(input: ResolveInput): void;
   updateCounter(input: UpdateCounterInput): void;
   export(): Exported;
-  apply(patch: Patch): void;
+  dump(): Exported;
+  apply(patch: Patch, peerId: string): void;
   restore(state: Exported): void;
 }

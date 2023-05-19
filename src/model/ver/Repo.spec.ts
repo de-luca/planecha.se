@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { Exported, MapType } from '../map';
 import { Repo } from './Repo';
+import { diff } from '#/utils/delta';
 
 const exported: Exported = {
   active: [],
@@ -69,7 +70,7 @@ describe('Repo.checkout', () => {
     const v0 = { ...exported };
     repo.apply({
       event: 'test',
-      delta: Repo.diff(undefined, v0),
+      delta: diff(undefined, v0),
     });
 
     const v1: Exported = {
@@ -78,7 +79,7 @@ describe('Repo.checkout', () => {
     };
     repo.apply({
       event: 'test',
-      delta: Repo.diff(v0, v1),
+      delta: diff(v0, v1),
     });
 
     const v2: Exported = {
@@ -90,7 +91,7 @@ describe('Repo.checkout', () => {
     };
     repo.apply({
       event: 'test',
-      delta: Repo.diff(v1, v2),
+      delta: diff(v1, v2),
     });
 
     const v3: Exported = {
@@ -103,7 +104,7 @@ describe('Repo.checkout', () => {
     };
     repo.apply({
       event: 'test',
-      delta: Repo.diff(v2, v3),
+      delta: diff(v2, v3),
     });
 
     expect(repo.checkout(2)).toEqual(v2);

@@ -105,8 +105,18 @@
 
       <div class="field use">
         <div class="control">
-          <button class="button is-fullwidth is-secondary" @click.prevent="done">
-            Use this Deck
+          <button
+            class="button is-fullwidth is-secondary"
+            @click.prevent="done"
+            :disabled="!deckState.valid"
+          >
+            <div v-if="deckState.valid">Use this Deck</div>
+            <div
+              v-else
+              v-for="req in deckState.reqs"
+              :class="{'has-text-success': req.valid, 'has-text-danger': !req.valid}"
+              v-html="req.text"
+            ></div>
           </button>
         </div>
       </div>
@@ -135,9 +145,12 @@ import { Tippy } from 'vue-tippy';
 import { Scope, scopeMap } from './types';
 import SaveDeck from './builder/SaveDeck.vue';
 import DeckList from './builder/DeckList.vue';
+import { matchRequirements, requirements } from './requirements';
 import { Imgable } from '#/components/Imgable';
 import { Card } from '#/model/card';
 import { CardProvider } from '#/services/CardProvider';
+import { MapType } from '#/model/map';
+import { EternitiesMapDeckType } from '#/model/map/eternities';
 
 
 type Group = Scope | 'decks';
@@ -150,7 +163,9 @@ export default class DeckBuilder extends Imgable {
   @Prop({ required: false, default: [] })
   public baseDeck: Array<Card>;
   @Prop({ required: true })
-  public scope: Scope;
+  public mapType: MapType;
+  @Prop({ required: false })
+  public deckType?: EternitiesMapDeckType;
 
   public cards: Array<Card> = CardProvider.getAllCards();
   public search = '';
@@ -170,6 +185,28 @@ export default class DeckBuilder extends Imgable {
 
   public buildImgSrc(card: Card): string {
     return `/cards/${card.id}.jpg`;
+  }
+
+  public get scope(): Scope {
+    return (
+      this.mapType === MapType.ETERNITIES &&
+      this.deckType === EternitiesMapDeckType.PLANES
+    )
+      ? 'planes'
+      : 'all';
+  }
+
+  public get deckState(): { valid: boolean, reqs: Array<{ valid: boolean; text: string }> } {
+    const req = requirements[this.mapType];
+    const counts = req.map(() => 0);
+    for (const card of this.deck) {
+      req.forEach((r, i) => (card instanceof r.type) && counts[i]++);
+    }
+    const reqs = req.map((r, i) => {
+      const valid = counts[i] >= r.min && counts[i] <= (r.max ?? Infinity);
+      return { valid, text: `${r.name}: ${counts[i]}/${r.min}` };
+    });
+    return { reqs, valid: reqs.every(r => r.valid) };
   }
 
   public get filtered(): Array<Card> {
@@ -374,6 +411,12 @@ img.card-preview {
     @media screen and (max-height: 450px) and (orientation: landscape) {
       grid-area: use;
       padding-bottom: .5rem;
+    }
+
+    button {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
     }
   }
 

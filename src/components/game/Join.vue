@@ -50,6 +50,26 @@
           required
         ></name-input>
 
+        <div v-if="isMulti" class="field">
+          <div class="control main">
+            <button class="button is-secondary" @click.prevent="toggleDeckBuilder">
+              Open deck customization
+            </button>
+          </div>
+          <!-- <p class="help is-danger" v-if="!hasRequiredCards.valid">
+            <fa icon="exclamation" fixed-width />
+            Your deck does not satisfies minimum requirements <em>(In order not to explode)</em>:
+            <span v-html="hasRequiredCards.requirements"></span>
+          </p> -->
+        </div>
+
+        <deck-builder
+          v-if="isMulti && openDeckBuilder"
+          :base-deck="deck"
+          :map-type="preflightData?.mapType"
+          @done="setDeck"
+        />
+
         <div class="field join-game">
           <div class="control">
             <button
@@ -73,11 +93,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
 import { PreflightPayload, useMain } from '#/store/main';
+import { MapType } from '#/model/map';
+import { Card } from '#/model/card';
 
 import NameInput from '#/components/controls/NameInput.vue';
 import BrandedFooter from '#/components/BrandedFooter.vue';
+import DeckBuilder from '#/components/create/DeckBuilder.vue';
 
-@Component({ components: { BrandedFooter, NameInput } })
+@Component({ components: { BrandedFooter, DeckBuilder, NameInput } })
 export default class Join extends Vue {
   private store = useMain();
 
@@ -85,6 +108,8 @@ export default class Join extends Vue {
   public name = useMain().selfName ?? '';
   public roomId = '';
   public joining = false;
+  public openDeckBuilder = false;
+  public deck: Array<Card> = [];
 
   public preflightData: PreflightPayload | null = null;
   public error: Error | null = null;
@@ -100,11 +125,28 @@ export default class Join extends Vue {
       .finally(() => this.loading = false);
   }
 
+  public get isMulti(): boolean {
+    return this.preflightData?.mapType === MapType.MULTI;
+  }
+
+  public toggleDeckBuilder(): void {
+    this.openDeckBuilder = !this.openDeckBuilder;
+  }
+
+  public setDeck(deck: Array<Card>): void {
+    this.openDeckBuilder = false;
+    this.deck = deck;
+    console.log(this.deck);
+  }
+
   public async join() {
     this.joining = true;
     this.store.setName(this.name);
     try {
-      await this.store.join();
+      await this.store.join({
+        type: this.preflightData!.mapType,
+        cards: this.deck.map(c => c.id),
+      });
     } catch (err) {
       this.store.leave();
       this.error = err as Error;

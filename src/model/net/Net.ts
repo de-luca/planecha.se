@@ -1,10 +1,8 @@
 import { ActionSender, ActionReceiver, joinRoom, Room, selfId } from 'trystero';
-import { Patch } from '../ver';
-import type { InitPayload, PreflightPayload, useMain } from '#/store/main';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Fun<TA extends any[] = any[], TR = any> = (...args: TA) => TR;
-type Store = ReturnType<typeof useMain>;
+import type { InitPayload, MainStore, PreflightPayload } from '#/store/main';
+import { once } from '#/utils/invoke';
+import { Patch } from '#/utils/delta';
 
 export enum EventType {
   PREFLIGHT = 'PREFLIGHT',
@@ -21,29 +19,36 @@ export interface Hey {
   name: string;
 }
 
-function once<T extends Fun>(fun: T): T {
-  let invs = 0;
-  return ((...args: Parameters<T>) => {
-    if (invs < 1) {
-      invs++;
-      return fun(...args);
-    }
-  }) as T;
-}
-
-export interface GameInterface {
+export interface NetInterface {
   gameId: string;
   connected: Promise<PreflightPayload | void>;
-  join(): Promise<void>;
+  peerCount: number;
+
+  join(handler: JoinHandlerBuilder): Promise<void>;
+  setInitHandler(handler: InitHandlerBuilder): ThisType<this>;
+
   hey(data: Hey): void;
   sync(patch: Patch): void;
   undo(index: number): void;
   syncFeed(log: string): void;
   reset(payload: InitPayload): void;
+  init(payload: InitPayload): void;
   leave(): void;
 }
 
-export class Game implements GameInterface {
+interface JoinHandlerBuilder {
+  (props: {
+    store: MainStore;
+    done: () => void;
+  }): (data: InitPayload, peer: string) => void;
+}
+
+interface InitHandlerBuilder {
+  (store: MainStore): (data: InitPayload, peer: string) => void;
+}
+
+
+export class Net implements NetInterface {
   private static readonly gameIdLength = 20;
   private static readonly gameIdCharSet = '0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';
   private static readonly appId = 'dev-planechase';
@@ -51,7 +56,7 @@ export class Game implements GameInterface {
   public static readonly selfId = selfId;
 
   public readonly gameId: string;
-  private store: Store;
+  private store: MainStore;
   private room: Room;
 
   public readonly connected: Promise<PreflightPayload | void>;
@@ -65,13 +70,14 @@ export class Game implements GameInterface {
   public readonly undo: ActionSender<number>;
   public readonly syncFeed: ActionSender<string>;
   public readonly reset: ActionSender<InitPayload>;
+  public readonly init: ActionSender<InitPayload>;
 
-  public constructor(store: Store, gameId?: string) {
+  public constructor(store: MainStore, gameId?: string) {
     this.ready = !gameId;
 
-    this.gameId = gameId ?? Game.genId();
+    this.gameId = gameId ?? Net.genId();
     this.store = store;
-    this.room = joinRoom({ appId: Game.appId }, this.gameId);
+    this.room = joinRoom({ appId: Net.appId }, this.gameId);
 
     const [preflightSender, preflightReceiver] = this.room.makeAction<PreflightPayload>(EventType.PREFLIGHT);
     const [joinSender, joinReceiver] = this.room.makeAction<Record<string, never>>(EventType.JOIN);
@@ -90,6 +96,7 @@ export class Game implements GameInterface {
     this.undo = undoSender;
     this.syncFeed = feedSender;
     this.reset = resetSender;
+    this.init = initSender;
 
     this.room.onPeerJoin((peerId) => {
       if (this.ready) {
@@ -98,14 +105,6 @@ export class Game implements GameInterface {
     });
 
     this.room.onPeerLeave(peerId => this.store.bye({ id: peerId }));
-
-    joinReceiver((_, peerId) => {
-      if (this.ready) {
-        initSender(this.store.initPayload, peerId);
-      }
-      heySender({ name: this.store.selfName! }, peerId);
-    });
-
 
     this.connected = new Promise<PreflightPayload | void>((resolve, reject) => {
       if (!gameId) {
@@ -127,37 +126,55 @@ export class Game implements GameInterface {
       }));
     });
 
+    joinReceiver((_, peerId) => {
+      if (this.ready) {
+        initSender(store.initPayload, peerId);
+      }
+      heySender({ name: store.selfName! }, peerId);
+    });
+
     heyReceiver((data, peerId) => {
-      if (this.store.mates.has(peerId)) {
-        this.store.mates.set(peerId, data.name);
+      if (store.mates.has(peerId)) {
+        store.mates.set(peerId, data.name);
       } else {
-        this.store.hey({ ...data, id: peerId });
-        heySender({ name: this.store.selfName! }, peerId);
+        store.hey({ ...data, id: peerId });
+        heySender({ name: store.selfName! }, peerId);
       }
     });
-    syncReceiver((data) => this.store.apply(data));
-    undoReceiver((data) => this.store.applyUndo(data));
-    feedReceiver((data) => this.store.feed.push(data));
-    resetReceiver((data) => this.store.applyReset(data));
+
+    syncReceiver((data, peerId) => store.apply(data, peerId));
+    undoReceiver((data) => store.applyUndo(data));
+    feedReceiver((data) => store.feed.push(data));
+    resetReceiver((data) => store.applyReset(data));
   }
 
-  public join(): Promise<void> {
+  public get peerCount(): number {
+    return Object.keys(this.room.getPeers()).length;
+  }
+
+  public setInitHandler(handler: InitHandlerBuilder): this {
+    this.initReceiver(handler(this.store));
+    return this;
+  }
+
+  public join(handler: JoinHandlerBuilder): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       const timeout = setTimeout(() => {
         this.room.leave();
         reject(new Error(
           'Could not retrieve game state.',
-          { cause: 'Operation timed out. An error occured while getting the game state.'},
+          { cause: 'Operation timed out. An error occured while getting the game state.' },
         ));
       }, 5000);
 
-      this.initReceiver(once((data) => {
+      const done = () => {
         clearTimeout(timeout);
-        this.store.applyReset(data);
+        this.init(this.store.initPayload);
         this.ready = true;
         resolve();
-      }));
+      };
 
+      this.initReceiver(handler({ done, store: this.store }));
       this.joinSender({});
     });
   }

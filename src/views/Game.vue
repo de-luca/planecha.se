@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
-import { Component as VueComponent } from '@vue/runtime-core';
+import { Component as VueComponent } from 'vue';
 import { useMain } from '#/store/main';
 
 import Board from '#/components/game/Board.vue';

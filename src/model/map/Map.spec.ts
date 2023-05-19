@@ -2,10 +2,10 @@ import { describe, it, vi, expect } from 'vitest';
 import { diff } from '@n1ru4l/json-patch-plus';
 import { Card, Plane } from '../card';
 import { WallStates } from '../wall';
-import { Patch } from '../ver';
 import { Map, MapSpecs, MapType } from '.';
 import { eventBus } from '#/services/EventBus';
 import { CardProvider } from '#/services/CardProvider';
+import { Patch } from '#/utils/delta';
 
 class TestMap extends Map {
   public get specs(): MapSpecs {
@@ -155,7 +155,7 @@ describe('Map.apply', () => {
     };
 
     // Apply the patch to go back to the base
-    map.apply(patch);
+    map.apply(patch, 'testPeer');
 
     expect(map.export()).toEqual(base);
   });

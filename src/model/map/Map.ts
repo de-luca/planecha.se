@@ -1,8 +1,6 @@
-import { patch } from '@n1ru4l/json-patch-plus';
 import { Card, Plane } from '../card';
 import { Deck } from '../deck/Deck';
 import { WallStates, StateKey } from '../wall';
-import { Patch } from '../ver';
 import {
   ChaosInput,
   Exported,
@@ -16,6 +14,7 @@ import {
   ResolveRevealInput,
 } from './MapInterface';
 import { CardProvider } from '#/services/CardProvider';
+import { patch, Patch } from '#/utils/delta';
 
 
 export interface MapProps {
@@ -107,7 +106,7 @@ export abstract class Map implements MapInterface {
     this._revealed = undefined;
   }
 
-  public export(): Exported {
+  public dump(): Exported {
     return {
       specs: this.specs,
       hasStarted: this._hasStarted,
@@ -123,15 +122,19 @@ export abstract class Map implements MapInterface {
     };
   }
 
-  public apply(patch: Patch): void {
-    const state = this.crunchState<Exported>(patch);
+  public export(): Exported {
+    return this.dump();
+  }
+
+  public apply(patch: Patch, _peer: string): void {
+    const state = this.crunchState(patch);
     if (state) {
       this.restore(state);
     }
   }
 
-  protected crunchState<T extends Exported>(p: Patch): Exported | undefined {
-    return p.delta ? patch({ left: this.export(), delta: p.delta}) as T : undefined;
+  protected crunchState(p: Patch): Exported | undefined {
+    return p.delta ? patch(this.export(), p.delta) : undefined;
   }
 
   public restore(state: Exported): void {

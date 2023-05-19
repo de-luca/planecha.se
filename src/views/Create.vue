@@ -39,17 +39,16 @@
         </div>
         <p class="help is-danger" v-if="!hasRequiredCards.valid">
           <fa icon="exclamation" fixed-width />
-          Your deck does not have the minimum required
-          <b>Plane</b> cards: <b>{{ hasRequiredCards.minCards }}</b>.
-          <em>(In order not to explode)</em>
+          Your deck does not satisfies minimum requirements <em>(In order not to explode)</em>:
+          <span v-html="hasRequiredCards.requirements"></span>
         </p>
       </div>
 
       <deck-builder
         v-if="openDeckBuilder"
         :base-deck="deck"
-        :scope="scope"
         :map-type="mapType"
+        :deck-type="deckType"
         @done="setDeck"
       />
 
@@ -83,8 +82,8 @@ import {
   EternitiesMapDeckType,
   EternitiesMapSubType,
 } from '#/model/map/eternities';
-import { Card, Plane } from '#/model/card';
-import { Scope } from '#/components/create/types';
+import { Card } from '#/model/card';
+import { matchRequirements, requirements } from '#/components/create/requirements';
 
 import ButtonPicker, { Option } from '#/components/controls/ButtonPicker.vue';
 import DeckBuilder from '#/components/create/DeckBuilder.vue';
@@ -100,10 +99,20 @@ import BrandedFooter from '#/components/BrandedFooter.vue';
   },
 })
 export default class Create extends Vue {
+  public readonly mapTypeRequirements: Record<MapType, string> = {
+    [MapType.SINGLE]: '<b>5 Plane cards</b>.',
+    [MapType.MULTI]: '<b>10 cards</b>.',
+    [MapType.ETERNITIES]: '<b>25 Plane cards</b>.',
+  };
+
   public readonly mapTypeOptions: Array<Option<string>> = [{
     label: 'Single Deck',
     value: MapType.SINGLE,
     help: 'Rule 901.15. Single Planar Deck Option.',
+  }, {
+    label: 'Multiple Decks',
+    value: MapType.MULTI,
+    help: 'Each player provides their 10 cards Planar Deck.',
   }, {
     label: 'Eternities Map',
     value: MapType.ETERNITIES,
@@ -166,34 +175,12 @@ export default class Create extends Vue {
       && this.subType === EternitiesMapSubType.DUAL_DECK;
   }
 
-  public get scope(): Scope {
-    return (
-      this.mapType === MapType.ETERNITIES &&
-      this.deckType === EternitiesMapDeckType.PLANES
-    )
-      ? 'planes'
-      : 'all';
-  }
-
-  public get hasRequiredCards(): { valid: boolean, minCards?: number } {
-    if (!this.openDeckBuilder && this.deck.length === 0) {
-      return { valid: true };
-    }
-
-    switch (this.mapType) {
-      case MapType.SINGLE:
-        return {
-          valid: this.deck.filter(c => c instanceof Plane).length >= 5,
-          minCards: 5,
-        };
-      case MapType.ETERNITIES:
-        return {
-          valid: this.deck.filter(c => c instanceof Plane).length >= 25,
-          minCards: 25,
-        };
-      default:
-        return { valid: true };
-    }
+  public get hasRequiredCards(): { valid: boolean, requirements?: string } {
+    return {
+      valid: (this.mapType !== MapType.MULTI && (!this.openDeckBuilder && this.deck.length === 0))
+        || matchRequirements(this.deck, requirements[this.mapType]),
+      requirements: this.mapTypeRequirements[this.mapType],
+    };
   }
 
   public toggleDeckBuilder(): void {

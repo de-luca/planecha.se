@@ -26,12 +26,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
-import { Component as VueComponent } from '@vue/runtime-core';
+import { Component as VueComponent } from 'vue';
 import { useMain } from '#/store/main';
 import { MapType } from '#/model/map';
 import { EternitiesMapSpecs, EternitiesMapSubType } from '#/model/map/eternities';
 
 import Single from '#board/map/single/Single.vue';
+import Multi from '#board/map/multi/Multi.vue';
 import SingleDeck from '#board/map/eternities/SingleDeck.vue';
 import DualDeck from '#board/map/eternities/DualDeck.vue';
 import NotifCenter from '#board/NotifCenter.vue';
@@ -43,7 +44,7 @@ import DiceTray from '#board/menu/DiceTray.vue';
 
 @Component({
   components: {
-    Single, SingleDeck, DualDeck,
+    Single, Multi, SingleDeck, DualDeck,
     NotifCenter,
     ThemeSelector, MainMenu, OnlineControls,
     DiceTray,
@@ -58,6 +59,8 @@ export default class Board extends Vue {
     switch (specs.type) {
       case MapType.SINGLE:
         return Single;
+      case MapType.MULTI:
+        return Multi;
       case MapType.ETERNITIES:
         return (specs as EternitiesMapSpecs).subType === EternitiesMapSubType.SINGLE_DECK
           ? SingleDeck
@@ -68,7 +71,7 @@ export default class Board extends Vue {
   }
 
   public get online(): boolean {
-    return !!this.store.game;
+    return !!this.store.net;
   }
 }
 </script>

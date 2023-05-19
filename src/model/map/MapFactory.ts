@@ -7,6 +7,7 @@ import {
   EternitiesMapSpecs,
 } from './eternities';
 import { Single } from './single/Single';
+import { Multi } from './multi/Multi';
 import { Exported, MapInterface, MapType } from './MapInterface';
 import { CardProvider } from '#/services/CardProvider';
 
@@ -27,6 +28,13 @@ export class MapFactory {
             ? CardProvider.getCustomDeck(props.cards)
             : CardProvider.getDeck(),
         });
+      case MapType.MULTI:
+        return new Multi({
+          wallStates: new WallStates(),
+          deck: props.cards
+            ? CardProvider.getCustomDeck(props.cards)
+            : CardProvider.getDeck(),
+        });
       case MapType.ETERNITIES:
         return EternitiesMapFactory.build(
           {
@@ -36,8 +44,6 @@ export class MapFactory {
           props.encounterTriggers,
           props.cards,
         );
-      default:
-        throw new Error('Incompatible');
     }
   }
 

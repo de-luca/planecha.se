@@ -103,7 +103,7 @@ export default class OnlineControls extends Vue {
   public nameModalActive = false;
 
   public get online(): boolean {
-    return !!this.store.game;
+    return !!this.store.net;
   }
 
   public get playerName(): string {

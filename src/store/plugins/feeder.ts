@@ -20,7 +20,7 @@ export function createFeeder(context: PiniaPluginContext) {
             store.pushToFeed(`<b>${store.logName}</b> undid last action`);
             break;
           case 'reset': {
-            const type = store.mapConf.type === MapType.SINGLE
+            const type = store.config.type === MapType.SINGLE
               ? 'Single Deck'
               : 'Eternities Map';
             store.pushToFeed(`<b>${store.logName}</b> created new game <b>${type}</b>`);
