@@ -14,7 +14,7 @@ type ListInput = ExportedCard | string;
 
 export class CardProvider {
   private static raw: Map<string, Props> =
-    (cards as Array<Props>).reduce((acc, p) => acc.set(p.id, p), new Map<string, Props>);
+    (cards as Array<Props>).reduce((acc, p) => acc.set(p.id, p), new Map<string, Props>());
 
   public static getCard<T extends Card>(id: string): T {
     return CardFactory.build((this.raw.get(id) as Props)) as T;

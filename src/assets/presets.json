@@ -1,0 +1,262 @@
+[
+  {
+    "name": "Elemental Thunder",
+    "cards": [
+      "23fe1c21-c396-4ebf-a8b0-22d697952b34",
+      "b1eff630-b56c-48a5-ac21-836a60157b35",
+      "8c56bb41-a8d8-4b0f-bbb7-be8466dc9ed1",
+      "ece3b5ed-3c07-4586-bf99-72bc1aa6ccef",
+      "f017380f-97db-4a36-b111-b257aa17ebaf",
+      "11b3fcb2-0b66-4d8b-8e66-a21a5da1c1f5",
+      "07cc253d-e23c-450c-bfaf-5cb6a3a588ce",
+      "5ed6be01-af06-4f3d-8b43-ef8993c52c97",
+      "1300b5e7-d741-4723-bb15-dabd04cb0c11",
+      "1c4e174e-19fb-4c0a-b762-ef6d927392c9"
+    ],
+    "set": {
+      "name": "Planechase",
+      "code": "HOP",
+      "year": 2009
+    }
+  },
+  {
+    "name": "Metallic Dreams",
+    "cards": [
+      "82e67c57-6d7a-44cc-ba63-77ce887ab075",
+      "a04d05ed-1b9b-4407-8780-c75c102a94dd",
+      "f12400e5-8288-48e1-b3b7-0cc4f8d9ca67",
+      "cde8d8c4-5e2b-452f-b3e9-bb9f2e745ec9",
+      "2732b605-7c88-4995-b46e-62dc09e68919",
+      "e28deac5-d3c4-48e9-974c-093e3122f317",
+      "6491f511-87e6-4504-84f5-fe5cf44768d7",
+      "cd8ce6f1-9753-40a7-a625-5ed63c15c29e",
+      "f0c8ce35-b627-485c-bd64-d7eae47b8efa",
+      "f3f5a033-d063-4250-9cfe-4c3c1a2725f1"
+    ],
+    "set": {
+      "name": "Planechase",
+      "code": "HOP",
+      "year": 2009
+    }
+  },
+  {
+    "name": "Strike Force",
+    "cards": [
+      "15b979de-c8ee-4664-9ca7-6c4eb3346967",
+      "38f84e55-049c-441e-b4e2-1e207ab5dbe5",
+      "43a23de7-0738-4b03-b87d-5a7d1144825c",
+      "e5f8b2bb-e9bb-4a0a-aa88-7fa0299f52a9",
+      "3e0bcf65-1eaf-440f-a59b-0b11e1106135",
+      "29e3371d-aa41-46a9-921a-96565be47eff",
+      "70edae19-e278-401d-9772-508bd66320a6",
+      "61006acf-de38-420b-ab7a-685fbd64141c",
+      "c09d304a-87d0-4a2a-bcb2-e81341b2dbf2",
+      "ff76b576-8ad3-44f9-8043-80003a078e84"
+    ],
+    "set": {
+      "name": "Planechase",
+      "code": "HOP",
+      "year": 2009
+    }
+  },
+  {
+    "name": "Zombie Empire",
+    "cards": [
+      "8eb442a9-5e61-4e2e-983d-b49b04be2575",
+      "b21a71d7-f236-43e2-b576-0b5c9280f0cc",
+      "5503c308-560d-4d5f-a86a-4b06d9947ddc",
+      "81a0d96a-7ac8-4947-8779-2102c9b33d38",
+      "13e801cd-e537-4ea6-8c3d-21b142bdc026",
+      "1aaa60e4-47a8-4255-8a09-5f00922ccf6d",
+      "85592710-8637-4726-8b92-552b9be677c0",
+      "f133e42a-2962-4781-b413-ce2127f17c26",
+      "b53e06af-be18-4f75-9dd0-7494ec867b13",
+      "edd21d18-98d2-4e3f-8da1-1ba645b8f69c"
+    ],
+    "set": {
+      "name": "Planechase",
+      "code": "HOP",
+      "year": 2009
+    }
+  },
+  {
+    "name": "Chaos Reigns",
+    "cards": [
+      "fb9651f5-1aec-4812-a044-3c1b60e6651f",
+      "1f7daaf2-3206-4f52-928a-f5116b782367",
+      "e0dc9986-1099-4189-bfff-8f41bab9019d",
+      "72af7529-75bb-488f-801d-7148631b9e9b",
+      "c7241e4b-d2c7-4801-96a3-91bb998953a1",
+      "b2c95c7a-a04c-46ef-a879-6eb08e444093",
+      "d858e6db-9842-41d1-8006-574c8dcd98ed",
+      "e4b941d1-60cb-4e14-89a4-62a9785f6eda",
+      "c871974e-54e6-411f-8408-3708823fa2df",
+      "e19e8895-f8a4-4995-8dd4-2821c6469126"
+    ],
+    "set": {
+      "name": "Planechase 2012",
+      "code": "PC2",
+      "year": 2012
+    }
+  },
+  {
+    "name": "Night of the Ninja",
+    "cards": [
+      "ce8139b9-31f3-464d-86ea-7efbdbfce478",
+      "2387edac-765b-4502-bd3d-88be8ba7d0a4",
+      "662e5245-73e4-49ba-aece-c73f1bea7b6a",
+      "256770fe-c17d-45dd-bf05-36eeee240324",
+      "9d58f647-3f83-4f65-a944-c6236db7c422",
+      "53517dbf-7b32-423a-af76-afd39b876a1a",
+      "de53c948-b371-4f79-a965-33c44d0b44de",
+      "2d84be6d-49a5-4200-8cd3-d8653dfd0899",
+      "7812174b-2dc1-43e8-b98f-639905e20ab7",
+      "302e4ac2-522b-4a0a-850a-d856639ea2a4"
+    ],
+    "set": {
+      "name": "Planechase 2012",
+      "code": "PC2",
+      "year": 2012
+    }
+  },
+  {
+    "name": "Primordial Hunger",
+    "cards": [
+      "1799d361-85e7-4c04-aa04-6f83e6499573",
+      "9aa94de8-b114-4479-a771-c7bc0297be58",
+      "fc650404-991c-4639-b311-c35df81a254a",
+      "ac4fe2a2-76ff-49d9-b506-26a17b4bf892",
+      "6e008fdc-48f2-40ef-95bd-80d014535ca3",
+      "34a31865-b701-4ce1-8912-29fc41ecdda3",
+      "0a4bf88d-106a-413b-9d80-8775c1ff5ded",
+      "38bdd034-0375-403c-97ca-6f93a5e12e54",
+      "3fc15821-1add-4321-aecd-33f8a8c5f9a7",
+      "aa166578-b13b-4adb-a78e-d5183e987112"
+    ],
+    "set": {
+      "name": "Planechase 2012",
+      "code": "PC2",
+      "year": 2012
+    }
+  },
+  {
+    "name": "Savage Auras",
+    "cards": [
+      "25650a32-4014-4065-ad01-7357c3ad3995",
+      "d6ab4159-e04e-4991-8a9b-9da302c98e9d",
+      "805f9dc2-e172-481d-bae7-9a136a3d1e49",
+      "cb467901-a68d-4922-8ceb-867b582c8fe7",
+      "cb467901-a68d-4922-8ceb-867b582c8fe7",
+      "b54d9a4a-1d55-4ceb-96fd-2b1d5e46de14",
+      "69f06edb-dade-4e94-b563-e36a05e567f0",
+      "c85d3740-8c8d-4fef-ad33-a6f446b883ac",
+      "6dc67a65-31bf-4535-9e02-8f6d6ecefde5",
+      "a34b272b-084b-4ff1-8b02-d95116ccfeab"
+    ],
+    "set": {
+      "name": "Planechase 2012",
+      "code": "PC2",
+      "year": 2012
+    }
+  },
+  {
+    "name": "Growing Threat",
+    "cards": [
+      "4eebfaf3-18da-4661-b6a5-d874585e170a",
+      "f3b27908-ca10-4793-ab8e-6639c73cfadd",
+      "a2048704-0d22-435d-b819-269291f2981e",
+      "6552e3dd-ce35-4267-a25e-f5d4dceb8311",
+      "cd8ce6f1-9753-40a7-a625-5ed63c15c29e",
+      "aa166578-b13b-4adb-a78e-d5183e987112",
+      "8eb442a9-5e61-4e2e-983d-b49b04be2575",
+      "8c56bb41-a8d8-4b0f-bbb7-be8466dc9ed1",
+      "b60e8617-fc35-4c8a-beb0-4688b88484c4",
+      "f3f5a033-d063-4250-9cfe-4c3c1a2725f1"
+    ],
+    "set": {
+      "name": "March of the Machine Commander",
+      "code": "MOC",
+      "year": 2023
+    }
+  },
+  {
+    "name": "Cavalry Charge",
+    "cards": [
+      "86534917-5d51-4eba-9bf5-f9fc93c83c80",
+      "61c5f2cb-f39c-487c-9786-a8dad4663f4f",
+      "0ff2bbed-e435-4108-b02a-564a75abba40",
+      "c5f0da12-b76f-42fb-a52e-cd09535e72fb",
+      "503fcc43-dafd-484b-a97f-bbd11eed66de",
+      "c871974e-54e6-411f-8408-3708823fa2df",
+      "6e008fdc-48f2-40ef-95bd-80d014535ca3",
+      "c09d304a-87d0-4a2a-bcb2-e81341b2dbf2",
+      "d858e6db-9842-41d1-8006-574c8dcd98ed",
+      "1300b5e7-d741-4723-bb15-dabd04cb0c11"
+    ],
+    "set": {
+      "name": "March of the Machine Commander",
+      "code": "MOC",
+      "year": 2023
+    }
+  },
+  {
+    "name": "Call for Backup",
+    "cards": [
+      "9aa94de8-b114-4479-a771-c7bc0297be58",
+      "256770fe-c17d-45dd-bf05-36eeee240324",
+      "3e553881-bac7-4830-b739-3b8c6aa0ded6",
+      "6dc67a65-31bf-4535-9e02-8f6d6ecefde5",
+      "ce8139b9-31f3-464d-86ea-7efbdbfce478",
+      "0c1cb8e2-8ed4-4a0e-926b-4df5466c607c",
+      "00f00001-bd84-4dbf-a707-f4b1549100d4",
+      "3c200cc0-02b1-4a32-a910-5cd3c4d716b7",
+      "c907333b-eae8-444f-9da3-b193289f19e2",
+      "91fe554b-13db-451d-ab25-717ab2b70649"
+    ],
+    "set": {
+      "name": "March of the Machine Commander",
+      "code": "MOC",
+      "year": 2023
+    }
+  },
+  {
+    "name": "Divine Convocation",
+    "cards": [
+      "93b3acc1-2d41-4f5f-9225-7a30ea2d8158",
+      "2f3e71b6-0fd6-4ac5-a265-faaabe21177b",
+      "9d58f647-3f83-4f65-a944-c6236db7c422",
+      "022e38c3-fcea-428f-a0d0-a6cca057faa3",
+      "61b5984a-de6a-4d5a-8b20-e2fb3b553a34",
+      "2387edac-765b-4502-bd3d-88be8ba7d0a4",
+      "1f7daaf2-3206-4f52-928a-f5116b782367",
+      "2732b605-7c88-4995-b46e-62dc09e68919",
+      "3fc15821-1add-4321-aecd-33f8a8c5f9a7",
+      "38bdd034-0375-403c-97ca-6f93a5e12e54"
+    ],
+    "set": {
+      "name": "March of the Machine Commander",
+      "code": "MOC",
+      "year": 2023
+    }
+  },
+  {
+    "name": "Tinker Time",
+    "cards": [
+      "a7c6b72c-f9ec-4048-8e4c-99210e4e7b85",
+      "08427dab-3874-4a29-bd63-cbd16c1d229d",
+      "a0cb118e-6af1-41d2-847f-d685ced2165d",
+      "4abae901-eb47-4318-bf64-322a893c2833",
+      "cb7ae16a-9982-4782-9e20-07bb771d0601",
+      "43a23de7-0738-4b03-b87d-5a7d1144825c",
+      "f017380f-97db-4a36-b111-b257aa17ebaf",
+      "a34b272b-084b-4ff1-8b02-d95116ccfeab",
+      "0a4bf88d-106a-413b-9d80-8775c1ff5ded",
+      "ff76b576-8ad3-44f9-8043-80003a078e84"
+    ],
+    "set": {
+      "name": "March of the Machine Commander",
+      "code": "MOC",
+      "year": 2023
+    }
+  }
+]

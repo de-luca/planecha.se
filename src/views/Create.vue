@@ -33,23 +33,26 @@
 
       <div class="field">
         <div class="control main">
-          <button class="button is-secondary" @click.prevent="toggleDeckBuilder">
+          <button class="button is-secondary" @click.prevent="openDeckBuilder = true">
             Open deck customization
           </button>
         </div>
-        <p class="help is-danger" v-if="!hasRequiredCards.valid">
-          <fa icon="exclamation" fixed-width />
+        <p class="help is-danger" v-if="!isDeckValid.valid">
+          <fa icon="exclamation" fixed-width shake />
           Your deck does not satisfies minimum requirements <em>(In order not to explode)</em>:
-          <span v-html="hasRequiredCards.requirements"></span>
+          {{ isDeckValid.reqs.map(r => r.text).join(' - ') }}
+        </p>
+        <p class="help" v-else-if="canDefaults">
+          <fa icon="lightbulb" fixed-width shake />
+          {{ deckHelp }}
         </p>
       </div>
 
-      <deck-builder
+      <deck-customization
         v-if="openDeckBuilder"
-        :base-deck="deck"
-        :map-type="mapType"
-        :deck-type="deckType"
-        @done="setDeck"
+        @cancel="openDeckBuilder = false"
+        @use="setDeck"
+        :reqs="{mapType, deckType}"
       />
 
       <div class="field">
@@ -58,7 +61,7 @@
             class="button is-primary"
             :class="{ 'is-loading': creating }"
             type="submit"
-            :disabled="!hasRequiredCards.valid"
+            :disabled="!isDeckValid.valid"
           >
             Create game
           </button>
@@ -83,18 +86,18 @@ import {
   EternitiesMapSubType,
 } from '#/model/map/eternities';
 import { Card } from '#/model/card';
-import { matchRequirements, requirements } from '#/components/create/requirements';
 
 import ButtonPicker, { Option } from '#/components/controls/ButtonPicker.vue';
-import DeckBuilder from '#/components/create/DeckBuilder.vue';
 import EncounterSetup from '#/components/create/EncounterSetup.vue';
 import BrandedFooter from '#/components/BrandedFooter.vue';
+import DeckCustomization from '#/components/create/DeckCustomization.vue';
+import { DeckState, getDeckState } from '#/components/create/utils';
 
 @Component({
   components: {
     ButtonPicker,
     EncounterSetup,
-    DeckBuilder,
+    DeckCustomization,
     BrandedFooter,
   },
 })
@@ -175,12 +178,35 @@ export default class Create extends Vue {
       && this.subType === EternitiesMapSubType.DUAL_DECK;
   }
 
-  public get hasRequiredCards(): { valid: boolean, requirements?: string } {
-    return {
-      valid: (this.mapType !== MapType.MULTI && (!this.openDeckBuilder && this.deck.length === 0))
-        || matchRequirements(this.deck, requirements[this.mapType]),
-      requirements: this.mapTypeRequirements[this.mapType],
-    };
+  public get canDefaults(): boolean {
+    return this.mapType !== MapType.MULTI && this.deck.length === 0;
+  }
+
+  public get isDeckValid(): DeckState {
+    return this.canDefaults
+      ? { valid: true, reqs: [] }
+      : getDeckState(this.mapType, this.deck);
+  }
+
+  public get deckHelp(): string {
+    switch (true) {
+      case this.mapType === MapType.SINGLE:
+        return 'A default deck containing all Planes and Phenomena will be used.';
+      case this.mapType === MapType.ETERNITIES
+        && this.subType === EternitiesMapSubType.SINGLE_DECK
+        && this.deckType === EternitiesMapDeckType.PLANES:
+        return 'A default deck containing only Planes will be used.';
+      case this.mapType === MapType.ETERNITIES
+        && this.subType === EternitiesMapSubType.SINGLE_DECK
+        && this.deckType === EternitiesMapDeckType.ALL:
+        return 'A default deck containing all Planes and Phenomena will be used.';
+      case this.mapType === MapType.ETERNITIES
+        && this.subType === EternitiesMapSubType.DUAL_DECK
+        && this.deckType === EternitiesMapDeckType.PLANES:
+        return 'Two decks will be used. One with all Planes, the other with all Phenomena.';
+      default:
+        return '';
+    }
   }
 
   public toggleDeckBuilder(): void {
@@ -195,7 +221,7 @@ export default class Create extends Vue {
   public async create() {
     this.creating = true;
 
-    await this.store.init({
+    this.store.init({
       type: this.mapType,
       cards: this.deck.length !== 0 ? this.deck.map(c => c.id) : undefined,
       encounterTriggers: this.encounterConfig,

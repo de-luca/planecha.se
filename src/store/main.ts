@@ -16,11 +16,11 @@ import { eventBus } from '#/services/EventBus';
 import { ApplyInput } from '#/model/wall';
 import { DualDeck, EncounterInput } from '#/model/map/eternities';
 import { Phenomenon, Plane } from '#/model/card';
-import { SavedDeck } from '#/components/create/types';
 import { Clone, MaybeExported, RepoFactory, RepoInterface } from '#/model/ver';
 import { Net, NetInterface } from '#/model/net/Net';
 import { once, resolveAfter } from '#/utils/invoke';
 import { Patch, diff } from '#/utils/delta';
+import { SavedDeck } from '#/components/create/utils';
 
 export enum Op {
   CHAOS = 'chaos',

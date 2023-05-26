@@ -3,220 +3,183 @@
     <div class="modal-background"></div>
     <div class="modal-content">
 
-      <h1 class="title">Deck Customization</h1>
+      <h1 class="title">Build a Deck</h1>
 
-      <aside class="menu">
+      <!-- <aside class="menu">
         <ul class="menu-list">
           <li>
             <a
               v-if="scope === 'all'"
               @click="selectedGroup = 'all'"
-              :class="{'is-active': selectedGroup === 'all'}"
+              :class="{ 'is-active': selectedGroup === 'all' }"
             >All cards</a>
           </li>
           <li>
             <a
               @click="selectedGroup = 'planes'"
-              :class="{'is-active': selectedGroup === 'planes'}"
+              :class="{ 'is-active': selectedGroup === 'planes' }"
             >Planes</a>
           </li>
           <li>
             <a
               v-if="scope === 'all'"
               @click="selectedGroup = 'phenomena'"
-              :class="{'is-active': selectedGroup === 'phenomena'}"
+              :class="{ 'is-active': selectedGroup === 'phenomena' }"
             >Phenomenon</a>
           </li>
           <li>
             <a
               @click="selectedGroup = 'decks'"
-              :class="{'is-active': selectedGroup === 'decks'}"
+              :class="{ 'is-active': selectedGroup === 'decks' }"
             >Decks</a>
           </li>
         </ul>
-      </aside>
+      </aside> -->
 
       <div class="panel">
         <p class="panel-tabs" >
-          <a
-            v-if="scope === 'all'"
-            @click="selectedGroup = 'all'"
-            :class="{'is-active': selectedGroup === 'all'}"
-          >All cards</a>
-          <a
-            @click="selectedGroup = 'planes'"
-            :class="{'is-active': selectedGroup === 'planes'}"
-          >Planes</a>
-          <a
-            v-if="scope === 'all'"
-            @click="selectedGroup = 'phenomena'"
-            :class="{'is-active': selectedGroup === 'phenomena'}"
-          >Phenomenon</a>
-          <span></span>
-          <a @click="selectedGroup = 'decks'" :class="{'is-active': selectedGroup === 'decks'}">Decks</a>
+          <a v-if="kind === 'all'" @click="group = 'all'" :class="{ 'is-active': group === 'all' }">All cards</a>
+          <a @click="group = 'planes'" :class="{ 'is-active': group === 'planes' }">Planes</a>
+          <a v-if="kind === 'all'" @click="group = 'phenomena'" :class="{ 'is-active': group === 'phenomena' }">Phenomenon</a>
         </p>
 
-        <template v-if="selectedGroup === 'decks'">
-          <keep-alive>
-            <deck-list :scope="scope" @use="setDeck"/>
-          </keep-alive>
-        </template>
+        <div class="panel-block static">
+          <a @click="all" class="button all">All</a>
+          <a @click="none" class="button none">None</a>
+          <p class="control has-icons-right">
+            <input
+              @keypress.enter.prevent
+              class="input"
+              type="text"
+              placeholder="Search a card"
+              v-model="search"
+            >
+            <span class="icon is-right">
+              <button @click.prevent="search = ''" class="delete"></button>
+            </span>
+          </p>
+        </div>
+        <div class="card-list">
+          <template v-for="card in filtered" :key="card.id">
+            <tippy placement="bottom-end" duration="0" touch="false" hideOnClick="false">
+              <label class="panel-block">
+                <span class="panel-icon">
+                  <input type="checkbox" :value="card" v-model="deck">
+                </span>
+                <span>{{ card.name }}</span>
+                <span>
+                  <span class="tag is-light">{{ getType(card) }}</span>
+                </span>
+              </label>
 
-        <template v-else>
-          <div class="panel-block static">
-            <a @click="all" class="button all">All</a>
-            <a @click="none" class="button none">None</a>
-            <p class="control has-icons-right">
-              <input
-                @keypress.enter.prevent
-                class="input"
-                type="text"
-                placeholder="Search a card"
-                v-model="search"
-              >
-              <span class="icon is-right">
-                <button @click.prevent="search = ''" class="delete"></button>
-              </span>
-            </p>
-          </div>
-          <div class="card-list">
-            <template v-for="card in filtered" :key="card.id">
-              <tippy placement="bottom-end" duration="0" touch="false" hideOnClick="false">
-                <label class="panel-block">
-                  <span class="panel-icon">
-                    <input type="checkbox" :value="card" v-model="deck">
-                  </span>
-                  <span>{{ card.name }}</span>
-                </label>
-
-                <template #content>
-                  <img loading="lazy" class="card-preview" :src="buildImgSrc(card)">
-                </template>
-              </tippy>
-            </template>
-          </div>
-          <save-deck
-            :deck="deck"
-            :scope="scope"
-            class="panel-block static"
-          />
-        </template>
-      </div>
-
-      <div class="field use">
-        <div class="control">
-          <button
-            class="button is-fullwidth is-secondary"
-            @click.prevent="done"
-            :disabled="!deckState.valid"
-          >
-            <div v-if="deckState.valid">Use this Deck</div>
-            <div
-              v-else
-              v-for="req in deckState.reqs"
-              :class="{'has-text-success': req.valid, 'has-text-danger': !req.valid}"
-              v-html="req.text"
-            ></div>
-          </button>
+              <template #content>
+                <img loading="lazy" class="card-preview" :src="buildImgSrc(card)">
+              </template>
+            </tippy>
+          </template>
         </div>
       </div>
 
-      <div class="field close">
-        <div class="control">
-          <button class="button is-fullwidth is-secondary" @click.prevent="done">
-            Close builder
-          </button>
-        </div>
+      <div class="controls">
+        <button
+          @click.prevent="$emit('close')"
+          class="button is-secondary"
+        >
+          Cancel
+        </button>
+        <save-btn
+          @done="done"
+          class="proceed is-primary"
+          :state="deckState"
+          v-model="action"
+        ></save-btn>
       </div>
-
     </div>
 
-     <button
+    <button
       class="modal-close is-large"
       aria-label="cancel and close"
-      @click.prevent="cancel"
+      @click.prevent="$emit('close')"
     ></button>
   </div>
+
+  <name-modal
+    v-if="nameModalOpen"
+    @done="save"
+    @cancel="nameModalOpen = false"
+  ></name-modal>
 </template>
 
 <script lang="ts">
 import { Component, Prop } from 'vue-facing-decorator';
-import { Tippy } from 'vue-tippy';
-import { Scope, scopeMap } from './types';
-import SaveDeck from './builder/SaveDeck.vue';
-import DeckList from './builder/DeckList.vue';
-import { matchRequirements, requirements } from './requirements';
+import SaveBtn from './SaveBtn.vue';
+import NameModal from './NameModal.vue';
+import { DeckKind, DeckReqs, DeckState, ProceedType, getDeckState } from './utils';
 import { Imgable } from '#/components/Imgable';
-import { Card } from '#/model/card';
+import { Card, Phenomenon, Plane } from '#/model/card';
 import { CardProvider } from '#/services/CardProvider';
+
+
 import { MapType } from '#/model/map';
 import { EternitiesMapDeckType } from '#/model/map/eternities';
+import { useMain } from '#/store/main';
 
+type Group = 'all' | 'planes' | 'phenomena';
 
-type Group = Scope | 'decks';
+const GROUP_MAP = {
+  'all': Card,
+  'planes': Plane,
+  'phenomena': Phenomenon,
+};
 
 @Component({
-  emits: ['done'],
-  components: { DeckList, SaveDeck, Tippy },
+  emits: ['close', 'use'],
+  components: { NameModal, SaveBtn },
 })
 export default class DeckBuilder extends Imgable {
-  @Prop({ required: false, default: [] })
-  public baseDeck: Array<Card>;
   @Prop({ required: true })
-  public mapType: MapType;
-  @Prop({ required: false })
-  public deckType?: EternitiesMapDeckType;
+  public reqs: DeckReqs;
+
+  private store = useMain();
+
+  public nameModalOpen = false;
 
   public cards: Array<Card> = CardProvider.getAllCards();
+  public group: Group = 'all';
   public search = '';
+  public action: ProceedType = 'save_use';
+
   public deck: Array<Card> = [];
-  public selectedGroup: Group;
 
   public created() {
-    this.selectedGroup = this.scope;
-    this.deck = [...this.baseDeck];
+    this.group = this.kind;
   }
 
   public mounted() {
-    if (this.baseDeck.length === 0) {
-      this.all();
-    }
+    this.all();
   }
 
-  public buildImgSrc(card: Card): string {
-    return `/cards/${card.id}.jpg`;
-  }
-
-  public get scope(): Scope {
+  public get kind(): DeckKind {
     return (
-      this.mapType === MapType.ETERNITIES &&
-      this.deckType === EternitiesMapDeckType.PLANES
+      this.reqs.mapType === MapType.ETERNITIES &&
+      this.reqs.deckType === EternitiesMapDeckType.PLANES
     )
       ? 'planes'
       : 'all';
   }
 
-  public get deckState(): { valid: boolean, reqs: Array<{ valid: boolean; text: string }> } {
-    const req = requirements[this.mapType];
-    const counts = req.map(() => 0);
-    for (const card of this.deck) {
-      req.forEach((r, i) => (card instanceof r.type) && counts[i]++);
-    }
-    const reqs = req.map((r, i) => {
-      const valid = counts[i] >= r.min && counts[i] <= (r.max ?? Infinity);
-      return { valid, text: `${r.name}: ${counts[i]}/${r.min}` };
-    });
-    return { reqs, valid: reqs.every(r => r.valid) };
+  public get filtered(): Array<Card> {
+    return this.cards
+      .filter(c => c instanceof GROUP_MAP[this.group])
+      .filter(c => c.name.toLowerCase().includes(this.search));
   }
 
-  public get filtered(): Array<Card> {
-    if (this.selectedGroup === 'decks') {
-      return [];
-    }
+  public get deckState(): DeckState {
+    return getDeckState(this.reqs.mapType, this.deck);
+  }
 
-    return this.cards
-      .filter(c => c instanceof scopeMap[this.selectedGroup as Scope])
-      .filter(c => c.name.toLowerCase().includes(this.search));
+  public getType(card: Card): string {
+    return card instanceof Plane ? 'Plane' : 'Phenomenon';
   }
 
   public all(): void {
@@ -237,16 +200,28 @@ export default class DeckBuilder extends Imgable {
     });
   }
 
-  public cancel(): void {
-    this.$emit('done', this.baseDeck);
+  public save(deckName: string): void {
+    this.nameModalOpen = false;
+    this.store.addDeck(deckName, {
+      list: this.deck.map(c => c.id),
+      kind: this.deck.some(c => c instanceof Phenomenon) ? 'all' : 'planes',
+      counts: this.deck.reduce((counts, card) => {
+        counts.cards++;
+        counts[card instanceof Plane ? 'planes' : 'phenomena']++;
+        return counts;
+      }, { cards: 0, planes: 0, phenomena: 0 }),
+    });
+    if (this.action === 'save_use') {
+      return this.$emit('use', this.deck.map(c => c.id));
+    }
+    this.$emit('close');
   }
 
   public done(): void {
-    this.$emit('done', this.deck);
-  }
-
-  public setDeck(deck: Array<Card>): void {
-    this.deck = deck;
+    if (this.action === 'use') {
+      return this.$emit('use', this.deck.map(c => c.id));
+    }
+    this.nameModalOpen = true;
   }
 }
 </script>
@@ -269,7 +244,11 @@ export default class DeckBuilder extends Imgable {
       "use   builder"
     ;
 
-    h1.title { display: none };
+    h1.title {
+      display: none
+    }
+
+    ;
   }
 
   max-width: 800px;
@@ -304,13 +283,16 @@ export default class DeckBuilder extends Imgable {
     color: var(--text-color);
     border-radius: 0;
 
-    &:hover, &.is-active {
+    &:hover,
+    &.is-active {
       background-color: var(--secondary);
     }
   }
 }
 
-.button.all, .button.none, .button.save {
+.button.all,
+.button.none,
+.button.save {
   color: var(--text-color);
   background-color: var(--bg-color);
   border-color: var(--border-color);
@@ -321,7 +303,7 @@ export default class DeckBuilder extends Imgable {
 
   &:focus {
     border-color: #485fc7;
-    box-shadow: 0 0 0 .125em rgba(72,95,199,.25);
+    box-shadow: 0 0 0 .125em rgba(72, 95, 199, .25);
   }
 }
 
@@ -339,7 +321,8 @@ export default class DeckBuilder extends Imgable {
   background-color: var(--bg-color);
   border: 1px solid var(--border-color);
 
-  .panel-tabs:not(:last-child), .panel-block:not(:last-child) {
+  .panel-tabs:not(:last-child),
+  .panel-block:not(:last-child) {
     border-bottom-color: var(--border-color);
   }
 
@@ -382,6 +365,20 @@ export default class DeckBuilder extends Imgable {
       background-color: var(--secondary);
     }
 
+    .panel-icon {
+      flex-grow: 0;
+    }
+
+    span {
+      flex: 1 1 0px;
+      align-self: center;
+
+      .tag {
+        color: var(--secondary);
+        background-color: var(--primary);
+      }
+    }
+
     input {
       border-color: var(--border-color);
     }
@@ -398,35 +395,13 @@ export default class DeckBuilder extends Imgable {
   }
 }
 
-img.card-preview {
-  filter: drop-shadow(1px 1px 1px #585858);
-  border-radius: var(--card-radius);
-}
+.controls {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
 
-.field {
-  margin: 0;
-  padding: 0 .5rem;
-
-  &.use {
-    @media screen and (max-height: 450px) and (orientation: landscape) {
-      grid-area: use;
-      padding-bottom: .5rem;
-    }
-
-    button {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-    }
-  }
-
-  &.close {
-    display: none;
-
-    @media screen and (max-height: 450px) and (orientation: landscape) {
-      display: block;
-      grid-area: close;
-    }
+  .proceed {
+    flex-grow: 1;
   }
 }
 
