@@ -1,57 +1,57 @@
 import { PiniaPluginContext } from 'pinia';
 import { Card, Plane } from '#/model/card';
 import {
-  BuildProps,
   ChaosInput,
   MapType,
-  ResolveRevealInput,
   UpdateCounterInput,
 } from '#/model/map';
+import { isMain } from '../main';
 
 const chaos = '<abbr class="symbol chaos" title="chaos">{CHAOS}</abbr>';
 const plnwlk = '<abbr class="symbol planeswalk" title="planeswalk">{CHAOS}</abbr>';
 
-export function createFeeder(context: PiniaPluginContext) {
-  if (context.store.$id === 'main') {
-    context.store.$onAction(({ after, name: action, args, store }) => {
+function gameType(type: MapType): string {
+  switch (type) {
+    case MapType.SINGLE:
+      return 'Single Deck';
+    case MapType.MULTI:
+      return 'Multiple Decks';
+    case MapType.ETERNITIES:
+      return 'Eternities Map';
+  }
+}
+
+export function createFeeder({ store }: PiniaPluginContext) {
+  if (isMain(store)) {
+    store.$onAction(({ after, name: action, args, store }) => {
       after((returned) => {
         switch (action) {
           case 'undo':
-            store.pushToFeed(`<b>${store.logName}</b> undid last action`);
-            break;
-          case 'reset': {
-            const type = store.config.type === MapType.SINGLE
-              ? 'Single Deck'
-              : 'Eternities Map';
-            store.pushToFeed(`<b>${store.logName}</b> created new game <b>${type}</b>`);
-            break;
-          }
-          case 'init': {
-            const type = (args[0] as BuildProps).type === MapType.SINGLE
-              ? 'single Deck'
-              : 'Eternities Map';
-            store.pushToFeed(`<b>${store.logName}</b> created new game <b>${type}</b>`);
-            break;
-          }
-          case 'startGame': {
-            store.pushToFeed(`Game starts on <b>${store.map.active[0].name}</b>`);
-            break;
-          }
-          case 'planeswalk': {
-            store.pushToFeed(
+            return store.pushToFeed(`<b>${store.logName}</b> undid last action`);
+
+          case 'reset':
+          case 'init':
+            return store.pushToFeed(`<b>${store.logName}</b> created new game <b>${gameType(store.config.type)}</b>`);
+
+          case 'startGame':
+            return store.pushToFeed(store.isMulti
+              ? `Game starts`
+              : `Game starts on <b>${store.map.active[0].name}</b>`
+            );
+
+          case 'planeswalk':
+            return store.pushToFeed(
               `<b>${store.logName}</b> ` +
               (store.map?.active[0] instanceof Plane ? `${plnwlk} to` : 'encountered') +
               ` <b>${store.map?.active[0].name}</b>`,
             );
-            break;
-          }
-          case 'chaos': {
-            store.pushToFeed(
+
+          case 'chaos':
+            return store.pushToFeed(
               `<b>${store.logName}</b> triggered ${chaos} ` +
               `on <b>${(args[0] as ChaosInput).card.name}</b>`,
             );
-            break;
-          }
+
           case 'updateCounters': {
             const payload = args[0] as UpdateCounterInput;
             const plane = store.map.active.find((c: Card) => c.id === payload.planeId) as Plane;
@@ -59,45 +59,43 @@ export function createFeeder(context: PiniaPluginContext) {
               `${payload.change > 0 ? 'added ' : 'removed '} <b>${Math.abs(payload.change)}</b> ` +
               `(<b>${plane.counter?.value}</b>) counter on ` +
               `<b>${plane.name}</b>`;
-            store.pushToFeed(message);
-            break;
+            return store.pushToFeed(message);
           }
+
           case 'resolveReveal': {
-            const payload = args[0] as ResolveRevealInput;
-            if (payload.top.length > 0) {
+            if (args[0].top.length > 0) {
               store.pushToFeed(
                 `<b>${store.logName}</b> putted on top ` +
-                `<b>${payload.top.map(c => c.name).join('</b>, <b>')}</b>`,
+                `<b>${args[0].top.map(c => c.name).join('</b>, <b>')}</b>`,
               );
             }
-            if (payload.bottom.length > 0) {
+            if (args[0].bottom.length > 0) {
               store.pushToFeed(
                 `<b>${store.logName}</b> putted at the bottom ` +
-                `<b>${payload.bottom.map(c => c.name).join('</b>, <b>')}</b>`,
+                `<b>${args[0].bottom.map(c => c.name).join('</b>, <b>')}</b>`,
               );
             }
-            break;
+            return;
           }
 
           case 'rollDice':
-            store.pushToFeed(`<b>${store.logName}</b> rolled a D${args[0]} and got <b>${returned}</b>`);
-            break;
+            return store.pushToFeed(`<b>${store.logName}</b> rolled a D${args[0]} and got <b>${returned}</b>`);
+
           case 'rollPlanarDice':
-            store.pushToFeed(
+            return store.pushToFeed(
               `<b>${store.logName}</b> rolled the Planar die and got <b>${
                 (returned as PlanarDiceResult) === 'PLANESWALK'
                   ? plnwlk
                   : (returned as PlanarDiceResult) === 'CHAOS' ? chaos : 'No Effect'
               }</b>`,
             );
-            break;
+
           case 'flipCoin':
-            store.pushToFeed(
+            return store.pushToFeed(
               `<b>${store.logName}</b> flipped a coin and got <b>${
                 (returned as CoinFlipResult) === 'HEADS' ? 'Heads' : 'Tails'
               }</b>`,
             );
-            break;
         }
       });
     }, true);

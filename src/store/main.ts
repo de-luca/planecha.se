@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import { Store, defineStore } from 'pinia';
 
 import {
   BuildProps,
@@ -102,6 +102,10 @@ function getState(): State {
 
 export type MainStore = ReturnType<typeof useMain>;
 export type MainStoreState = Omit<MainStore, keyof ReturnType<typeof defineStore>>;
+
+export function isMain(store: Store): store is MainStore {
+  return store.$id === 'main';
+}
 
 export const useMain = defineStore('main', {
   state: getState,

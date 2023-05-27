@@ -1,5 +1,5 @@
 import { PiniaPluginContext } from 'pinia';
-import type { MainStore } from '../main';
+import { isMain } from '../main';
 
 const actions = [
   'init',
@@ -14,9 +14,8 @@ const actions = [
   'updateWallState',
 ];
 
-export function versionizer(context: PiniaPluginContext) {
-  if (context.store.$id === 'main') {
-    const store = context.store as MainStore;
+export function versionizer({ store }: PiniaPluginContext) {
+  if (isMain(store)) {
     store.$onAction(({ after, store, name }) => {
       if (actions.includes(name)) {
         after(() => store.sync(store.repo.commit(name, store.map.dump())));
