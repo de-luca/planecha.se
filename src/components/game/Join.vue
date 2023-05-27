@@ -27,7 +27,7 @@
       <form v-else @submit.prevent="join">
         <div class="content">
           <h3>
-            Game type: <i>{{ preflightData?.mapType }}</i>
+            Game type: <b>{{ gameType }}</b>
           </h3>
           <div class="game-status">
             <h4 class="has-started">
@@ -56,18 +56,18 @@
               Open deck customization
             </button>
           </div>
-          <!-- <p class="help is-danger" v-if="!hasRequiredCards.valid">
-            <fa icon="exclamation" fixed-width />
-            Your deck does not satisfies minimum requirements <em>(In order not to explode)</em>:
-            <span v-html="hasRequiredCards.requirements"></span>
-          </p> -->
+          <p class="help is-danger" v-if="!isDeckValid.valid">
+            <fa icon="exclamation" fixed-width shake />
+            To join you'll need to pick a 10 cards Planar Deck
+            ({{ isDeckValid.reqs.map(r => r.text).join(' - ') }})
+          </p>
         </div>
 
-        <deck-builder
+        <deck-customization
           v-if="isMulti && openDeckBuilder"
-          :base-deck="deck"
-          :map-type="preflightData?.mapType"
-          @done="setDeck"
+          @cancel="openDeckBuilder = false"
+          @use="setDeck"
+          :reqs="{ mapType: preflightData?.mapType }"
         />
 
         <div class="field join-game">
@@ -75,7 +75,7 @@
             <button
               class="button is-primary"
               :class="{ 'is-loading': joining }"
-              :disabled="joining"
+              :disabled="joining || !isDeckValid.valid"
               type="submit"
             >
               Join game
@@ -98,9 +98,10 @@ import { Card } from '#/model/card';
 
 import NameInput from '#/components/controls/NameInput.vue';
 import BrandedFooter from '#/components/BrandedFooter.vue';
-import DeckBuilder from '#/components/create/DeckBuilder.vue';
+import DeckCustomization from '#/components/create/DeckCustomization.vue';
+import { DeckState, getDeckState } from '../create/utils';
 
-@Component({ components: { BrandedFooter, DeckBuilder, NameInput } })
+@Component({ components: { BrandedFooter, DeckCustomization, NameInput } })
 export default class Join extends Vue {
   private store = useMain();
 
@@ -125,8 +126,26 @@ export default class Join extends Vue {
       .finally(() => this.loading = false);
   }
 
+  public get gameType(): string {
+    switch (this.preflightData?.mapType) {
+      case MapType.SINGLE:
+        return 'Single Deck';
+      case MapType.MULTI:
+        return 'Multiple Decks';
+      case MapType.ETERNITIES:
+        return 'Eternities Map';
+    }
+    return '';
+  }
+
   public get isMulti(): boolean {
     return this.preflightData?.mapType === MapType.MULTI;
+  }
+
+  public get isDeckValid(): DeckState {
+    return !this.isMulti
+      ? { valid: true, reqs: [] }
+      : getDeckState(this.preflightData!.mapType, this.deck);
   }
 
   public toggleDeckBuilder(): void {
@@ -136,7 +155,6 @@ export default class Join extends Vue {
   public setDeck(deck: Array<Card>): void {
     this.openDeckBuilder = false;
     this.deck = deck;
-    console.log(this.deck);
   }
 
   public async join() {

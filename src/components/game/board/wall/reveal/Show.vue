@@ -62,10 +62,6 @@ export default class Show extends Imgable {
 
   public activeTab = 'relevant';
 
-  created() {
-    console.log(this.revealed, this.config);
-  }
-
   public confirm(): void {
     const picked = this.config.sendShownTo === 'top' ? this.revealed.relevant : [];
     const left = this.revealed.others.concat(

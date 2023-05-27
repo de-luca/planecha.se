@@ -19,11 +19,7 @@ export function versionizer(context: PiniaPluginContext) {
     const store = context.store as MainStore;
     store.$onAction(({ after, store, name }) => {
       if (actions.includes(name)) {
-        after(() => {
-          const test = store.repo.commit(name, store.map.dump());
-          console.log(test);
-          store.sync(test);
-        });
+        after(() => store.sync(store.repo.commit(name, store.map.dump())));
       }
     }, true);
   }

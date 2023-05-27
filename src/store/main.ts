@@ -7,6 +7,7 @@ import {
   MapFactory,
   MapInterface,
   MapType,
+  Multi,
   PlaneswalkInput,
   ResolveRevealInput,
   RevealUntilInput,
@@ -185,6 +186,9 @@ export const useMain = defineStore('main', {
     },
     bye(payload: ByePayload): void {
       this.mates.delete(payload.id);
+      if (this.isMulti) {
+        (this.map as Multi).removeMate(payload.id);
+      }
     },
 
     init(payload: BuildProps) {
@@ -222,16 +226,15 @@ export const useMain = defineStore('main', {
 
       return this.net!.join(({ store, done }) =>
         resolveAfter(
-          (data, peer) =>
-            store.apply({ event: '__init__', delta: diff<MaybeExported>({}, data.map)}, peer),
-          this.net!.peerCount,
-          (data) => {
+          (data, peer) => {
             this.feed = data.feed;
-            this.net!.setInitHandler((store) => (data, peer) =>
-              store.apply({ event: '__init__', delta: diff<MaybeExported>({}, data.map) }, peer),
-            );
+            store.apply({ event: '__init__', delta: diff<MaybeExported>({}, data.map) }, peer);
             done();
           },
+          1,
+          () => this.net!.setInitHandler((store) => (data, peer) =>
+            store.apply({ event: '__init__', delta: diff<MaybeExported>({}, data.map) }, peer),
+          ),
         ),
       );
     },

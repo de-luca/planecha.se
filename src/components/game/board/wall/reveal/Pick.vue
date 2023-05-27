@@ -71,10 +71,6 @@ export default class Pick extends Imgable {
   public activeTab = 'relevant';
   public selected: Card | null = null;
 
-  created() {
-    console.log(this.revealed, this.config);
-  }
-
   public confirm(): void {
     const result: PickedLeft = {
       picked: [this.selected as Card],

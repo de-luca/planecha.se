@@ -31,8 +31,11 @@ export class Multi extends BaseMap {
     this.active.forEach(c => c.enter(this._wallStates, input.initiator));
   }
 
-  public apply(p: Patch, peer: string): void {
+  public removeMate(peer: string): void {
+    this.mateStates.delete(peer);
+  }
 
+  public apply(p: Patch, peer: string): void {
     if (p.event === 'startGame') {
       for (const mateState of this.mateStates.values()) {
         mateState.start();
@@ -55,7 +58,6 @@ export class Multi extends BaseMap {
     }
 
     this.mateStates.get(peer)?.apply(p, peer);
-    console.log(this.mateStates);
   }
 
   public resolve(input: ResolveInput): void {
