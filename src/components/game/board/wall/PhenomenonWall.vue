@@ -4,7 +4,7 @@
     <div class="modal-content">
       <h1 class="title">{{ config.mateName }} encountered a Phenomenon</h1>
       <img :src="imgSrc">
-      <planeswalk-btn class="planeswalk-btn" @click="$emit('resolve')" />
+      <planeswalk-btn title="Encounter" @click="$emit('resolve')" />
     </div>
   </div>
 </template>
@@ -26,8 +26,6 @@ export default class PhenomenonWall extends Imgable {
   public config: WallConfig;
   @Prop({ required: true })
   public phenomenon: Phenomenon;
-  @Prop({ required: false })
-  public resolver?: () => void;
 
   public get imgSrc(): string {
     return this.buildImgSrc(this.phenomenon);
@@ -59,11 +57,6 @@ export default class PhenomenonWall extends Imgable {
       drop-shadow(0 0 5px #DC143C)
       drop-shadow(0 0 5px #DC143C)
     ;
-  }
-
-  .planeswalk-btn {
-    height: 8rem;
-    width: 8rem;
   }
 }
 </style>

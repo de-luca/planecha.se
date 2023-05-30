@@ -201,8 +201,7 @@ export default class Create extends Vue {
         && this.deckType === EternitiesMapDeckType.ALL:
         return 'A default deck containing all Planes and Phenomena will be used.';
       case this.mapType === MapType.ETERNITIES
-        && this.subType === EternitiesMapSubType.DUAL_DECK
-        && this.deckType === EternitiesMapDeckType.PLANES:
+        && this.subType === EternitiesMapSubType.DUAL_DECK:
         return 'Two decks will be used. One with all Planes, the other with all Phenomena.';
       default:
         return '';

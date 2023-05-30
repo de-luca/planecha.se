@@ -8,6 +8,10 @@ export abstract class Map extends Imgable {
   protected store = useMain();
   public showStackWall = false;
 
+  public planeswalk(..._params: Array<unknown>): void {
+    throw new Error('Implement Me!');
+  }
+
   public chaos(): void {
     if (
       this.store.map.active.length > 1 &&

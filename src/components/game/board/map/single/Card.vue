@@ -2,13 +2,13 @@
   <div v-if="!hidden" class="card-container">
 
     <div v-if="counters" class="counters tags has-addons">
-      <span class="tag is-primary is-medium minus" @click="update(-1)">
+      <span class="tag is-primary minus" @click="update(-1)">
         <fa icon="minus" fixed-width />
       </span>
-      <span class="tag is-primary is-medium value">
+      <span class="tag is-primary value">
         {{ counters.value }}
       </span>
-      <span class="tag is-primary is-medium plus" @click="update(1)">
+      <span class="tag is-primary plus" @click="update(1)">
         <fa icon="plus" fixed-width />
       </span>
     </div>
@@ -79,7 +79,7 @@ img {
 .counters {
   position: absolute;
   right: 0;
-  top: calc(-25px - 1rem);
+  top: -1.75rem;
   z-index: 10;
 
   .tag {

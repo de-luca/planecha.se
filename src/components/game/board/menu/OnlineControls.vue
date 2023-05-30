@@ -1,25 +1,28 @@
 <template>
   <div
     :class="{ 'is-active': active }"
-    class="dropdown is-right"
+    class="dropdown"
   >
-    <div class="dropdown-trigger">
-      <button
-        @click="active = !active"
-        @keyup.space.prevent
-        class="button is-outlined"
-        aria-haspopup="true"
-        aria-controls="dropdown-menu"
-      >
-        <span class="icon is-medium">
-          <fa icon="user-plus" fixed-width />
-        </span>
-      </button>
-    </div>
+    <Tip>
+      <template #btn>
+        <div class="dropdown-trigger">
+          <button
+            @click="active = !active"
+            @keyup.space.prevent
+            class="button is-ghost"
+            aria-haspopup="true"
+            aria-controls="dropdown-menu"
+          >
+            <fa icon="user-plus" fixed-width size="lg"/>
+          </button>
+        </div>
+      </template>
+      <template #tip>Online controls</template>
+    </Tip>
 
     <div class="click-trap" @click="active = false"></div>
 
-    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+    <div class="dropdown-menu is-side" id="dropdown-menu" role="menu">
       <div class="dropdown-content">
         <div v-if="!online" class="dropdown-item">
           <div class="field">
@@ -84,6 +87,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
+import Tip from './Tip.vue';
 import { useMain } from '#/store/main';
 
 import FeedbackButton from '#/components/controls/FeedbackButton.vue';
@@ -94,7 +98,7 @@ enum BtnText {
   SUCCESS = 'Copied!',
 }
 
-@Component({ components: { FeedbackButton, NameModal } })
+@Component({ components: { FeedbackButton, NameModal, Tip } })
 export default class OnlineControls extends Vue {
   private store = useMain();
   private copyBtnText: BtnText = BtnText.IDLE;
@@ -165,6 +169,8 @@ export default class OnlineControls extends Vue {
 
 .dropdown-menu {
   width: 30rem;
+  top: -100%;
+  left: 5rem;
 
   .dropdown-content {
     color: var(--text-color);

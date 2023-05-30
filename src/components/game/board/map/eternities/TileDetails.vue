@@ -28,7 +28,6 @@
       </div>
       <planeswalk-btn
         v-if="(Math.abs(tile.coords.x) + Math.abs(tile.coords.y) === 1)"
-        class="planeswalk-btn"
         @click="$emit('planeswalk', { ...tile.coords })"
       />
     </div>
@@ -83,10 +82,6 @@ export default class TileDetails extends Imgable {
   display: flex;
   flex-direction: row;
 
-  .modal-close {
-    top: calc(20px + 1rem + 3rem);
-  }
-
   .modal-background {
     cursor: pointer;
   }
@@ -103,11 +98,6 @@ export default class TileDetails extends Imgable {
 
     img {
       border-radius: 3.5% / 4.7%;
-    }
-
-    .planeswalk-btn {
-      height: 8rem;
-      width: 8rem;
     }
 
     .multi {

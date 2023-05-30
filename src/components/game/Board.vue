@@ -7,17 +7,23 @@
         <div>⟁</div>
         <div>⟁</div>
       </div>
-
       <div class="spacer"></div>
-
-      <online-controls />
-      <dice-tray />
-      <main-menu />
+      <MapActions @planeswalk="planeswalk" @chaos="chaos" />
+      <DiceBtn />
+      <UndoBtn />
+      <div class="spacer"></div>
+      <OnlineControls />
+      <MainMenu />
+      <div class="spacer"></div>
+      <div class="spacer"></div>
+      <DeckStatus />
     </div>
 
     <div class="map-container">
-      <component :is="mapComponent" />
+      <component ref="map" :is="mapComponent" />
     </div>
+
+    <Feed class="feed" />
 
     <notif-center />
 
@@ -31,6 +37,8 @@ import { useMain } from '#/store/main';
 import { MapType } from '#/model/map';
 import { EternitiesMapSpecs, EternitiesMapSubType } from '#/model/map/eternities';
 
+import { Map as CmpMap } from '#board/map/Map';
+
 import Single from '#board/map/single/Single.vue';
 import Multi from '#board/map/multi/Multi.vue';
 import SingleDeck from '#board/map/eternities/SingleDeck.vue';
@@ -40,14 +48,21 @@ import ThemeSelector from '#/components/controls/ThemeSelector.vue';
 
 import MainMenu from '#board/menu/MainMenu.vue';
 import OnlineControls from '#board/menu/OnlineControls.vue';
-import DiceTray from '#board/menu/DiceTray.vue';
+
+import DiceBtn from '#board/menu/DiceBtn.vue';
+import DeckStatus from '#board/menu/DeckStatus.vue';
+import UndoBtn from '#board/menu/UndoBtn.vue';
+import MapActions from '#board/menu/MapActions.vue';
+
+import Feed from '#board/feed/Feed.vue';
 
 @Component({
   components: {
+    DeckStatus, DiceBtn, UndoBtn, MapActions, Feed,
+
     Single, Multi, SingleDeck, DualDeck,
     NotifCenter,
     ThemeSelector, MainMenu, OnlineControls,
-    DiceTray,
   },
 })
 export default class Board extends Vue {
@@ -73,31 +88,40 @@ export default class Board extends Vue {
   public get online(): boolean {
     return !!this.store.net;
   }
+
+  public planeswalk(): void {
+    (this.$refs.map as CmpMap).planeswalk();
+  }
+
+  public chaos() {
+    (this.$refs.map as CmpMap).chaos();
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .board {
   height: 100%;
-  padding: 1rem;
   overflow: hidden;
   display: grid;
-  grid-template-rows: 3rem 1fr;
+  grid-template-columns: 5rem 1fr 20px;
+  grid-template-areas: "nav map feed";
   gap: 1rem;
-  grid-template-areas:
-    "nav"
-    "map"
-  ;
 }
 
 .nav {
   grid-area: nav;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   gap: .5rem;
   z-index: 420;
+
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+
+  border-right: 1px solid var(--border-color);
 
   .spacer {
     flex-grow: 1;
@@ -111,9 +135,9 @@ export default class Board extends Vue {
       position: relative;
       z-index: 1;
       display: inline-block;
-      font-size: 2.5rem;
+      font-size: 1.5rem;
       line-height: 3rem;
-      width: 3rem;
+      width: 1.5rem;
       text-align: center;
 
       &:hover {
@@ -125,15 +149,19 @@ export default class Board extends Vue {
         transform: rotate(180deg)
       }
       &:nth-child(2) {
-        transform: translateX(-1.5rem);
+        transform: translateX(-.9rem);
         z-index: 2;
       }
       &:nth-child(3) {
-        transform: rotate(180deg) translateX(3rem);
+        transform: rotate(180deg) translateX(1.3rem);
         position: absolute;
       }
     }
   }
+}
+
+.feed {
+  grid-area: feed;
 }
 
 .map-container {

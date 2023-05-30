@@ -1,22 +1,25 @@
 <template>
-  <div :class="{ 'is-active': active, 'is-up': !inGame }" class="dropdown is-right">
-    <div class="dropdown-trigger">
-      <a
-        @click="active = !active"
-        @keyup.space.prevent
-        :class="{ 'button is-outlined': inGame, 'not-button': !inGame }"
-        aria-haspopup="true"
-        aria-controls="main-menu"
-      >
-        <span class="icon is-medium">
-          <fa icon="cogs" fixed-width />
-        </span>
-      </a>
-    </div>
+  <div :class="{ 'is-active': active, 'is-up': !inGame }" class="dropdown">
+    <Tip>
+      <template #btn>
+        <div class="dropdown-trigger">
+          <button
+            @click="active = !active"
+            @keyup.space.prevent
+            class="button is-ghost"
+            aria-haspopup="true"
+            aria-controls="main-menu"
+          >
+            <fa icon="cogs" fixed-width size="lg" />
+          </button>
+        </div>
+      </template>
+      <template #tip>Configuration</template>
+    </Tip>
 
     <div id="click-trap" @click="active = false"></div>
 
-    <div class="dropdown-menu" id="main-menu" role="menu">
+    <div class="dropdown-menu is-side" id="main-menu" role="menu">
       <div class="dropdown-content">
         <div class="dropdown-item spaced">
           <span>Theme:</span>
@@ -59,12 +62,15 @@
 import { Component, Vue } from 'vue-facing-decorator';
 import CloseModal from './modals/CloseModal.vue';
 import ResetModal from './modals/ResetModal.vue';
+import Tip from './Tip.vue';
 import { useMain } from '#/store/main';
 
 import NameModal from '#/components/NameModal.vue';
 import ThemeSelector from '#/components/controls/ThemeSelector.vue';
 
-@Component({ components: { ThemeSelector, CloseModal, NameModal, ResetModal } })
+@Component({
+  components: { ThemeSelector, CloseModal, NameModal, ResetModal, Tip },
+})
 export default class MainMenu extends Vue {
   private store = useMain();
   public active = false;
@@ -116,16 +122,10 @@ button.button.is-secondary.is-small.name {
   border-radius: 4px;
 }
 
-a.not-button {
-  color: var(--brand-color-secondary);
-
-  &:hover {
-    color: var(--brand-color-primary);
-  }
-}
-
 .dropdown-menu {
   min-width: 15rem;
+  left: 5rem;
+  top: -100%;
 
   .dropdown-content {
     color: var(--text-color);

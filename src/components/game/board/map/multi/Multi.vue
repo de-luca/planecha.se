@@ -1,27 +1,10 @@
 <template>
-  <div class="map">
-    <div class="active-wrapper x4">
-      <div class="active" v-for="a in actives">
-        <div :class="{ double: a.active.length > 1 }">
-          <card v-for="card in a.active" :key="card.id" :card="card" :hidden="!hasStarted" />
-        </div>
-        <h1>{{ a.mate }}</h1>
+  <div class="map" :class="[layout]">
+    <div class="active" v-for="a in actives">
+      <div :class="{ double: a.active.length > 1 }">
+        <card v-for="card in a.active" :key="card.id" :card="card" :hidden="!hasStarted" />
       </div>
-    </div>
-
-    <div class="controls">
-      <template v-if="hasStarted">
-        <chaos-btn v-if="isPlane" @click="chaos" />
-        <planeswalk-btn
-          :title="isPlane ? 'Planeswalk' : 'Resolve'"
-          @click="(revealer?.seeder ?? planeswalk)()"
-        />
-      </template>
-      <start-btn v-else />
-    </div>
-
-    <div class="feed">
-      <feed :defaultShow="shouldDisplayFeed" />
+      <h1>{{ a.mate }}</h1>
     </div>
   </div>
 
@@ -56,11 +39,7 @@ import { RevealFactory } from '#board/wall/reveal/RevealFactory';
 import { PickedLeft, RevealConfig } from '#board/wall/reveal/types';
 
 import StackWall from '#board/wall/StackWall.vue';
-import ChaosBtn from '#/components/controls/ChaosBtn.vue';
-import StartBtn from '#/components/controls/StartBtn.vue';
-import PlaneswalkBtn from '#/components/controls/PlaneswalkBtn.vue';
 import Card from '#board/map/multi/Card.vue';
-import Feed from '#board/feed/Feed.vue';
 import Pick from '#board/wall/reveal/Pick.vue';
 import Scry from '#board/wall/reveal/Scry.vue';
 import Show from '#board/wall/reveal/Show.vue';
@@ -74,12 +53,7 @@ type LocalRevealerConfig = {
 }
 
 @Component({
-  components: {
-    Card, Feed,
-    ChaosBtn, StartBtn, PlaneswalkBtn,
-    Pick, Scry, Show,
-    StackWall,
-  },
+  components: { Card, Pick, Scry, Show, StackWall},
 })
 export default class Multi extends Map {
   public created() {
@@ -95,6 +69,10 @@ export default class Multi extends Map {
     return window.matchMedia(
       'screen and (min-width: 800px) and (orientation: landscape)',
     ).matches;
+  }
+
+  public get layout(): 'x4' | 'x9' {
+    return this.actives.length <= 4 ? 'x4' : 'x9';
   }
 
   public get actives(): Array<{ mate: string, active: Array<ModelCard> }> {
@@ -174,6 +152,9 @@ export default class Multi extends Map {
   }
 
   public planeswalk(): void {
+    if (this.revealer?.seeder) {
+      return this.revealer.seeder();
+    }
     this.store.planeswalk({});
   }
 
@@ -189,40 +170,40 @@ export default class Multi extends Map {
 
 <style lang="scss" scoped>
 .map {
-  @media screen and (max-width: 810px) and (orientation: portrait) {
-    grid-template-rows: 8rem auto 2.5rem;
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "controls"
-      "active"
-      "feed"
-    ;
-  }
+  // @media screen and (max-width: 810px) and (orientation: portrait) {
+  //   grid-template-rows: 8rem auto 2.5rem;
+  //   grid-template-columns: 1fr;
+  //   grid-template-areas:
+  //     "controls"
+  //     "active"
+  //     "feed"
+  //   ;
+  // }
 
-  @media screen and (max-width: 810px) and (orientation: landscape) {
-    grid-template-columns: 1fr 1fr 15rem;
-  }
+  // @media screen and (max-width: 810px) and (orientation: landscape) {
+  //   grid-template-columns: 1fr 1fr 15rem;
+  // }
 
-  display: grid;
-  grid-template-columns: 1fr 1fr 22rem;
-  grid-template-rows: 8rem auto auto;
-  column-gap: 1rem;
-  row-gap: .5rem;
-  grid-template-areas:
-    "active active controls "
-    "active active .        "
-    "active active feed     "
-  ;
-  height: calc(100vh - 3rem - (3 * 1rem));
-}
+  // display: grid;
+  // grid-template-columns: 1fr 1fr 22rem;
+  // grid-template-rows: 8rem auto auto;
+  // column-gap: 1rem;
+  // row-gap: .5rem;
+  // grid-template-areas:
+  //   "active active controls "
+  //   "active active .        "
+  //   "active active feed     "
+  // ;
+  // height: calc(100vh - 3rem - (3 * 1rem));
 
-.active-wrapper {
+
   grid-area: active;
   display: grid;
   grid-auto-flow: dense;
   gap: 1rem;
 
-  max-height: calc(100vh - 3rem - (3 * 1rem));
+  height: 100%;
+  padding: 1rem;
 
   &.x4 {
     grid-template-columns: repeat(2, 1fr);

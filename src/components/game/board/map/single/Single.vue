@@ -5,21 +5,6 @@
         <card v-for="a in active" :key="a.id" :card="a" :hidden="!hasStarted" />
       </div>
     </div>
-
-    <div class="controls">
-      <template v-if="hasStarted">
-        <chaos-btn v-if="isPlane" @click="chaos" />
-        <planeswalk-btn
-          :title="isPlane ? 'Planeswalk' : 'Resolve'"
-          @click="(revealer?.seeder ?? planeswalk)()"
-        />
-      </template>
-      <start-btn v-else />
-    </div>
-
-    <div class="feed">
-      <feed :defaultShow="shouldDisplayFeed" />
-    </div>
   </div>
 
   <stack-wall v-if="showStackWall" @done="customChaos" />
@@ -161,6 +146,9 @@ export default class Single extends Map {
   }
 
   public planeswalk(): void {
+    if (this.revealer?.seeder) {
+      return this.revealer.seeder();
+    }
     this.store.planeswalk({});
   }
 
@@ -176,31 +164,37 @@ export default class Single extends Map {
 
 <style lang="scss" scoped>
 .map {
-  @media screen and (max-width: 810px) and (orientation: portrait) {
-    grid-template-rows: 8rem auto 2.5rem;
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "controls"
-      "active"
-      "feed"
-    ;
-  }
+  // @media screen and (max-width: 810px) and (orientation: portrait) {
+  //   grid-template-rows: 8rem auto 2.5rem;
+  //   grid-template-columns: 1fr;
+  //   grid-template-areas:
+  //     "controls"
+  //     "active"
+  //     "feed"
+  //   ;
+  // }
 
-  @media screen and (max-width: 810px) and (orientation: landscape) {
-    grid-template-columns: 1fr 1fr 15rem;
-  }
+  // @media screen and (max-width: 810px) and (orientation: landscape) {
+  //   grid-template-columns: 1fr 1fr 15rem;
+  // }
 
-  display: grid;
-  grid-template-columns: 1fr 1fr 22rem;
-  grid-template-rows: 8rem auto auto;
-  column-gap: 1rem;
-  row-gap: .5rem;
-  grid-template-areas:
-    "active active controls "
-    "active active .        "
-    "active active feed     "
-  ;
-  height: calc(100vh - 3rem - (3 * 1rem));
+  // display: grid;
+  // grid-template-columns: 1fr 1fr 22rem;
+  // grid-template-rows: 8rem auto auto;
+  // column-gap: 1rem;
+  // row-gap: .5rem;
+  // grid-template-areas:
+  //   "active active controls "
+  //   "active active .        "
+  //   "active active feed     "
+  // ;
+  // height: calc(100vh - 3rem - (3 * 1rem));
+
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .active {
@@ -210,6 +204,8 @@ export default class Single extends Map {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100%;
+  padding: 1rem;
 
   .double {
     height: 100%;
@@ -231,26 +227,5 @@ export default class Single extends Map {
       }
     }
   }
-}
-
-.controls {
-  grid-area: controls;
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
-
-  button {
-    height: 6rem;
-    width: 6rem;
-  }
-}
-
-.feed {
-  grid-area: feed;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
 }
 </style>

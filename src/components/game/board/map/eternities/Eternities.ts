@@ -80,7 +80,7 @@ export abstract class Eternities extends Map {
     }
   }
 
-  public get phenomenonWall(): LocalPhenomenonWallConfig | undefined {
+  public get phenomenonWallConfig(): LocalPhenomenonWallConfig | undefined {
     if ((this.store.map as SingleDeck).destination) {
       const wall = this.store.map.wallStates.get<PhenomenonWallState>(
         StateKey.PHENOMENON_WALL,

@@ -92,6 +92,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
+import { DeckState, getDeckState } from '../create/utils';
 import { PreflightPayload, useMain } from '#/store/main';
 import { MapType } from '#/model/map';
 import { Card } from '#/model/card';
@@ -99,7 +100,6 @@ import { Card } from '#/model/card';
 import NameInput from '#/components/controls/NameInput.vue';
 import BrandedFooter from '#/components/BrandedFooter.vue';
 import DeckCustomization from '#/components/create/DeckCustomization.vue';
-import { DeckState, getDeckState } from '../create/utils';
 
 @Component({ components: { BrandedFooter, DeckCustomization, NameInput } })
 export default class Join extends Vue {

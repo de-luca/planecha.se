@@ -1,28 +1,17 @@
 <template>
-  <div class="map-wrapper">
-    <div class="map">
-      <template v-for="y in 7" :key="y">
-        <tile
-          v-for="x in 7"
-          :key="x"
-          :tile="getTile(x, y)"
-          :x="x - off"
-          :y="y - off"
-          :hidden="!hasStarted"
-          @hellride="preHellride"
-          @show="showTileDetails"
-        />
-      </template>
-    </div>
-  </div>
-
-  <div class="controls">
-    <chaos-btn v-if="hasStarted" @click="chaos" />
-    <start-btn v-else />
-  </div>
-
-  <div class="feed">
-    <feed :defaultShow="false" />
+  <div class="map">
+    <template v-for="y in 7" :key="y">
+      <tile
+        v-for="x in 7"
+        :key="x"
+        :tile="getTile(x, y)"
+        :x="x - off"
+        :y="y - off"
+        :hidden="!hasStarted"
+        @hellride="preHellride"
+        @show="showTileDetails"
+      />
+    </template>
   </div>
 
   <tile-details
@@ -33,9 +22,9 @@
   />
 
   <phenomenon-wall
-    v-if="phenomenonWall"
-    :config="phenomenonWall.config"
-    :phenomenon="phenomenonWall.phenomenon"
+    v-if="phenomenonWallConfig"
+    :config="phenomenonWallConfig.config"
+    :phenomenon="phenomenonWallConfig.phenomenon"
     @resolve="(revealer?.seeder ?? resolve)()"
   />
 
@@ -74,11 +63,8 @@ import {
   TriggerConfig,
 } from '#/model/map/eternities';
 
-import ChaosBtn from '#/components/controls/ChaosBtn.vue';
-import StartBtn from '#/components/controls/StartBtn.vue';
 import Tile from '#board/map/eternities/Tile.vue';
 import TileDetails from '#board/map/eternities/TileDetails.vue';
-import Feed from '#board/feed/Feed.vue';
 import PhenomenonWall from '#board/wall/PhenomenonWall.vue';
 import EncounterWall from '#board/wall/EncounterWall.vue';
 import Pick from '#board/wall/reveal/Pick.vue';
@@ -93,7 +79,7 @@ interface LocalEncounterWallConfig {
 
 @Component({
   components: {
-    Tile, ChaosBtn, StartBtn, Feed,
+    Tile,
     PhenomenonWall, EncounterWall,
     Scry, Pick, Show,
     TileDetails,
@@ -190,64 +176,20 @@ export default class DualDeck extends Eternities {
 </script>
 
 <style lang="scss" scoped>
-.map-wrapper {
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
 .map {
-  @media (max-aspect-ratio: 85/61) {
-    & {
-      grid-template-columns: repeat(7, calc( ((100vw - 2rem) - (6 * 1rem)) / 7) );
-    }
-  }
-  @media (min-aspect-ratio: 85/61) {
-    & {
-      grid-template-columns: repeat(7, calc( (((100vw - 2rem) - (6 * 1rem)) / (85 / 61)) / 7) );
-    }
-  }
-
-  position: relative;
+  height: 100%;
+  padding: 1rem;
   display: grid;
-  grid-template-rows: repeat(7, calc( ((100vh - 6.5rem) - (6 * 1rem)) / 7) );
+  grid-template-rows: repeat(7, 1fr );
+  grid-template-columns: repeat(7, 1fr);
   gap: 1rem;
   align-content: center;
-
-  .tile {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
 }
 
-.controls {
-  position: absolute;
-  top: 0;
-  right: 0;
-
-  width: 22rem;
-  height: 8rem;
-
+.tile {
   display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
+  flex-direction: column;
   align-items: center;
-
-  button {
-    height: 6rem;
-    width: 6rem;
-  }
-}
-
-.feed {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-
-  width: 22rem;
+  justify-content: center;
 }
 </style>

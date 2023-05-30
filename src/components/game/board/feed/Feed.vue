@@ -1,152 +1,89 @@
 <template>
-  <div class="wrapper">
-    <div class="logs box" :class="{ shown: show, hidden: !show }">
-      <p v-for="m in messages.slice().reverse()" :key="m" v-html="m"></p>
+  <div class="wrapper" :class="{ open: open }">
+    <div
+      class="toggle"
+      title="Toggle game logs"
+      @click="open = !open"
+    >
+      <fa :icon="open ? 'chevron-right' : 'chevron-left'" />
     </div>
 
-    <div class="status-bar" :class="{ shown: show, hidden: !show }">
-      <undo-button class="part button" />
-      <deck-status class="part" />
-      <button
-        class="part button"
-        title="Toggle game logs"
-        @click="toggle"
-        @keyup.space.prevent
-      >
-        <span class="icon is-medium">
-          <fa icon="bars" fixed-width />
-        </span>
-      </button>
+    <div class="logs box">
+      <p>⟁</p>
+      <p v-for="m in messages" :key="m" v-html="m"></p>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-facing-decorator';
-
-import DeckStatus from './DeckStatus.vue';
-import UndoButton from './UndoButton.vue';
+import { Component, Vue } from 'vue-facing-decorator';
 import { useMain } from '#/store/main';
 
-@Component({ components: { DeckStatus, UndoButton } })
+@Component
 export default class Feed extends Vue {
-  @Prop({ required: true })
-  public defaultShow: boolean;
-
   private store = useMain();
-  public show = true;
-
-  public created() {
-    this.show = this.defaultShow;
-  }
+  public open = false;
 
   public get messages(): Array<string> {
     return this.store.feed;
-  }
-
-  public toggle(): void {
-    this.show = !this.show;
   }
 }
 </script>
 
 <style lang="scss" scoped>
 @keyframes open {
-  0% {
-    transform: scaleY(0);
-    transform-origin: 0% 100%;
-    opacity: 1;
-  }
-  100% {
-    transform: scaleY(1);
-    transform-origin: 0% 100%;
-    opacity: 1;
-  }
+  0% { transform: translateX(0) }
+  100% { transform: translateX(-20rem) }
 }
-
 @keyframes close {
-  0% {
-    transform: scaleY(1);
-    transform-origin: 0% 100%;
-    opacity: 1;
-  }
-  100% {
-    transform: scaleY(0);
-    transform-origin: 0% 100%;
-    opacity: 1;
-  }
+  0% { transform: translateX(-20rem) }
+  100% { transform: translateX(0) }
 }
 
 .wrapper {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  height: 2.5rem;
+  height: 100%;
   width: 100%;
-}
 
-.status-bar {
-  z-index: 2;
-  display: flex;
-  flex-direction: row;
-
-  box-shadow:
-    0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1),
-    0 0px 0 1px rgba(10, 10, 10, 0.02)
-  ;
-
-  &.hidden .part {
-    &:first-child {
-      border-top-left-radius: 6px;
-    }
-
-    &:last-child {
-      border-top-right-radius: 6px;
-    }
-  }
-
-  .part {
-    color: var(--text-color);
-    background-color: var(--bg-color);
-    border-color: var(--border-color);
-
-    border-radius: 0;
-
-    &:first-child {
-      border-bottom-left-radius: 6px;
-    }
-
-    &:last-child {
-      border-bottom-right-radius: 6px;
-    }
-
-    &.button {
-      &:hover {
-        border-color: #b5b5b5;
-      }
-
-      &:focus {
-        border-color: #485fc7;;
-        box-shadow: 0 0 0 .125em rgba(72,95,199,.25);
-      }
+  &.open {
+    .toggle, .logs {
+      animation: open .10s ease-in forwards;
     }
   }
 }
+
+.toggle {
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  animation: close .10s ease-in forwards;
+  border-left: 1px solid var(--border-color);
+  writing-mode: vertical-lr;
+  text-align: center;
+  background-color: var(--bg-color);
+  color: var(--brand-color-secondary);
+
+  &:hover {
+    color: var(--brand-color-primary);
+  }
+}
+
 
 .logs {
   position: absolute;
-  bottom: 2.5rem;
-  height: 40vh;
-  width: 100%;
+  top: 0;
+  right: -20rem;
+  height: 100%;
+  width: 20rem;
   z-index: 1;
   padding: 0;
   margin: 0;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  border: 1px solid var(--border-color);
-  border-bottom: none;
+  border-radius: 0;
+  border-left: 1px solid var(--border-color);
   overflow-x: scroll;
-  transform: scale(0);
 
   color: var(--text-color);
   background-color: var(--bg-color);
@@ -155,15 +92,15 @@ export default class Feed extends Vue {
 
   display: flex;
   flex: 1;
-  flex-direction: column-reverse;
-
-  &.shown {
-	  animation: open .10s ease-in forwards;
-  }
+  flex-direction: column;
 
   p {
     padding: .3rem .75rem;
-    &:not(:first-child) {
+    &:not(:last-child) {
+      &:first-child {
+        border-bottom: none;
+        color: var(--brand-color-secondary);
+      }
       border-bottom: 1px solid var(--border-color);
     }
   }

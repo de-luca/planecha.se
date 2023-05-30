@@ -1,11 +1,11 @@
 import { PiniaPluginContext } from 'pinia';
+import { isMain } from '../main';
 import { Card, Plane } from '#/model/card';
 import {
   ChaosInput,
   MapType,
   UpdateCounterInput,
 } from '#/model/map';
-import { isMain } from '../main';
 
 const chaos = '<abbr class="symbol chaos" title="chaos">{CHAOS}</abbr>';
 const plnwlk = '<abbr class="symbol planeswalk" title="planeswalk">{CHAOS}</abbr>';
@@ -35,8 +35,8 @@ export function createFeeder({ store }: PiniaPluginContext) {
 
           case 'startGame':
             return store.pushToFeed(store.isMulti
-              ? `Game starts`
-              : `Game starts on <b>${store.map.active[0].name}</b>`
+              ? 'Game starts'
+              : `Game starts on <b>${store.map.active[0].name}</b>`,
             );
 
           case 'planeswalk':
