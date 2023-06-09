@@ -1,5 +1,5 @@
 <template>
-  <div class="map">
+  <div class="wrapper">
     <template v-for="y in 7" :key="y">
       <tile
         v-for="x in 7"
@@ -25,7 +25,7 @@
     v-if="phenomenonWallConfig"
     :config="phenomenonWallConfig.config"
     :phenomenon="phenomenonWallConfig.phenomenon"
-    @resolve="(revealer?.seeder ?? resolve)()"
+    @resolve="(phenomenonWallConfig.seeder ?? resolve)()"
   />
 
   <encounter-wall
@@ -35,14 +35,6 @@
     :triggerConfig="encounterWallConfig.triggerConfig"
     @planeswalk="planeswalk"
     @encounter="encounter"
-  />
-
-  <component
-    v-if="revealer && revealed"
-    :is="revealer.component"
-    :revealed="revealed"
-    :config="revealer.config"
-    @done="revealer!.resolver"
   />
 </template>
 
@@ -63,13 +55,10 @@ import {
   TriggerConfig,
 } from '#/model/map/eternities';
 
-import Tile from '#board/map/eternities/Tile.vue';
-import TileDetails from '#board/map/eternities/TileDetails.vue';
+import Tile from '#board/map/eternities/tiles/Tile.vue';
+import TileDetails from '#board/map/eternities/tiles/TileDetails.vue';
 import PhenomenonWall from '#board/wall/PhenomenonWall.vue';
 import EncounterWall from '#board/wall/EncounterWall.vue';
-import Pick from '#board/wall/reveal/Pick.vue';
-import Show from '#board/wall/reveal/Show.vue';
-import Scry from '#board/wall/reveal/Scry.vue';
 
 interface LocalEncounterWallConfig {
   config: WallConfig;
@@ -78,18 +67,12 @@ interface LocalEncounterWallConfig {
 }
 
 @Component({
-  components: {
-    Tile,
-    PhenomenonWall, EncounterWall,
-    Scry, Pick, Show,
-    TileDetails,
-  },
+  components: { Tile, TileDetails, PhenomenonWall, EncounterWall },
 })
 export default class DualDeck extends Eternities {
   private triggers: EncounterTriggers;
 
   public created(): void {
-    super.created();
     this.triggers = (this.store.map as DualDeckMap).encounterTriggers;
   }
 
@@ -176,7 +159,7 @@ export default class DualDeck extends Eternities {
 </script>
 
 <style lang="scss" scoped>
-.map {
+.wrapper {
   height: 100%;
   padding: 1rem;
   display: grid;

@@ -6,34 +6,23 @@ import { Plane, PoolsOfBecoming, StairsToInfinity } from '#/model/card';
 
 export abstract class Map extends Imgable {
   protected store = useMain();
-  public showStackWall = false;
+
+  public get hasStarted(): boolean {
+    return this.store.map.hasStarted;
+  }
 
   public planeswalk(..._params: Array<unknown>): void {
     throw new Error('Implement Me!');
   }
 
-  public chaos(): void {
-    if (
-      this.store.map.active.length > 1 &&
-      this.store.map.active
-        .filter(c => c instanceof Plane && c.chaosRequireInterraction)
-        .length > 1
-    ) {
-      this.showStackWall = true;
-    } else {
-      this.store.map.active.forEach(card => this.store.chaos({ card }));
-    }
+  public customPlaneswalk(choices: PickedLeft): void {
+    this.store.planeswalk({
+      planes: choices.picked as Array<Plane>,
+    });
+    this.putBack({ picked: [], left: choices.left });
   }
 
-  public customChaos(planes: Array<Plane>): void {
-    this.showStackWall = false;
-    planes
-      .reverse()
-      .forEach(card => this.store.pushOpToStack(Op.CHAOS, { card }));
-    this.store.resolveOpStack();
-  }
-
-  protected putBack(choices: PickedLeft): void {
+  public putBack(choices: PickedLeft): void {
     const payload = {
       top: choices.picked,
       bottom: shuffle(choices.left),

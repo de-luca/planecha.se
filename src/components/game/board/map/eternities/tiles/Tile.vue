@@ -14,13 +14,13 @@
 <script lang="ts">
 import { Component as VueComponent } from 'vue';
 import { Component, Prop, Vue } from 'vue-facing-decorator';
-
-import Current from './tiles/Current.vue';
-import Hellrideable from './tiles/Hellrideable.vue';
-import Planewalkable from './tiles/Planewalkable.vue';
-import Unreachable from './tiles/Unreachable.vue';
-
 import { Tile as TileModel } from '#/model/map/eternities';
+
+import Current from './Current.vue';
+import Hellrideable from './Hellrideable.vue';
+import Planewalkable from './Planewalkable.vue';
+import Unreachable from './Unreachable.vue';
+
 
 @Component({
   emits: [ 'show', 'hellride' ],

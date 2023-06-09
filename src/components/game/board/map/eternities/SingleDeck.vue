@@ -1,5 +1,5 @@
 <template>
-  <div class="map">
+  <div class="wrapper">
     <template v-for="y in 7" :key="y">
       <tile
         v-for="x in 7"
@@ -25,15 +25,7 @@
     v-if="phenomenonWallConfig"
     :config="phenomenonWallConfig.config"
     :phenomenon="phenomenonWallConfig.phenomenon"
-    @resolve="(revealer?.seeder ?? resolve)()"
-  />
-
-  <component
-    v-if="revealer && revealed"
-    :is="revealer.component"
-    :revealed="revealed"
-    :config="revealer.config"
-    @done="revealer!.resolver"
+    @resolve="(phenomenonWallConfig.seeder ?? resolve)()"
   />
 </template>
 
@@ -41,19 +33,13 @@
 import { Component } from 'vue-facing-decorator';
 import { Eternities } from './Eternities';
 
-import Tile from '#board/map/eternities/Tile.vue';
-import TileDetails from '#board/map/eternities/TileDetails.vue';
+import Tile from '#board/map/eternities/tiles/Tile.vue';
+import TileDetails from '#board/map/eternities/tiles/TileDetails.vue';
 import PhenomenonWall from '#board/wall/PhenomenonWall.vue';
-import Pick from '#board/wall/reveal/Pick.vue';
-import Show from '#board/wall/reveal/Show.vue';
-import Scry from '#board/wall/reveal/Scry.vue';
 
 @Component({
   inheritAttrs: false,
-  components: {
-    Tile, TileDetails, PhenomenonWall,
-    Scry, Pick, Show,
-  },
+  components: { Tile, TileDetails, PhenomenonWall },
 })
 export default class EternitiesMapSingleDeck extends Eternities {
   public planeswalk(coords: Coordinates): void {
@@ -64,7 +50,7 @@ export default class EternitiesMapSingleDeck extends Eternities {
 </script>
 
 <style lang="scss" scoped>
-.map {
+.wrapper {
   height: 100%;
   padding: 1rem;
   display: grid;

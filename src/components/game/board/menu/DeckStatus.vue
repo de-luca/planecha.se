@@ -3,6 +3,26 @@
     <Tip>
       <template #btn>
         <div class="info" title="Remaining cards">
+          <fa icon="map" fixed-width size="lg" />
+          {{ active }}
+        </div>
+      </template>
+      <template #tip>Active cards</template>
+    </Tip>
+
+    <Tip>
+      <template #btn>
+        <div class="info" title="Remaining cards">
+          <fa icon="eye" fixed-width size="lg" />
+          {{ revealed }}
+        </div>
+      </template>
+      <template #tip>Revealed cards</template>
+    </Tip>
+
+    <Tip>
+      <template #btn>
+        <div class="info" title="Remaining cards">
           <fa icon="layer-group" fixed-width size="lg" />
           {{ remaining }}
         </div>
@@ -58,6 +78,15 @@ import { useMain } from '#/store/main';
 @Component({ components: { Tip } })
 export default class DeckStatus extends Vue {
   private store = useMain();
+
+  public get revealed(): number {
+    return (this.store.map.revealed?.others.length ?? 0)
+      + (this.store.map.revealed?.relevant.length ?? 0);
+  }
+
+  public get active(): number {
+    return this.store.map.active.length;
+  }
 
   public get remaining(): number {
     return this.store.map.remaining;

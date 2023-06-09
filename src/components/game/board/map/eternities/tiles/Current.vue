@@ -13,8 +13,9 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-facing-decorator';
-import Card from '../Card.vue';
 import { Tile } from '#/model/map/eternities';
+
+import Card from '#/components/controls/Card.vue';
 
 @Component({
   emits: [ 'show' ],

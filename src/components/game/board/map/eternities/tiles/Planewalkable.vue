@@ -5,7 +5,7 @@
     class="planeswalkable"
     @click="$emit('show')"
   >
-    <card v-if="tile.plane.length === 1" :card="tile.plane[0]" />
+    <card v-if="tile.plane.length === 1" :card="tile.plane[0]" :ro="true" />
     <fa v-else icon="ellipsis" />
   </div>
   <div v-else class="hidden">
@@ -15,9 +15,9 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-facing-decorator';
-
-import Card from '../Card.vue';
 import { Tile } from '#/model/map/eternities';
+
+import Card from '#/components/controls/Card.vue';
 
 @Component({
   emits: [ 'show' ],
