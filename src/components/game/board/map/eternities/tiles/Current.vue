@@ -1,23 +1,13 @@
 <template>
-  <div
-    v-if="tile"
-    title="You are here ;)"
-    class="current"
-    :class="{ multi: tile!.plane.length > 1 }"
-    @click="$emit('show')"
-  >
-    <fa
-      class="marker"
-      icon="map-marker-alt"
-      size="2x"
-    />
+  <div title="You are here ;)" class="current" @click="$emit('show')">
+    <fa class="marker" icon="map-marker-alt" size="2x" />
     <card
-      v-for="p in tile!.plane"
-      :key="p"
-      :card="p"
+      v-if="tile.plane.length === 1"
+      :card="tile.plane[0]"
       :current="true"
       :hasStarted="!hidden"
     />
+    <fa v-else icon="ellipsis" />
   </div>
 </template>
 

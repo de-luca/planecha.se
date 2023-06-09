@@ -15,9 +15,9 @@ export abstract class Map extends Imgable {
   public chaos(): void {
     if (
       this.store.map.active.length > 1 &&
-      this.store.map.active.every(
-        c => c instanceof PoolsOfBecoming || c instanceof StairsToInfinity,
-      )
+      this.store.map.active
+        .filter(c => c instanceof Plane && c.chaosRequireInterraction)
+        .length > 1
     ) {
       this.showStackWall = true;
     } else {

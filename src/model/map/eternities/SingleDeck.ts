@@ -1,4 +1,5 @@
 import {
+  AddActivePlaneInput,
   CustomEternitiesPlaneswalkInput,
   EternitiesPlaneswalkInput,
   MapType,
@@ -180,6 +181,11 @@ export class SingleDeck extends EternitiesMap {
       );
       this.tiles.push(destinationTile);
     }
+  }
+
+  public addActivePlane(input: AddActivePlaneInput): void {
+    this._active.push(input.plane);
+    input.plane.enter(this._wallStates, input.initiator);
   }
 
   private encounterPhenomenon(

@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" style="display: block">
+  <div class="modal" style="display: flex">
     <div class="modal-background"></div>
     <div class="modal-content">
 
@@ -8,23 +8,16 @@
         <h2 class="subtitle">Effets will resolve <b>top to bottom</b>.</h2>
       </div>
 
-      <draggable
-        :list="active"
-        class="stack"
-        ghost-class="ghost"
-      >
-        <template #item="{ element }">
-          <div class="card-wrapper">
-            <img :src="buildImgSrc(element)" />
-          </div>
-        </template>
-      </draggable>
+      <div class="stack">
+        <draggable :list="active" class="box drag">
+          <template #item="{ element }">
+            <div class="box">{{ element.name }}</div>
+          </template>
+        </draggable>
+      </div>
 
       <div class="confirm">
-        <button
-          class="button is-secondary is-medium"
-          @click="done"
-        >
+        <button class="button is-secondary is-medium" @click="done">
           Confirm choice
         </button>
       </div>
@@ -54,23 +47,11 @@ export default class StackWall extends Imgable {
 </script>
 
 <style lang="scss" scoped>
-@use "sass:math";
-
 @import './scss/header';
 @import './scss/modal-content';
 @import './scss/confirm';
 
 $card-width: 40vw;
-
-@keyframes move-left {
-  0% { transform: translateX(0) }
-  100% { transform: translateX(-2rem) }
-}
-
-@keyframes move-right {
-  0% { transform: translateX(-2rem) }
-  100% { transform: translateX(0) }
-}
 
 .modal-content {
   display: grid;
@@ -88,36 +69,30 @@ $card-width: 40vw;
 .stack {
   grid-area: stack;
 
+  display: flex;
   flex-direction: column;
-  justify-content: flex-start !important;
+  justify-content: center;
 
-  .ghost {
-    opacity: 0.5;
-    background: #c8ebfb;
-  }
+  .drag {
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
 
-  .card-wrapper {
-    position: unset;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
 
-    min-height: 5rem;
-    max-height: 5rem;
-    height: 5rem;
-    min-width: math.div($card-width, 2);
+    max-height: 45vh;
+    overflow-y: scroll;
 
-    &:hover, &:active {
-      z-index: 2;
-    }
+    .box {
+      margin-bottom: 0;
+      cursor: all-scroll;
 
-    img {
-      max-width: calc(100vw - 1rem);
-      max-height: 40vh;
-      border-radius: var(--card-radius);
-      filter: drop-shadow(1px 1px 1px #585858);
-      animation: move-left 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-
-      &:hover {
-        animation: move-right 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-      }
+      background-color: var(--bg-color);
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
     }
   }
 }

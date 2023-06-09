@@ -1,12 +1,20 @@
 <template>
   <div class="map" :class="[layout]">
     <div class="active" v-for="a in actives">
-      <div :class="{ double: a.active.length > 1 }">
-        <card v-for="card in a.active" :key="card.id" :card="card" :hidden="!hasStarted" />
+      <card v-if="a.active.length === 1" :card="a.active[0]" :hidden="!hasStarted" />
+      <div v-else @click="shown = a">
+        <fa icon="ellipsis" size="10x" />
       </div>
       <h1>{{ a.mate }}</h1>
     </div>
   </div>
+
+  <modal v-if="shown" :scroll="true" @close="shown = null">
+    <div class="details">
+      <h1 class="title">{{ shown.yours ? 'Your board' : shown.mate + '\'s board' }}</h1>
+      <card v-for="card in shown.active" :key="card.id" :card="card" :ro="!shown.yours" />
+    </div>
+  </modal>
 
   <stack-wall v-if="showStackWall" @done="customChaos" />
 
@@ -39,23 +47,32 @@ import { RevealFactory } from '#board/wall/reveal/RevealFactory';
 import { PickedLeft, RevealConfig } from '#board/wall/reveal/types';
 
 import StackWall from '#board/wall/StackWall.vue';
-import Card from '#board/map/multi/Card.vue';
+import Card from '#/components/controls/Card.vue';
 import Pick from '#board/wall/reveal/Pick.vue';
 import Scry from '#board/wall/reveal/Scry.vue';
 import Show from '#board/wall/reveal/Show.vue';
 
 
-type LocalRevealerConfig = {
+interface LocalRevealerConfig {
   component: VueComponent;
   seeder: () => void;
   resolver: (choices: PickedLeft) => void;
   config: RevealConfig;
 }
 
+interface Active {
+  yours: boolean;
+  mate: string;
+  active: Array<ModelCard>;
+}
+
+
 @Component({
   components: { Card, Pick, Scry, Show, StackWall},
 })
 export default class Multi extends Map {
+  public shown: Active | null = null;
+
   public created() {
     eventBus.on(EventType.STAIRS_TO_INFINITY, (): void => {
       this.store.reveal({ count: 1 });
@@ -63,25 +80,27 @@ export default class Multi extends Map {
     eventBus.on(EventType.POOLS_OF_BECOMING, (): void => {
       this.store.reveal({ count: 3 });
     });
-  }
-
-  public get shouldDisplayFeed(): boolean {
-    return window.matchMedia(
-      'screen and (min-width: 800px) and (orientation: landscape)',
-    ).matches;
+    eventBus.on(EventType.NORNS_SEEDCORE, (): void => {
+      this.store.reveal({ count: 1, type: Plane });
+    });
+    eventBus.on(EventType.THE_FERTILE_LANDS_OF_SAULVINIA, (): void => {
+      this.store.reveal({ count: 1, type: Plane });
+    });
   }
 
   public get layout(): 'x4' | 'x9' {
     return this.actives.length <= 4 ? 'x4' : 'x9';
   }
 
-  public get actives(): Array<{ mate: string, active: Array<ModelCard> }> {
+  public get actives(): Array<Active> {
     return [{
+      yours: true,
       mate: this.store.getMateName(),
       active: this.store.map.active,
     }].concat(
       [...(this.store.map as MultiMap).mateStates.entries()]
         .map(([peer, map]) => ({
+          yours: false,
           mate: this.store.getMateName(peer),
           active: map.active,
         })),
@@ -90,10 +109,6 @@ export default class Multi extends Map {
 
   public get revealed(): Revealed | undefined {
     return this.store.map.revealed;
-  }
-
-  public get isPlane(): boolean {
-    return this.store.map.active[0] instanceof Plane;
   }
 
   public get hasStarted(): boolean {
@@ -136,6 +151,29 @@ export default class Multi extends Map {
             this.store.resolveOpStack();
           },
         };
+      case RevealerSource.NORNS_SEEDCORE:
+        return {
+          ...config,
+          seeder: () => { /* NOOP */ },
+          resolver: (choices) => {
+            this.store.addActivePlane({ plane: choices.picked.pop() as Plane });
+            this.store.resolveReveal({ top: [], bottom: shuffle(choices.left) });
+          },
+        };
+      case RevealerSource.THE_FERTILE_LANDS_OF_SAULVINIA:
+        return {
+          ...config,
+          seeder: () => { /* NOOP */ },
+          resolver: (choices) => {
+            console.log(choices);
+            this.store.pushOpToStack(Op.RESOLVE_REVEAL, {
+              top: [],
+              bottom: shuffle([...choices.picked, ...choices.left]),
+            });
+            choices.picked.forEach(card => this.store.pushOpToStack(Op.CHAOS, { card }));
+            this.store.resolveOpStack();
+          },
+        };
       case RevealerSource.INTERPLANAR_TUNNEL:
         return {
           ...config,
@@ -170,33 +208,6 @@ export default class Multi extends Map {
 
 <style lang="scss" scoped>
 .map {
-  // @media screen and (max-width: 810px) and (orientation: portrait) {
-  //   grid-template-rows: 8rem auto 2.5rem;
-  //   grid-template-columns: 1fr;
-  //   grid-template-areas:
-  //     "controls"
-  //     "active"
-  //     "feed"
-  //   ;
-  // }
-
-  // @media screen and (max-width: 810px) and (orientation: landscape) {
-  //   grid-template-columns: 1fr 1fr 15rem;
-  // }
-
-  // display: grid;
-  // grid-template-columns: 1fr 1fr 22rem;
-  // grid-template-rows: 8rem auto auto;
-  // column-gap: 1rem;
-  // row-gap: .5rem;
-  // grid-template-areas:
-  //   "active active controls "
-  //   "active active .        "
-  //   "active active feed     "
-  // ;
-  // height: calc(100vh - 3rem - (3 * 1rem));
-
-
   grid-area: active;
   display: grid;
   grid-auto-flow: dense;
@@ -215,55 +226,31 @@ export default class Multi extends Map {
     grid-template-rows: repeat(3, 1fr);
   }
 
-
   .active {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 1rem;
 
-    .double {
-      height: 100%;
-      position: relative;
+    padding-top: 2rem;
 
-      .card-container {
-        width: 75%;
-
-        &:hover {
-          z-index: 2;
-        }
-        &:not(:hover) {
-          z-index: 1;
-        }
-        &:last-child {
-          position: absolute;
-          bottom: 0;
-          right: 0;
-        }
-      }
+    div:first-of-type {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
   }
 }
 
-
-.controls {
-  grid-area: controls;
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
-
-  button {
-    height: 6rem;
-    width: 6rem;
-  }
-}
-
-.feed {
-  grid-area: feed;
+.details {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  padding: 2.5rem 1rem;
 }
 </style>

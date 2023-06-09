@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" style="display: block">
+  <div class="modal" style="display: flex">
     <div class="modal-background"></div>
     <div class="modal-content">
       <h1 class="title">{{ config.mateName }} encountered a Phenomenon</h1>

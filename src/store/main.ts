@@ -1,6 +1,7 @@
 import { Store, defineStore } from 'pinia';
 
 import {
+  AddActivePlaneInput,
   BuildProps,
   ChaosInput,
   Exported,
@@ -321,9 +322,14 @@ export const useMain = defineStore('main', {
         this.resolveOpStack();
       }
     },
+
     planeswalk(payload: Omit<PlaneswalkInput, 'initiator'>): void {
       this.map.planeswalk({ ...payload, initiator: this.logName });
     },
+    addActivePlane(payload: Omit<AddActivePlaneInput, 'initiator'>): void {
+      this.map.addActivePlane({ ...payload, initiator: this.logName });
+    },
+
     resolve() {
       this.map.resolve({ initiator: this.logName });
     },

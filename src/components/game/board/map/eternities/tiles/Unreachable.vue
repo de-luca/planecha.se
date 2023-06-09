@@ -1,12 +1,7 @@
 <template>
-  <div
-    class="unreachable"
-    :class="{ multi: tile!.plane.length > 1 }"
-    @click="$emit('show')"
-  >
-    <template v-for="p in tile!.plane" :key="p">
-      <card :card="p" />
-    </template>
+  <div class="unreachable" @click="$emit('show')">
+    <card v-if="tile.plane.length === 1" :card="tile.plane[0]" />
+    <fa v-else :title="tile.plane.length + 'planes'" icon="ellipsis" size="2xl" />
   </div>
 </template>
 

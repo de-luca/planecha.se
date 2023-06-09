@@ -1,16 +1,12 @@
 <template>
   <div
-    v-if="!hidden && tile"
+    v-if="!hidden"
     title="Planeswalk"
     class="planeswalkable"
-    :class="{ multi: tile.plane.length > 1 }"
     @click="$emit('show')"
   >
-    <card
-      v-for="p in tile.plane"
-      :key="p"
-      :card="p"
-    />
+    <card v-if="tile.plane.length === 1" :card="tile.plane[0]" />
+    <fa v-else icon="ellipsis" />
   </div>
   <div v-else class="hidden">
     <img src="/cards/back.jpg">

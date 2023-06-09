@@ -83,6 +83,15 @@ svg.icn {
   }
 }
 
+.modal {
+  left: 5rem;
+  right: 20px;
+  
+  .modal-close {
+    position: absolute;
+  }
+}
+
 button, a, span, div {
   &.button, &.tag {
     &.is-primary {

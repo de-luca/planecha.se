@@ -9,6 +9,8 @@ export class PlaneFactory {
     ['d6ab4159-e04e-4991-8a9b-9da302c98e9d', Special.Aretopolis],
     ['f133e42a-2962-4781-b413-ce2127f17c26', Special.PoolsOfBecoming],
     ['7a425df4-7010-462e-9cb5-20389bac721c', Special.StairsToInfinity],
+    ['ab72ff80-738a-4468-aecf-5d806143f791', Special.NornsSeedcore],
+    ['2f3e71b6-0fd6-4ac5-a265-faaabe21177b', Special.TheFertileLandsOfSaulvinia],
   ]);
 
   private static readonly counter: Map<string, Counter> = new Map([
@@ -37,7 +39,7 @@ export class PlaneFactory {
       reset: false,
     }],
     // Naar Isle
-    ['fc650404-991c-4639-b311-c35df81a254a', {
+    ['3e0bcf65-1eaf-440f-a59b-0b11e1106135', {
       name: 'Flame',
       value: 0,
       start: 0,

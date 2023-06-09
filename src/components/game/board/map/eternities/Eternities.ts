@@ -14,6 +14,8 @@ import {
 } from '#/model/wall';
 
 import { EternitiesMap as EternitiesMapModel, SingleDeck, Tile } from '#/model/map/eternities';
+import { Op } from '#/store/main';
+import { shuffle } from '#/utils/shuffle';
 
 
 interface LocalRevealerConfig {
@@ -35,6 +37,12 @@ export abstract class Eternities extends Map {
   public created(): void {
     eventBus.on(EventType.STAIRS_TO_INFINITY, () => this.store.reveal({ count: 1 }));
     eventBus.on(EventType.POOLS_OF_BECOMING, () => this.store.reveal({ count: 3 }));
+    eventBus.on(EventType.NORNS_SEEDCORE, (): void => {
+      this.store.reveal({ count: 1, type: Plane });
+    });
+    eventBus.on(EventType.THE_FERTILE_LANDS_OF_SAULVINIA, (): void => {
+      this.store.reveal({ count: 1, type: Plane });
+    });
   }
 
   public get revealed(): Revealed | undefined {
@@ -64,6 +72,29 @@ export abstract class Eternities extends Map {
           ...config,
           seeder: () => { /* NOOP */ },
           resolver: this.putBack,
+        };
+      case RevealerSource.NORNS_SEEDCORE:
+        return {
+          ...config,
+          seeder: () => { /* NOOP */ },
+          resolver: (choices) => {
+            this.store.addActivePlane({ plane: choices.picked.pop() as Plane });
+            this.store.resolveReveal({ top: [], bottom: shuffle(choices.left) });
+          },
+        };
+      case RevealerSource.THE_FERTILE_LANDS_OF_SAULVINIA:
+        return {
+          ...config,
+          seeder: () => { /* NOOP */ },
+          resolver: (choices) => {
+            console.log(choices);
+            this.store.pushOpToStack(Op.RESOLVE_REVEAL, {
+              top: [],
+              bottom: shuffle([...choices.picked, ...choices.left]),
+            });
+            choices.picked.forEach(card => this.store.pushOpToStack(Op.CHAOS, { card }));
+            this.store.resolveOpStack();
+          },
         };
       case RevealerSource.INTERPLANAR_TUNNEL:
         return {

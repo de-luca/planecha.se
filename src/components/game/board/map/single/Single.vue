@@ -1,10 +1,6 @@
 <template>
-  <div class="map">
-    <div class="active">
-      <div :class="{ double: active.length > 1 }">
-        <card v-for="a in active" :key="a.id" :card="a" :hidden="!hasStarted" />
-      </div>
-    </div>
+  <div class="active" :class="{ buncha: active.length > 1 }">
+    <card v-for="a in active" :key="a.id" :card="a" :hidden="!hasStarted" class="card" />
   </div>
 
   <stack-wall v-if="showStackWall" @done="customChaos" />
@@ -24,7 +20,7 @@ import { Component } from 'vue-facing-decorator';
 import { Component as VueComponent } from 'vue';
 import { Map } from '../Map';
 import { Op } from '#/store/main';
-import { Card as ModelCard, Plane } from '#/model/card';
+import { Counter, Card as ModelCard, Plane } from '#/model/card';
 import { eventBus, EventType } from '#/services/EventBus';
 import { Revealed } from '#/model/map';
 import {
@@ -37,11 +33,7 @@ import { RevealFactory } from '#board/wall/reveal/RevealFactory';
 import { PickedLeft, RevealConfig } from '#board/wall/reveal/types';
 
 import StackWall from '#board/wall/StackWall.vue';
-import ChaosBtn from '#/components/controls/ChaosBtn.vue';
-import StartBtn from '#/components/controls/StartBtn.vue';
-import PlaneswalkBtn from '#/components/controls/PlaneswalkBtn.vue';
-import Card from '#board/map/single/Card.vue';
-import Feed from '#board/feed/Feed.vue';
+import Card from '#/components/controls/Card.vue';
 import Pick from '#board/wall/reveal/Pick.vue';
 import Scry from '#board/wall/reveal/Scry.vue';
 import Show from '#board/wall/reveal/Show.vue';
@@ -55,14 +47,11 @@ type LocalRevealerConfig = {
 }
 
 @Component({
-  components: {
-    Card, Feed,
-    ChaosBtn, StartBtn, PlaneswalkBtn,
-    Pick, Scry, Show,
-    StackWall,
-  },
+  components: { Card, Pick, Scry, Show, StackWall },
 })
 export default class Single extends Map {
+  public shown: ModelCard | null = null;
+
   public created() {
     eventBus.on(EventType.STAIRS_TO_INFINITY, (): void => {
       this.store.reveal({ count: 1 });
@@ -70,6 +59,25 @@ export default class Single extends Map {
     eventBus.on(EventType.POOLS_OF_BECOMING, (): void => {
       this.store.reveal({ count: 3 });
     });
+    eventBus.on(EventType.NORNS_SEEDCORE, (): void => {
+      this.store.reveal({ count: 1, type: Plane });
+    });
+    eventBus.on(EventType.THE_FERTILE_LANDS_OF_SAULVINIA, (): void => {
+      this.store.reveal({ count: 1, type: Plane });
+    });
+  }
+
+  public get gridClass(): [string, string] {
+    const count = this.active.length;
+    switch (true) {
+      case count < 5:
+        return ['x2', 'y2'];
+      case count >=5 && count < 7:
+        return ['x3', 'y2'];
+      case count >= 7:
+        return ['x3', 'y3'];
+    }
+    return ['', ''];
   }
 
   public get shouldDisplayFeed(): boolean {
@@ -121,12 +129,35 @@ export default class Single extends Map {
         return {
           ...config,
           seeder: () => { /* NOOP */ },
-          resolver: (choices: PickedLeft) => {
-            this.store.pushOpToStack(Op.RESOLVE_REVEAL,{
+          resolver: (choices) => {
+            this.store.pushOpToStack(Op.RESOLVE_REVEAL, {
               top: choices.picked,
               bottom: shuffle(choices.left),
             });
             choices.left.forEach(card => this.store.pushOpToStack(Op.CHAOS, { card }));
+            this.store.resolveOpStack();
+          },
+        };
+      case RevealerSource.NORNS_SEEDCORE:
+        return {
+          ...config,
+          seeder: () => { /* NOOP */ },
+          resolver: (choices) => {
+            this.store.addActivePlane({ plane: choices.picked.pop() as Plane });
+            this.store.resolveReveal({ top: [], bottom: shuffle(choices.left) });
+          },
+        };
+      case RevealerSource.THE_FERTILE_LANDS_OF_SAULVINIA:
+        return {
+          ...config,
+          seeder: () => { /* NOOP */ },
+          resolver: (choices) => {
+            console.log(choices);
+            this.store.pushOpToStack(Op.RESOLVE_REVEAL, {
+              top: [],
+              bottom: shuffle([...choices.picked, ...choices.left]),
+            });
+            choices.picked.forEach(card => this.store.pushOpToStack(Op.CHAOS, { card }));
             this.store.resolveOpStack();
           },
         };
@@ -143,6 +174,13 @@ export default class Single extends Map {
           resolver: this.customPlaneswalk,
         };
     }
+  }
+
+  public getCounters(card: ModelCard): Counter | undefined {
+    if (card instanceof Plane) {
+      return card.counter;
+    }
+    return undefined;
   }
 
   public planeswalk(): void {
@@ -163,38 +201,20 @@ export default class Single extends Map {
 </script>
 
 <style lang="scss" scoped>
-.map {
-  // @media screen and (max-width: 810px) and (orientation: portrait) {
-  //   grid-template-rows: 8rem auto 2.5rem;
-  //   grid-template-columns: 1fr;
-  //   grid-template-areas:
-  //     "controls"
-  //     "active"
-  //     "feed"
-  //   ;
-  // }
-
-  // @media screen and (max-width: 810px) and (orientation: landscape) {
-  //   grid-template-columns: 1fr 1fr 15rem;
-  // }
-
-  // display: grid;
-  // grid-template-columns: 1fr 1fr 22rem;
-  // grid-template-rows: 8rem auto auto;
-  // column-gap: 1rem;
-  // row-gap: .5rem;
-  // grid-template-areas:
-  //   "active active controls "
-  //   "active active .        "
-  //   "active active feed     "
-  // ;
-  // height: calc(100vh - 3rem - (3 * 1rem));
-
-  height: 100%;
+.card {
+  background: none;
+  box-shadow: none;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
+  &:hover {
+    z-index: 2;
+  }
+  &:not(:hover) {
+    z-index: 1;
+  }
 }
 
 .active {
@@ -205,27 +225,13 @@ export default class Single extends Map {
   justify-content: center;
   align-items: center;
   height: 100%;
-  padding: 1rem;
+  width: 100%;
 
-  .double {
-    height: 100%;
-    position: relative;
-
-    .card-container {
-      width: 75%;
-
-      &:hover {
-        z-index: 2;
-      }
-      &:not(:hover) {
-        z-index: 1;
-      }
-      &:last-child {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-      }
-    }
+  &.buncha {
+    height: auto;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    gap: 2.5rem
   }
 }
 </style>

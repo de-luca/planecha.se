@@ -49,6 +49,10 @@ export interface CustomEternitiesPlaneswalkInput extends EternitiesPlaneswalkInp
   planes: Array<Plane>;
 }
 
+export interface AddActivePlaneInput extends Initable {
+  plane: Plane;
+}
+
 export interface UpdateCounterInput {
   planeId: string;
   change: number;
@@ -86,6 +90,7 @@ export interface MapInterface {
   resolveReveal(input: ResolveRevealInput): void;
   chaos(input: ChaosInput): void;
   planeswalk(input: PlaneswalkInput): void;
+  addActivePlane(input: AddActivePlaneInput): void;
   resolve(input: ResolveInput): void;
   updateCounter(input: UpdateCounterInput): void;
   export(): Exported;

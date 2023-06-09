@@ -13,6 +13,7 @@ import { router } from './router';
 import { createFeeder } from './store/plugins/feeder';
 import { versionizer } from './store/plugins/versionizer';
 import Link from './components/controls/Link.vue';
+import Modal from './components/controls/Modal.vue';
 import App from './App.vue';
 
 
@@ -27,6 +28,7 @@ createApp(App)
   .component('fa', FontAwesomeIcon)
   .component('fal', FontAwesomeLayers)
   .component('l', Link)
+  .component('modal', Modal)
   .use(
     createPinia()
       .use(createFeeder)

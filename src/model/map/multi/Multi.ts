@@ -1,5 +1,5 @@
 import { Map as BaseMap, MapProps } from '../Map';
-import { Exported, MapSpecs, MapType, PlaneswalkInput, ResolveInput } from '../MapInterface';
+import { AddActivePlaneInput, Exported, MapSpecs, MapType, PlaneswalkInput, ResolveInput } from '../MapInterface';
 import { LightMap } from './LightMap';
 import { WallStates } from '#/model/wall';
 import { Deck } from '#/model/deck/Deck';
@@ -29,6 +29,11 @@ export class Multi extends BaseMap {
     }
 
     this.active.forEach(c => c.enter(this._wallStates, input.initiator));
+  }
+
+  public addActivePlane(input: AddActivePlaneInput): void {
+    this._active.push(input.plane);
+    input.plane.enter(this._wallStates, input.initiator);
   }
 
   public removeMate(peer: string): void {

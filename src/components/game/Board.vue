@@ -171,6 +171,7 @@ export default class Board extends Vue {
   margin-right: auto;
   height: 100%;
   width: 100%;
+  overflow-y: scroll;
 }
 
 .notif-center {

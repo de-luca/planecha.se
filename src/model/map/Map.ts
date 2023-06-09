@@ -12,6 +12,7 @@ import {
   UpdateCounterInput,
   RevealUntilInput,
   ResolveRevealInput,
+  AddActivePlaneInput,
 } from './MapInterface';
 import { CardProvider } from '#/services/CardProvider';
 import { patch, Patch } from '#/utils/delta';
@@ -79,6 +80,8 @@ export abstract class Map implements MapInterface {
   }
 
   public abstract planeswalk(input: PlaneswalkInput): void;
+
+  public abstract addActivePlane(input: AddActivePlaneInput): void;
 
   public abstract resolve(input: ResolveInput): void;
 

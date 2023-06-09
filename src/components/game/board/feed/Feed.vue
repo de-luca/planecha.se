@@ -44,6 +44,7 @@ export default class Feed extends Vue {
   position: relative;
   height: 100%;
   width: 100%;
+  z-index: 50;
 
   &.open {
     .toggle, .logs {

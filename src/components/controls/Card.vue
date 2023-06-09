@@ -1,20 +1,19 @@
 <template>
-  <div v-if="!hidden" class="card-container">
-
-    <div v-if="counters" class="counters tags has-addons">
-      <span class="tag is-primary minus" @click="update(-1)">
-        <fa icon="minus" fixed-width />
-      </span>
-      <span class="tag is-primary value">
-        {{ counters.value }}
-      </span>
-      <span class="tag is-primary plus" @click="update(1)">
-        <fa icon="plus" fixed-width />
-      </span>
+  <div v-if="!hidden">
+    <div class="card-container">
+      <div v-if="counters" class="counters tags has-addons">
+        <span v-if="!ro" class="tag is-primary minus" @click.stop="update(-1)">
+          <fa icon="minus" fixed-width />
+        </span>
+        <span class="tag is-primary value">
+          {{ counters.value }}
+        </span>
+        <span v-if="!ro" class="tag is-primary plus" @click.stop="update(1)">
+          <fa icon="plus" fixed-width />
+        </span>
+      </div>
+      <img :class="{ phenomenon: isPhenomenon }" :src="imgSrc">
     </div>
-
-    <img :class="{ phenomenon: isPhenomenon }" :src="imgSrc">
-
   </div>
   <div v-else class="hidden">
     <img src="/cards/back.jpg">
@@ -33,6 +32,8 @@ export default class Card extends Imgable {
   public card: ModelCard;
   @Prop({ required: false, default: false })
   public hidden: boolean;
+  @Prop({ required: false, default: false })
+  public ro: boolean;
 
   private store = useMain();
 
@@ -59,10 +60,13 @@ export default class Card extends Imgable {
 
 <style lang="scss" scoped>
 .card-container {
+  height: inherit;
+  width: fit-content;
   position: relative;
 }
 
 img {
+  height: inherit;
   max-height: calc(100vh - 4rem - (3 * 1rem));
   filter: drop-shadow(1px 1px 1px #585858);
   border-radius: var(--card-radius);
