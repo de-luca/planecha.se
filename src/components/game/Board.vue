@@ -8,7 +8,11 @@
         <div>⟁</div>
       </div>
       <div class="spacer"></div>
-      <MapActions @planeswalk="planeswalk" @chaos="chaos" />
+      <MapActions
+        :disabled="disableMapAction"
+        @planeswalk="planeswalk"
+        @chaos="chaos"
+      />
       <DiceBtn />
       <UndoBtn />
       <div class="spacer"></div>
@@ -119,6 +123,10 @@ export default class Board extends Vue {
 
   public get online(): boolean {
     return !!this.store.net;
+  }
+
+  public get disableMapAction(): boolean {
+    return this.store.map.wallStates.size !== 0;
   }
 
   public get revealed(): Revealed | undefined {

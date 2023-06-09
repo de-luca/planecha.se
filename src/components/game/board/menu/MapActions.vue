@@ -6,6 +6,7 @@
           <button
             class="planeswalk button is-ghost"
             :title="isPlane ? 'Planeswalk' : 'Resolve'"
+            :disabled="disabled"
             @click="$emit('planeswalk')"
           >
             <Planeswalk class="icn is-primary" />
@@ -15,7 +16,11 @@
       </Tip>
       <Tip>
         <template #btn>
-          <button class="chaos button is-ghost" :disabled="!isPlane" @click="$emit('chaos')">
+          <button
+            class="chaos button is-ghost"
+            :disabled="disabled || !isPlane"
+            @click="$emit('chaos')"
+          >
             <Chaos class="icn is-primary" />
           </button>
         </template>
@@ -34,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-facing-decorator';
+import { Component, Prop, Vue } from 'vue-facing-decorator';
 import Tip from './Tip.vue';
 import { Plane } from '#/model/card';
 import { EternitiesMap } from '#/model/map/eternities';
@@ -47,6 +52,9 @@ import { Chaos, Planeswalk } from '#/components/svgs';
   components: { Chaos, Planeswalk, Tip },
 })
 export default class MapActions extends Vue {
+  @Prop({ required: true })
+  public disabled: boolean;
+
   private store = useMain();
 
   public get isEternities(): boolean {
