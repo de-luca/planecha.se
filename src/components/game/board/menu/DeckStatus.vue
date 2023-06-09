@@ -24,46 +24,42 @@
       <template #btn>
         <div class="info" title="Remaining cards">
           <fa icon="layer-group" fixed-width size="lg" />
-          {{ remaining }}
+          <div>
+            <span>{{ remaining }}</span>
+            <span v-if="remainingPhenomena !== null">{{ remainingPhenomena }}</span>
+          </div>
         </div>
       </template>
-      <template #tip>Remaining cards</template>
+      <template #tip>
+        <div class="description">
+          <div>Remaining cards</div>
+          <div v-if="remainingPhenomena !== null">
+            <span>Planes</span>
+            <span>Phenomena</span>
+          </div>
+        </div>
+      </template>
     </Tip>
 
     <Tip>
       <template #btn>
-        <div  class="info" title="Played cards">
+        <div class="info" title="Played cards">
           <fa icon="book-dead" fixed-width size="lg"/>
-          {{ played }}
+          <div>
+            <span>{{ played }}</span>
+            <span v-if="playedPhenomena !== null">{{ playedPhenomena }}</span>
+          </div>
         </div>
       </template>
-      <template #tip>Played cards</template>
-    </Tip>
-
-    <Tip v-if="remainingPhenomena !== null">
-      <template #btn>
-        <div class="info" title="Remaining phenomena">
-          <fal fixed-width>
-            <fa icon="layer-group" size="lg" />
-            <fa icon="fire-alt" transform="shrink-2 right-5 down-4" :style="{ color: 'red' }" />
-          </fal>
-          <span>{{ remainingPhenomena }}</span>
+      <template #tip>
+        <div class="description">
+          <div>Played cards</div>
+          <div v-if="playedPhenomena !== null">
+            <span>Planes</span>
+            <span>Phenomena</span>
+          </div>
         </div>
       </template>
-      <template #tip>Remaining phenomena</template>
-    </Tip>
-
-    <Tip v-if="playedPhenomena !== null">
-      <template #btn>
-        <div class="info" title="Played phenomena">
-          <fal fixed-width>
-            <fa icon="book-dead" size="lg" />
-            <fa icon="fire-alt" transform="shrink-2 right-5 down-4" :style="{ color: 'red' }" />
-          </fal>
-          <span>{{ playedPhenomena }}</span>
-        </div>
-      </template>
-      <template #tip>Played phenomena</template>
     </Tip>
   </div>
 </template>
@@ -71,7 +67,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-facing-decorator';
 import Tip from './Tip.vue';
-import { DualDeck } from '#/model/map/eternities';
+import { DualDeck, EternitiesMap } from '#/model/map/eternities';
 import { useMain } from '#/store/main';
 
 
@@ -85,6 +81,11 @@ export default class DeckStatus extends Vue {
   }
 
   public get active(): number {
+    if (this.store.map instanceof EternitiesMap) {
+      return this.store.map.tiles
+        .reduce((sum, t) => sum + t.plane.length, 0);
+    }
+
     return this.store.map.active.length;
   }
 
@@ -110,7 +111,7 @@ export default class DeckStatus extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .status {
   display: flex;
   flex-direction: column;
@@ -123,6 +124,32 @@ export default class DeckStatus extends Vue {
     align-items: center;
     gap: .5rem;
     padding: calc(0.5em - 1px) 1em;
+
+    div:nth-child(2) {
+      display: flex;
+      flex-direction: row;
+      gap: .5rem;
+
+      span:nth-child(2) {
+        color: red;
+      }
+    }
+  }
+
+  .description {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    div:nth-child(2) {
+      display: flex;
+      flex-direction: row;
+      gap: .5rem;
+
+      span:nth-child(2) {
+        color: red;
+      }
+    }
   }
 }
 </style>

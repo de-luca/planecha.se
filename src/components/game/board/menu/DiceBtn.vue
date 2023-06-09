@@ -5,7 +5,7 @@
   >
     <Tip>
       <template #btn>
-      <div class="dropdown-trigger">
+        <div class="dropdown-trigger">
           <button
             @click="active = !active"
             @keyup.space.prevent
@@ -16,8 +16,8 @@
             <fa icon="dice-d20" fixed-width size="lg" />
           </button>
         </div>
-        </template>
-        <template #tip>Roll dices</template>
+      </template>
+      <template #tip>Roll dices</template>
     </Tip>
 
     <div class="click-trap" @click="active = false"></div>
@@ -47,7 +47,7 @@
 <script lang="ts">
 import { Component as VueComponent, markRaw } from 'vue';
 import { Component, Vue } from 'vue-facing-decorator';
-import { DiceType } from './dices';
+import { DiceType } from './dices/dices';
 
 import Tip from './Tip.vue';
 import DiceModal from './modals/DiceModal.vue';

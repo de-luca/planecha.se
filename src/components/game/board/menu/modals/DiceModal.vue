@@ -28,7 +28,7 @@
 <script lang="ts">
 import { Component as VueComponent , markRaw } from 'vue';
 import { Component, Prop, Vue } from 'vue-facing-decorator';
-import { DiceType } from '../dices';
+import { DiceType } from '../dices/dices';
 
 import * as SVGs from '#/components/svgs';
 import { useMain } from '#/store/main';
@@ -68,7 +68,7 @@ export default class DiceModal extends Vue {
     }, 1000);
   }
 
-  private getAction(): (...args: Array<undefined>) => string | number {
+  private getAction(): (...args: Array<unknown>) => string | number {
     switch (this.type) {
       case 'planar':
         return () => this.store.rollPlanarDice()
@@ -88,6 +88,8 @@ export default class DiceModal extends Vue {
         return () => this.store.rollDice(12);
       case 'd20':
         return () => this.store.rollDice(20);
+      default:
+        throw new Error('What kind of dice is that?');
     }
   }
 }

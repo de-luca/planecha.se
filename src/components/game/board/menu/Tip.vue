@@ -1,5 +1,5 @@
 <template>
-  <tippy placement="right" :offset="[0, offset]" duration="0">
+  <tippy placement="right" :offset="[0, offset]" duration="0" appendTo="parent">
     <slot name="btn"></slot>
     <template #content>
       <div class="tip">
@@ -19,5 +19,6 @@ defineProps({ offset: { type: Number, default: 20 } });
   padding: .5rem 1rem;
   background-color: var(--bg-color);
   border-radius: 6px;
+  width: max-content;
 }
 </style>
