@@ -1,6 +1,5 @@
 import { Map } from '../Map';
 import { PickedLeft } from '#board/wall/reveal/types';
-import { WallConfig } from '#board/wall/types';
 import { Phenomenon, Plane } from '#/model/card';
 import {
   StateKey,
@@ -15,7 +14,7 @@ import {
 } from '#/model/map/eternities';
 
 interface LocalPhenomenonWallConfig {
-  config: WallConfig;
+  config: PhenomenonWallState & { mateName?: string };
   phenomenon: Phenomenon;
   seeder: (() => void) | null;
 }
@@ -43,7 +42,10 @@ export abstract class Eternities extends Map {
       return {
         seeder,
         phenomenon: this.store.map.active[0] as Phenomenon,
-        config: { mateName: wall?.initiator },
+        config: {
+          ...wall!,
+          mateName: wall?.initiator
+        },
       };
     }
 

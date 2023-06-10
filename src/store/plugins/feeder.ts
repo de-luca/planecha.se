@@ -39,6 +39,9 @@ export function createFeeder({ store }: PiniaPluginContext) {
               : `Game starts on <b>${store.map.active[0].name}</b>`,
             );
 
+          case 'addActivePlane':
+            return store.pushToFeed(`<b>${store.logName}</b> ${plnwlk} to ${args[0].plane.name} (added)`);
+
           case 'planeswalk':
             return store.pushToFeed(
               `<b>${store.logName}</b> ` +

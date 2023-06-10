@@ -126,6 +126,16 @@ export default class Board extends Vue {
   }
 
   public get disableMapAction(): boolean {
+    if (
+      this.revealer &&
+      [
+        RevealerSource.INTERPLANAR_TUNNEL,
+        RevealerSource.SPACIAL_MERGING
+      ].includes(this.revealer?.config.source)
+    ) {
+      return false;
+    }
+
     return this.store.map.wallStates.size !== 0;
   }
 
