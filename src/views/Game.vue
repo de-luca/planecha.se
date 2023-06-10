@@ -15,7 +15,7 @@ export default class Game extends Vue {
   private store = useMain();
 
   public get comp(): VueComponent {
-    if (this.$route.params.roomId && !this.store._map) {
+    if (this.$route.params.roomId && (!this.store.ready || !this.store._map)) {
       return Join;
     }
     return Board;

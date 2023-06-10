@@ -230,9 +230,8 @@ export default class Create extends Vue {
       },
     });
 
+    await this.$router.push({ name: 'Game' });
     this.creating = false;
-
-    this.$router.push({ name: 'Game' });
   }
 }
 </script>

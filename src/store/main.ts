@@ -69,6 +69,8 @@ export interface State {
   _repo?: RepoInterface;
   net?: NetInterface;
 
+  ready: boolean;
+
   feed: Array<string>;
   opStack: Array<OpRequest>;
 
@@ -87,6 +89,8 @@ function getState(): State {
     _map: undefined,
     _repo: undefined,
     net: undefined,
+
+    ready: false,
 
     feed: [],
     opStack: [],
@@ -201,6 +205,7 @@ export const useMain = defineStore('main', {
       this._config = payload;
       this._map = MapFactory.build(payload);
       this._repo = RepoFactory.build(payload);
+      this.ready = true;
     },
 
     open() {
@@ -221,6 +226,7 @@ export const useMain = defineStore('main', {
       if (payload.type !== MapType.MULTI) {
         return this.net!.join(({ store, done }) => once((data) => {
           store.applyReset(data);
+          store.ready = true;
           done();
         }));
       }
@@ -234,6 +240,7 @@ export const useMain = defineStore('main', {
           (data, peer) => {
             this.feed = data.feed;
             store.apply({ event: '__init__', delta: diff<MaybeExported>({}, data.map) }, peer);
+            this.ready = true;
             done();
           },
           1,
