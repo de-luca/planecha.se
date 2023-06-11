@@ -14,6 +14,18 @@
         @chaos="chaos"
       />
       <DiceBtn />
+      <Tip>
+        <template #btn>
+          <l class="button is-ghost" href="https://dungeon.planecha.se">
+            <fa icon="dungeon" fixed-width size="lg" />
+          </l>
+        </template>
+        <template #tip>
+          Dungeon tracker<br>
+          <em>external</em>
+        </template>
+      </Tip>
+
       <UndoBtn />
       <div class="spacer"></div>
       <OnlineControls />
@@ -58,6 +70,8 @@ import { RevealerWallState, StateKey, RevealerSource } from '#/model/wall';
 import { RevealFactory } from '#board/wall/reveal/RevealFactory';
 import { Map as CmpMap } from '#board/map/Map';
 
+import Tip from '#board/menu/Tip.vue';
+
 import Single from '#board/map/single/Single.vue';
 import Multi from '#board/map/multi/Multi.vue';
 import SingleDeck from '#board/map/eternities/SingleDeck.vue';
@@ -72,8 +86,8 @@ import DeckStatus from '#board/menu/DeckStatus.vue';
 
 import Feed from '#board/menu/Feed.vue';
 
-import StackWall from '#board/wall/StackWall.vue';
 import NotifCenter from '#board/menu/NotifCenter.vue';
+import StackWall from '#board/wall/StackWall.vue';
 
 type LocalRevealerConfig = {
   component: VueComponent;
@@ -84,12 +98,12 @@ type LocalRevealerConfig = {
 
 @Component({
   components: {
-    DeckStatus, DiceBtn, UndoBtn, MapActions, Feed,
-
+    Tip,
     Single, Multi, SingleDeck, DualDeck,
-    NotifCenter,
-    MainMenu, OnlineControls,
-    StackWall,
+    MapActions, DiceBtn, UndoBtn, DeckStatus,
+    OnlineControls, MainMenu,
+    Feed,
+    NotifCenter, StackWall,
   },
 })
 export default class Board extends Vue {
