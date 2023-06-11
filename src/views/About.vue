@@ -24,17 +24,21 @@
 
       <h2>What does it do?</h2>
       <p>
-        Two game modes are supported:
+        Three game modes are supported:
       </p>
       <dl>
-        <dt><b>Classic Planechase</b></dt>
+        <dt><b>Single Deck Planechase</b></dt>
         <dd>
           The "Single Planar Deck Option" described in
           <l href="https://magic.wizards.com/en/game-info/gameplay/rules-and-formats/rules">rule</l> 901.15.
         </dd>
+        <dt><b>Multi Deck Planechase</b></dt>
+        <dd>
+          The classic Planechase in which each player brings a 10 cards planar deck.
+        </dd>
         <dt><b>Eternities Map</b></dt>
         <dd>
-          The Planechase variant described <l href="https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19">here</l>
+          The Planechase variant described <l href="https://web.archive.org/web/20221005215028/https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19">here (archived article)</l>
           or in the <l href="https://youtu.be/TGJaJ29Zs6o">Professor's video</l>.<br>
           Multiple variants and configurations are also availables such as Phenomena encountering and dedicated Phenomena deck.
         </dd>
