@@ -31,7 +31,7 @@
 
     <notif-center />
 
-    <StackWall v-if="stackWall" @done="customChaos" />
+    <StackWall v-if="stackWall" :cards="stackWallCards" @done="customChaos" />
 
     <component
       v-if="revealer && revealed"
@@ -51,7 +51,7 @@ import { Component as VueComponent } from 'vue';
 import { Op, useMain } from '#/store/main';
 import { MapType, Revealed } from '#/model/map';
 import { EternitiesMapSpecs, EternitiesMapSubType } from '#/model/map/eternities';
-import { Plane } from '#/model/card';
+import { Card, Plane } from '#/model/card';
 import { eventBus, EventType } from '#/services/EventBus';
 import { PickedLeft, RevealConfig } from '#board/wall/reveal/types';
 import { RevealerWallState, StateKey, RevealerSource } from '#/model/wall';
@@ -96,6 +96,7 @@ export default class Board extends Vue {
   private store = useMain();
 
   public stackWall = false;
+  public stackWallCards: Array<Card> | null = null;
 
   public created() {
     eventBus.on(EventType.STAIRS_TO_INFINITY, () => this.store.reveal({ count: 1 }));
@@ -133,7 +134,7 @@ export default class Board extends Vue {
         RevealerSource.SPACIAL_MERGING
       ].includes(this.revealer?.config.source)
     ) {
-      return false;
+      return this.revealed !== undefined;
     }
 
     return this.store.map.wallStates.size !== 0;
@@ -180,9 +181,16 @@ export default class Board extends Vue {
             this.store.pushOpToStack(Op.RESOLVE_REVEAL, {
               top: choices.picked,
               bottom: shuffle(choices.left),
+              stop: true,
             });
-            choices.left.forEach(card => this.store.pushOpToStack(Op.CHAOS, { card }));
             this.store.resolveOpStack();
+
+            if (this.useStack(choices.left)) {
+              this.stackWallCards = choices.left;
+              this.stackWall = true;
+            } else {
+              choices.left.forEach(card => this.store.pushOpToStack(Op.CHAOS, { card }));
+            }
           },
         };
       case RevealerSource.NORNS_SEEDCORE:
@@ -224,12 +232,7 @@ export default class Board extends Vue {
   }
 
   public chaos(): void {
-    if (
-      this.store.map.active.length > 1 &&
-      this.store.map.active
-        .filter(c => c instanceof Plane && c.chaosRequireInterraction)
-        .length > 1
-    ) {
+    if (this.useStack(this.store.map.active)) {
       this.stackWall = true;
     } else {
       this.store.map.active.forEach(card => this.store.chaos({ card }));
@@ -237,10 +240,12 @@ export default class Board extends Vue {
   }
 
   public customChaos(planes: Array<Plane>): void {
+    this.stackWallCards = null;
     this.stackWall = false;
     planes
       .reverse()
       .forEach(card => this.store.pushOpToStack(Op.CHAOS, { card }));
+    console.log(this.store.opStack);
     this.store.resolveOpStack();
   }
 
@@ -262,6 +267,13 @@ export default class Board extends Vue {
     ...args: Parameters<CmpMap['putBack']>
   ): ReturnType<CmpMap['putBack']> {
     (this.$refs.map as CmpMap).putBack(...args);
+  }
+
+  private useStack(cards: Array<Card>): boolean {
+    return cards.length > 1 &&
+      cards
+        .filter(c => c instanceof Plane && c.chaosRequireInterraction)
+        .length > 1;
   }
 }
 </script>

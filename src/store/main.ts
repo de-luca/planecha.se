@@ -348,7 +348,7 @@ export const useMain = defineStore('main', {
     },
     resolveReveal(payload: ResolveRevealInput) {
       this.map.resolveReveal(payload);
-      this.resolveOpStack();
+      !payload.stop && this.resolveOpStack();
     },
 
     updateWallState(payload: ApplyInput) {
@@ -365,6 +365,7 @@ export const useMain = defineStore('main', {
       this.opStack.push({ op, payload });
     },
     resolveOpStack() {
+      console.log('RESOLVE OP STACK');
       const opr = this.opStack.pop();
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore

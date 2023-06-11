@@ -66,6 +66,7 @@ export interface RevealUntilInput {
 export interface ResolveRevealInput {
   top: Array<Card>;
   bottom: Array<Card>;
+  stop?: boolean;
 }
 
 export type PlaneswalkInput =

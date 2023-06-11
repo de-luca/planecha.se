@@ -9,7 +9,7 @@
       </div>
 
       <div class="stack">
-        <draggable :list="active" class="box drag">
+        <draggable :list="active" item-key="id" class="box drag">
           <template #item="{ element }">
             <div class="box">{{ element.name }}</div>
           </template>
@@ -28,17 +28,23 @@
 
 <script lang="ts">
 import * as draggable from 'vuedraggable';
-import { Component } from 'vue-facing-decorator';
+import { Component, Prop } from 'vue-facing-decorator';
 import { Imgable } from '#/components/Imgable';
 import { useMain } from '#/store/main';
-import { Card as ModelCard } from '#/model/card';
+import { Card } from '#/model/card';
 
 @Component({
   emits: [ 'done' ],
   components: { draggable },
 })
 export default class StackWall extends Imgable {
-  public active: Array<ModelCard> = [...useMain().map.active];
+  @Prop({ required: true })
+  public cards: Array<Card> | null;
+  public active: Array<Card> = [];
+
+  public created(): void {
+    this.active = [...(this.cards ?? useMain().map.active)];
+  }
 
   public done(): void {
     this.$emit('done', this.active);
