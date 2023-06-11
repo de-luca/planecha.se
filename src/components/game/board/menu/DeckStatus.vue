@@ -1,5 +1,5 @@
 <template>
-  <div class="status">
+  <div class="wrapper">
     <Tip>
       <template #btn>
         <div class="info" title="Remaining cards">
@@ -111,18 +111,18 @@ export default class DeckStatus extends Vue {
 }
 </script>
 
-<style lang="scss">
-.status {
+<style lang="scss" scoped>
+.wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  justify-content: flex-end;
+  gap: .5rem;
 
   .info {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: .5rem;
     padding: calc(0.5em - 1px) 1em;
 
     div:nth-child(2) {

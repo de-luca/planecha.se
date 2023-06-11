@@ -30,9 +30,9 @@
       <div class="spacer"></div>
       <OnlineControls />
       <MainMenu />
-      <div class="spacer"></div>
-      <div class="spacer"></div>
-      <DeckStatus />
+      <!-- <div class="spacer"></div>
+      <div class="spacer"></div> -->
+      <DeckStatus class="status" />
     </div>
 
     <div class="map">
@@ -350,6 +350,13 @@ export default class Board extends Vue {
         position: absolute;
       }
     }
+  }
+
+  .status {
+    @media screen and (max-height: 720px) {
+      display: none;
+    }
+    flex-grow: 2;
   }
 }
 
