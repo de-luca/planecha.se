@@ -145,7 +145,7 @@ export default class Board extends Vue {
       this.revealer &&
       [
         RevealerSource.INTERPLANAR_TUNNEL,
-        RevealerSource.SPACIAL_MERGING
+        RevealerSource.SPACIAL_MERGING,
       ].includes(this.revealer?.config.source)
     ) {
       return this.revealed !== undefined;

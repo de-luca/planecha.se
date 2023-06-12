@@ -36,7 +36,7 @@
             <div class="player-list">
               <h4>Present players:</h4>
               <ul>
-                <li v-for="player in preflightData?.players" v-bind:key="player">{{ player }}</li>
+                <li v-for="player in preflightData?.players" :key="player">{{ player }}</li>
               </ul>
             </div>
           </div>

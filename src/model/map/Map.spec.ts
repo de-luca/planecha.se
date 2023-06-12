@@ -17,6 +17,9 @@ class TestMap extends Map {
   public planeswalk(): boolean {
     throw new Error('Method not implemented.');
   }
+  public addActivePlane(): boolean {
+    throw new Error('Method not implemented.');
+  }
   public customPlaneswalk(): void {
     throw new Error('Method not implemented.');
   }

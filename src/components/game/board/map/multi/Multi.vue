@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper" :class="[layout]">
-    <div class="active" v-for="a in actives">
+    <div class="active" v-for="(a, i) in actives" :key="i">
       <card v-if="a.active.length === 1" :card="a.active[0]" :hidden="!hasStarted" />
       <div v-else @click="shown = a">
         <fa icon="ellipsis" size="10x" />

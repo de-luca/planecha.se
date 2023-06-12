@@ -52,6 +52,7 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-facing-decorator';
+import { WallConfig } from '../types';
 import { PickedLeft, RevealConfig } from './types';
 import { Imgable } from '#/components/Imgable';
 import { Revealed } from '#/model/map';
@@ -61,7 +62,7 @@ export default class Scry extends Imgable {
   @Prop({ required: true })
   public revealed: Revealed;
   @Prop({ required: true })
-  public config: RevealConfig;
+  public config: RevealConfig & WallConfig;
 
   public picked: Record<string, boolean> = {};
   public id = Math.random().toString(36).substring(2, 15);

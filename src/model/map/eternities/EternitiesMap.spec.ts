@@ -10,7 +10,6 @@ import { CardProvider } from '#/services/CardProvider';
 import { WallStates } from '#/model/wall';
 
 class TestMap extends EternitiesMap {
-
   public get specs(): EternitiesMapSpecs {
     return {
       deckType: EternitiesMapDeckType.ALL,
@@ -19,6 +18,9 @@ class TestMap extends EternitiesMap {
     };
   }
   public planeswalk(): void {
+    throw new Error('Method not implemented.');
+  }
+  public addActivePlane(): boolean {
     throw new Error('Method not implemented.');
   }
   public resolve(): void {

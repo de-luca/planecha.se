@@ -1,8 +1,8 @@
 import shuffle from 'lodash.shuffle';
 import { PickedLeft } from '#board/wall/reveal/types';
 import { Imgable } from '#/components/Imgable';
-import { Op, useMain } from '#/store/main';
-import { Plane, PoolsOfBecoming, StairsToInfinity } from '#/model/card';
+import { useMain } from '#/store/main';
+import { Plane } from '#/model/card';
 
 export abstract class Map extends Imgable {
   protected store = useMain();

@@ -12,6 +12,10 @@ export class LightMap extends BaseMap {
     throw new Error('Read Only LightMap');
   }
 
+  public addActivePlane(): void {
+    throw new Error('Read Only LightMap');
+  }
+
   public resolve(): void {
     throw new Error('Read Only LightMap');
   }

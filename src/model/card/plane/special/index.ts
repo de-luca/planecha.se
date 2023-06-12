@@ -1,5 +1,5 @@
 export * from './Aretopolis';
 export * from './PoolsOfBecoming';
 export * from './StairsToInfinity';
-export * from './NornsSeedCore';
+export * from './NornsSeedcore';
 export * from './TheFertileLandsOfSaulvinia';

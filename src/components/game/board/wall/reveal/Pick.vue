@@ -56,6 +56,7 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-facing-decorator';
+import { WallConfig } from '../types';
 import { PickedLeft, RevealConfig } from './types';
 import { Card } from '#/model/card';
 import { Revealed } from '#/model/map';
@@ -66,7 +67,7 @@ export default class Pick extends Imgable {
   @Prop({ required: true })
   public revealed: Revealed;
   @Prop({ required: true })
-  public config: RevealConfig;
+  public config: RevealConfig & WallConfig;
 
   public activeTab = 'relevant';
   public selected: Card | null = null;

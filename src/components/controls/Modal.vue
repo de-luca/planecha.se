@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" :class="{ scroll: scroll }">
+  <div class="modal" :class="{ scroll: props.scroll }">
     <div class="modal-background" title="Close" @click="emit('close')"></div>
     <div class="modal-content">
       <slot></slot>
@@ -10,7 +10,7 @@
 
 <script lang="ts" setup>
 const emit = defineEmits(['close']);
-const { scroll } = defineProps({ scroll: Boolean });
+const props = defineProps({ scroll: Boolean });
 </script>
 
 <style lang="scss" scoped>

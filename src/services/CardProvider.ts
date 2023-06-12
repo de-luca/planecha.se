@@ -7,8 +7,9 @@ import {
   ExportedCard,
 } from '../model/card';
 import cards from '../assets/cards.json';
-import { shuffle } from './shuffle';
+
 import { Deck, DeckState } from '#/model/deck/Deck';
+import { shuffle } from '#/utils/shuffle';
 
 type ListInput = ExportedCard | string;
 

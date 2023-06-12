@@ -75,7 +75,7 @@
               Current Players
             </p>
             <p>{{ playerName }} (You)</p>
-            <p v-for="[id, name] in mates" v-bind:key="id">{{ name }}</p>
+            <p v-for="[id, name] in mates" :key="id">{{ name }}</p>
           </div>
         </template>
       </div>

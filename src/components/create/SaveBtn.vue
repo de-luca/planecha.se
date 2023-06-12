@@ -5,7 +5,7 @@
         <div v-if="state.valid">{{ options[selected] }}</div>
         <div
           v-else
-          v-for="req in state.reqs"
+          v-for="(req, i) in state.reqs" :key="i"
           :class="{ 'has-text-success': req.valid, 'has-text-danger': !req.valid }"
           v-html="req.text"
         ></div>
@@ -29,7 +29,7 @@
         <div class="dropdown-menu" id="dropdown-menu" role="menu">
           <div class="dropdown-content">
             <a
-              v-for="(text, id) in options"
+              v-for="(text, id) in options" :key="id"
               @click.prevent="(selected = id) && (toggle = false)"
               class="dropdown-item"
               :class="{ 'is-active': selected === id }"

@@ -1,5 +1,5 @@
 import { Card, ExportedCard, Plane } from '../card';
-import { shuffle as shuffleS } from '#/services/shuffle';
+import { shuffle } from '#/utils/shuffle';
 
 export interface DeckState {
   cards: Array<ExportedCard>;
@@ -54,7 +54,7 @@ export class Deck<T extends Card> {
   }
 
   public shuffle(): void {
-    this._cards = shuffleS([...this._cards, ...this._played]);
+    this._cards = shuffle([...this._cards, ...this._played]);
     this._played = [];
   }
 

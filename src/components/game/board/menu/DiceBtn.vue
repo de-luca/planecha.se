@@ -34,7 +34,7 @@
             <span>Flip a coin</span>
           </a>
 
-          <a v-for="[t, c] in dices" class="dropdown-item" @click="open(t)">
+          <a v-for="[t, c] in dices" :key="t" class="dropdown-item" @click="open(t)">
             <component :is="c" class="icn is-primary dice" />
             <span>Roll a {{ t.toLowerCase() }}</span>
           </a>

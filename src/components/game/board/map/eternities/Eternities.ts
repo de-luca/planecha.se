@@ -44,7 +44,7 @@ export abstract class Eternities extends Map {
         phenomenon: this.store.map.active[0] as Phenomenon,
         config: {
           ...wall!,
-          mateName: wall?.initiator
+          mateName: wall?.initiator,
         },
       };
     }
