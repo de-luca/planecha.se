@@ -75,7 +75,7 @@ export default class MapActions extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .actions {
   height: 6rem;
   display: flex;

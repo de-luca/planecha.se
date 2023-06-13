@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" :class="[layout]">
+  <div class="wrapper">
     <div class="active" v-for="(a, i) in actives" :key="i">
       <card v-if="a.active.length === 1" :card="a.active[0]" :hidden="!hasStarted" />
       <div v-else @click="shown = a">
@@ -37,10 +37,6 @@ interface Active {
 export default class Multi extends Map {
   public shown: Active | null = null;
 
-  public get layout(): 'x4' | 'x9' {
-    return this.actives.length <= 4 ? 'x4' : 'x9';
-  }
-
   public get actives(): Array<Active> {
     return [{
       yours: true,
@@ -64,32 +60,23 @@ export default class Multi extends Map {
 
 <style lang="scss" scoped>
 .wrapper {
-  grid-area: active;
   display: grid;
   grid-auto-flow: dense;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: calc((100vh - 3rem) / 2);
   gap: 1rem;
 
   height: 100%;
-  padding: 1rem;
+  padding: 1rem 0;
 
-  &.x4 {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-  }
-
-  &.x9 {
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-  }
 
   .active {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
-
-    padding-top: 2rem;
+    gap: .5rem;
+    padding: 1rem 0;
 
     div:first-of-type {
       flex-grow: 1;
@@ -97,6 +84,7 @@ export default class Multi extends Map {
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      height: calc((100vh - 3rem) / 2 - 5rem);
     }
   }
 }

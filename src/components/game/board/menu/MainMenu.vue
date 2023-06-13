@@ -123,6 +123,10 @@ button.button.is-secondary.is-small.name {
 }
 
 .dropdown-menu {
+  @media screen and (max-height: 720px) {
+    top: -450%;
+  }
+
   min-width: 15rem;
   left: 5rem;
   top: -100%;

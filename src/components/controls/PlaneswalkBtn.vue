@@ -12,7 +12,7 @@ import Planeswalk from '#/components/svgs/Planeswalk.vue';
 defineProps({ title: String });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .planeswalk-btn {
   height: 6rem;
 
