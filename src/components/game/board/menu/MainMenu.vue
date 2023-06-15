@@ -40,6 +40,12 @@
         </div>
 
         <template v-if="inGame">
+          <template v-if="isMulti">
+            <hr class="dropdown-divider">
+            <a class="dropdown-item" @click="layoutModalActive = true">
+              Customize Player Layout
+            </a>
+          </template>
           <hr class="dropdown-divider">
           <a class="dropdown-item" @click="resetModalActive = true">
             Reset Game
@@ -53,6 +59,7 @@
     </div>
   </div>
 
+  <layout-modal v-model:active="layoutModalActive" />
   <name-modal v-model:active="nameModalActive" />
   <close-modal v-model:active="closeModalActive" :online="online" @close="close" />
   <reset-modal v-model:active="resetModalActive" @close="reset" />
@@ -60,23 +67,33 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
+import Tip from './Tip.vue';
 import CloseModal from './modals/CloseModal.vue';
 import ResetModal from './modals/ResetModal.vue';
-import Tip from './Tip.vue';
+import LayoutModal from './modals/LayoutModal.vue';
 import { useMain } from '#/store/main';
 
-import NameModal from '#/components/NameModal.vue';
 import ThemeSelector from '#/components/controls/ThemeSelector.vue';
+import NameModal from '#/components/NameModal.vue';
 
 @Component({
-  components: { ThemeSelector, CloseModal, NameModal, ResetModal, Tip },
+  components: {
+    ThemeSelector, Tip,
+    CloseModal, NameModal, ResetModal, LayoutModal,
+  },
 })
 export default class MainMenu extends Vue {
   private store = useMain();
+
   public active = false;
   public nameModalActive = false;
   public closeModalActive = false;
   public resetModalActive = false;
+  public layoutModalActive = false;
+
+  public get isMulti(): boolean {
+    return this.store.isMulti;
+  }
 
   public get inGame(): boolean {
     return !!this.store._map;

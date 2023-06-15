@@ -3,6 +3,7 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import {
   faAngleDown,
   faAngleRight,
+  faArrowRight,
   faBars,
   faBookDead,
   faCaretDown,
@@ -26,6 +27,7 @@ import {
   faPlay,
   faPlus,
   faSort,
+  faSquare,
   faSun,
   faToriiGate,
   faUndoAlt,
@@ -38,6 +40,7 @@ library.add(
 
   faAngleDown,
   faAngleRight,
+  faArrowRight,
   faBars,
   faBookDead,
   faCaretDown,
@@ -61,6 +64,7 @@ library.add(
   faPlay,
   faPlus,
   faSort,
+  faSquare,
   faSun,
   faToriiGate,
   faUndoAlt,

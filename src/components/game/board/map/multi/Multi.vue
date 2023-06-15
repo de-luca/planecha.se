@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" :class="layout">
     <div class="active" v-for="(a, i) in actives" :key="i">
       <card v-if="a.active.length === 1" :card="a.active[0]" :hidden="!hasStarted" />
       <div v-else @click="shown = a">
@@ -37,19 +37,38 @@ interface Active {
 export default class Multi extends Map {
   public shown: Active | null = null;
 
+  public get layout(): Layout {
+    return this.store.playerLayout.layout;
+  }
+
   public get actives(): Array<Active> {
-    return [{
-      yours: true,
-      mate: this.store.getMateName(),
-      active: this.store.map.active,
-    }].concat(
-      [...(this.store.map as MultiMap).mateStates.entries()]
-        .map(([peer, map]) => ({
-          yours: false,
-          mate: this.store.getMateName(peer),
-          active: map.active,
-        })),
-    );
+    return this.store.playerLayout.players.reduce<Array<Active>>((acc, id) => {
+      const active = id === ''
+        ? this.store.map.active
+        : (this.store.map as MultiMap).mateStates.get(id)?.active;
+
+      if (active) {
+        acc.push({
+          yours: id === '',
+          mate: this.store.getMateName(id),
+          active,
+        });
+      }
+
+      return acc;
+    }, []);
+    // return [{
+    //   yours: true,
+    //   mate: this.store.getMateName(),
+    //   active: this.store.map.active,
+    // }].concat(
+    //   [...(this.store.map as MultiMap).mateStates.entries()]
+    //     .map(([peer, map]) => ({
+    //       yours: false,
+    //       mate: this.store.getMateName(peer),
+    //       active: map.active,
+    //     })),
+    // );
   }
 
   public planeswalk(): void {
@@ -62,12 +81,14 @@ export default class Multi extends Map {
 .wrapper {
   display: grid;
   grid-auto-flow: dense;
-  grid-template-columns: repeat(2, 1fr);
   grid-template-rows: calc((100vh - 3rem) / 2);
   gap: 1rem;
 
   height: 100%;
   padding: 1rem 0;
+
+  &.x2 { grid-template-columns: repeat(2, 1fr) }
+  &.x3 { grid-template-columns: repeat(3, 1fr) }
 
 
   .active {

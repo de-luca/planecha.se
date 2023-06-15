@@ -62,6 +62,11 @@ export interface PreflightPayload {
   players: Array<string>;
 }
 
+export interface PlayerLayout {
+  layout: Layout;
+  players: Array<string>;
+}
+
 export interface State {
   _config?: BuildProps;
 
@@ -78,6 +83,7 @@ export interface State {
   selfName: string | null;
   theme: Theme;
   decks: Map<string, SavedDeck>;
+  playerLayout: PlayerLayout;
 }
 
 function getState(): State {
@@ -102,6 +108,10 @@ function getState(): State {
     decks: serializedDecks !== null
       ? new Map(JSON.parse(serializedDecks) as Array<[string, SavedDeck]>)
       : new Map(),
+    playerLayout: {
+      layout: localStorage.getItem('layout') as Layout ?? 'x2',
+      players: [''],
+    },
   };
 }
 
@@ -169,6 +179,10 @@ export const useMain = defineStore('main', {
       localStorage.setItem('selfName', this.selfName);
       this.net?.hey({ name: this.selfName });
     },
+    setLayout(layout: Layout): void {
+      this.playerLayout.layout = layout;
+      localStorage.setItem('layout', layout);
+    },
     addDeck(name: string, deck: SavedDeck): void {
       this.decks.set(name, deck);
       localStorage.setItem(
@@ -192,11 +206,16 @@ export const useMain = defineStore('main', {
 
     hey(payload: HeyPayload): void {
       this.mates.set(payload.id, payload.name);
+      this.playerLayout.players.push(payload.id);
     },
     bye(payload: ByePayload): void {
       this.mates.delete(payload.id);
       if (this.isMulti) {
         (this.map as Multi).removeMate(payload.id);
+        this.playerLayout.players.splice(
+          this.playerLayout.players.findIndex(p => p === payload.id),
+          1,
+        );
       }
     },
 
