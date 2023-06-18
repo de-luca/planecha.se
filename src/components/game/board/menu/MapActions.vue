@@ -9,7 +9,7 @@
             :disabled="disabled"
             @click="$emit('planeswalk')"
           >
-            <Planeswalk class="icn is-primary" />
+            <Planeswalk class="icn" />
           </button>
         </template>
         <template #tip>{{ isPlane ? 'Planeswalk' : 'Resolve' }}</template>
@@ -21,7 +21,7 @@
             :disabled="disabled || !isPlane"
             @click="$emit('chaos')"
           >
-            <Chaos class="icn is-primary" />
+            <Chaos class="icn" />
           </button>
         </template>
         <template #tip>{{ isPlane ? 'Chaos' : 'Chaos not available' }}</template>

@@ -1,7 +1,7 @@
 <template>
   <div class="field has-addons">
     <div class="control submit">
-      <button class="button" @click.prevent="$emit('done')" :disabled="!state.valid">
+      <button class="button is-primary" @click.prevent="$emit('done')" :disabled="!state.valid">
         <div v-if="state.valid">{{ options[selected] }}</div>
         <div
           v-else
@@ -15,14 +15,14 @@
       <div class="dropdown is-right is-up" :class="{ 'is-active': toggle }">
         <div class="dropdown-trigger">
           <button
-            class="button"
+            class="button is-primary"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
             :disabled="!state.valid"
             @click.prevent="toggle = !toggle"
           >
             <span class="icon is-small">
-              <fa icon="caret-down" fixed-width />
+              <fa icon="caret-up" fixed-width />
             </span>
           </button>
         </div>
@@ -86,6 +86,27 @@ export default class SaveBtn extends Vue {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+  }
+}
+
+.dropdown-content {
+  color: var(--btn-primary-color);
+  background-color: var(--btn-primary-bg);
+  border: 1px solid var(--btn-primary-border);
+
+  a.dropdown-item {
+    color: var(--btn-primary-color);
+
+    &:hover {
+      background-color: var(--btn-primary-hover-bg);
+    }
+    &.is-active {
+      color: var(--btn-secondary-color);
+      background-color: var(--secondary);
+    }
+    &:focus {
+      background-color: var(--btn-primary-bg);
+    }
   }
 }
 </style>

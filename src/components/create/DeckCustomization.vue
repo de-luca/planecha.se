@@ -78,6 +78,11 @@ export default class DeckCustomization extends Imgable {
 </script>
 
 <style lang="scss" scoped>
+.modal {
+  left: 0;
+  right: 0;
+}
+
 .modal-content {
   @media screen and (max-height: 450px) and (orientation: landscape) {
     max-width: 100vw;

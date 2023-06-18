@@ -43,7 +43,7 @@
           {{ isDeckValid.reqs.map(r => r.text).join(' - ') }}
         </p>
         <p class="help" v-else-if="canDefaults">
-          <fa icon="lightbulb" fixed-width shake />
+          <fa icon="lightbulb" fixed-width />
           {{ deckHelp }}
         </p>
       </div>

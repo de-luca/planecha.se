@@ -133,6 +133,7 @@ export default class DiceModal extends Vue {
       div:last-child {
         z-index: 1;
         text-transform: capitalize;
+        color: var(--text-color) !important;
       }
 
       .bg {
@@ -156,24 +157,6 @@ export default class DiceModal extends Vue {
           }
         }
       }
-    }
-
-  }
-
-  & > * {
-    width: 100%;
-  }
-
-  .buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: .5rem;
-
-    button.button {
-      margin-right: 0;
-      flex: 1 1 0px;
     }
   }
 }

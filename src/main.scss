@@ -169,9 +169,17 @@ button, a, span, div {
       border-color: transparent;
       text-decoration: none;
       color: var(--brand-color-secondary);
+
+      path {
+        fill: var(--brand-color-secondary);
+      }
     
       &:hover {
         color: var(--brand-color-primary);
+        
+        path {
+          fill: var(--brand-color-primary);
+        }
       }
     }
   }

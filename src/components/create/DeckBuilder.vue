@@ -112,17 +112,16 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-facing-decorator';
-import SaveBtn from './SaveBtn.vue';
-import NameModal from './NameModal.vue';
 import { DeckKind, DeckReqs, DeckState, ProceedType, getDeckState } from './utils';
 import { Imgable } from '#/components/Imgable';
 import { Card, Phenomenon, Plane } from '#/model/card';
 import { CardProvider } from '#/services/CardProvider';
-
-
 import { MapType } from '#/model/map';
 import { EternitiesMapDeckType } from '#/model/map/eternities';
 import { useMain } from '#/store/main';
+
+import SaveBtn from './SaveBtn.vue';
+import NameModal from './NameModal.vue';
 
 type Group = 'all' | 'planes' | 'phenomena';
 
@@ -227,6 +226,11 @@ export default class DeckBuilder extends Imgable {
 </script>
 
 <style lang="scss" scoped>
+.modal {
+  left: 0 !important;
+  right: 0 !important;
+}
+
 .modal-content {
   @media screen and (max-height: 450px) and (orientation: landscape) {
     max-width: 100vw;
@@ -247,8 +251,6 @@ export default class DeckBuilder extends Imgable {
     h1.title {
       display: none
     }
-
-    ;
   }
 
   max-width: 800px;

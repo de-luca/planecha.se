@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" :class="{ active }">
+  <div class="modal" :class="{ active, full: !inGame }">
     <div class="modal-background"></div>
     <div class="modal-content">
       <div class="box">
@@ -36,6 +36,10 @@ export default class NameModal extends Vue {
   private store = useMain();
   public name: string = useMain().selfName ?? '';
 
+  public get inGame(): boolean {
+    return !!this.store._map;
+  }
+
   public save(): void {
     this.store.setName(this.name);
     this.$emit('update:active', false);
@@ -45,8 +49,12 @@ export default class NameModal extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.modal.active {
-  display: block;
+.modal {
+  &.active { display: flex }
+  &.full {
+    left: 0;
+    right: 0;
+  }
 }
 
 .modal-content {
