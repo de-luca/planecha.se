@@ -119,7 +119,7 @@ export default class Create extends Vue {
   }, {
     label: 'Eternities Map',
     value: MapType.ETERNITIES,
-    help: 'The <a target="_blank" rel="noopener noreferrer" href="https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19">Eternities Map</a> variant of Planechase.',
+    help: 'The <a target="_blank" rel="noopener noreferrer" href="https://web.archive.org/web/20221005215028/https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19">Eternities Map</a> variant of Planechase.',
   }];
   public readonly subTypeOptions: Array<Option<string>> = [{
     label: 'Single Deck',

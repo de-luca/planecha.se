@@ -113,6 +113,8 @@
 <script lang="ts">
 import { Component, Prop } from 'vue-facing-decorator';
 import { DeckKind, DeckReqs, DeckState, ProceedType, getDeckState } from './utils';
+import SaveBtn from './SaveBtn.vue';
+import NameModal from './NameModal.vue';
 import { Imgable } from '#/components/Imgable';
 import { Card, Phenomenon, Plane } from '#/model/card';
 import { CardProvider } from '#/services/CardProvider';
@@ -120,8 +122,6 @@ import { MapType } from '#/model/map';
 import { EternitiesMapDeckType } from '#/model/map/eternities';
 import { useMain } from '#/store/main';
 
-import SaveBtn from './SaveBtn.vue';
-import NameModal from './NameModal.vue';
 
 type Group = 'all' | 'planes' | 'phenomena';
 

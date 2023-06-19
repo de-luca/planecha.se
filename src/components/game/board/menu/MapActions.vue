@@ -5,26 +5,29 @@
         <template #btn>
           <button
             class="planeswalk button is-ghost"
-            :title="isPlane ? 'Planeswalk' : 'Resolve'"
+            :title="isPhenomenon ? 'Resolve' : 'Planeswalk'"
             :disabled="disabled"
             @click="$emit('planeswalk')"
           >
-            <Planeswalk class="icn" />
+            <Planeswalk
+              class="icn"
+              :class="{ 'fa-shake': isPhenomenon, 'is-phenomenon': isPhenomenon }"
+            />
           </button>
         </template>
-        <template #tip>{{ isPlane ? 'Planeswalk' : 'Resolve' }}</template>
+        <template #tip>{{ isPhenomenon ? 'Resolve' : 'Planeswalk' }}</template>
       </Tip>
       <Tip>
         <template #btn>
           <button
             class="chaos button is-ghost"
-            :disabled="disabled || !isPlane"
+            :disabled="disabled || isPhenomenon"
             @click="$emit('chaos')"
           >
             <Chaos class="icn" />
           </button>
         </template>
-        <template #tip>{{ isPlane ? 'Chaos' : 'Chaos not available' }}</template>
+        <template #tip>{{ isPhenomenon ? 'Chaos not available' : 'Chaos' }}</template>
       </Tip>
     </template>
     <Tip v-else>
@@ -33,7 +36,7 @@
           <fa icon="play" fixed-width shake size="lg" />
         </button>
       </template>
-      <template #tip>Start Game</template>
+      <template #tip>Start game</template>
     </Tip>
   </div>
 </template>
@@ -41,7 +44,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-facing-decorator';
 import Tip from './Tip.vue';
-import { Plane } from '#/model/card';
+import { Phenomenon } from '#/model/card';
 import { EternitiesMap } from '#/model/map/eternities';
 import { useMain } from '#/store/main';
 
@@ -65,8 +68,8 @@ export default class MapActions extends Vue {
     return this.store.map.hasStarted;
   }
 
-  public get isPlane(): boolean {
-    return this.store.map.active[0] instanceof Plane;
+  public get isPhenomenon(): boolean {
+    return this.store.map.active[0] instanceof Phenomenon;
   }
 
   public start() {
@@ -94,6 +97,14 @@ export default class MapActions extends Vue {
 
   .planeswalk {
     height: 3.5rem;
+
+    .icn.is-phenomenon {
+      filter:
+        drop-shadow(0 0 5px #DC143C)
+        drop-shadow(0 0 5px #DC143C)
+        drop-shadow(0 0 5px #DC143C)
+      ;
+    }
   }
 
   .chaos svg {

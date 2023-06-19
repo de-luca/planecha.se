@@ -117,6 +117,7 @@ button, a, span, div {
 
       &[disabled] {
         background-color: var(--btn-primary-bg);
+        border-color: var(--btn-primary-border);
       }
       
       &.is-loading::after {
@@ -147,6 +148,7 @@ button, a, span, div {
 
       &[disabled] {
         background-color: var(--btn-secondary-bg);
+        border-color: var(--btn-secondary-border);
       }
 
       &.is-loading::after {
