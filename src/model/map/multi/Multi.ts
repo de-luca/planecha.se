@@ -41,14 +41,6 @@ export class Multi extends BaseMap {
   }
 
   public apply(p: Patch, peer: string): void {
-    if (p.event === 'startGame') {
-      for (const mateState of this.mateStates.values()) {
-        mateState.start();
-      }
-      this.start();
-      return;
-    }
-
     if (p.event === '__init__') {
       const map = new LightMap({
         deck: new Deck([]),

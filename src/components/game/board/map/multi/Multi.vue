@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper" :class="layout">
     <div class="active" v-for="(a, i) in actives" :key="i">
-      <card v-if="a.active.length === 1" :card="a.active[0]" :hidden="!hasStarted" />
+      <card v-if="a.active.length === 1" :card="a.active[0]" :hidden="!a.started" />
       <div v-else @click="shown = a">
         <fa icon="ellipsis" size="10x" />
       </div>
@@ -29,6 +29,7 @@ interface Active {
   yours: boolean;
   mate: string;
   active: Array<ModelCard>;
+  started: boolean;
 }
 
 @Component({
@@ -43,15 +44,16 @@ export default class Multi extends Map {
 
   public get actives(): Array<Active> {
     return this.store.playerLayout.players.reduce<Array<Active>>((acc, id) => {
-      const active = id === ''
-        ? this.store.map.active
-        : (this.store.map as MultiMap).mateStates.get(id)?.active;
+      const map = id === ''
+        ? this.store.map
+        : (this.store.map as MultiMap).mateStates.get(id);
 
-      if (active) {
+      if (map) {
         acc.push({
           yours: id === '',
           mate: this.store.getMateName(id),
-          active,
+          active: map.active,
+          started: map.hasStarted,
         });
       }
 
