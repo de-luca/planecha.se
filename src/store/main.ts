@@ -20,7 +20,7 @@ import { DualDeck, EncounterInput } from '#/model/map/eternities';
 import { Phenomenon, Plane } from '#/model/card';
 import { Clone, MaybeExported, RepoFactory, RepoInterface } from '#/model/ver';
 import { Net, NetInterface } from '#/model/net/Net';
-import { once, resolveAfter } from '#/utils/invoke';
+import { once } from '#/utils/invoke';
 import { Patch, diff } from '#/utils/delta';
 import { SavedDeck } from '#/components/create/utils';
 
@@ -54,12 +54,6 @@ export interface InitPayload {
   repo: Clone;
   map: Exported;
   feed: Array<string>;
-}
-
-export interface PreflightPayload {
-  mapType: MapType;
-  hasStarted: boolean;
-  players: Array<string>;
 }
 
 export interface PlayerLayout {
@@ -156,16 +150,16 @@ export const useMain = defineStore('main', {
         feed: [...this.feed],
       };
     },
-    gameStatus(): PreflightPayload {
-      return {
-        mapType: this.config.type,
-        hasStarted: this.map.hasStarted,
-        players: [
-          this.selfName!,
-          ...this.mates.values(),
-        ],
-      };
-    },
+    // gameStatus(): PreflightPayload {
+    //   return {
+    //     mapType: this.config.type,
+    //     hasStarted: this.map.hasStarted,
+    //     players: [
+    //       this.selfName!,
+    //       ...this.mates.values(),
+    //     ],
+    //   };
+    // },
 
   },
 
@@ -227,26 +221,39 @@ export const useMain = defineStore('main', {
       this.ready = true;
     },
 
-    open() {
+    async open() {
       this.net = new Net(this);
       if (this.isMulti) {
-        this.net.setInitHandler((store) => (data, peer) =>
-          store.apply({ event: '__init__', delta: diff<MaybeExported>({}, data.map) }, peer),
-        );
+        this.net.initHandler = (data, peer) =>
+          this.apply({ event: '__init__', delta: diff<MaybeExported>({}, data.map) }, peer);
+      }
+      try {
+        await this.net.connected;
+        await this.net.create({ mapType: this.config.type });
+      } catch (err) {
+        this.net.leave();
+        this.net = undefined;
+        throw err;
       }
     },
 
-    preJoin(roomId: string) {
+    async preJoin(roomId: string) {
       this.leave();
       this.net = new Net(this, roomId);
-      return this.net.connected;
+      await this.net.connected;
+      return this.net.getRoomInfo();
     },
+
+    // preJoin(roomId: string) {
+    //   this.leave();
+    //   this.net = new Net(this, roomId);
+    //   return this.net.connected;
+    // },
     join(payload: BuildProps) {
       if (payload.type !== MapType.MULTI) {
-        return this.net!.join(({ store, done }) => once((data) => {
-          store.applyReset(data);
-          store.ready = true;
-          done();
+        return this.net!.join(once((data) => {
+          this.applyReset(data);
+          this.ready = true;
         }));
       }
 
@@ -254,19 +261,14 @@ export const useMain = defineStore('main', {
       this._map = MapFactory.build(payload);
       this._repo = RepoFactory.build(payload);
 
-      return this.net!.join(({ store, done }) =>
-        resolveAfter(
-          (data, peer) => {
-            this.feed = data.feed;
-            store.apply({ event: '__init__', delta: diff<MaybeExported>({}, data.map) }, peer);
-            this.ready = true;
-            done();
-          },
-          1,
-          () => this.net!.setInitHandler((store) => (data, peer) =>
-            store.apply({ event: '__init__', delta: diff<MaybeExported>({}, data.map) }, peer),
-          ),
-        ),
+      return this.net!.join(
+        once((data, peer) => {
+          this.feed = data.feed;
+          this.apply({ event: '__init__', delta: diff<MaybeExported>({}, data.map) }, peer);
+          this.ready = true;
+          this.net!.initHandler = (data, peer) =>
+            this.apply({ event: '__init__', delta: diff<MaybeExported>({}, data.map) }, peer);
+        }),
       );
     },
 

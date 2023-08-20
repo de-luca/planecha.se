@@ -16,7 +16,7 @@
     </div>
 
     <template v-else>
-      <div v-if="error && !preflightData" class="error">
+      <div v-if="error && !gameData" class="error">
         <a class="button is-large is-ghost">
           <fa icon="exclamation" fixed-width />
         </a>
@@ -30,14 +30,8 @@
             Game type: <b>{{ gameType }}</b>
           </h3>
           <div class="game-status">
-            <h4 class="has-started">
-              Game has {{ !preflightData?.hasStarted ? 'not yet' : '' }} started.
-            </h4>
-            <div class="player-list">
-              <h4>Present players:</h4>
-              <ul>
-                <li v-for="player in preflightData?.players" :key="player">{{ player }}</li>
-              </ul>
+            <div class="player-count">
+              <h4>Present players: <b>{{ gameData?.peers }}</b></h4>
             </div>
           </div>
         </div>
@@ -67,7 +61,7 @@
           v-if="isMulti && openDeckBuilder"
           @cancel="openDeckBuilder = false"
           @use="setDeck"
-          :reqs="{ mapType: preflightData?.mapType }"
+          :reqs="{ mapType: gameData?.data.mapType }"
         />
 
         <div class="field join-game">
@@ -93,7 +87,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
 import { DeckState, getDeckState } from '../create/utils';
-import { PreflightPayload, useMain } from '#/store/main';
+import { MainStore, useMain } from '#/store/main';
 import { MapType } from '#/model/map';
 import { Card } from '#/model/card';
 
@@ -112,13 +106,13 @@ export default class Join extends Vue {
   public openDeckBuilder = false;
   public deck: Array<Card> = [];
 
-  public preflightData: PreflightPayload | null = null;
+  public gameData: Awaited<ReturnType<MainStore['preJoin']>> | null = null;
   public error: Error | null = null;
 
   public created(): void {
     this.roomId = this.$route.params.roomId as string ?? '';
     this.store.preJoin(this.roomId)
-      .then(data => this.preflightData = data!)
+      .then(data => this.gameData = data)
       .catch(err => {
         this.store.leave();
         this.error = err as Error;
@@ -127,7 +121,7 @@ export default class Join extends Vue {
   }
 
   public get gameType(): string {
-    switch (this.preflightData?.mapType) {
+    switch (this.gameData?.data?.mapType) {
       case MapType.SINGLE:
         return 'Single Deck';
       case MapType.MULTI:
@@ -139,13 +133,13 @@ export default class Join extends Vue {
   }
 
   public get isMulti(): boolean {
-    return this.preflightData?.mapType === MapType.MULTI;
+    return this.gameData?.data?.mapType === MapType.MULTI;
   }
 
   public get isDeckValid(): DeckState {
     return !this.isMulti
       ? { valid: true, reqs: [] }
-      : getDeckState(this.preflightData!.mapType, this.deck);
+      : getDeckState(this.gameData!.data.mapType, this.deck);
   }
 
   public toggleDeckBuilder(): void {
@@ -162,7 +156,7 @@ export default class Join extends Vue {
     this.store.setName(this.name);
     try {
       await this.store.join({
-        type: this.preflightData!.mapType,
+        type: this.gameData!.data.mapType,
         cards: this.deck.map(c => c.id),
       });
     } catch (err) {

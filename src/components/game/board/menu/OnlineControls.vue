@@ -122,17 +122,23 @@ export default class OnlineControls extends Vue {
     return this.store.mates;
   }
 
-  public open(): void {
+  public async open(): Promise<void> {
     if (!this.store.selfName) {
       this.nameModalActive = true;
       return;
     }
-    this.store.open();
-    this.$router.replace({
-      name: 'Join',
-      params: { roomId: this.store.gameId },
-    });
-    this.copy();
+
+    try {
+      await this.store.open();
+      this.$router.replace({
+        name: 'Join',
+        params: { roomId: this.store.gameId },
+      });
+      this.copy();
+    } catch(err) {
+      console.log('OPEN FAILED');
+      console.log(err);
+    }
   }
 
   public async copy(): Promise<void> {

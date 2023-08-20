@@ -1,7 +1,12 @@
-import { ActionSender, ActionReceiver, joinRoom, Room, selfId } from 'trystero';
+import {
+  ActionReceiver,
+  ActionReceiverSetter,
+  ActionSender,
+  Bridge,
+} from '@planecha.se/bridge';
 
-import type { InitPayload, MainStore, PreflightPayload } from '#/store/main';
-import { once } from '#/utils/invoke';
+import { MapType } from '../map';
+import type { InitPayload, MainStore } from '#/store/main';
 import { Patch } from '#/utils/delta';
 
 export enum EventType {
@@ -20,12 +25,16 @@ export interface Hey {
 }
 
 export interface NetInterface {
-  gameId: string;
-  connected: Promise<PreflightPayload | void>;
-  peerCount: number;
+  gameId?: string;
+  selfId?: string;
+  connected: Promise<void>;
 
-  join(handler: JoinHandlerBuilder): Promise<void>;
-  setInitHandler(handler: InitHandlerBuilder): ThisType<this>;
+  set initHandler(handler: ActionReceiver<InitPayload>);
+
+  getRoomInfo(): ReturnType<Bridge<GameData>['getInfo']>;
+
+  create(gameData: GameData): Promise<void>;
+  join(handler: ActionReceiver<InitPayload>): Promise<void>;
 
   hey(data: Hey): void;
   sync(patch: Patch): void;
@@ -36,34 +45,19 @@ export interface NetInterface {
   leave(): void;
 }
 
-interface JoinHandlerBuilder {
-  (props: {
-    store: MainStore;
-    done: () => void;
-  }): (data: InitPayload, peer: string) => void;
+interface GameData {
+  mapType: MapType;
 }
-
-interface InitHandlerBuilder {
-  (store: MainStore): (data: InitPayload, peer: string) => void;
-}
-
 
 export class Net implements NetInterface {
-  private static readonly gameIdLength = 20;
-  private static readonly gameIdCharSet = '0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';
-  private static readonly appId = 'dev-planechase';
-
-  public static readonly selfId = selfId;
-
-  public readonly gameId: string;
   private store: MainStore;
-  private room: Room;
+  private bridge: Bridge<GameData>;
 
-  public readonly connected: Promise<PreflightPayload | void>;
   private ready: boolean;
+  private _gameId?: string;
+  private _selfId?: string;
 
-  private readonly joinSender: ActionSender<Record<string, never>>;
-  private readonly initReceiver: ActionReceiver<InitPayload>;
+  private _initReceiver: ActionReceiverSetter<InitPayload>;
 
   public readonly hey: ActionSender<Hey>;
   public readonly sync: ActionSender<Patch>;
@@ -74,22 +68,19 @@ export class Net implements NetInterface {
 
   public constructor(store: MainStore, gameId?: string) {
     this.ready = !gameId;
+    this._gameId = gameId;
 
-    this.gameId = gameId ?? Net.genId();
     this.store = store;
-    this.room = joinRoom({ appId: Net.appId }, this.gameId);
+    this.bridge = Bridge.withBeacon(import.meta.env.VITE_BEACON_URL);
 
-    const [preflightSender, preflightReceiver] = this.room.makeAction<PreflightPayload>(EventType.PREFLIGHT);
-    const [joinSender, joinReceiver] = this.room.makeAction<Record<string, never>>(EventType.JOIN);
-    const [initSender, initReceiver] = this.room.makeAction<InitPayload>(EventType.INIT);
-    const [heySender, heyReceiver] = this.room.makeAction<Hey>(EventType.HEY);
-    const [syncSender, syncReceiver] = this.room.makeAction<Patch>(EventType.SYNC);
-    const [undoSender, undoReceiver] = this.room.makeAction<number>(EventType.UNDO);
-    const [feedSender, feedReceiver] = this.room.makeAction<string>(EventType.FEED);
-    const [resetSender, resetReceiver] = this.room.makeAction<InitPayload>(EventType.RESET);
+    const [initSender, initReceiver] = this.bridge.makeAction<InitPayload>(EventType.INIT);
+    const [heySender, heyReceiver] = this.bridge.makeAction<Hey>(EventType.HEY);
+    const [syncSender, syncReceiver] = this.bridge.makeAction<Patch>(EventType.SYNC);
+    const [undoSender, undoReceiver] = this.bridge.makeAction<number>(EventType.UNDO);
+    const [feedSender, feedReceiver] = this.bridge.makeAction<string>(EventType.FEED);
+    const [resetSender, resetReceiver] = this.bridge.makeAction<InitPayload>(EventType.RESET);
 
-    this.joinSender = joinSender;
-    this.initReceiver = initReceiver;
+    this._initReceiver = initReceiver;
 
     this.hey = heySender;
     this.sync = syncSender;
@@ -98,39 +89,12 @@ export class Net implements NetInterface {
     this.reset = resetSender;
     this.init = initSender;
 
-    this.room.onPeerJoin((peerId) => {
+    this.bridge.onPeerLeave(peerId => this.store.bye({ id: peerId }));
+    this.bridge.onPeerJoin(peerId => {
       if (this.ready) {
-        preflightSender(this.store.gameStatus, peerId);
+        initSender(this.store.initPayload, peerId);
       }
-    });
-
-    this.room.onPeerLeave(peerId => this.store.bye({ id: peerId }));
-
-    this.connected = new Promise<PreflightPayload | void>((resolve, reject) => {
-      if (!gameId) {
-        resolve();
-        return;
-      }
-
-      const timeout = setTimeout(() => {
-        this.room.leave();
-        reject(new Error(
-          'The game could not be found.',
-          { cause: 'Operation timed out. The game might not exists anymore.' },
-        ));
-      }, 5000);
-
-      preflightReceiver(once((data) => {
-        clearTimeout(timeout);
-        resolve(data);
-      }));
-    });
-
-    joinReceiver((_, peerId) => {
-      if (this.ready) {
-        initSender(store.initPayload, peerId);
-      }
-      heySender({ name: store.selfName! }, peerId);
+      heySender({ name: this.store.selfName! }, peerId);
     });
 
     heyReceiver((data, peerId) => {
@@ -148,45 +112,55 @@ export class Net implements NetInterface {
     resetReceiver((data) => store.applyReset(data));
   }
 
-  public get peerCount(): number {
-    return Object.keys(this.room.getPeers()).length;
+  public get connected() {
+    return this.bridge.ready;
   }
 
-  public setInitHandler(handler: InitHandlerBuilder): this {
-    this.initReceiver(handler(this.store));
-    return this;
+  public get gameId() {
+    return this._gameId;
   }
 
-  public join(handler: JoinHandlerBuilder): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
+  public get selfId() {
+    return this._selfId;
+  }
+
+  public set initHandler(handler: ActionReceiver<InitPayload>) {
+    this._initReceiver(handler);
+  }
+
+  public async create(gameData: GameData): Promise<void> {
+    const data = await this.bridge.create(gameData);
+    this._gameId = data.room;
+    this._selfId = data.you;
+  }
+
+  public getRoomInfo() {
+    return this.bridge.getInfo(this.gameId!);
+  }
+
+  public async join(handler: ActionReceiver<InitPayload>): Promise<void> {
+    return new Promise<void>(async(resolve, reject) => {
       const timeout = setTimeout(() => {
-        this.room.leave();
+        this.bridge.leave();
         reject(new Error(
           'Could not retrieve game state.',
           { cause: 'Operation timed out. An error occured while getting the game state.' },
         ));
       }, 5000);
 
-      const done = () => {
+      this._initReceiver((data, peer) => {
+        handler(data, peer);
         clearTimeout(timeout);
         this.init(this.store.initPayload);
         this.ready = true;
         resolve();
-      };
-
-      this.initReceiver(handler({ done, store: this.store }));
-      this.joinSender({});
+      });
+      const data = await this.bridge.join(this._gameId!);
+      this._selfId = data.you;
     });
   }
 
   public leave(): void {
-    this.room.leave();
-  }
-
-  private static genId(): string {
-    return new Array(this.gameIdLength)
-      .fill('')
-      .map(() => this.gameIdCharSet[Math.floor(Math.random() * this.gameIdCharSet.length)])
-      .join('');
+    this.bridge.leave();
   }
 }

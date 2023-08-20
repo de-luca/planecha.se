@@ -2,7 +2,7 @@ version: '2.2'
 
 services:
   yarn:
-    image: node:alpine
+    image: node
     init: true
     ports:
       - 8080:8080
