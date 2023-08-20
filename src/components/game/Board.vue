@@ -377,7 +377,7 @@ export default class Board extends Vue {
 .notif-center {
   position: absolute;
   bottom: 1rem;
-  left: 1rem;
+  left: 6rem;
   width: calc(22rem - .5rem);
 }
 </style>
