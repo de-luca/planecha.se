@@ -60,8 +60,8 @@
 
       <h2>How does that work?</h2>
       <p>
-        <em>Planecha.se</em> uses <l href="https://github.com/dmotz/trystero">Trystero</l>
-        to connect and transmit data between players within a game.
+        <em>Planecha.se</em> uses a signaling server to allow players to connect to each other.<br>
+        The server's sources can be found <l href="https://github.com/de-luca/beacon">here</l>.
       </p>
       <p>
         The app does not require you to create an account, login or any personal informations from players
