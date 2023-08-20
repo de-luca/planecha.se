@@ -112,10 +112,28 @@ export default class Join extends Vue {
   public created(): void {
     this.roomId = this.$route.params.roomId as string ?? '';
     this.store.preJoin(this.roomId)
-      .then(data => this.gameData = data)
+      .then(data => {
+        if (data.peers === 0) {
+          this.error = new Error(
+            'The requested room could not be found.',
+            { cause: 'The link might be broken or the room as been closed.' },
+          );
+        }
+        this.gameData = data;
+      })
       .catch(err => {
+        if (err === undefined) {
+          this.error = new Error(
+            'An error occured when contacting Beacon.',
+            { cause: 'The signaling server or your internet connection might be down.' },
+          );
+        } else {
+          this.error = new Error(
+            'The requested room could not be found.',
+            { cause: 'The link might be broken or the room as been closed.' },
+          );
+        }
         this.store.leave();
-        this.error = err as Error;
       })
       .finally(() => this.loading = false);
   }

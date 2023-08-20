@@ -37,7 +37,11 @@
                 </button>
               </div>
             </div>
-            <p class="help">You need to open your game to invite people to join.</p>
+            <p class="help" v-if="!error">You need to open your game to invite people to join.</p>
+            <p class="help is-danger" v-else>
+              <b>{{ error.message }}</b><br>
+              {{ error.cause }}
+            </p>
           </div>
         </div>
 
@@ -103,6 +107,7 @@ export default class OnlineControls extends Vue {
   private store = useMain();
   private copyBtnText: BtnText = BtnText.IDLE;
 
+  public error: Error | null = null;
   public active = false;
   public nameModalActive = false;
 
@@ -136,8 +141,10 @@ export default class OnlineControls extends Vue {
       });
       this.copy();
     } catch(err) {
-      console.log('OPEN FAILED');
-      console.log(err);
+      this.error = new Error(
+        'The game could not be oppened.',
+        { cause: 'The signaling server or your internet connection might be down.' },
+      );
     }
   }
 
