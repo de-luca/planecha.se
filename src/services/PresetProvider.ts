@@ -8,6 +8,8 @@ interface Set {
 
 export interface PresetDeck {
   name: string;
+  identity?: string;
+  face?: string;
   cards: Array<string>;
   set: Set;
 }

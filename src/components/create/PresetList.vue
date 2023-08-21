@@ -20,15 +20,21 @@
         :class="{ opened: opened === deck.name }"
         @click.prevent="toggleDetails(deck.name)"
       >
-        <div class="name">
-          <span><strong>{{ deck.name }}</strong></span>
+        <div class="top">
+          <span class="name">
+            <strong>{{ deck.name }}</strong>
+            <span>
+              <abbr v-for="pip in deck.identity" class="pip" :class="pip">pip</abbr>
+            </span>
+          </span>
           <span>{{ deck.cards.length }} cards</span>
           <button
             class="button is-small"
             @click.prevent.stop="$emit('use', deck.cards)"
           >Use</button>
         </div>
-        <div>
+        <div class="bottom">
+          <span>{{ deck.face }}</span>
           <small>{{ deck.set.name }} <em>{{ deck.set.code }}</em> ({{ deck.set.year }})</small>
         </div>
       </div>
@@ -120,22 +126,26 @@ export default class PresetList extends Vue {
     }
   }
 
-  div.name {
+  div.top {
     display: flex;
 
     span {
       flex: 1 1 0px;
       align-self: center;
 
-      .tag {
-        color: var(--secondary);
-        background-color: var(--primary);
+      &.name {
+        display: flex;
+        gap: .5rem;
       }
 
       strong {
         color: var(--text-color);
       }
     }
+  }
+  div.bottom {
+    display: flex;
+    flex-direction: column;
   }
 }
 
