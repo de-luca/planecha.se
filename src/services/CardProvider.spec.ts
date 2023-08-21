@@ -2,6 +2,12 @@ import { describe, it, expect } from 'vitest';
 import { Phenomenon, Plane } from '../model/card';
 import { CardProvider } from './CardProvider';
 
+import cards from '#assets/cards.json';
+
+const CARD_COUNT = cards.length;
+const PLANE_COUNT = cards.filter(c => c.typeLine !== 'Phenomenon').length;
+const PHENOMENA_COUNT = cards.filter(c => c.typeLine === 'Phenomenon').length;
+
 describe('CardProvider.getCard', () => {
   it('returns a single card', () => {
     const card = CardProvider.getCard('43a23de7-0738-4b03-b87d-5a7d1144825c');
@@ -11,7 +17,7 @@ describe('CardProvider.getCard', () => {
 
 describe('CardProvider.getAllCards', () => {
   it('returns all the cards', () => {
-    expect(CardProvider.getAllCards()).toHaveLength(87);
+    expect(CardProvider.getAllCards()).toHaveLength(CARD_COUNT);
   });
 });
 
@@ -42,7 +48,7 @@ describe('CardProvider.getCardList', () => {
 describe('CardProvider.getPlaneCards', () => {
   it('returns only planes', () => {
     const planes = CardProvider.getPlaneCards();
-    expect(planes).toHaveLength(79);
+    expect(planes).toHaveLength(PLANE_COUNT);
     expect(planes.every(p => p instanceof Plane)).toBe(true);
   });
 });
@@ -50,21 +56,21 @@ describe('CardProvider.getPlaneCards', () => {
 describe('CardProvider.getPhenomenonCards', () => {
   it('returns only phenomena', () => {
     const phenomena = CardProvider.getPhenomenonCards();
-    expect(phenomena).toHaveLength(8);
+    expect(phenomena).toHaveLength(PHENOMENA_COUNT);
     expect(phenomena.every(p => p instanceof Phenomenon)).toBe(true);
   });
 });
 
 describe('CardProvider.getDeck', () => {
   it('returns a shuffled deck with all cards available', () => {
-    expect(CardProvider.getDeck().remaining).toEqual(87);
+    expect(CardProvider.getDeck().remaining).toEqual(CARD_COUNT);
   });
 });
 
 describe('CardProvider.getPlaneDeck', () => {
   it('returns a deck with only planes', () => {
     const planeDeck = CardProvider.getPlaneDeck();
-    expect(planeDeck.remaining).toEqual(79);
+    expect(planeDeck.remaining).toEqual(PLANE_COUNT);
     while (planeDeck.remaining > 0) {
       expect(planeDeck.draw()).toBeInstanceOf(Plane);
     }
@@ -74,7 +80,7 @@ describe('CardProvider.getPlaneDeck', () => {
 describe('CardProvider.getPhenomenonDeck', () => {
   it('returns a deck with only phenomena', () => {
     const phenomenonDeck = CardProvider.getPhenomenonDeck();
-    expect(phenomenonDeck.remaining).toEqual(8);
+    expect(phenomenonDeck.remaining).toEqual(PHENOMENA_COUNT);
     while (phenomenonDeck.remaining > 0) {
       expect(phenomenonDeck.draw()).toBeInstanceOf(Phenomenon);
     }

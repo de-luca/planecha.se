@@ -24,7 +24,7 @@
           <span class="name">
             <strong>{{ deck.name }}</strong>
             <span>
-              <abbr v-for="pip in deck.identity" class="pip" :class="pip">pip</abbr>
+              <abbr v-for="pip in deck.identity" :key="pip" class="pip" :class="pip">pip</abbr>
             </span>
           </span>
           <span>{{ deck.cards.length }} cards</span>

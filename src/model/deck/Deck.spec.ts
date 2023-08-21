@@ -2,13 +2,17 @@ import { describe, it, expect, vi } from 'vitest';
 import { Card, Plane } from '../card';
 import { CardProvider } from '#/services/CardProvider';
 
+import cards from '#assets/cards.json';
+
+const CARD_COUNT = cards.length;
+
 describe('Deck.draw', () => {
   it('draws a card', () => {
     const deck = CardProvider.getDeck();
-    expect(deck.remaining).toEqual(87);
+    expect(deck.remaining).toEqual(CARD_COUNT);
     const drawn = deck.draw();
     expect(drawn).toBeInstanceOf(Card);
-    expect(deck.remaining).toEqual(86);
+    expect(deck.remaining).toEqual(CARD_COUNT - 1);
   });
 
   it('reshuffle and draws a card', () => {
@@ -17,11 +21,11 @@ describe('Deck.draw', () => {
     while(deck.remaining > 0) {
       deck.setPlayed(deck.draw());
     }
-    expect(deck.played).toHaveLength(87);
+    expect(deck.played).toHaveLength(CARD_COUNT);
     expect(deck.remaining).toEqual(0);
     const drawn = deck.draw();
     expect(drawn).toBeInstanceOf(Card);
-    expect(deck.remaining).toEqual(86);
+    expect(deck.remaining).toEqual(CARD_COUNT - 1);
     expect(deck.played).toHaveLength(0);
     expect(shuffleSpy).toHaveBeenCalled();
   });
@@ -32,7 +36,7 @@ describe('Deck.setPlayed', () => {
     const deck = CardProvider.getDeck();
     const drawn = deck.draw();
     deck.setPlayed(drawn);
-    expect(deck.remaining).toEqual(86);
+    expect(deck.remaining).toEqual(CARD_COUNT - 1);
     expect(deck.played).toHaveLength(1);
   });
 });
@@ -42,7 +46,7 @@ describe('Deck.drawPlane', () => {
     const deck = CardProvider.getDeck();
     const drawn = deck.drawPlane();
     expect(drawn).toBeInstanceOf(Plane);
-    expect(deck.remaining).toEqual(86);
+    expect(deck.remaining).toEqual(CARD_COUNT - deck.played.length - 1);
   });
 });
 
@@ -52,10 +56,10 @@ describe('Deck.shuffle', () => {
     while(deck.remaining > 0) {
       deck.setPlayed(deck.draw());
     }
-    expect(deck.played).toHaveLength(87);
+    expect(deck.played).toHaveLength(CARD_COUNT);
     expect(deck.remaining).toEqual(0);
     deck.shuffle();
-    expect(deck.remaining).toEqual(87);
+    expect(deck.remaining).toEqual(CARD_COUNT);
     expect(deck.played).toHaveLength(0);
   });
 });
@@ -89,7 +93,7 @@ describe('Deck.putOnTop', () => {
     const deck = CardProvider.getDeck();
     const card = deck.draw();
     deck.putOnTop([ card ]);
-    expect(deck.remaining).toEqual(87);
+    expect(deck.remaining).toEqual(CARD_COUNT);
     expect(deck.draw()).toEqual(card);
   });
 });
@@ -99,7 +103,7 @@ describe('Deck.putOnTheBottom', () => {
     const deck = CardProvider.getDeck();
     const card = deck.draw();
     deck.putOnTheBottom([ card ]);
-    expect(deck.remaining).toEqual(87);
+    expect(deck.remaining).toEqual(CARD_COUNT);
     while (deck.remaining > 1) {
       deck.draw();
     }

@@ -1,4 +1,4 @@
-import presets from '../assets/presets.json';
+import presets from '#assets/presets.json';
 
 interface Set {
   name: string;

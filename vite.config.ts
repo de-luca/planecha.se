@@ -6,6 +6,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import Vue from '@vitejs/plugin-vue';
 
 const pathSrc = resolve(__dirname, 'src');
+const pathAssets = join(pathSrc, 'assets');
 const pathBoard = join(pathSrc, 'components', 'game', 'board');
 
 export default defineConfig({
@@ -51,6 +52,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '#': pathSrc,
+      '#assets': pathAssets,
       '#board': pathBoard,
     },
   },

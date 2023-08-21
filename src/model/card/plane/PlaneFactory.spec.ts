@@ -23,7 +23,7 @@ describe('PhenomenonFactory.build', () => {
     const plane = PlaneFactory.build(props);
     expect(plane).toBeInstanceOf(Plane);
     expect(plane['counter']).toEqual({
-      name: 'Flame',
+      name: 'Charge',
       value: 0,
       start: 0,
       max: null,

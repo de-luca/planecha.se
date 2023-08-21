@@ -24,6 +24,7 @@
     ],
     "paths": {
       "#/*": ["src/*"],
+      "#assets/*": ["src/assets/*"],
       "#board/*": ["src/components/game/board/*"]
     },
     "lib": [

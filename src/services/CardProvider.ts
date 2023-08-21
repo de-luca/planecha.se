@@ -6,7 +6,7 @@ import {
   Phenomenon,
   ExportedCard,
 } from '../model/card';
-import cards from '../assets/cards.json';
+import cards from '#assets/cards.json';
 
 import { Deck, DeckState } from '#/model/deck/Deck';
 import { shuffle } from '#/utils/shuffle';

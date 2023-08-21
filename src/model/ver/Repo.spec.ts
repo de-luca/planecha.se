@@ -55,11 +55,14 @@ describe('Repo.commit', () => {
 });
 
 describe('Repo.apply', () => {
-  it('returns an increased head pointer', () => {
+  it('increase head pointer', () => {
     const repo = new Repo();
-    expect(repo.apply({ event: 'test' })).toEqual(0);
-    expect(repo.apply({ event: 'test' })).toEqual(1);
-    expect(repo.apply({ event: 'test' })).toEqual(2);
+    repo.apply({ event: 'test' });
+    expect(repo.head).toEqual(0);
+    repo.apply({ event: 'test' });
+    expect(repo.head).toEqual(1);
+    repo.apply({ event: 'test' });
+    expect(repo.head).toEqual(2);
   });
 });
 
