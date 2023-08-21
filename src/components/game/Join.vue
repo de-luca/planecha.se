@@ -118,8 +118,9 @@ export default class Join extends Vue {
             'The requested room could not be found.',
             { cause: 'The link might be broken or the room as been closed.' },
           );
+        } else {
+          this.gameData = data;
         }
-        this.gameData = data;
       })
       .catch(err => {
         if (err === undefined) {
