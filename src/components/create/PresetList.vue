@@ -34,7 +34,7 @@
           >Use</button>
         </div>
         <div class="bottom">
-          <span>{{ deck.face }}</span>
+          <span>{{ deck.face?.join(' / ') }}</span>
           <small>{{ deck.set.name }} <em>{{ deck.set.code }}</em> ({{ deck.set.year }})</small>
         </div>
       </div>

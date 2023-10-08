@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "esnext",
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
@@ -17,7 +17,6 @@
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
-      "node",
       "vite/client",
       "vite-plugin-pwa/client",
       "vitest/globals",
@@ -29,8 +28,7 @@
     },
     "lib": [
       "esnext",
-      "dom",
-      "dom.iterable"
+      "dom"
     ]
   },
   "include": [
@@ -39,7 +37,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx",
-    "src/sw.ts"
+    "src/sw.ts",
   ],
   "exclude": [
     "node_modules"

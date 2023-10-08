@@ -1,6 +1,7 @@
 /// <reference types="vitest" />
+/// <reference types="bun-types" />
 
-import { resolve, join } from 'path';
+import { resolve, join } from 'node:path';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import Vue from '@vitejs/plugin-vue';

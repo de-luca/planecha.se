@@ -10,7 +10,7 @@
 }
 
 :root {
-  --card-radius: 3.5% / 4.7%;
+  --card-radius: 3.5% / 4.75%;
   --form-btn-width: 250px;
 
   --modal-picker-color: #{$drk-picker-color};
@@ -188,3 +188,7 @@ button, a, span, div {
   }
 }
 
+.tippy-content img.card-preview {
+  border-radius: var(--card-radius);
+  filter: drop-shadow(1px 1px 1px #585858);
+}

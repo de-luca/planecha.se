@@ -1,4 +1,4 @@
-import presets from '#assets/presets.json';
+import decks from '#assets/decks.json';
 
 interface Set {
   name: string;
@@ -9,13 +9,13 @@ interface Set {
 export interface PresetDeck {
   name: string;
   identity?: string;
-  face?: string;
+  face?: Array<string>;
   cards: Array<string>;
   set: Set;
 }
 
 export class PresetProvider {
   public static getDecks(): Array<PresetDeck> {
-    return presets;
+    return decks;
   }
 }

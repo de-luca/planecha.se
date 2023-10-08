@@ -66,7 +66,6 @@ export default class Card extends Imgable {
 }
 
 img {
-  height: inherit;
   width: 100%;
   max-height: 90vh;
   max-width: 800px;

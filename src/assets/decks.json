@@ -1,8 +1,105 @@
 [
   {
+    "name": "Blast from the Past",
+    "identity": "gwu",
+    "face": [
+      "The Fourth Doctor",
+      "Sarah Jane Smith"
+    ],
+    "cards": [
+      "d65ff607-1ff5-42bd-8db2-f082cc2f0b5e",
+      "c265447b-a8ce-4d77-b620-865f7d4e0722",
+      "51a53042-6baa-442a-84ec-2f16fdc12087",
+      "d45692d5-19e8-45ec-92bf-b79cb3919acd",
+      "4f387b4c-3e4a-419d-9dbe-95c5f797747e",
+      "424b2702-e7c6-4056-8466-a43782d7df2b",
+      "6ad7027a-5f13-4833-bb88-879ba8830720",
+      "0c4679a1-f92f-44a9-9a44-066a137c8cd7",
+      "5910ae7e-7a74-4296-9ae1-7fa093b4e640",
+      "a7641877-1a61-467c-9365-487cf5a5656d"
+    ],
+    "set": {
+      "name": "Doctor Who",
+      "code": "WHO",
+      "year": 2023
+    }
+  },
+  {
+    "name": "Timey-Wimey",
+    "identity": "urw",
+    "face": [
+      "The Tenth Doctor",
+      "Rose Tyler"
+    ],
+    "cards": [
+      "5b200e41-126d-4017-8e01-f50582b31af0",
+      "706720f6-bb04-4a7b-8471-0f3d662d6eeb",
+      "96e26369-ae5d-4a77-adaa-d34b25af076f",
+      "4dffc1cb-e9bd-4410-9b08-184eabd2c4da",
+      "4f8cf1ab-1359-44af-a989-dd254fa6c7b5",
+      "8bf638e5-8325-48ca-9039-37a19761ef56",
+      "5dc1deab-ce04-45c0-a4ff-c526a948e500",
+      "b3acbacd-7e97-4bcf-9281-fffa5ea3e70b",
+      "68750b81-1309-4362-84b3-8835b3d71d28",
+      "d8aa7f2d-2280-42d4-b082-1b5d45df77c5"
+    ],
+    "set": {
+      "name": "Doctor Who",
+      "code": "WHO",
+      "year": 2023
+    }
+  },
+  {
+    "name": "Masters of Evil",
+    "identity": "ubr",
+    "face": ["Davros, Dalek Creator"],
+    "cards": [
+      "7c9d6193-1d50-4035-8c85-98c384f461be",
+      "7076bc0c-9cc7-4cd7-aba5-f2f236aab0f7",
+      "a2ef6b79-faeb-4183-a510-f10b14dff417",
+      "2edd018b-6d82-4ff1-b9d0-5da9b628af3f",
+      "79d3e356-9eb9-49bb-b4ba-f4f71876869e",
+      "9cc34a5b-550d-4d3e-b3e5-4d4630649882",
+      "fc621e94-e7c7-49ea-9547-4ab041ea39f3",
+      "ed44d47b-2eea-4cb2-a091-07583bdf390f",
+      "381f510b-8696-4af1-a6c9-d1175e9f36d0",
+      "14066888-66f6-4903-8de2-cc961aa45d8d"
+    ],
+    "set": {
+      "name": "Doctor Who",
+      "code": "WHO",
+      "year": 2023
+    }
+  },
+  {
+    "name": "Paradox Power",
+    "identity": "gur",
+    "face": [
+      "The Thirteenth Doctor",
+      "Yasmin Khan"
+    ],
+    "cards": [
+      "75206757-dae7-4a1e-a391-862699a100d7",
+      "be9870be-cf1b-44ea-a129-8f3711901b16",
+      "71bff56b-733c-4d74-9e0c-85371a8b3787",
+      "a2dfbb3e-3d5f-4b6a-b910-4c7b0c9dc17a",
+      "99fb2128-61fc-45a6-a3f8-b116c3eb2c3d",
+      "204ee01c-74ca-4c4c-92db-aebeebb89406",
+      "9c925057-ac3d-461e-b505-f80e2fd38c8c",
+      "7099883d-0a4b-47ae-bff8-a96efa7a3a9a",
+      "2a21b90a-7ea7-4090-82ec-359ba8ba1aad",
+      "9f7e1607-34b5-4332-81e3-391fb49cd6ad"
+    ],
+    "set": {
+      "name": "Doctor Who",
+      "code": "WHO",
+      "year": 2023
+    }
+  },
+  {
     "name": "Growing Threat",
     "identity": "wb",
-    "face": "Brimaz, Blight of Oreskos",
+    "face": ["Brimaz, Blight of Oreskos"],
     "cards": [
       "4eebfaf3-18da-4661-b6a5-d874585e170a",
       "f3b27908-ca10-4793-ab8e-6639c73cfadd",
@@ -24,7 +121,7 @@
   {
     "name": "Cavalry Charge",
     "identity": "wub",
-    "face": "Sidar Jabari of Zhalfir",
+    "face": ["Sidar Jabari of Zhalfir"],
     "cards": [
       "86534917-5d51-4eba-9bf5-f9fc93c83c80",
       "61c5f2cb-f39c-487c-9786-a8dad4663f4f",
@@ -46,7 +143,7 @@
   {
     "name": "Call for Backup",
     "identity": "rgw",
-    "face": "Bright-Palm, Soul Awakener",
+    "face": ["Bright-Palm, Soul Awakener"],
     "cards": [
       "9aa94de8-b114-4479-a771-c7bc0297be58",
       "256770fe-c17d-45dd-bf05-36eeee240324",
@@ -68,7 +165,7 @@
   {
     "name": "Divine Convocation",
     "identity": "urw",
-    "face": "Kasla, the Broken Halo",
+    "face": ["Kasla, the Broken Halo"],
     "cards": [
       "93b3acc1-2d41-4f5f-9225-7a30ea2d8158",
       "2f3e71b6-0fd6-4ac5-a265-faaabe21177b",
@@ -90,7 +187,7 @@
   {
     "name": "Tinker Time",
     "identity": "gur",
-    "face": "Gimbal, Gremlin Prodigy",
+    "face": ["Gimbal, Gremlin Prodigy"],
     "cards": [
       "a7c6b72c-f9ec-4048-8e4c-99210e4e7b85",
       "08427dab-3874-4a29-bd63-cbd16c1d229d",
