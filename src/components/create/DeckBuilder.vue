@@ -2,50 +2,13 @@
   <div class="modal" style="display: block">
     <div class="modal-background"></div>
     <div class="modal-content">
-
       <h1 class="title">Build a Deck</h1>
 
-      <!-- <aside class="menu">
-        <ul class="menu-list">
-          <li>
-            <a
-              v-if="scope === 'all'"
-              @click="selectedGroup = 'all'"
-              :class="{ 'is-active': selectedGroup === 'all' }"
-            >All cards</a>
-          </li>
-          <li>
-            <a
-              @click="selectedGroup = 'planes'"
-              :class="{ 'is-active': selectedGroup === 'planes' }"
-            >Planes</a>
-          </li>
-          <li>
-            <a
-              v-if="scope === 'all'"
-              @click="selectedGroup = 'phenomena'"
-              :class="{ 'is-active': selectedGroup === 'phenomena' }"
-            >Phenomenon</a>
-          </li>
-          <li>
-            <a
-              @click="selectedGroup = 'decks'"
-              :class="{ 'is-active': selectedGroup === 'decks' }"
-            >Decks</a>
-          </li>
-        </ul>
-      </aside> -->
-
       <div class="panel">
-        <p class="panel-tabs" >
-          <a v-if="kind === 'all'" @click="group = 'all'" :class="{ 'is-active': group === 'all' }">All cards</a>
-          <a @click="group = 'planes'" :class="{ 'is-active': group === 'planes' }">Planes</a>
-          <a v-if="kind === 'all'" @click="group = 'phenomena'" :class="{ 'is-active': group === 'phenomena' }">Phenomenon</a>
-        </p>
-
         <div class="panel-block static">
-          <a @click="all" class="button all">All</a>
-          <a @click="none" class="button none">None</a>
+          <label @click="toggle">
+            <input type="checkbox" :checked="!(!partial || !full)" :indeterminate="partial && !full">
+          </label>
           <p class="control has-icons-right">
             <input
               @keypress.enter.prevent
@@ -58,6 +21,8 @@
               <button @click.prevent="search = ''" class="delete"></button>
             </span>
           </p>
+          <DropdownFilter v-model="selectedTypes" title="Types" :options="typeFilters" />
+          <DropdownFilter v-model="selectedSets" title="Sets" :options="setFilters" />
         </div>
         <div class="card-list">
           <template v-for="card in filtered" :key="card.id">
@@ -66,9 +31,17 @@
                 <span class="panel-icon">
                   <input type="checkbox" :value="card" v-model="deck">
                 </span>
-                <span>{{ card.name }}</span>
-                <span>
-                  <span class="tag is-light">{{ getType(card) }}</span>
+                <span class="name">{{ card.name }}</span>
+                <span class="type">
+                  <span class="tag is-light">{{ card.type }}</span>
+                </span>
+                <span class="sets">
+                  <tippy v-for="set in card.sets" appendTo="parent" placement="left" duration="0" touch="false" hideOnClick="false">
+                    <component :is="sets.get(set)!.icon" />
+                    <template #content>
+                      <div class="tip">{{ sets.get(set)!.name }}</div>
+                    </template>
+                  </tippy>
                 </span>
               </label>
 
@@ -112,9 +85,11 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-facing-decorator';
-import { DeckKind, DeckReqs, DeckState, ProceedType, getDeckState } from './utils';
+import { DeckReqs, DeckState, ProceedType, getDeckState } from './utils';
 import SaveBtn from './SaveBtn.vue';
 import NameModal from './NameModal.vue';
+import DropdownFilter, { Option } from './DropdownFilter.vue';
+
 import { Imgable } from '#/components/Imgable';
 import { Card, Phenomenon, Plane } from '#/model/card';
 import { CardProvider } from '#/services/CardProvider';
@@ -122,54 +97,57 @@ import { MapType } from '#/model/map';
 import { EternitiesMapDeckType } from '#/model/map/eternities';
 import { useMain } from '#/store/main';
 
-
-type Group = 'all' | 'planes' | 'phenomena';
-
-const GROUP_MAP = {
-  'all': Card,
-  'planes': Plane,
-  'phenomena': Phenomenon,
-};
+import { SetProvider } from '#/services/SetProvider';
 
 @Component({
   emits: ['close', 'use'],
-  components: { NameModal, SaveBtn },
+  components: { DropdownFilter, NameModal, SaveBtn },
 })
 export default class DeckBuilder extends Imgable {
   @Prop({ required: true })
-  public reqs: DeckReqs;
+  public reqs!: DeckReqs;
 
   private store = useMain();
+
+  public readonly sets = SetProvider.getSets();
+  public readonly setFilters = [...this.sets.values()].map((set) => ({
+    label: set.name,
+    value: set.code,
+    icon: set.icon,
+  }));
+  public selectedSets = this.setFilters.map(s => s.value);
+
+  public readonly typeFilters: Array<Option> = [];
+  public selectedTypes: Array<string> = [];
+
 
   public nameModalOpen = false;
 
   public cards: Array<Card> = CardProvider.getAllCards();
-  public group: Group = 'all';
   public search = '';
   public action: ProceedType = 'save_use';
 
   public deck: Array<Card> = [];
 
   public created() {
-    this.group = this.kind;
+    this.typeFilters.push({ label: 'Plane' });
+    if (
+      this.reqs.mapType !== MapType.ETERNITIES ||
+      this.reqs.deckType !== EternitiesMapDeckType.PLANES
+    ) {
+      this.typeFilters.push({ label: 'Phenomenon' });
+    }
+    this.selectedTypes = this.typeFilters.map(t => t.label);
   }
 
   public mounted() {
-    this.all();
-  }
-
-  public get kind(): DeckKind {
-    return (
-      this.reqs.mapType === MapType.ETERNITIES &&
-      this.reqs.deckType === EternitiesMapDeckType.PLANES
-    )
-      ? 'planes'
-      : 'all';
+    this.toggle();
   }
 
   public get filtered(): Array<Card> {
     return this.cards
-      .filter(c => c instanceof GROUP_MAP[this.group])
+      .filter(c => this.selectedTypes.includes(c.type))
+      .filter(c => this.selectedSets.some(set => c.sets.includes(set)))
       .filter(c => c.name.toLowerCase().includes(this.search));
   }
 
@@ -177,26 +155,18 @@ export default class DeckBuilder extends Imgable {
     return getDeckState(this.reqs.mapType, this.deck);
   }
 
-  public getType(card: Card): string {
-    return card instanceof Plane ? 'Plane' : 'Phenomenon';
+  public get partial(): boolean {
+    return this.filtered.some(c => this.deck.includes(c));
   }
 
-  public all(): void {
-    this.deck = [...this.filtered, ...this.deck].reduce(
-      (acc, c) => {
-        if (acc.findIndex(accC => accC.id === c.id) === -1) {
-          acc.push(c);
-        }
-        return acc;
-      },
-      [] as Array<Card>,
-    );
+  public get full(): boolean {
+    return this.filtered.every(c => this.deck.includes(c));
   }
 
-  public none(): void {
-    this.deck = this.deck.filter((c) => {
-      return this.filtered.findIndex(fc => fc.id === c.id) === -1;
-    });
+  public toggle(): void {
+    this.deck = this.full
+      ? this.deck.filter(c => this.filtered.findIndex(fc => fc.id === c.id) === -1)
+      : [...new Set([...this.filtered, ...this.deck])];
   }
 
   public save(deckName: string): void {
@@ -271,27 +241,6 @@ export default class DeckBuilder extends Imgable {
   }
 }
 
-.menu {
-  @media screen and (max-height: 450px) and (orientation: landscape) {
-    grid-area: menu;
-    display: block;
-  }
-
-  display: none;
-
-  background-color: var(--bg-color);
-
-  .menu-list a {
-    color: var(--text-color);
-    border-radius: 0;
-
-    &:hover,
-    &.is-active {
-      background-color: var(--secondary);
-    }
-  }
-}
-
 .button.all,
 .button.none,
 .button.save {
@@ -323,32 +272,8 @@ export default class DeckBuilder extends Imgable {
   background-color: var(--bg-color);
   border: 1px solid var(--border-color);
 
-  .panel-tabs:not(:last-child),
   .panel-block:not(:last-child) {
     border-bottom-color: var(--border-color);
-  }
-
-  .panel-tabs {
-    @media screen and (max-height: 450px) and (orientation: landscape) {
-      display: none;
-    }
-
-    font-size: 1em;
-    padding-left: 1rem;
-    padding-right: 1rem;
-
-    a {
-      border-bottom-color: var(--border-color);
-
-      &.is-active {
-        color: var(--text-color);
-        border-bottom-color: var(--primary);
-      }
-    }
-
-    span {
-      flex-grow: 1;
-    }
   }
 
   .panel-block {
@@ -369,6 +294,10 @@ export default class DeckBuilder extends Imgable {
 
     .panel-icon {
       flex-grow: 0;
+    }
+
+    .name {
+      flex-grow: 2;
     }
 
     span {
@@ -394,6 +323,35 @@ export default class DeckBuilder extends Imgable {
     height: 60vh;
     overflow: scroll;
     border-bottom: 1px solid var(--border-color);
+
+    .sets {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      gap: .5rem;
+      padding-right: .5rem;
+
+      .tip {
+        border: 1px solid var(--border-color);
+        padding: .5rem 1rem;
+        background-color: var(--bg-color);
+        border-radius: 6px;
+        width: max-content;
+      }
+
+      span {
+        flex: unset;
+      }
+
+      svg {
+        fill: var(--brand-color-primary);
+        height: 1.2rem;
+        vertical-align: middle;
+        &:hover {
+          fill: var(--brand-color-secondary);
+        }
+      }
+    }
   }
 }
 

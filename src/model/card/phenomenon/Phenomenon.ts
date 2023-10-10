@@ -1,7 +1,11 @@
-import { Card } from '../Card';
+import { Card, Type } from '../Card';
 import { WallStates } from '#/model/wall';
 
 export class Phenomenon extends Card {
+  public get type(): Type {
+    return 'Phenomenon';
+  }
+
   public chaos(): void {
     return;
   }

@@ -1,4 +1,4 @@
-import { Card, Counter, Props } from '../Card';
+import { Card, Counter, Props, Type } from '../Card';
 import { ExportedCard } from '../CardInterface';
 import type { WallStates } from '#/model/wall';
 
@@ -8,6 +8,10 @@ export class Plane extends Card {
   public constructor(props: Props) {
     super(props);
     this._counter = props.counter ?? undefined;
+  }
+
+  public get type(): Type {
+    return 'Plane';
   }
 
   public get counter(): Counter | undefined {
