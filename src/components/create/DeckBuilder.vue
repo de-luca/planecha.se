@@ -36,7 +36,15 @@
                   <span class="tag is-light">{{ card.type }}</span>
                 </span>
                 <span class="sets">
-                  <tippy v-for="set in card.sets" appendTo="parent" placement="left" duration="0" touch="false" hideOnClick="false">
+                  <tippy
+                    v-for="set in card.sets"
+                    v-bind:key="set"
+                    appendTo="parent"
+                    placement="left"
+                    duration="0"
+                    touch="false"
+                    hideOnClick="false"
+                  >
                     <component :is="sets.get(set)!.icon" />
                     <template #content>
                       <div class="tip">{{ sets.get(set)!.name }}</div>

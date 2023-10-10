@@ -13,7 +13,7 @@
           All / None
         </label>
         <hr class="dropdown-divider">
-        <label v-for="o in options" class="dropdown-item">
+        <label v-for="o in options" v-bind:key="o.label" class="dropdown-item">
           <input type="checkbox" v-model="selected" :value="o.value ?? o.label">
           <component v-if="o.icon" :is="o.icon" />
           {{ o.label }}
