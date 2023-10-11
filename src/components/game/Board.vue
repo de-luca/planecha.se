@@ -13,6 +13,7 @@
         @planeswalk="planeswalk"
         @chaos="chaos"
       />
+      <div class="spacer"></div>
       <DiceBtn />
       <Tip>
         <template #btn>
@@ -25,13 +26,10 @@
           <em>external</em>
         </template>
       </Tip>
-
       <UndoBtn />
       <div class="spacer"></div>
       <OnlineControls />
       <MainMenu />
-      <!-- <div class="spacer"></div>
-      <div class="spacer"></div> -->
       <DeckStatus class="status" />
     </div>
 
@@ -221,7 +219,6 @@ export default class Board extends Vue {
           ...config,
           seeder: () => { /* NOOP */ },
           resolver: (choices) => {
-            console.log(choices);
             this.store.pushOpToStack(Op.RESOLVE_REVEAL, {
               top: [],
               bottom: shuffle([...choices.picked, ...choices.left]),
@@ -241,6 +238,15 @@ export default class Board extends Vue {
           ...config,
           seeder: () => this.store.reveal({ count: 2, type: Plane }),
           resolver: this.customPlaneswalk,
+        };
+      case RevealerSource.CUSTOM:
+        return {
+          ...config,
+          seeder: () => { /* NOOP */ },
+          resolver: (choices) => this.store.privateResolveReveal({
+            top: choices.picked,
+            bottom: choices.left,
+          }),
         };
     }
   }

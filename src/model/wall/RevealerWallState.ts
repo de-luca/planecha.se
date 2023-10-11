@@ -7,6 +7,7 @@ export enum RevealerMode {
 }
 
 export enum RevealerSource {
+  CUSTOM = 'CUSTOM',
   ARETOPOLIS = 'ARETOPOLIS',
   CHAOTIC_AETHER = 'CHAOTIC_AETHER',
   POOLS_OF_BECOMING = 'POOLS_OF_BECOMING',

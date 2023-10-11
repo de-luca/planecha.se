@@ -29,6 +29,7 @@
         </template>
         <template #tip>{{ isPhenomenon ? 'Chaos not available' : 'Chaos' }}</template>
       </Tip>
+      <LookAtBtn :disabled="disabled || isPhenomenon" />
     </template>
     <Tip v-else>
       <template #btn>
@@ -44,6 +45,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-facing-decorator';
 import Tip from './Tip.vue';
+import LookAtBtn from './LookAtBtn.vue';
 import { Phenomenon } from '#/model/card';
 import { EternitiesMap } from '#/model/map/eternities';
 import { useMain } from '#/store/main';
@@ -52,7 +54,7 @@ import { Chaos, Planeswalk } from '#/components/svgs';
 
 @Component({
   emits: ['chaos', 'planeswalk'],
-  components: { Chaos, Planeswalk, Tip },
+  components: { Chaos, Planeswalk, LookAtBtn, Tip },
 })
 export default class MapActions extends Vue {
   @Prop({ required: true })
@@ -80,7 +82,7 @@ export default class MapActions extends Vue {
 
 <style lang="scss" scoped>
 .actions {
-  height: 6rem;
+  height: 10rem;
   display: flex;
   flex-direction: column;
   align-items: center;

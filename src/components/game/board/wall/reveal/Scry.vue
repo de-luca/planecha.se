@@ -4,7 +4,7 @@
     <div class="modal-content">
 
       <div class="header">
-        <p class="muted"><em><b>{{ config.mateName }}</b> encountered</em></p>
+        <p class="muted" v-if="config.mateName"><em><b>{{ config.mateName }}</b> encountered</em></p>
         <h1 class="title" v-if="config.title" v-html="config.title"></h1>
         <h2 class="subtitle" v-if="config.subTitle" v-html="config.subTitle"></h2>
       </div>
@@ -66,10 +66,6 @@ export default class Scry extends Imgable {
 
   public picked: Record<string, boolean> = {};
   public id = Math.random().toString(36).substring(2, 15);
-
-  created() {
-    console.log(this.revealed, this.config);
-  }
 
   public get allSet(): boolean {
     return this.revealed.relevant.every(c => this.picked[c.id] !== undefined);

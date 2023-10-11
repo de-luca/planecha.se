@@ -67,7 +67,7 @@ export default class Card extends Imgable {
 
 img {
   width: 100%;
-  max-height: 90vh;
+  max-height: 100%;
   max-width: 800px;
   filter: drop-shadow(1px 1px 1px #585858);
   border-radius: var(--card-radius);

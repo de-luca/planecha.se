@@ -10,6 +10,7 @@ const actions = [
   'resolve',
   'reveal',
   'resolveReveal',
+  'privateResolveReveal',
   'updateCounters',
   'updateWallState',
 ];

@@ -10,7 +10,7 @@
     "serve:docker": "vite --port 8080 --host 0.0.0.0",
     "build": "vite build",
     "build:check": "vue-tsc --noEmit",
-    "lint": "eslint \"src/**/*.{ts,vue}\"",
+    "lint": "eslint 'src/**/*.{ts,vue}'",
     "test": "vitest"
   },
   "dependencies": {

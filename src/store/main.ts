@@ -364,6 +364,15 @@ export const useMain = defineStore('main', {
     updateCounters(payload: UpdateCounterInput) {
       this.map.updateCounter(payload);
     },
+
+    privateReveal(payload: RevealUntilInput) {
+      this.map.revealUntil(payload);
+    },
+    privateResolveReveal(payload: ResolveRevealInput) {
+      this.map.resolveReveal(payload);
+      !payload.stop && this.resolveOpStack();
+    },
+
     reveal(payload: RevealUntilInput) {
       this.map.revealUntil(payload);
     },

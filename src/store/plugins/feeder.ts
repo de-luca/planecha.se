@@ -65,6 +65,16 @@ export function createFeeder({ store }: PiniaPluginContext) {
             return store.pushToFeed(message);
           }
 
+          case 'privateReveal':
+            return store.pushToFeed(
+              `<b>${store.logName}</b> ${store.logName === 'You' ? 'are' : 'is'} looking at the top ${args[0].count} cards on top of the planar deck`,
+            );
+
+          case 'privateResolveReveal':
+            return store.pushToFeed(
+              `<b>${store.logName}</b> putted back ${args[0].top.length} card on the top and ${args[0].bottom.length} at the bottom`,
+            );
+
           case 'resolveReveal': {
             if (args[0].top.length > 0) {
               store.pushToFeed(
