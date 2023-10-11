@@ -1,5 +1,5 @@
 <template>
-  <Tip>
+  <tip>
     <template #btn>
       <button
         title="Undo last action"
@@ -14,15 +14,14 @@
     <template #tip>
       {{ canUndo ? 'Undo last action' : 'No action to undo' }}
     </template>
-  </Tip>
+  </tip>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
-import Tip from './Tip.vue';
 import { useMain } from '#/store/main';
 
-@Component({ components: { Tip } })
+@Component
 export default class UndoBtn extends Vue {
   private store = useMain();
 

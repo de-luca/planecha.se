@@ -3,7 +3,7 @@
     :class="{ 'is-active': active }"
     class="dropdown"
   >
-    <Tip>
+    <tip>
       <template #btn>
         <div class="dropdown-trigger">
           <button
@@ -18,7 +18,7 @@
         </div>
       </template>
       <template #tip>Online controls</template>
-    </Tip>
+    </tip>
 
     <div class="click-trap" @click="active = false"></div>
 
@@ -91,7 +91,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
-import Tip from './Tip.vue';
 import { useMain } from '#/store/main';
 
 import FeedbackButton from '#/components/controls/FeedbackButton.vue';
@@ -102,7 +101,7 @@ enum BtnText {
   SUCCESS = 'Copied!',
 }
 
-@Component({ components: { FeedbackButton, NameModal, Tip } })
+@Component({ components: { FeedbackButton, NameModal } })
 export default class OnlineControls extends Vue {
   private store = useMain();
   private copyBtnText: BtnText = BtnText.IDLE;

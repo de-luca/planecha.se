@@ -15,7 +15,7 @@
       />
       <div class="spacer"></div>
       <DiceBtn />
-      <Tip>
+      <tip>
         <template #btn>
           <l class="button is-ghost" href="https://dungeon.planecha.se">
             <fa icon="dungeon" fixed-width size="lg" />
@@ -25,7 +25,7 @@
           Dungeon tracker<br>
           <em>external</em>
         </template>
-      </Tip>
+      </tip>
       <UndoBtn />
       <div class="spacer"></div>
       <OnlineControls />
@@ -68,8 +68,6 @@ import { RevealerWallState, StateKey, RevealerSource } from '#/model/wall';
 import { RevealFactory } from '#board/wall/reveal/RevealFactory';
 import { Map as CmpMap } from '#board/map/Map';
 
-import Tip from '#board/menu/Tip.vue';
-
 import Single from '#board/map/single/Single.vue';
 import Multi from '#board/map/multi/Multi.vue';
 import SingleDeck from '#board/map/eternities/SingleDeck.vue';
@@ -96,7 +94,6 @@ type LocalRevealerConfig = {
 
 @Component({
   components: {
-    Tip,
     Single, Multi, SingleDeck, DualDeck,
     MapActions, DiceBtn, UndoBtn, DeckStatus,
     OnlineControls, MainMenu,

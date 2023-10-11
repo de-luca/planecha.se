@@ -1,6 +1,6 @@
 <template>
   <div :class="{ 'is-active': active, 'is-up': !inGame }" class="dropdown">
-    <Tip>
+    <tip>
       <template #btn>
         <div class="dropdown-trigger">
           <button
@@ -15,7 +15,7 @@
         </div>
       </template>
       <template #tip>Configuration</template>
-    </Tip>
+    </tip>
 
     <div id="click-trap" @click="active = false"></div>
 
@@ -67,7 +67,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
-import Tip from './Tip.vue';
 import CloseModal from './modals/CloseModal.vue';
 import ResetModal from './modals/ResetModal.vue';
 import LayoutModal from './modals/LayoutModal.vue';
@@ -78,7 +77,7 @@ import NameModal from '#/components/NameModal.vue';
 
 @Component({
   components: {
-    ThemeSelector, Tip,
+    ThemeSelector,
     CloseModal, NameModal, ResetModal, LayoutModal,
   },
 })

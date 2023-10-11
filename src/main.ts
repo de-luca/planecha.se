@@ -14,6 +14,7 @@ import { createFeeder } from './store/plugins/feeder';
 import { versionizer } from './store/plugins/versionizer';
 import Link from './components/controls/Link.vue';
 import Modal from './components/controls/Modal.vue';
+import Tip from './components/controls/Tip.vue';
 import App from './App.vue';
 
 
@@ -29,6 +30,7 @@ createApp(App)
   .component('fal', FontAwesomeLayers)
   .component('l', Link)
   .component('modal', Modal)
+  .component('tip', Tip)
   .use(
     createPinia()
       .use(createFeeder)

@@ -4,10 +4,14 @@
     <div class="modal-content">
       <div class="wrapper">
         <card v-for="card in tile.plane" :key="card.id" :card="card" :ro="!current" />
-        <planeswalk-btn
+        <button
           v-if="(Math.abs(tile.coords.x) + Math.abs(tile.coords.y) === 1)"
+          class="button is-ghost planeswalk-btn"
+          title="Planeswalk"
           @click="$emit('planeswalk', { ...tile.coords })"
-        />
+        >
+          <Planeswalk class="icn is-primary" />
+        </button>
       </div>
     </div>
     <button class="modal-close is-large" aria-label="close" title="Close" @click="$emit('close')"></button>
@@ -22,11 +26,11 @@ import { Plane } from '#/model/card';
 import { Tile } from '#/model/map/eternities';
 
 import Card from '#/components/controls/Card.vue';
-import PlaneswalkBtn from '#/components/controls/PlaneswalkBtn.vue';
+import { Planeswalk } from '#/components/svgs';
 
 @Component({
   emits: [ 'close', 'planeswalk' ],
-  components: { PlaneswalkBtn, Card },
+  components: { Planeswalk, Card },
 })
 export default class TileDetails extends Imgable {
   @Prop({ required: true })

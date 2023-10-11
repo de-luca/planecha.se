@@ -1,7 +1,7 @@
 <template>
   <div class="actions">
     <template v-if="hasStarted">
-      <Tip v-if="!isEternities">
+      <tip v-if="!isEternities">
         <template #btn>
           <button
             class="planeswalk button is-ghost"
@@ -16,8 +16,8 @@
           </button>
         </template>
         <template #tip>{{ isPhenomenon ? 'Resolve' : 'Planeswalk' }}</template>
-      </Tip>
-      <Tip>
+      </tip>
+      <tip>
         <template #btn>
           <button
             class="chaos button is-ghost"
@@ -28,33 +28,32 @@
           </button>
         </template>
         <template #tip>{{ isPhenomenon ? 'Chaos not available' : 'Chaos' }}</template>
-      </Tip>
+      </tip>
       <LookAtBtn :disabled="disabled || isPhenomenon" />
     </template>
-    <Tip v-else>
+    <tip v-else>
       <template #btn>
         <button class="button is-ghost" @click="start">
           <fa icon="play" fixed-width shake size="lg" />
         </button>
       </template>
       <template #tip>Start game</template>
-    </Tip>
+    </tip>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-facing-decorator';
-import Tip from './Tip.vue';
 import LookAtBtn from './LookAtBtn.vue';
 import { Phenomenon } from '#/model/card';
 import { EternitiesMap } from '#/model/map/eternities';
 import { useMain } from '#/store/main';
 
-import { Chaos, Planeswalk } from '#/components/svgs/dices';
+import { Chaos, Planeswalk } from '#/components/svgs';
 
 @Component({
   emits: ['chaos', 'planeswalk'],
-  components: { Chaos, Planeswalk, LookAtBtn, Tip },
+  components: { Chaos, Planeswalk, LookAtBtn },
 })
 export default class MapActions extends Vue {
   @Prop({ required: true })

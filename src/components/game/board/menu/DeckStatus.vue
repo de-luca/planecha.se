@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <Tip>
+    <tip>
       <template #btn>
         <div class="info" title="Remaining cards">
           <fa icon="map" fixed-width size="lg" />
@@ -8,9 +8,9 @@
         </div>
       </template>
       <template #tip>Active cards</template>
-    </Tip>
+    </tip>
 
-    <Tip>
+    <tip>
       <template #btn>
         <div class="info" title="Remaining cards">
           <fa icon="eye" fixed-width size="lg" />
@@ -18,9 +18,9 @@
         </div>
       </template>
       <template #tip>Revealed cards</template>
-    </Tip>
+    </tip>
 
-    <Tip>
+    <tip>
       <template #btn>
         <div class="info" title="Remaining cards">
           <fa icon="layer-group" fixed-width size="lg" />
@@ -39,9 +39,9 @@
           </div>
         </div>
       </template>
-    </Tip>
+    </tip>
 
-    <Tip>
+    <tip>
       <template #btn>
         <div class="info" title="Played cards">
           <fa icon="book-dead" fixed-width size="lg"/>
@@ -60,18 +60,16 @@
           </div>
         </div>
       </template>
-    </Tip>
+    </tip>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-facing-decorator';
-import Tip from './Tip.vue';
 import { DualDeck, EternitiesMap } from '#/model/map/eternities';
 import { useMain } from '#/store/main';
 
-
-@Component({ components: { Tip } })
+@Component
 export default class DeckStatus extends Vue {
   private store = useMain();
 

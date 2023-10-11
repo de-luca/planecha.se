@@ -28,13 +28,14 @@
 <script lang="ts">
 import { Component as VueComponent , markRaw } from 'vue';
 import { Component, Prop, Vue } from 'vue-facing-decorator';
-import { DiceType } from '../dices/dices';
+import { DiceType } from '../dices';
 
 import * as SVGs from '#/components/svgs/dices';
+import { Chaos, Planeswalk } from '#/components/svgs';
 import { useMain } from '#/store/main';
 
 @Component({
-  components: { ...SVGs },
+  components: { ...SVGs, Chaos, Planeswalk },
   emits: ['close'],
 })
 export default class DiceModal extends Vue {
@@ -161,3 +162,4 @@ export default class DiceModal extends Vue {
   }
 }
 </style>
+./dices

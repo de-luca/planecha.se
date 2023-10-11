@@ -4,7 +4,13 @@
     <div class="modal-content">
       <h1 class="title">{{ config.mateName }} encountered a Phenomenon</h1>
       <img :src="imgSrc">
-      <planeswalk-btn title="Encounter" @click="$emit('resolve')" />
+      <button
+        class="button is-ghost planeswalk-btn"
+        title="Encounter"
+        @click="$emit('resolve')"
+      >
+        <Planeswalk class="icn is-primary" />
+      </button>
     </div>
   </div>
 </template>
@@ -15,11 +21,11 @@ import { WallConfig } from './types';
 import { Imgable } from '#/components/Imgable';
 import { Phenomenon } from '#/model/card';
 
-import PlaneswalkBtn from '#/components/controls/PlaneswalkBtn.vue';
+import { Planeswalk } from '#/components/svgs';
 
 @Component({
   emits: [ 'resolve' ],
-  components: { PlaneswalkBtn },
+  components: { Planeswalk },
 })
 export default class PhenomenonWall extends Imgable {
   @Prop({ required: true })

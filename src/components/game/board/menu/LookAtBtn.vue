@@ -3,7 +3,7 @@
     :class="{ 'is-active': active }"
     class="dropdown is-left"
   >
-    <Tip>
+    <tip>
       <template #btn>
         <div class="dropdown-trigger">
           <button
@@ -22,7 +22,7 @@
         Look at the top cards<br>
         of your planar deck
       </template>
-    </Tip>
+    </tip>
 
     <div class="click-trap" @click="active = false"></div>
 
@@ -65,12 +65,11 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-facing-decorator';
-import Tip from './Tip.vue';
 import { useMain } from '#/store/main';
 
 import { RevealerMode, RevealerSource, RevealerWallState, StateKey } from '#/model/wall';
 
-@Component({ components: { Tip } })
+@Component
 export default class LookAtBtn extends Vue {
   @Prop({ required: true })
   public disabled: boolean;

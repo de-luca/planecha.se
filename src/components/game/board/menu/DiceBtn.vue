@@ -3,7 +3,7 @@
     :class="{ 'is-active': active }"
     class="dropdown is-left"
   >
-    <Tip>
+    <tip>
       <template #btn>
         <div class="dropdown-trigger">
           <button
@@ -18,7 +18,7 @@
         </div>
       </template>
       <template #tip>Roll dices</template>
-    </Tip>
+    </tip>
 
     <div class="click-trap" @click="active = false"></div>
 
@@ -47,13 +47,13 @@
 <script lang="ts">
 import { Component as VueComponent, markRaw } from 'vue';
 import { Component, Vue } from 'vue-facing-decorator';
-import { DiceType } from './dices/dices';
+import { DiceType } from './dices';
 
-import Tip from './Tip.vue';
 import DiceModal from './modals/DiceModal.vue';
 import * as SVGs from '#/components/svgs/dices';
+import { Chaos, Planeswalk } from '#/components/svgs';
 
-@Component({ components: { ...SVGs, Tip, DiceModal } })
+@Component({ components: { ...SVGs, Chaos, Planeswalk, DiceModal } })
 export default class DiceMenu extends Vue {
   public dices: Array<[DiceType, VueComponent]> = [
     ['d4', markRaw(SVGs.D4)],
@@ -124,3 +124,4 @@ export default class DiceMenu extends Vue {
   }
 }
 </style>
+./modals/dices
