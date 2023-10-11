@@ -1,6 +1,6 @@
 import { Component } from 'vue';
 import { useMain } from '#/store/main';
-import * as SVGs from '#/components/svgs';
+import * as SVGs from '#/components/svgs/dices';
 
 const store = useMain();
 

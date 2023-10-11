@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import Planeswalk from '#/components/svgs/Planeswalk.vue';
+import Planeswalk from '#/components/svgs/dices/Planeswalk.vue';
 defineProps({ title: String });
 </script>
 

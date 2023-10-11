@@ -51,7 +51,7 @@ import { DiceType } from './dices/dices';
 
 import Tip from './Tip.vue';
 import DiceModal from './modals/DiceModal.vue';
-import * as SVGs from '#/components/svgs';
+import * as SVGs from '#/components/svgs/dices';
 
 @Component({ components: { ...SVGs, Tip, DiceModal } })
 export default class DiceMenu extends Vue {

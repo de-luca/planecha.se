@@ -50,7 +50,7 @@ import { Phenomenon } from '#/model/card';
 import { EternitiesMap } from '#/model/map/eternities';
 import { useMain } from '#/store/main';
 
-import { Chaos, Planeswalk } from '#/components/svgs';
+import { Chaos, Planeswalk } from '#/components/svgs/dices';
 
 @Component({
   emits: ['chaos', 'planeswalk'],

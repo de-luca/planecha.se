@@ -8,6 +8,6 @@
 </template>
 
 <script lang="ts" setup>
-import { Planeswalk } from '#/components/svgs';
+import { Planeswalk } from '#/components/svgs/dices';
 defineProps({ title: String });
 </script>

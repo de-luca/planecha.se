@@ -30,7 +30,7 @@ import { Component as VueComponent , markRaw } from 'vue';
 import { Component, Prop, Vue } from 'vue-facing-decorator';
 import { DiceType } from '../dices/dices';
 
-import * as SVGs from '#/components/svgs';
+import * as SVGs from '#/components/svgs/dices';
 import { useMain } from '#/store/main';
 
 @Component({
