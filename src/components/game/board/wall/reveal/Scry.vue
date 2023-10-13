@@ -10,30 +10,37 @@
       </div>
 
       <div class="revealed">
-        <div v-for="(c, index) in revealed.relevant" :key="c.id" class="card-wrapper">
-          <img :src="buildImgSrc(c)">
-          <div class="control to-top">
-            <input
-              type="radio"
-              :id="id + index + 'top'"
-              :value="true"
-              v-model="picked[c.id]"
-            >
-            <label class="button" :for="id + index + 'top'">
-              Keep on top
-            </label>
-          </div>
-          <div class="control to-bottom">
-            <input
-              type="radio"
-              :id="id + index + 'bottom'"
-              :value="false"
-              v-model="picked[c.id]"
-            >
-            <label class="button" :for="id + index + 'bottom'">
-              Put at the bottom
-            </label>
-          </div>
+        <div class="side">
+          <div class="subtitle">To the top</div>
+          <draggable :list="toTop" item-key="id" group="scry" class="box drag">
+            <template #item="{ element }">
+              <div class="card-wrapper">
+                <img :src="buildImgSrc(element)" />
+              </div>
+            </template>
+          </draggable>
+        </div>
+
+        <div class="side">
+          <div class="subtitle">Revealed cards</div>
+          <draggable :list="base" item-key="id" group="scry" class="drag">
+            <template #item="{ element }">
+              <div class="card-wrapper">
+                <img :src="buildImgSrc(element)" />
+              </div>
+            </template>
+          </draggable>
+        </div>
+
+        <div class="side">
+          <div class="subtitle">To the bottom</div>
+          <draggable :list="toBottom" item-key="id" group="scry" class="box drag">
+            <template #item="{ element }">
+              <div class="card-wrapper">
+                <img :src="buildImgSrc(element)" />
+              </div>
+            </template>
+          </draggable>
         </div>
       </div>
 
@@ -41,24 +48,31 @@
         <button
           class="button is-secondary is-medium"
           @click="confirm"
-          :disabled="!allSet"
+          :disabled="base.length > 0"
         >
           Confirm choice
         </button>
       </div>
+
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import * as draggable from 'vuedraggable';
+
 import { Component, Prop } from 'vue-facing-decorator';
 import { WallConfig } from '../types';
-import { PickedLeft, RevealConfig } from './types';
+import { RevealConfig } from './types';
 import { Imgable } from '#/components/Imgable';
 import { Revealed } from '#/model/map';
+import { Card } from '#/model/card';
 
-@Component({ emits: ['done'] })
-export default class Scry extends Imgable {
+@Component({
+  emits: ['done'],
+  components: { draggable },
+})
+export default class Test extends Imgable {
   @Prop({ required: true })
   public revealed: Revealed;
   @Prop({ required: true })
@@ -67,19 +81,20 @@ export default class Scry extends Imgable {
   public picked: Record<string, boolean> = {};
   public id = Math.random().toString(36).substring(2, 15);
 
-  public get allSet(): boolean {
-    return this.revealed.relevant.every(c => this.picked[c.id] !== undefined);
+
+  public base: Array<Card> = [];
+  public toTop: Array<Card> = [];
+  public toBottom: Array<Card> = [];
+
+  public created() {
+    this.base = [...this.revealed.relevant];
   }
 
   public confirm(): void {
-    const result: PickedLeft = { picked: [], left: [] };
-
-    result.left.push(...this.revealed.others);
-    this.revealed.relevant
-      .forEach(c => (this.picked[c.id] ? result.picked : result.left)
-      .push(c));
-
-    this.$emit('done', result);
+    this.$emit('done', {
+      picked: [...this.toTop],
+      left: [...this.revealed.others, ...this.toBottom],
+    });
   }
 }
 </script>
@@ -90,9 +105,10 @@ export default class Scry extends Imgable {
 @import '../scss/confirm';
 
 .modal-content {
+  padding: 1rem;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: repeat(3, auto);
+  grid-template-rows: 1fr 50vh 1fr;
   column-gap: 1rem;
   row-gap: 1rem;
   grid-template-areas:
@@ -100,96 +116,55 @@ export default class Scry extends Imgable {
     "revealed"
     "confirm"
   ;
-}
 
-.revealed {
-  grid-area: revealed;
+  .revealed {
+    height: 100%;
+    grid-area: revealed;
+    display: flex;
+    flex-direction: row;
 
-  .card-wrapper {
-    @media screen and (max-width: 800px) and (orientation: portrait) {
-      grid-template-rows: repeat(3, auto);
-      grid-template-columns: 1fr;
-      row-gap: .5rem;
-      grid-template-areas:
-        "card"
-        "to-top"
-        "to-bottom"
-      ;
-
-      .to-top {
-        justify-content: center !important;
-      }
-      .to-bottom {
-        justify-content: center !important;
-      }
-    }
-
-    @media screen and (max-height: 450px) and (orientation: landscape) {
-      grid-template-rows: 1fr;
-      grid-template-columns: repeat(3, auto);
-      row-gap: .5rem;
-      grid-template-areas:
-        "to-top card to-bottom"
-      ;
-
-      .control.to-top label {
-        writing-mode: sideways-rl;
-        width: unset !important;
-        height: 100%;
-        max-height: 50vh;
-      }
-      .control.to-bottom label {
-        writing-mode: sideways-lr;
-        width: unset !important;
-        height: 100%;
-        max-height: 50vh;
-      }
-    }
-
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, auto);
-    column-gap: 1rem;
-    row-gap: 1rem;
-    grid-template-areas:
-      "card   card"
-      "to-top to-bottom"
-    ;
-
-    .control {
+    .side {
       display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      width: 100%;
+      margin: 0;
 
-      label {
-        width: var(--form-btn-width);
-        color: var(--modal-picker-color);
-        background-color: var(--modal-picker-bg);
-        border-color: var(--modal-picker-border);
-      }
+      .drag {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        text-align: center;
+        background-color: transparent;
+        overflow-y: scroll;
 
-      input[type="radio"] {
-        display: none;
-
-        &:checked+label {
-          border-color: var(--modal-picker-checked-border);
+        &.box {
+          border: 1px solid var(--border-color);
+          color: var(--text-color);
         }
       }
     }
+  }
+
+  .card-wrapper {
+    position: unset;
+    min-height: 3rem;
+    max-height: 3rem;
+    height: 3rem;
+
+    &:hover, &:active {
+      z-index: 2;
+    }
 
     img {
-      grid-area: card;
-      max-height: 50vh;
-      max-width: calc(100vw - 1rem);
+      width: auto;
+      max-height: 30vh;
       border-radius: var(--card-radius);
-    }
-
-    .to-top {
-      grid-area: to-top;
-      justify-content: flex-end;
-    }
-
-    .to-bottom {
-      grid-area: to-bottom;
-      justify-content: flex-start;
+      filter: drop-shadow(1px 1px 1px #585858);
+      cursor: all-scroll;
     }
   }
 }
