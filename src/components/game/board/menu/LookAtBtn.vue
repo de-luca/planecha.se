@@ -14,7 +14,7 @@
             aria-haspopup="true"
             aria-controls="dropdown-menu"
           >
-            <fa icon="magnifying-glass" fixed-width size="lg" />
+            <fa icon="eye" fixed-width size="lg" />
           </button>
         </div>
       </template>

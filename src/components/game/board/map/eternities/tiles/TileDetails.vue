@@ -76,6 +76,10 @@ export default class TileDetails extends Imgable {
       justify-content: center;
       gap: 2.5rem;
       padding: 2.5rem 1rem;
+
+      .planeswalk-btn {
+        height: 6rem;
+      }
     }
   }
 }

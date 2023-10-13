@@ -13,7 +13,8 @@
     <tip>
       <template #btn>
         <div class="info" title="Remaining cards">
-          <fa icon="eye" fixed-width size="lg" />
+          <fa icon="eye" fixed-width size="lg" transform="shrink-5" mask="map"/>
+          <!-- <fa icon="eye" fixed-width size="lg" /> -->
           {{ revealed }}
         </div>
       </template>
@@ -44,7 +45,7 @@
     <tip>
       <template #btn>
         <div class="info" title="Played cards">
-          <fa icon="book-dead" fixed-width size="lg"/>
+          <fa icon="skull" fixed-width size="lg" transform="shrink-4" mask="layer-group"/>
           <div>
             <span>{{ played }}</span>
             <span v-if="playedPhenomena !== null">{{ playedPhenomena }}</span>

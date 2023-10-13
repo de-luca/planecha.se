@@ -64,5 +64,9 @@ export default class PhenomenonWall extends Imgable {
       drop-shadow(0 0 5px #DC143C)
     ;
   }
+
+  .planeswalk-btn {
+    height: 6rem;
+  }
 }
 </style>

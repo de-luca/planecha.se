@@ -36,7 +36,7 @@ interface Set {
   name: string;
 }
 
-const CARD_DIR = join(__dirname, 'public', 'cards');
+const CARD_DIR = join(import.meta.dir, 'public', 'cards');
 const API_SEARCH = 'https://api.scryfall.com/cards/search?q=(t%3Aplane+or+t%3Aphenomenon)+game%3Apaper+-is%3Apromo&unique=prints&order=released';
 const CARD_BACK = 'https://backs.scryfall.io/large/7/8/7840c131-f96b-4700-9347-2215c43156e6.jpg';
 
