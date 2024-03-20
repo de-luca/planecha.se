@@ -222,33 +222,21 @@ export const useMain = defineStore('main', {
     },
 
     async open() {
-      this.net = new Net(this);
+      this.net = await Net.create(this, { mapType: this.config.type });
       if (this.isMulti) {
         this.net.initHandler = (data, peer) =>
           this.apply({ event: '__init__', delta: diff<MaybeExported>({}, data.map) }, peer);
       }
-      try {
-        await this.net.connected;
-        await this.net.create({ mapType: this.config.type });
-      } catch (err) {
-        this.net.leave();
-        this.net = undefined;
-        throw err;
-      }
+      // await this.net.connected;
+      // await this.net.create();
     },
 
     async preJoin(roomId: string) {
       this.leave();
-      this.net = new Net(this, roomId);
-      await this.net.connected;
-      return this.net.getRoomInfo();
+      this.net = await Net.boot(this, roomId);
+      return this.net.gameData;
     },
 
-    // preJoin(roomId: string) {
-    //   this.leave();
-    //   this.net = new Net(this, roomId);
-    //   return this.net.connected;
-    // },
     join(payload: BuildProps) {
       if (payload.type !== MapType.MULTI) {
         return this.net!.join(once((data) => {
@@ -280,7 +268,7 @@ export const useMain = defineStore('main', {
 
     pushToFeed(log: string): void {
       this.feed.push(log);
-      this.net?.syncFeed(log);
+      this.net?.feed(log);
     },
 
     sync(patch: Patch): void {

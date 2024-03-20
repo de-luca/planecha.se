@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import './main.scss';
 import './fa';
 import VueTippy from 'vue-tippy';

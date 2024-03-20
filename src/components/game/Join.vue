@@ -26,14 +26,8 @@
 
       <form v-else @submit.prevent="join">
         <div class="content">
-          <h3>
-            Game type: <b>{{ gameType }}</b>
-          </h3>
-          <div class="game-status">
-            <div class="player-count">
-              <h4>Present players: <b>{{ gameData?.peers }}</b></h4>
-            </div>
-          </div>
+          <h3>Game type: <b>{{ gameType }}</b></h3>
+          <h4>Present players: <b>{{ peerCount }}</b></h4>
         </div>
 
         <name-input
@@ -61,7 +55,7 @@
           v-if="isMulti && openDeckBuilder"
           @cancel="openDeckBuilder = false"
           @use="setDeck"
-          :reqs="{ mapType: gameData?.data.mapType }"
+          :reqs="{ mapType: gameData?.mapType }"
         />
 
         <div class="field join-game">
@@ -112,35 +106,21 @@ export default class Join extends Vue {
   public created(): void {
     this.roomId = this.$route.params.roomId as string ?? '';
     this.store.preJoin(this.roomId)
-      .then(data => {
-        if (data.peers === 0) {
-          this.error = new Error(
-            'The requested room could not be found.',
-            { cause: 'The link might be broken or the room as been closed.' },
-          );
-        } else {
-          this.gameData = data;
-        }
-      })
-      .catch(err => {
-        if (err === undefined) {
-          this.error = new Error(
-            'An error occured when contacting Beacon.',
-            { cause: 'The signaling server or your internet connection might be down.' },
-          );
-        } else {
-          this.error = new Error(
-            'The requested room could not be found.',
-            { cause: 'The link might be broken or the room as been closed.' },
-          );
-        }
+      .then(data => this.gameData = data)
+      .catch((err) => {
+        console.error(err);
+        this.error = new Error(
+          'The requested room could not be found.',
+          { cause: 'The link might be broken or the room as been closed.' },
+        );
+        console.log(this.store.net?.isFullyBlocked);
         this.store.leave();
       })
       .finally(() => this.loading = false);
   }
 
   public get gameType(): string {
-    switch (this.gameData?.data?.mapType) {
+    switch (this.gameData?.mapType) {
       case MapType.SINGLE:
         return 'Single Deck';
       case MapType.MULTI:
@@ -152,13 +132,17 @@ export default class Join extends Vue {
   }
 
   public get isMulti(): boolean {
-    return this.gameData?.data?.mapType === MapType.MULTI;
+    return this.gameData?.mapType === MapType.MULTI;
   }
 
   public get isDeckValid(): DeckState {
     return !this.isMulti
       ? { valid: true, reqs: [] }
-      : getDeckState(this.gameData!.data.mapType, this.deck);
+      : getDeckState(this.gameData!.mapType, this.deck);
+  }
+
+  public get peerCount(): number {
+    return this.store.net?.peerCount ?? 0;
   }
 
   public toggleDeckBuilder(): void {
@@ -175,7 +159,7 @@ export default class Join extends Vue {
     this.store.setName(this.name);
     try {
       await this.store.join({
-        type: this.gameData!.data.mapType,
+        type: this.gameData!.mapType,
         cards: this.deck.map(c => c.id),
       });
     } catch (err) {
@@ -239,32 +223,10 @@ form {
 
   .content {
     width: 100%;
+    margin-bottom: .5rem;
 
     h3, h4 {
       color: var(--text-color);
-    }
-
-    .game-status {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-
-
-      .has-started {
-        width: 100%;
-      }
-
-      .player-list {
-        width: 100%;
-        text-align: right;
-        h4 {
-          margin-bottom: 0;
-        }
-        ul {
-          margin-top: .5em;
-          list-style-type: none;
-        }
-      }
     }
   }
 }
