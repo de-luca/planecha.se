@@ -64,7 +64,7 @@ import { EternitiesMapSpecs, EternitiesMapSubType } from '#/model/map/eternities
 import { Card, Plane } from '#/model/card';
 import { eventBus, EventType } from '#/services/EventBus';
 import { PickedLeft, RevealConfig } from '#board/wall/reveal/types';
-import { RevealerWallState, StateKey, RevealerSource } from '#/model/wall';
+import { RevealerWall, StateKey, RevealerSource } from '#/model/wall';
 import { RevealFactory } from '#board/wall/reveal/RevealFactory';
 import { Map as CmpMap } from '#board/map/Map';
 
@@ -155,7 +155,7 @@ export default class Board extends Vue {
 
   public get revealer(): LocalRevealerConfig | undefined {
     const revealer =
-      this.store.map.wallStates.get<RevealerWallState>(StateKey.REVEALER);
+      this.store.map.wallStates.get<RevealerWall>(StateKey.REVEALER);
 
     if (!revealer) {
       return undefined;

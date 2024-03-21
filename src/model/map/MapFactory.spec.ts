@@ -40,7 +40,7 @@ describe('MapFactory.build', () => {
 describe('MapFactory.restore', () => {
   it('restores a Single deck Map', () => {
     const exported: Exported = {
-      wallStates: [],
+      wallStates: {},
       hasStarted: true,
       deck: {
         cards: [
@@ -66,7 +66,7 @@ describe('MapFactory.restore', () => {
 
   it('restores an EternitesMap with SingleDeck', () => {
     const exported: SingleDeckExported = {
-      wallStates: [],
+      wallStates: {},
       hasStarted: true,
       deck: {
         cards: [
@@ -101,7 +101,7 @@ describe('MapFactory.restore', () => {
 
   it('restores an EternitesMap with DualDeck', () => {
     const exported: DualDeckExported = {
-      wallStates: [],
+      wallStates: {},
       hasStarted: true,
       deck: {
         cards: [

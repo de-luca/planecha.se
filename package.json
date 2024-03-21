@@ -10,8 +10,7 @@
     "serve:docker": "vite --port 8080 --host 0.0.0.0",
     "build": "vite build",
     "build:check": "vue-tsc --noEmit",
-    "lint": "eslint 'src/**/*.{ts,vue}'",
-    "test": "vitest"
+    "lint": "eslint 'src/**/*.{ts,vue}'"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
@@ -32,6 +31,8 @@
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
+    "@happy-dom/global-registrator": "^14.2.0",
+    "@types/bun": "^1.0.10",
     "@types/lodash.clonedeep": "^4.5.9",
     "@types/lodash.shuffle": "^4.2.9",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
@@ -43,13 +44,10 @@
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-vue": "^9.23.0",
-    "jsdom": "^24.0.0",
     "sass": "^1.72.0",
-    "tslib": "^2.6.2",
     "typescript": "^5.4.2",
     "vite": "^5.2.2",
     "vite-plugin-pwa": "^0.19.5",
-    "vitest": "^1.4.0",
     "vue-tsc": "^2.0.7"
   }
 }

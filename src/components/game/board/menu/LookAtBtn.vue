@@ -67,7 +67,7 @@
 import { Component, Prop, Vue } from 'vue-facing-decorator';
 import { useMain } from '#/store/main';
 
-import { RevealerMode, RevealerSource, RevealerWallState, StateKey } from '#/model/wall';
+import { RevealerMode, RevealerSource, RevealerWall, StateKey } from '#/model/wall';
 
 @Component
 export default class LookAtBtn extends Vue {
@@ -84,7 +84,7 @@ export default class LookAtBtn extends Vue {
 
   public look() {
     this.store.privateReveal({ count: this.cards });
-    const revealer: RevealerWallState = {
+    const revealer: RevealerWall = {
       title: `Look at the top ${this.cards} cards of your planar deck`,
       source: RevealerSource.CUSTOM,
       component: RevealerMode.SCRY,

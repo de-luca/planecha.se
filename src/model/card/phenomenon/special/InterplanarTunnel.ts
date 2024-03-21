@@ -1,9 +1,9 @@
 import { Phenomenon } from '../Phenomenon';
 import {
-  WallStates,
+  WallManager,
   RevealerMode,
   RevealerSource,
-  RevealerWallState,
+  RevealerWall,
   StateKey,
 } from '#/model/wall';
 
@@ -16,8 +16,8 @@ import {
  * in a random order.
  */
 export class InterplanarTunnel extends Phenomenon {
-  public enter(walls: WallStates, initiator: string): void {
-    const revealer: RevealerWallState = {
+  public enter(walls: WallManager, initiator: string): void {
+    const revealer: RevealerWall = {
       title: this.name,
       subTitle: 'Chose a plane to put on top the planar deck.',
       source: RevealerSource.INTERPLANAR_TUNNEL,

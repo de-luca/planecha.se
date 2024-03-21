@@ -1,18 +1,22 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, expect, it, mock } from 'bun:test';
 import { PoolsOfBecoming } from './PoolsOfBecoming';
-import { RevealerMode, RevealerSource, StateKey, WallStates } from '#/model/wall';
+import { RevealerMode, RevealerSource, StateKey, WallManager } from '#/model/wall';
 import { eventBus, EventType } from '#/services/EventBus';
 
-vi.mock('#/services/EventBus');
+mock.module('#/services/EventBus', () => ({
+  eventBus: { emit: mock() },
+}));
 
 describe('PoolOfBecoming.chaos', () => {
   it('sets a wall and emit its event', () => {
-    const walls = new WallStates();
+    const walls = new WallManager();
     const poolOfBecoming = new PoolsOfBecoming({
       id: '00000000-0000-0000-0000-000000000000',
       name: 'Test Plane',
       typeLine: 'test plane',
       oracleText: 'some test text',
+      isUB: true,
+      sets: ['ABC'],
     });
     poolOfBecoming.chaos(walls, 'foo');
     expect(walls.get(StateKey.REVEALER)).toEqual({
@@ -23,6 +27,6 @@ describe('PoolOfBecoming.chaos', () => {
       sendShownTo: 'bottom',
       initiator: 'foo',
     });
-    expect(eventBus.emit).toBeCalledWith(EventType.POOLS_OF_BECOMING);
+    expect(eventBus.emit).toHaveBeenCalledWith(EventType.POOLS_OF_BECOMING);
   });
 });

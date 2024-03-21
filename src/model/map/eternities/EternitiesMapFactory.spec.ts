@@ -51,7 +51,7 @@ describe('EternitiesMapFactory.build', () => {
 describe('EternitiesMapFactory.restore', () => {
   it('restores a SingleDeck', () => {
     const exported: SingleDeckExported = {
-      wallStates: [],
+      wallStates: {},
       hasStarted: true,
       deck: {
         cards: [
@@ -86,7 +86,7 @@ describe('EternitiesMapFactory.restore', () => {
 
   it('restores a DualDeck', () => {
     const exported: DualDeckExported = {
-      wallStates: [],
+      wallStates: {},
       hasStarted: true,
       deck: {
         cards: [

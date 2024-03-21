@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { Card } from './Card';
+import { Card, Type } from './Card';
 
 class TestCard extends Card {
-  public get type(): string {
+  public get type(): Type {
     throw new Error('Method not implemented.');
   }
   public chaos(): void {
@@ -23,6 +23,8 @@ describe('Card.export', () => {
       name: 'Test Card',
       typeLine: 'test type',
       oracleText: 'some test text',
+      isUB: true,
+      sets: ['ABC'],
     });
 
     expect(card.export()).toEqual({

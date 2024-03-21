@@ -1,4 +1,4 @@
-import { describe, it, beforeEach, expect } from 'vitest';
+import { describe, expect, it, beforeEach } from 'bun:test';
 import { setActivePinia, createPinia } from 'pinia';
 import { useMain } from './main';
 import { BuildProps, Single, MapType } from '#/model/map';
@@ -18,10 +18,10 @@ describe('default state', () => {
 });
 
 describe('init', () => {
-  it('inits with a map and data', async() => {
+  it('inits with a map and data', () => {
     const store = useMain();
     const props: BuildProps = { type: MapType.SINGLE };
-    await store.init(props);
+    store.init(props);
     expect(store.net).toBeUndefined();
     expect(store.map).toBeInstanceOf(Single);
     expect(store.mates.size).toBe(0);
@@ -30,10 +30,10 @@ describe('init', () => {
 });
 
 describe('leave', () => {
-  it('cleans store', async () => {
+  it('cleans store', () => {
     const store = useMain();
     const props: BuildProps = { type: MapType.SINGLE };
-    await store.init(props);
+    store.init(props);
     store.leave();
     expect(store.net).toBeUndefined();
     expect(() => { store.map; }).toThrow();

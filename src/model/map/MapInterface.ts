@@ -1,4 +1,4 @@
-import { ExportedWallStates, WallStates } from '../wall';
+import { WallStateMap, WallManagerInterface } from '../wall';
 import { Card, ExportedCard, Plane } from '../card';
 import { DeckState } from '../deck/Deck';
 import { Patch } from '#/utils/delta';
@@ -15,7 +15,7 @@ export interface MapSpecs {
 
 export interface Exported {
   specs: MapSpecs;
-  wallStates: ExportedWallStates;
+  wallStates: WallStateMap;
   hasStarted: boolean;
   deck: DeckState;
   active: Array<ExportedCard>;
@@ -80,7 +80,7 @@ export interface MapInterface {
   specs: MapSpecs;
   ready: Promise<void>;
   hasStarted: boolean;
-  wallStates: WallStates;
+  wallStates: WallManagerInterface;
   revealed?: Revealed;
   active: Array<Card>;
   remaining: number;

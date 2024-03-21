@@ -1,7 +1,7 @@
 import { Map as BaseMap, MapProps } from '../Map';
 import { AddActivePlaneInput, Exported, MapSpecs, MapType, PlaneswalkInput, ResolveInput } from '../MapInterface';
 import { LightMap } from './LightMap';
-import { WallStates } from '#/model/wall';
+import { WallManager } from '#/model/wall';
 import { Deck } from '#/model/deck/Deck';
 import { Patch, patch } from '#/utils/delta';
 
@@ -44,7 +44,7 @@ export class Multi extends BaseMap {
     if (p.event === '__init__') {
       const map = new LightMap({
         deck: new Deck([]),
-        wallStates: new WallStates(),
+        wallStates: new WallManager(),
       });
       map.restore(patch({}, p.delta!));
       if (map.hasStarted) {

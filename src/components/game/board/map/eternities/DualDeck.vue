@@ -43,7 +43,7 @@ import { Component } from 'vue-facing-decorator';
 import { Eternities } from '#board/map/eternities/Eternities';
 import { WallConfig } from '#board/wall/types';
 import {
-  EncounterWallState,
+  EncounterWall,
   StateKey,
   StateOp,
 } from '#/model/wall';
@@ -78,7 +78,7 @@ export default class DualDeck extends Eternities {
 
   public get encounterWallConfig(): LocalEncounterWallConfig | undefined {
     const wall =
-      this.store.map.wallStates.get<EncounterWallState>(StateKey.ENCOUNTER_WALL);
+      this.store.map.wallStates.get<EncounterWall>(StateKey.ENCOUNTER_WALL);
 
     if (!wall) {
       return undefined;
@@ -148,7 +148,7 @@ export default class DualDeck extends Eternities {
             coords,
             triggerConfig: trigger,
             initiator: this.store.selfName,
-          } as EncounterWallState,
+          } as EncounterWall,
         });
       }
     } else {

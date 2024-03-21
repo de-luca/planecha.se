@@ -3,7 +3,7 @@ import { MapType } from '../MapInterface';
 import { DualDeck, EncounterMechanic } from './DualDeck';
 import { EternitiesMapDeckType, EternitiesMapSubType } from './EternitiesMap';
 import { CardProvider } from '#/services/CardProvider';
-import { StateKey, WallStates } from '#/model/wall';
+import { StateKey, WallManager } from '#/model/wall';
 import { Phenomenon, Plane } from '#/model/card';
 
 describe('DualDeck.specs', () => {
@@ -12,7 +12,7 @@ describe('DualDeck.specs', () => {
       deck: CardProvider.getPlaneDeck(),
       phenomenaDeck: CardProvider.getPhenomenonDeck(),
       deckType: EternitiesMapDeckType.PLANES,
-      wallStates: new WallStates(),
+      wallStates: new WallManager(),
       encounterTriggers: {
         ON_HELLRIDE: {
           enabled: true,
@@ -43,7 +43,7 @@ describe('DualDeck.encounter', () => {
       deck: CardProvider.getPlaneDeck(),
       phenomenaDeck: CardProvider.getPhenomenonDeck(),
       deckType: EternitiesMapDeckType.PLANES,
-      wallStates: new WallStates(),
+      wallStates: new WallManager(),
       encounterTriggers: {
         ON_HELLRIDE: {
           enabled: true,
@@ -73,7 +73,7 @@ describe('DualDeck.resolve', () => {
       deck: CardProvider.getPlaneDeck(),
       phenomenaDeck: CardProvider.getPhenomenonDeck(),
       deckType: EternitiesMapDeckType.PLANES,
-      wallStates: new WallStates(),
+      wallStates: new WallManager(),
       encounterTriggers: {
         ON_HELLRIDE: {
           enabled: true,
@@ -107,7 +107,7 @@ describe('DualDeck.export', () => {
       deck: CardProvider.getPlaneDeck(),
       phenomenaDeck: CardProvider.getPhenomenonDeck(),
       deckType: EternitiesMapDeckType.PLANES,
-      wallStates: new WallStates(),
+      wallStates: new WallManager(),
       encounterTriggers: {
         ON_HELLRIDE: {
           enabled: true,

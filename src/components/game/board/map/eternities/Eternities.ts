@@ -3,8 +3,7 @@ import { PickedLeft } from '#board/wall/reveal/types';
 import { Phenomenon, Plane } from '#/model/card';
 import {
   StateKey,
-  PhenomenonWallState,
-  RevealerWallState,
+  PhenomenonWall,
   RevealerSource,
 } from '#/model/wall';
 import {
@@ -14,7 +13,7 @@ import {
 } from '#/model/map/eternities';
 
 interface LocalPhenomenonWallConfig {
-  config: PhenomenonWallState & { mateName?: string };
+  config: PhenomenonWall & { mateName?: string };
   phenomenon: Phenomenon;
   seeder: (() => void) | null;
 }
@@ -26,7 +25,7 @@ export abstract class Eternities extends Map {
   public get phenomenonWallConfig(): LocalPhenomenonWallConfig | undefined {
     if ((this.store.map as SingleDeck).destination) {
       let seeder: (() => void) | null = null;
-      switch (this.store.map.wallStates.get<RevealerWallState>(StateKey.REVEALER)?.source) {
+      switch (this.store.map.wallStates.get(StateKey.REVEALER)?.source) {
         case RevealerSource.INTERPLANAR_TUNNEL:
           seeder = () => this.store.reveal({ count: 5, type: Plane });
           break;
@@ -35,9 +34,7 @@ export abstract class Eternities extends Map {
           break;
       }
 
-      const wall = this.store.map.wallStates.get<PhenomenonWallState>(
-        StateKey.PHENOMENON_WALL,
-      );
+      const wall = this.store.map.wallStates.get(StateKey.PHENOMENON_WALL);
 
       return {
         seeder,

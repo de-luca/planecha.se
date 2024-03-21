@@ -7,7 +7,7 @@ import {
   EternitiesMapSubType,
 } from './EternitiesMap';
 import { CardProvider } from '#/services/CardProvider';
-import { WallStates } from '#/model/wall';
+import { WallManager } from '#/model/wall';
 
 class TestMap extends EternitiesMap {
   public get specs(): EternitiesMapSpecs {
@@ -32,7 +32,7 @@ describe('EternitiesMap.initializeTiles', () => {
   it('initializes board tiles', () => {
     const map = new TestMap({
       deck: CardProvider.getDeck(),
-      wallStates: new WallStates(),
+      wallStates: new WallManager(),
       deckType: EternitiesMapDeckType.ALL,
     });
     expect(map.tiles).toHaveLength(5);

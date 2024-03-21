@@ -1,10 +1,10 @@
 import { Plane } from '../Plane';
 import { eventBus, EventType } from '#/services/EventBus';
 import {
-  WallStates,
+  WallManager,
   RevealerMode,
   RevealerSource,
-  RevealerWallState,
+  RevealerWall,
   StateKey,
 } from '#/model/wall';
 
@@ -23,8 +23,8 @@ export class TheFertileLandsOfSaulvinia extends Plane {
     return true;
   }
 
-  public chaos(walls: WallStates, initiator: string): void {
-    const revealer: RevealerWallState = {
+  public chaos(walls: WallManager, initiator: string): void {
+    const revealer: RevealerWall = {
       title: this.name,
       subTitle: 'Chaos from this plane will trigger.',
       source: RevealerSource.THE_FERTILE_LANDS_OF_SAULVINIA,

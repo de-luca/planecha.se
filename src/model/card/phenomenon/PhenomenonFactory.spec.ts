@@ -8,6 +8,8 @@ const props: Props = {
   name: 'Sip Coffee',
   typeLine: 'Phenomenon',
   oracleText: 'When you encounter Sip Coffee, take a sip of coffee.',
+  isUB: true,
+  sets: ['ABC'],
 };
 
 describe('PhenomenonFactory.build', () => {

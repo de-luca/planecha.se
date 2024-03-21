@@ -1,5 +1,5 @@
 import { Card, Type } from '../Card';
-import { WallStates } from '#/model/wall';
+import { WallManager } from '#/model/wall';
 
 export class Phenomenon extends Card {
   public get type(): Type {
@@ -10,7 +10,7 @@ export class Phenomenon extends Card {
     return;
   }
 
-  public enter(_w: WallStates, _i: string): void {
+  public enter(_w: WallManager, _i: string): void {
     return;
   }
 

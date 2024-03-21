@@ -1,4 +1,4 @@
-import type { WallState } from './WallStates';
+import type { Wall } from './Wall';
 
 export enum RevealerMode {
   SCRY = 'SCRY',
@@ -18,7 +18,7 @@ export enum RevealerSource {
   SPACIAL_MERGING = 'SPACIAL_MERGING',
 }
 
-export interface RevealerWallState extends WallState {
+export interface RevealerWall extends Wall {
   source: RevealerSource;
   component: RevealerMode;
   sendShownTo: 'top' | 'bottom';

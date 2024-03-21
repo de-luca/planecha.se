@@ -1,5 +1,5 @@
 import { Card } from '../card';
-import { WallStates } from '../wall';
+import { WallManager } from '../wall';
 import {
   EncounterTriggers,
   EternitiesMapExported,
@@ -23,14 +23,14 @@ export class MapFactory {
     switch (props.type) {
       case MapType.SINGLE:
         return new Single({
-          wallStates: new WallStates(),
+          wallStates: new WallManager(),
           deck: props.cards
             ? CardProvider.getCustomDeck(props.cards)
             : CardProvider.getDeck(),
         });
       case MapType.MULTI:
         return new Multi({
-          wallStates: new WallStates(),
+          wallStates: new WallManager(),
           deck: props.cards
             ? CardProvider.getCustomDeck(props.cards)
             : CardProvider.getDeck(),
@@ -52,7 +52,7 @@ export class MapFactory {
       case MapType.SINGLE:
         return new Single({
           deck: CardProvider.restoreDeck<Card>(payload.deck),
-          wallStates: new WallStates(payload.wallStates),
+          wallStates: new WallManager(payload.wallStates),
           hasStarted: payload.hasStarted,
           active: CardProvider.getCardList<Card>(payload.active),
           revealed: payload.revealed

@@ -1,6 +1,6 @@
 import { Card, Counter, Props, Type } from '../Card';
 import { ExportedCard } from '../CardInterface';
-import type { WallStates } from '#/model/wall';
+import type { WallManager } from '#/model/wall';
 
 export class Plane extends Card {
   protected _counter?: Counter;
@@ -40,11 +40,11 @@ export class Plane extends Card {
     return this._counter.value;
   }
 
-  public chaos(_w: WallStates, _i: string): void {
+  public chaos(_w: WallManager, _i: string): void {
     return;
   }
 
-  public enter(_w: WallStates, _i: string): void {
+  public enter(_w: WallManager, _i: string): void {
     return;
   }
 

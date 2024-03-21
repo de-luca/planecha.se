@@ -1,4 +1,4 @@
-import type { WallStates } from '../wall';
+import type { WallManager } from '../wall';
 
 export interface ExportedCard {
   id: string;
@@ -11,8 +11,8 @@ export interface CardInterface {
   typeLine: string;
   oracleText: string;
 
-  chaos(walls: WallStates, initiator: string): void;
-  enter(walls: WallStates, initiator: string): void;
+  chaos(walls: WallManager, initiator: string): void;
+  enter(walls: WallManager, initiator: string): void;
   leave(): void;
   export(): ExportedCard;
 }

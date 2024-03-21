@@ -1,8 +1,10 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, expect, it, mock } from 'bun:test';
 import { Aretopolis } from './Aretopolis';
 import { eventBus, EventType } from '#/services/EventBus';
 
-vi.mock('#/services/EventBus');
+mock.module('#/services/EventBus', () => ({
+  eventBus: { emit: mock() },
+}));
 
 describe('Aretopolis.chaos', () => {
   it('increase counter value of 1', () => {
@@ -11,6 +13,8 @@ describe('Aretopolis.chaos', () => {
       name: 'Test Plane',
       typeLine: 'test plane',
       oracleText: 'some test text',
+      isUB: true,
+      sets: ['ABC'],
       counter: {
         max: 10,
         name: 'test counter',
@@ -31,6 +35,8 @@ describe('Aretopolis.updateCounter', () => {
       name: 'Test Plane',
       typeLine: 'test plane',
       oracleText: 'some test text',
+      isUB: true,
+      sets: ['ABC'],
       counter: {
         max: 10,
         name: 'test counter',
@@ -50,6 +56,8 @@ describe('Aretopolis.updateCounter', () => {
       name: 'Test Plane',
       typeLine: 'test plane',
       oracleText: 'some test text',
+      isUB: true,
+      sets: ['ABC'],
       counter: {
         max: 10,
         name: 'test counter',
@@ -60,6 +68,6 @@ describe('Aretopolis.updateCounter', () => {
     });
     aretopolis.updateCounter(10);
     expect(aretopolis.counter?.value).toEqual(10);
-    expect(eventBus.emit).toBeCalledWith(EventType.ARETOPOLIS);
+    expect(eventBus.emit).toHaveBeenCalledWith(EventType.ARETOPOLIS);
   });
 });

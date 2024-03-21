@@ -8,6 +8,8 @@ describe('Plane.initCounter', () => {
       name: 'Test Plane',
       typeLine: 'test plane',
       oracleText: 'some test text',
+      isUB: true,
+      sets: ['ABC'],
       counter: {
         max: 10,
         name: 'test counter',
@@ -29,6 +31,8 @@ describe('Plane.updateCounter', () => {
       name: 'Test Plane',
       typeLine: 'test plane',
       oracleText: 'some test text',
+      isUB: true,
+      sets: ['ABC'],
       counter: {
         max: 10,
         name: 'test counter',
@@ -47,6 +51,8 @@ describe('Plane.updateCounter', () => {
       name: 'Test Plane',
       typeLine: 'test plane',
       oracleText: 'some test text',
+      isUB: true,
+      sets: ['ABC'],
       counter: {
         max: 10,
         name: 'test counter',
@@ -67,6 +73,8 @@ describe('Plane.leave', () => {
       name: 'Test Plane',
       typeLine: 'test plane',
       oracleText: 'some test text',
+      isUB: true,
+      sets: ['ABC'],
       counter: {
         max: 10,
         name: 'test counter',
@@ -86,6 +94,8 @@ describe('Plane.leave', () => {
       name: 'Test Plane',
       typeLine: 'test plane',
       oracleText: 'some test text',
+      isUB: true,
+      sets: ['ABC'],
       counter: {
         max: 10,
         name: 'test counter',
@@ -107,6 +117,8 @@ describe('Plane.export', () => {
       name: 'Test Plane',
       typeLine: 'test plane',
       oracleText: 'some test text',
+      isUB: true,
+      sets: ['ABC'],
     });
 
     expect(plane.export()).toEqual({
@@ -120,6 +132,8 @@ describe('Plane.export', () => {
       name: 'Test Plane',
       typeLine: 'test plane',
       oracleText: 'some test text',
+      isUB: true,
+      sets: ['ABC'],
       counter: {
         max: 10,
         name: 'test counter',

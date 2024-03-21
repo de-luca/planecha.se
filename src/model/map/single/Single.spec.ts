@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { Plane } from '../../card';
-import { WallStates } from '../../wall';
+import { WallManager } from '../../wall';
 import { Single, MapType } from '..';
 import { CardProvider } from '#/services/CardProvider';
 
@@ -8,7 +8,7 @@ describe('Single.type', () => {
   it('returns the type', () => {
     const map = new Single({
       deck: CardProvider.getDeck(),
-      wallStates: new WallStates(),
+      wallStates: new WallManager(),
     });
 
     expect(map.specs.type).toEqual(MapType.SINGLE);
@@ -19,7 +19,7 @@ describe('Single.planeswalk', () => {
   it('changes active card', () => {
     const map = new Single({
       deck: CardProvider.getDeck(),
-      wallStates: new WallStates(),
+      wallStates: new WallManager(),
     });
     const startCard = map.active;
     const deckSize = map.remaining;
@@ -35,7 +35,7 @@ describe('Single.planeswalk', () => {
   it('changes active card to given planes', () => {
     const map = new Single({
       deck: CardProvider.getDeck(),
-      wallStates: new WallStates(),
+      wallStates: new WallManager(),
     });
     const startCard = map.active;
     const deckSize = map.remaining;

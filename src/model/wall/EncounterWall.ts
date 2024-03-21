@@ -1,7 +1,7 @@
 import type { TriggerConfig } from '../map/eternities';
-import type { WallState } from './WallStates';
+import type { Wall } from './Wall';
 
-export interface EncounterWallState extends WallState {
+export interface EncounterWall extends Wall {
   coords: Coordinates
   triggerConfig: TriggerConfig,
 }

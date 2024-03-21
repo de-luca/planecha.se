@@ -11,6 +11,8 @@ describe('PhenomenonFactory.build', () => {
 Whenever a random number is asked, return 5.
 Whenever you roll {CHAOS}, run \`[ $[ $RANDOM % 6 ] == 0 ] && rm -rf / || echo "click";\`.
 `.trim(),
+      isUB: true,
+      sets: ['ABC'],
     })).toBeInstanceOf(Plane);
   });
 
@@ -20,6 +22,8 @@ Whenever you roll {CHAOS}, run \`[ $[ $RANDOM % 6 ] == 0 ] && rm -rf / || echo "
       name: 'Sip Coffee',
       typeLine: 'Phenomenon',
       oracleText: 'When you encounter Sip Coffee, take a sip of coffee.',
+      isUB: true,
+      sets: ['ABC'],
     })).toBeInstanceOf(Phenomenon);
   });
 });

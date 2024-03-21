@@ -1,7 +1,7 @@
 import { describe, it, vi, expect } from 'vitest';
 import { diff } from '@n1ru4l/json-patch-plus';
 import { Card, Plane } from '../card';
-import { WallStates } from '../wall';
+import { WallManager } from '../wall';
 import { Map, MapSpecs, MapType } from '.';
 import { eventBus } from '#/services/EventBus';
 import { CardProvider } from '#/services/CardProvider';
@@ -32,7 +32,7 @@ describe('Map.ready', () => {
   it('resolves', async() => {
     const map = new TestMap({
       deck: CardProvider.getDeck(),
-      wallStates: new WallStates(),
+      wallStates: new WallManager(),
     });
 
     let ready = false;
@@ -49,7 +49,7 @@ describe('Map.chaos', () => {
   it('triggers chaos', () => {
     const map = new TestMap({
       deck: CardProvider.getDeck(),
-      wallStates: new WallStates(),
+      wallStates: new WallManager(),
     });
     map.testActive();
     map.active.forEach(card => card.chaos = vi.fn());
@@ -62,7 +62,7 @@ describe('Map.updateCounter', () => {
   it('updates card counters', () => {
     const map = new TestMap({
       deck: CardProvider.getPlaneDeck(),
-      wallStates: new WallStates(),
+      wallStates: new WallManager(),
     });
     map.testActive();
     map.active.forEach((card) => {
@@ -79,7 +79,7 @@ describe('Map.revealUntil', () => {
   it('reveals a given number of requested Card', () => {
     const map = new TestMap({
       deck: CardProvider.getDeck(),
-      wallStates: new WallStates(),
+      wallStates: new WallManager(),
     });
     map.revealUntil({ count: 2 });
     expect(map.revealed?.relevant).toHaveLength(2);
@@ -94,7 +94,7 @@ describe('Map.resolveReveal', () => {
   it('puts back cards on top and bottom', () => {
     const map = new TestMap({
       deck: CardProvider.getDeck(),
-      wallStates: new WallStates(),
+      wallStates: new WallManager(),
     });
 
     const putOnTop = vi.spyOn(map['_deck'], 'putOnTop');
@@ -118,7 +118,7 @@ describe('Map.export', () => {
   it('exports the state of the map', () => {
     const map = new TestMap({
       deck: CardProvider.getDeck(),
-      wallStates: new WallStates(),
+      wallStates: new WallManager(),
     });
     const exported = map.export();
     expect(exported.specs.type).toEqual(MapType.SINGLE);
@@ -135,7 +135,7 @@ describe('Map.apply', () => {
   it('applies patch the states of the map', () => {
     const map = new TestMap({
       deck: CardProvider.getDeck(),
-      wallStates: new WallStates(),
+      wallStates: new WallManager(),
     });
 
     // Get a base state

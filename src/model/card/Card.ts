@@ -1,4 +1,4 @@
-import { WallStates } from '../wall';
+import { WallManager } from '../wall';
 import { CardInterface, ExportedCard } from './CardInterface';
 
 export type Type = 'Plane' | 'Phenomenon';
@@ -40,8 +40,8 @@ export abstract class Card implements CardInterface {
 
   public abstract get type(): Type;
 
-  public abstract chaos(walls: WallStates, initiator: string): void;
-  public abstract enter(walls: WallStates, initiator: string): void;
+  public abstract chaos(walls: WallManager, initiator: string): void;
+  public abstract enter(walls: WallManager, initiator: string): void;
   public abstract leave(): void;
 
   public export(): ExportedCard {

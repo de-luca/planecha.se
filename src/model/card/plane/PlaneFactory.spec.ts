@@ -11,6 +11,8 @@ const props: Props = {
 Whenever a random number is asked, return 5.
 Whenever you roll {CHAOS}, run \`[ $[ $RANDOM % 6 ] == 0 ] && rm -rf / || echo "click";\`.
   `.trim(),
+  isUB: true,
+  sets: ['ABC'],
 };
 
 describe('PhenomenonFactory.build', () => {

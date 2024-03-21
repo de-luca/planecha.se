@@ -113,7 +113,7 @@ export default class Join extends Vue {
           'The requested room could not be found.',
           { cause: 'The link might be broken or the room as been closed.' },
         );
-        console.log(this.store.net?.isFullyBlocked);
+        // console.log(this.store.net?.isFullyBlocked);
         this.store.leave();
       })
       .finally(() => this.loading = false);

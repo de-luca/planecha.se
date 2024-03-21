@@ -1,10 +1,10 @@
 import { Plane } from '../Plane';
 import { eventBus, EventType } from '#/services/EventBus';
 import {
-  WallStates,
+  WallManager,
   RevealerMode,
   RevealerSource,
-  RevealerWallState,
+  RevealerWall,
   StateKey,
 } from '#/model/wall';
 
@@ -21,8 +21,8 @@ export class NornsSeedcore extends Plane {
     return true;
   }
 
-  public chaos(walls: WallStates, initiator: string): void {
-    const revealer: RevealerWallState = {
+  public chaos(walls: WallManager, initiator: string): void {
+    const revealer: RevealerWall = {
       title: this.name,
       subTitle: 'You\'ll planeswalk to this plane.',
       source: RevealerSource.NORNS_SEEDCORE,

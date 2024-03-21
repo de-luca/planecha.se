@@ -1,6 +1,6 @@
 import { Map as BaseMap } from '../Map';
 import { MapSpecs, Exported, MapType } from '../MapInterface';
-import { WallStates } from '#/model/wall';
+import { WallManager } from '#/model/wall';
 import { CardProvider } from '#/services/CardProvider';
 
 export class LightMap extends BaseMap {
@@ -38,7 +38,7 @@ export class LightMap extends BaseMap {
 
   public restore(state: Exported): void {
     this._hasStarted = state.hasStarted;
-    this._wallStates = new WallStates(state.wallStates);
+    this._wallStates = new WallManager(state.wallStates);
     this._active = CardProvider.getCardList(state.active);
     this._revealed = state.revealed === undefined
       ? undefined

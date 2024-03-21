@@ -3,7 +3,7 @@ import {
   ActionSender,
   Room,
   joinRoom,
-  // @ts-expect-error
+  // @ts-expect-error Typing is kinda broken
   getRelaySockets,
 } from 'trystero';
 import type { InitPayload, MainStore } from '#/store/main';

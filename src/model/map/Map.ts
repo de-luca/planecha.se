@@ -1,6 +1,6 @@
 import { Card, Plane } from '../card';
 import { Deck } from '../deck/Deck';
-import { WallStates, StateKey } from '../wall';
+import { WallManager, StateKey } from '../wall';
 import {
   ChaosInput,
   Exported,
@@ -19,7 +19,7 @@ import { patch, Patch } from '#/utils/delta';
 
 
 export interface MapProps {
-  wallStates: WallStates;
+  wallStates: WallManager;
   hasStarted?: boolean;
   deck: Deck<Card>;
   active?: Array<Card>;
@@ -29,7 +29,7 @@ export interface MapProps {
 export abstract class Map implements MapInterface {
   protected _deck: Deck<Card>;
   protected _hasStarted: boolean;
-  protected _wallStates: WallStates;
+  protected _wallStates: WallManager;
   protected _revealed?: Revealed;
   protected _active: Array<Card>;
 
@@ -51,7 +51,7 @@ export abstract class Map implements MapInterface {
     return this._hasStarted;
   }
 
-  public get wallStates(): WallStates {
+  public get wallStates(): WallManager {
     return this._wallStates;
   }
 
@@ -142,7 +142,7 @@ export abstract class Map implements MapInterface {
 
   public restore(state: Exported): void {
     this._hasStarted = state.hasStarted;
-    this._wallStates = new WallStates(state.wallStates);
+    this._wallStates = new WallManager(state.wallStates);
     this._deck = CardProvider.restoreDeck(state.deck);
     this._active = CardProvider.getCardList(state.active);
     this._revealed = state.revealed === undefined

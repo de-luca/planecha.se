@@ -1,10 +1,10 @@
 import { Plane } from '../Plane';
 import { eventBus, EventType } from '#/services/EventBus';
 import {
-  WallStates,
+  WallManager,
   RevealerMode,
   RevealerSource,
-  RevealerWallState,
+  RevealerWall,
   StateKey,
 } from '#/model/wall';
 
@@ -21,8 +21,8 @@ export class StairsToInfinity extends Plane {
     return true;
   }
 
-  public chaos(walls: WallStates, initiator: string): void {
-    const revealer: RevealerWallState = {
+  public chaos(walls: WallManager, initiator: string): void {
+    const revealer: RevealerWall = {
       title: this.name,
       subTitle: 'Chose to put this card on top or at the bottom the planar deck.',
       source: RevealerSource.STAIRS_TO_INFINITY,

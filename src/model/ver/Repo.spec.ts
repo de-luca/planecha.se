@@ -8,7 +8,7 @@ const exported: Exported = {
   deck: { cards: [], played: [] },
   hasStarted: true,
   specs: { type: MapType.SINGLE },
-  wallStates: [],
+  wallStates: {},
 };
 
 describe('Repo.getStableIndex', () => {

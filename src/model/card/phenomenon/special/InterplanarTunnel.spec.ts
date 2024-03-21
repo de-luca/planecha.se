@@ -1,15 +1,17 @@
 import { describe, it, expect } from 'vitest';
 import { InterplanarTunnel } from './InterplanarTunnel';
-import { RevealerMode, RevealerSource, StateKey, WallStates } from '#/model/wall';
+import { RevealerMode, RevealerSource, StateKey, WallManager } from '#/model/wall';
 
 describe('SpatialMerging.enter', () => {
   it('sets a wall and emit its event', () => {
-    const walls = new WallStates();
+    const walls = new WallManager();
     const interplanarTunnel = new InterplanarTunnel({
       id: '00000000-0000-0000-0000-000000000000',
       name: 'Test Phenomenon',
       typeLine: 'test phenomenon',
       oracleText: 'some test text',
+      isUB: true,
+      sets: ['ABC'],
     });
     interplanarTunnel.enter(walls, 'foo');
     expect(walls.get(StateKey.REVEALER)).toEqual({
