@@ -16,12 +16,12 @@
     </div>
 
     <template v-else>
-      <div v-if="error && !gameData" class="error">
+      <div v-if="issue && !gameData" class="error">
         <a class="button is-large is-ghost">
           <fa icon="exclamation" fixed-width />
         </a>
-        <p><b v-html="error.message"></b></p>
-        <p v-html="error.cause"></p>
+        <p><b v-html="issue.msg"></b></p>
+        <p v-html="issue.cause"></p>
       </div>
 
       <form v-else @submit.prevent="join">
@@ -69,7 +69,10 @@
               Join game
             </button>
           </div>
-          <p class="help is-danger" v-if="error" v-html="error.message"></p>
+          <p class="help is-danger" v-if="issue">
+            <b v-html="issue.msg"></b><br>
+            <span v-html="issue.cause"></span>
+          </p>
         </div>
       </form>
     </template>
@@ -88,6 +91,9 @@ import { Card } from '#/model/card';
 import NameInput from '#/components/controls/NameInput.vue';
 import BrandedFooter from '#/components/BrandedFooter.vue';
 import DeckCustomization from '#/components/create/DeckCustomization.vue';
+import { BlockedError, OfflineError, TimeoutError } from '#/model/net/errors';
+
+type Issue = { msg: string; cause: string };
 
 @Component({ components: { BrandedFooter, DeckCustomization, NameInput } })
 export default class Join extends Vue {
@@ -101,7 +107,7 @@ export default class Join extends Vue {
   public deck: Array<Card> = [];
 
   public gameData: Awaited<ReturnType<MainStore['preJoin']>> | null = null;
-  public error: Error | null = null;
+  public issue: Issue | null = null;
 
   public created(): void {
     this.roomId = this.$route.params.roomId as string ?? '';
@@ -109,12 +115,8 @@ export default class Join extends Vue {
       .then(data => this.gameData = data)
       .catch((err) => {
         console.error(err);
-        this.error = new Error(
-          'The requested room could not be found.',
-          { cause: 'The link might be broken or the room as been closed.' },
-        );
-        // console.log(this.store.net?.isFullyBlocked);
         this.store.leave();
+        this.digestError(err as Error);
       })
       .finally(() => this.loading = false);
   }
@@ -163,10 +165,35 @@ export default class Join extends Vue {
         cards: this.deck.map(c => c.id),
       });
     } catch (err) {
+      console.error(err);
       this.store.leave();
-      this.error = err as Error;
+      this.digestError(err as Error);
     }
     this.joining = false;
+  }
+
+  private digestError(err: Error): void {
+    switch (true) {
+      case err instanceof TimeoutError:
+        this.issue = {
+          msg: 'The requested room could not be found.',
+          cause: 'The link might be broken or the room as been closed.',
+        };
+        break;
+      case err instanceof OfflineError:
+        this.issue = {
+          msg: 'No internet connection.',
+          cause: 'Your browser appear to be offline.',
+        };
+        break;
+      case err instanceof BlockedError:
+        this.issue = {
+          msg: 'No relay could be reached.',
+          cause: `This might be due to adblocker blocking public webtorrent relays for unknown reason.<br>
+            You can try fixing this issue by deactivating your adblocker.`,
+        };
+        break;
+    }
   }
 }
 </script>

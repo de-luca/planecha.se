@@ -6,6 +6,7 @@ import {
   // @ts-expect-error Typing is kinda broken
   getRelaySockets,
 } from 'trystero';
+import { BlockedError, OfflineError, TimeoutError } from './errors';
 import type { InitPayload, MainStore } from '#/store/main';
 
 import { Patch } from '#/utils/delta';
@@ -123,16 +124,12 @@ export class Net implements NetInterface {
 
     this._boot = gameData
       ? Promise.resolve()
-      : new Promise((res, rej) => {
-          const timeout = setTimeout(() => rej(new Error(
-            'Could not retrieve game state.',
-            { cause: 'Operation timed out. An error occured while getting the game state.' },
-          )), 5000);
-
+      : new Promise((resolve, reject) => {
+          const timeout = setTimeout(() => reject(this.diagnoseError()), 5000);
           bootReceiver(once((data) => {
             this._gameData = data;
             clearTimeout(timeout);
-            res();
+            resolve();
           }));
         });
 
@@ -155,17 +152,6 @@ export class Net implements NetInterface {
     undoReceiver((data) => store.applyUndo(data));
     feedReceiver((data) => store.feed.push(data));
     resetReceiver((data) => store.applyReset(data));
-
-    console.log(getRelaySockets());
-  }
-
-  public get isFullyBlocked(): boolean {
-    console.log(getRelaySockets());
-    const r = Object.values(getRelaySockets() as Record<string, WebSocket>)
-      .every(ws => ws.readyState !== WebSocket.OPEN);
-
-    console.log(r);
-    return r;
   }
 
   public get gameId() {
@@ -222,10 +208,7 @@ export class Net implements NetInterface {
     return new Promise(async (resolve, reject) => {
       const timeout = setTimeout(() => {
         this.room.leave();
-        reject(new Error(
-          'Could not retrieve game state.',
-          { cause: 'Operation timed out. An error occured while getting the game state.' },
-        ));
+        reject(this.diagnoseError());
       }, 5000);
 
       this._initReceiver((data, peer) => {
@@ -242,5 +225,20 @@ export class Net implements NetInterface {
 
   public leave(): void {
     this.room.leave();
+  }
+
+  private diagnoseError(): Error {
+    if (!navigator.onLine) {
+      return new OfflineError();
+    }
+
+    if (
+      Object.values(getRelaySockets() as Record<string, WebSocket>)
+        .every(ws => ws.readyState !== WebSocket.OPEN)
+    ) {
+      return new BlockedError();
+    }
+
+    return new TimeoutError();
   }
 }
