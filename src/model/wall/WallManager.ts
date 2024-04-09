@@ -36,6 +36,7 @@ export interface WallManagerInterface {
   set<T extends StateKey>(key: T, value: WallStateMap[T]): void;
   get<T extends StateKey>(key: T): WallStateMap[T] | undefined;
   has(key: StateKey): boolean;
+  isEmpty(): boolean;
   delete <T extends StateKey>(key: T): void;
   apply(input: ApplyInput): void;
   export(): WallStateMap;
@@ -58,6 +59,10 @@ export class WallManager implements WallManagerInterface {
 
   public has(key: StateKey): boolean {
     return !!this.walls[key];
+  }
+
+  public isEmpty(): boolean {
+    return !Object.entries(this.walls).some(Boolean);
   }
 
   public delete<T extends StateKey>(key: T): void {

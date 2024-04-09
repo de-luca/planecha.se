@@ -51,7 +51,7 @@ export abstract class Map implements MapInterface {
     return this._hasStarted;
   }
 
-  public get wallStates(): WallManager {
+  public get walls(): WallManager {
     return this._wallStates;
   }
 

@@ -25,7 +25,7 @@ export abstract class Eternities extends Map {
   public get phenomenonWallConfig(): LocalPhenomenonWallConfig | undefined {
     if ((this.store.map as SingleDeck).destination) {
       let seeder: (() => void) | null = null;
-      switch (this.store.map.wallStates.get(StateKey.REVEALER)?.source) {
+      switch (this.store.map.walls.get(StateKey.REVEALER)?.source) {
         case RevealerSource.INTERPLANAR_TUNNEL:
           seeder = () => this.store.reveal({ count: 5, type: Plane });
           break;
@@ -34,7 +34,7 @@ export abstract class Eternities extends Map {
           break;
       }
 
-      const wall = this.store.map.wallStates.get(StateKey.PHENOMENON_WALL);
+      const wall = this.store.map.walls.get(StateKey.PHENOMENON_WALL);
 
       return {
         seeder,

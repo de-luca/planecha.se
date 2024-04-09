@@ -63,7 +63,7 @@ describe('DualDeck.encounter', () => {
     expect(map.remainingPhenomena).toEqual(phenomenaDeckSize - 1);
     expect(map.active).toHaveLength(1);
     expect(map.active[0]).toBeInstanceOf(Phenomenon);
-    expect(map.wallStates.has(StateKey.PHENOMENON_WALL)).toEqual(true);
+    expect(map.walls.has(StateKey.PHENOMENON_WALL)).toEqual(true);
   });
 });
 

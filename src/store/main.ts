@@ -370,7 +370,7 @@ export const useMain = defineStore('main', {
     },
 
     updateWallState(payload: ApplyInput) {
-      this.map.wallStates.apply(payload);
+      this.map.walls.apply(payload);
     },
 
     encounter(payload: Omit<EncounterInput, 'initiator'>) {

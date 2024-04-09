@@ -80,7 +80,7 @@ export interface MapInterface {
   specs: MapSpecs;
   ready: Promise<void>;
   hasStarted: boolean;
-  wallStates: WallManagerInterface;
+  walls: WallManagerInterface;
   revealed?: Revealed;
   active: Array<Card>;
   remaining: number;
