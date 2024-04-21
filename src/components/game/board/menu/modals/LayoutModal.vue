@@ -39,26 +39,26 @@
 </template>
 
 <script lang="ts">
-import * as draggable from 'vuedraggable';
-import { Component, Prop, Vue } from 'vue-facing-decorator';
-import { useMain } from '#/store/main';
+import { Component, Prop, Vue } from "vue-facing-decorator";
+import * as draggable from "vuedraggable";
+import { useMain } from "#/store/main";
 
 @Component({
-  emits: ['update:active'],
-  components: { draggable },
+	emits: ["update:active"],
+	components: { draggable },
 })
 export default class LayoutModal extends Vue {
-  @Prop({ required: true })
-  public active: boolean;
+	@Prop({ required: true })
+	public active: boolean;
 
-  public store = useMain();
+	public store = useMain();
 
-  public get layout(): Layout {
-    return this.store.playerLayout.layout;
-  }
-  public set layout(layout: Layout) {
-    this.store.setLayout(layout);
-  }
+	public get layout(): Layout {
+		return this.store.playerLayout.layout;
+	}
+	public set layout(layout: Layout) {
+		this.store.setLayout(layout);
+	}
 }
 </script>
 

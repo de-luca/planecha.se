@@ -18,64 +18,65 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-facing-decorator';
-import { Map } from '../Map';
-import { Card as ModelCard } from '#/model/card';
-import { Multi as MultiMap } from '#/model/map/multi/Multi';
+import { Component } from "vue-facing-decorator";
+import type { Card as ModelCard } from "#/model/card";
+import type { Multi as MultiMap } from "#/model/map/multi/Multi";
+import { Map } from "../Map";
 
-import Card from '#/components/controls/Card.vue';
+import Card from "#/components/controls/Card.vue";
 
 interface Active {
-  yours: boolean;
-  mate: string;
-  active: Array<ModelCard>;
-  started: boolean;
+	yours: boolean;
+	mate: string;
+	active: Array<ModelCard>;
+	started: boolean;
 }
 
 @Component({
-  components: { Card },
+	components: { Card },
 })
 export default class Multi extends Map {
-  public shown: Active | null = null;
+	public shown: Active | null = null;
 
-  public get layout(): Layout {
-    return this.store.playerLayout.layout;
-  }
+	public get layout(): Layout {
+		return this.store.playerLayout.layout;
+	}
 
-  public get actives(): Array<Active> {
-    return this.store.playerLayout.players.reduce<Array<Active>>((acc, id) => {
-      const map = id === ''
-        ? this.store.map
-        : (this.store.map as MultiMap).mateStates.get(id);
+	public get actives(): Array<Active> {
+		return this.store.playerLayout.players.reduce<Array<Active>>((acc, id) => {
+			const map =
+				id === ""
+					? this.store.map
+					: (this.store.map as MultiMap).mateStates.get(id);
 
-      if (map) {
-        acc.push({
-          yours: id === '',
-          mate: this.store.getMateName(id),
-          active: map.active,
-          started: map.hasStarted,
-        });
-      }
+			if (map) {
+				acc.push({
+					yours: id === "",
+					mate: this.store.getMateName(id),
+					active: map.active,
+					started: map.hasStarted,
+				});
+			}
 
-      return acc;
-    }, []);
-    // return [{
-    //   yours: true,
-    //   mate: this.store.getMateName(),
-    //   active: this.store.map.active,
-    // }].concat(
-    //   [...(this.store.map as MultiMap).mateStates.entries()]
-    //     .map(([peer, map]) => ({
-    //       yours: false,
-    //       mate: this.store.getMateName(peer),
-    //       active: map.active,
-    //     })),
-    // );
-  }
+			return acc;
+		}, []);
+		// return [{
+		//   yours: true,
+		//   mate: this.store.getMateName(),
+		//   active: this.store.map.active,
+		// }].concat(
+		//   [...(this.store.map as MultiMap).mateStates.entries()]
+		//     .map(([peer, map]) => ({
+		//       yours: false,
+		//       mate: this.store.getMateName(peer),
+		//       active: map.active,
+		//     })),
+		// );
+	}
 
-  public planeswalk(): void {
-    this.store.planeswalk({});
-  }
+	public planeswalk(): void {
+		this.store.planeswalk({});
+	}
 }
 </script>
 

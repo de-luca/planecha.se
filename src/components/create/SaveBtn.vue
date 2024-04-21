@@ -44,37 +44,36 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-facing-decorator';
-import { DeckState, ProceedType } from './utils';
+import { Component, Prop, Vue } from "vue-facing-decorator";
+import type { DeckState, ProceedType } from "./utils";
 
 export interface ProcessOption {
-  id: ProceedType;
-  text: string;
+	id: ProceedType;
+	text: string;
 }
 
-@Component({ emits: ['update:modelValue', 'done'] })
+@Component({ emits: ["update:modelValue", "done"] })
 export default class SaveBtn extends Vue {
-  @Prop({ required: true })
-  private modelValue: ProceedType;
-  @Prop({ required: true })
-  public state: DeckState;
+	@Prop({ required: true })
+	private modelValue: ProceedType;
+	@Prop({ required: true })
+	public state: DeckState;
 
-  public toggle = false;
+	public toggle = false;
 
-  public options: Record<ProceedType, string> = {
-    'save_use': 'Save and use Deck',
-    'save': 'Save Deck',
-    'use': 'Use Deck without saving',
-  };
+	public options: Record<ProceedType, string> = {
+		save_use: "Save and use Deck",
+		save: "Save Deck",
+		use: "Use Deck without saving",
+	};
 
-  public get selected(): ProceedType {
-    return this.modelValue;
-  }
+	public get selected(): ProceedType {
+		return this.modelValue;
+	}
 
-  public set selected(value: ProceedType) {
-    this.$emit('update:modelValue', value);
-  }
-
+	public set selected(value: ProceedType) {
+		this.$emit("update:modelValue", value);
+	}
 }
 </script>
 

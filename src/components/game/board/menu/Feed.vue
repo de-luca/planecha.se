@@ -16,17 +16,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-facing-decorator';
-import { useMain } from '#/store/main';
+import { Component, Vue } from "vue-facing-decorator";
+import { useMain } from "#/store/main";
 
 @Component
 export default class Feed extends Vue {
-  private store = useMain();
-  public open = false;
+	private store = useMain();
+	public open = false;
 
-  public get messages(): Array<string> {
-    return this.store.feed;
-  }
+	public get messages(): Array<string> {
+		return this.store.feed;
+	}
 }
 </script>
 

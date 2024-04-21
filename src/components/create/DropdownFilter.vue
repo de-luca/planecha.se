@@ -24,48 +24,50 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-facing-decorator';
-import { Component as VueComponent } from 'vue';
+import type { Component as VueComponent } from "vue";
+import { Component, Prop, Vue } from "vue-facing-decorator";
 
 export interface Option {
-  label: string;
-  value?: string;
-  icon?: VueComponent;
+	label: string;
+	value?: string;
+	icon?: VueComponent;
 }
 
-@Component({ emits: ['update:modelValue'] })
+@Component({ emits: ["update:modelValue"] })
 export default class DropdownFilter extends Vue {
-  @Prop({ required: true })
-  public modelValue: Array<string>;
-  @Prop({ required: true })
-  public title: string;
-  @Prop({ required: true })
-  public options: Array<Option>;
+	@Prop({ required: true })
+	public modelValue: Array<string>;
+	@Prop({ required: true })
+	public title: string;
+	@Prop({ required: true })
+	public options: Array<Option>;
 
-  public active = false;
+	public active = false;
 
-  public get indeterminate(): boolean {
-    return this.selected.length !== 0 &&
-      this.selected.length < this.options.length;
-  }
+	public get indeterminate(): boolean {
+		return (
+			this.selected.length !== 0 && this.selected.length < this.options.length
+		);
+	}
 
-  public get full(): boolean {
-    return this.selected.length === this.options.length;
-  }
+	public get full(): boolean {
+		return this.selected.length === this.options.length;
+	}
 
-  public get selected(): Array<string> {
-    return this.modelValue;
-  }
+	public get selected(): Array<string> {
+		return this.modelValue;
+	}
 
-  public set selected(value: Array<string>) {
-    this.$emit('update:modelValue', value);
-  }
+	public set selected(value: Array<string>) {
+		this.$emit("update:modelValue", value);
+	}
 
-  public toggle() {
-    this.selected = this.selected.length === this.options.length
-      ? []
-      : this.options.map(o => o.value ?? o.label);
-  }
+	public toggle() {
+		this.selected =
+			this.selected.length === this.options.length
+				? []
+				: this.options.map((o) => o.value ?? o.label);
+	}
 }
 </script>
 

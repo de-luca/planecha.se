@@ -14,20 +14,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-facing-decorator';
-import { Tile } from '#/model/map/eternities';
+import { Component, Prop, Vue } from "vue-facing-decorator";
+import type { Tile } from "#/model/map/eternities";
 
-import Card from '#/components/controls/Card.vue';
+import Card from "#/components/controls/Card.vue";
 
 @Component({
-  emits: [ 'show' ],
-  components: { Card },
+	emits: ["show"],
+	components: { Card },
 })
 export default class Planeswalkable extends Vue {
-  @Prop({ required: false })
-  public tile: Tile;
-  @Prop({ required: true })
-  public hidden: boolean;
+	@Prop({ required: false })
+	public tile: Tile;
+	@Prop({ required: true })
+	public hidden: boolean;
 }
 </script>
 

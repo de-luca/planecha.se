@@ -23,12 +23,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-facing-decorator';
+import { Component, Prop, Vue } from "vue-facing-decorator";
 
-@Component({ emits: ['update:active', 'close'] })
+@Component({ emits: ["update:active", "close"] })
 export default class ResetModal extends Vue {
-  @Prop({ required: true })
-  public active: boolean;
+	@Prop({ required: true })
+	public active: boolean;
 }
 </script>
 

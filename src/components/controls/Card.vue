@@ -21,40 +21,45 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-facing-decorator';
-import { Imgable } from '#/components/Imgable';
-import { Card as ModelCard, Counter, Phenomenon, Plane } from '#/model/card';
-import { useMain } from '#/store/main';
+import { Component, Prop } from "vue-facing-decorator";
+import { Imgable } from "#/components/Imgable";
+import {
+	type Counter,
+	type Card as ModelCard,
+	Phenomenon,
+	Plane,
+} from "#/model/card";
+import { useMain } from "#/store/main";
 
 @Component
 export default class Card extends Imgable {
-  @Prop({ required: true })
-  public card: ModelCard;
-  @Prop({ required: false, default: false })
-  public hidden: boolean;
-  @Prop({ required: false, default: false })
-  public ro: boolean;
+	@Prop({ required: true })
+	public card: ModelCard;
+	@Prop({ required: false, default: false })
+	public hidden: boolean;
+	@Prop({ required: false, default: false })
+	public ro: boolean;
 
-  private store = useMain();
+	private store = useMain();
 
-  public get imgSrc(): string {
-    return this.buildImgSrc(this.card);
-  }
+	public get imgSrc(): string {
+		return this.buildImgSrc(this.card);
+	}
 
-  public get counters(): Counter | undefined {
-    if (this.card instanceof Plane) {
-      return this.card.counter;
-    }
-    return undefined;
-  }
+	public get counters(): Counter | undefined {
+		if (this.card instanceof Plane) {
+			return this.card.counter;
+		}
+		return undefined;
+	}
 
-  public get isPhenomenon(): boolean {
-    return this.card instanceof Phenomenon;
-  }
+	public get isPhenomenon(): boolean {
+		return this.card instanceof Phenomenon;
+	}
 
-  public update(change: number) {
-    this.store.updateCounters({ planeId: this.card.id, change });
-  }
+	public update(change: number) {
+		this.store.updateCounters({ planeId: this.card.id, change });
+	}
 }
 </script>
 

@@ -1,101 +1,102 @@
-import { WallStateMap, WallManagerInterface } from '../wall';
-import { Card, ExportedCard, Plane } from '../card';
-import { DeckState } from '../deck/Deck';
-import { Patch } from '#/utils/delta';
+import type { Patch } from "#/utils/delta";
+import type { Card, ExportedCard, Plane } from "../card";
+import type { DeckState } from "../deck/Deck";
+import type { WallManagerInterface, WallStateMap } from "../wall";
 
 export enum MapType {
-  SINGLE = 'single',
-  MULTI = 'multi',
-  ETERNITIES = 'eternities',
+	SINGLE = "single",
+	MULTI = "multi",
+	ETERNITIES = "eternities",
 }
 
 export interface MapSpecs {
-  type: MapType;
+	type: MapType;
 }
 
 export interface Exported {
-  specs: MapSpecs;
-  wallStates: WallStateMap;
-  hasStarted: boolean;
-  deck: DeckState;
-  active: Array<ExportedCard>;
-  revealed?: { relevant: Array<string>, others: Array<string> };
+	specs: MapSpecs;
+	wallStates: WallStateMap;
+	hasStarted: boolean;
+	deck: DeckState;
+	active: Array<ExportedCard>;
+	revealed?: { relevant: Array<string>; others: Array<string> };
 }
 
 export interface Revealed {
-  relevant: Array<Card>;
-  others: Array<Card>;
+	relevant: Array<Card>;
+	others: Array<Card>;
 }
 
 export interface Initable {
-  initiator: string;
+	initiator: string;
 }
 
 export interface ChaosInput extends Initable {
-  card: Card;
+	card: Card;
 }
 
-export type SinglePlaneswalkInput = Initable
+export type SinglePlaneswalkInput = Initable;
 
 export interface CustomSinglePlaneswalkInput extends SinglePlaneswalkInput {
-  planes: Array<Plane>;
+	planes: Array<Plane>;
 }
 
 export interface EternitiesPlaneswalkInput extends Initable {
-  coords: Coordinates;
+	coords: Coordinates;
 }
 
-export interface CustomEternitiesPlaneswalkInput extends EternitiesPlaneswalkInput {
-  planes: Array<Plane>;
+export interface CustomEternitiesPlaneswalkInput
+	extends EternitiesPlaneswalkInput {
+	planes: Array<Plane>;
 }
 
 export interface AddActivePlaneInput extends Initable {
-  plane: Plane;
+	plane: Plane;
 }
 
 export interface UpdateCounterInput {
-  planeId: string;
-  change: number;
+	planeId: string;
+	change: number;
 }
 
 export interface RevealUntilInput {
-  count: number;
-  type?: typeof Card;
+	count: number;
+	type?: typeof Card;
 }
 
 export interface ResolveRevealInput {
-  top: Array<Card>;
-  bottom: Array<Card>;
-  stop?: boolean;
+	top: Array<Card>;
+	bottom: Array<Card>;
+	stop?: boolean;
 }
 
 export type PlaneswalkInput =
-  SinglePlaneswalkInput |
-  CustomSinglePlaneswalkInput |
-  EternitiesPlaneswalkInput |
-  CustomEternitiesPlaneswalkInput;
+	| SinglePlaneswalkInput
+	| CustomSinglePlaneswalkInput
+	| EternitiesPlaneswalkInput
+	| CustomEternitiesPlaneswalkInput;
 export type ResolveInput = Initable;
 
 export interface MapInterface {
-  specs: MapSpecs;
-  ready: Promise<void>;
-  hasStarted: boolean;
-  walls: WallManagerInterface;
-  revealed?: Revealed;
-  active: Array<Card>;
-  remaining: number;
-  played: Array<Card>;
+	specs: MapSpecs;
+	ready: Promise<void>;
+	hasStarted: boolean;
+	walls: WallManagerInterface;
+	revealed?: Revealed;
+	active: Array<Card>;
+	remaining: number;
+	played: Array<Card>;
 
-  start(): void;
-  revealUntil(input: RevealUntilInput): void;
-  resolveReveal(input: ResolveRevealInput): void;
-  chaos(input: ChaosInput): void;
-  planeswalk(input: PlaneswalkInput): void;
-  addActivePlane(input: AddActivePlaneInput): void;
-  resolve(input: ResolveInput): void;
-  updateCounter(input: UpdateCounterInput): void;
-  export(): Exported;
-  dump(): Exported;
-  apply(patch: Patch, peerId: string): void;
-  restore(state: Exported): void;
+	start(): void;
+	revealUntil(input: RevealUntilInput): void;
+	resolveReveal(input: ResolveRevealInput): void;
+	chaos(input: ChaosInput): void;
+	planeswalk(input: PlaneswalkInput): void;
+	addActivePlane(input: AddActivePlaneInput): void;
+	resolve(input: ResolveInput): void;
+	updateCounter(input: UpdateCounterInput): void;
+	export(): Exported;
+	dump(): Exported;
+	apply(patch: Patch, peerId: string): void;
+	restore(state: Exported): void;
 }

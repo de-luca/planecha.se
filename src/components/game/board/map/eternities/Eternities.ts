@@ -1,79 +1,74 @@
-import { Map } from '../Map';
-import { PickedLeft } from '#board/wall/reveal/types';
-import { Phenomenon, Plane } from '#/model/card';
-import {
-  StateKey,
-  PhenomenonWall,
-  RevealerSource,
-} from '#/model/wall';
-import {
-  EternitiesMap as EternitiesMapModel,
-  SingleDeck,
-  Tile,
-} from '#/model/map/eternities';
+import { type Phenomenon, Plane } from "#/model/card";
+import type {
+	EternitiesMap as EternitiesMapModel,
+	SingleDeck,
+	Tile,
+} from "#/model/map/eternities";
+import { type PhenomenonWall, RevealerSource, StateKey } from "#/model/wall";
+import type { PickedLeft } from "#board/wall/reveal/types";
+import { Map } from "../Map";
 
 interface LocalPhenomenonWallConfig {
-  config: PhenomenonWall & { mateName?: string };
-  phenomenon: Phenomenon;
-  seeder: (() => void) | null;
+	config: PhenomenonWall & { mateName?: string };
+	phenomenon: Phenomenon;
+	seeder: (() => void) | null;
 }
 
 export abstract class Eternities extends Map {
-  public readonly off: number = 4;
-  public displayedTile: Tile | null = null;
+	public readonly off: number = 4;
+	public displayedTile: Tile | null = null;
 
-  public get phenomenonWallConfig(): LocalPhenomenonWallConfig | undefined {
-    if ((this.store.map as SingleDeck).destination) {
-      let seeder: (() => void) | null = null;
-      switch (this.store.map.walls.get(StateKey.REVEALER)?.source) {
-        case RevealerSource.INTERPLANAR_TUNNEL:
-          seeder = () => this.store.reveal({ count: 5, type: Plane });
-          break;
-        case RevealerSource.SPACIAL_MERGING:
-          seeder = () => this.store.reveal({ count: 2, type: Plane });
-          break;
-      }
+	public get phenomenonWallConfig(): LocalPhenomenonWallConfig | undefined {
+		if ((this.store.map as SingleDeck).destination) {
+			let seeder: (() => void) | null = null;
+			switch (this.store.map.walls.get(StateKey.REVEALER)?.source) {
+				case RevealerSource.INTERPLANAR_TUNNEL:
+					seeder = () => this.store.reveal({ count: 5, type: Plane });
+					break;
+				case RevealerSource.SPACIAL_MERGING:
+					seeder = () => this.store.reveal({ count: 2, type: Plane });
+					break;
+			}
 
-      const wall = this.store.map.walls.get(StateKey.PHENOMENON_WALL);
+			const wall = this.store.map.walls.get(StateKey.PHENOMENON_WALL);
 
-      return {
-        seeder,
-        phenomenon: this.store.map.active[0] as Phenomenon,
-        config: {
-          ...wall!,
-          mateName: wall?.initiator,
-        },
-      };
-    }
+			return {
+				seeder,
+				phenomenon: this.store.map.active[0] as Phenomenon,
+				config: {
+					...wall!,
+					mateName: wall?.initiator,
+				},
+			};
+		}
 
-    return undefined;
-  }
+		return undefined;
+	}
 
-  public unreachable(x: number, y: number): boolean {
-    return Math.abs(x - this.off) + Math.abs(y - this.off) > 3;
-  }
+	public unreachable(x: number, y: number): boolean {
+		return Math.abs(x - this.off) + Math.abs(y - this.off) > 3;
+	}
 
-  public getTile(x: number, y: number): Tile | undefined {
-    return (this.store.map as EternitiesMapModel).tiles.find((tile) => {
-      return tile.coords.x === x - this.off
-        && tile.coords.y === y - this.off;
-    });
-  }
+	public getTile(x: number, y: number): Tile | undefined {
+		return (this.store.map as EternitiesMapModel).tiles.find((tile) => {
+			return tile.coords.x === x - this.off && tile.coords.y === y - this.off;
+		});
+	}
 
-  public showTileDetails(tile: Tile): void {
-    this.displayedTile = tile;
-  }
+	public showTileDetails(tile: Tile): void {
+		this.displayedTile = tile;
+	}
 
-  public hideTileDetails(): void {
-    this.displayedTile = null;
-  }
+	public hideTileDetails(): void {
+		this.displayedTile = null;
+	}
 
-  public resolve(): void {
-    this.store.resolve();
-  }
+	public resolve(): void {
+		this.store.resolve();
+	}
 
-  public customPlaneswalk(choices: PickedLeft): void {
-    super.customPlaneswalk(choices);
-    this.store.resolve();
-  }
+	public customPlaneswalk(choices: PickedLeft): void {
+		super.customPlaneswalk(choices);
+		this.store.resolve();
+	}
 }

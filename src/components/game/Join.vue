@@ -82,119 +82,124 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-facing-decorator';
-import { DeckState, getDeckState } from '../create/utils';
-import { MainStore, useMain } from '#/store/main';
-import { MapType } from '#/model/map';
-import { Card } from '#/model/card';
+import { Component, Vue } from "vue-facing-decorator";
+import type { Card } from "#/model/card";
+import { MapType } from "#/model/map";
+import { type MainStore, useMain } from "#/store/main";
+import { type DeckState, getDeckState } from "../create/utils";
 
-import NameInput from '#/components/controls/NameInput.vue';
-import BrandedFooter from '#/components/BrandedFooter.vue';
-import DeckCustomization from '#/components/create/DeckCustomization.vue';
-import { BlockedError, OfflineError, TimeoutError } from '#/model/net/errors';
+import BrandedFooter from "#/components/BrandedFooter.vue";
+import NameInput from "#/components/controls/NameInput.vue";
+import DeckCustomization from "#/components/create/DeckCustomization.vue";
+import { BlockedError, OfflineError, TimeoutError } from "#/model/net/errors";
 
 type Issue = { msg: string; cause: string };
 
 @Component({ components: { BrandedFooter, DeckCustomization, NameInput } })
 export default class Join extends Vue {
-  private store = useMain();
+	private store = useMain();
 
-  public loading = true;
-  public name = useMain().selfName ?? '';
-  public roomId = '';
-  public joining = false;
-  public openDeckBuilder = false;
-  public deck: Array<Card> = [];
+	public loading = true;
+	public name = useMain().selfName ?? "";
+	public roomId = "";
+	public joining = false;
+	public openDeckBuilder = false;
+	public deck: Array<Card> = [];
 
-  public gameData: Awaited<ReturnType<MainStore['preJoin']>> | null = null;
-  public issue: Issue | null = null;
+	public gameData: Awaited<ReturnType<MainStore["preJoin"]>> | null = null;
+	public issue: Issue | null = null;
 
-  public created(): void {
-    this.roomId = this.$route.params.roomId as string ?? '';
-    this.store.preJoin(this.roomId)
-      .then(data => this.gameData = data)
-      .catch((err) => {
-        console.error(err);
-        this.store.leave();
-        this.digestError(err as Error);
-      })
-      .finally(() => this.loading = false);
-  }
+	public created(): void {
+		this.roomId = (this.$route.params.roomId as string) ?? "";
+		this.store
+			.preJoin(this.roomId)
+			.then((data) => {
+				this.gameData = data;
+			})
+			.catch((err) => {
+				console.error(err);
+				this.store.leave();
+				this.digestError(err as Error);
+			})
+			.finally(() => {
+				this.loading = false;
+			});
+	}
 
-  public get gameType(): string {
-    switch (this.gameData?.mapType) {
-      case MapType.SINGLE:
-        return 'Single Deck';
-      case MapType.MULTI:
-        return 'Multiple Decks';
-      case MapType.ETERNITIES:
-        return 'Eternities Map';
-    }
-    return '';
-  }
+	public get gameType(): string {
+		switch (this.gameData?.mapType) {
+			case MapType.SINGLE:
+				return "Single Deck";
+			case MapType.MULTI:
+				return "Multiple Decks";
+			case MapType.ETERNITIES:
+				return "Eternities Map";
+		}
+		return "";
+	}
 
-  public get isMulti(): boolean {
-    return this.gameData?.mapType === MapType.MULTI;
-  }
+	public get isMulti(): boolean {
+		return this.gameData?.mapType === MapType.MULTI;
+	}
 
-  public get isDeckValid(): DeckState {
-    return !this.isMulti
-      ? { valid: true, reqs: [] }
-      : getDeckState(this.gameData!.mapType, this.deck);
-  }
+	public get isDeckValid(): DeckState {
+		return !this.isMulti
+			? { valid: true, reqs: [] }
+			: getDeckState(this.gameData?.mapType, this.deck);
+	}
 
-  public get peerCount(): number {
-    return this.store.net?.peerCount ?? 0;
-  }
+	public get peerCount(): number {
+		return this.store.net?.peerCount ?? 0;
+	}
 
-  public toggleDeckBuilder(): void {
-    this.openDeckBuilder = !this.openDeckBuilder;
-  }
+	public toggleDeckBuilder(): void {
+		this.openDeckBuilder = !this.openDeckBuilder;
+	}
 
-  public setDeck(deck: Array<Card>): void {
-    this.openDeckBuilder = false;
-    this.deck = deck;
-  }
+	public setDeck(deck: Array<Card>): void {
+		this.openDeckBuilder = false;
+		this.deck = deck;
+	}
 
-  public async join() {
-    this.joining = true;
-    this.store.setName(this.name);
-    try {
-      await this.store.join({
-        type: this.gameData!.mapType,
-        cards: this.deck.map(c => c.id),
-      });
-    } catch (err) {
-      console.error(err);
-      this.store.leave();
-      this.digestError(err as Error);
-    }
-    this.joining = false;
-  }
+	public async join() {
+		this.joining = true;
+		this.store.setName(this.name);
+		try {
+			await this.store.join({
+				type: this.gameData?.mapType,
+				cards: this.deck.map((c) => c.id),
+			});
+		} catch (err) {
+			console.error(err);
+			this.store.leave();
+			this.digestError(err as Error);
+		}
+		this.joining = false;
+	}
 
-  private digestError(err: Error): void {
-    switch (true) {
-      case err instanceof TimeoutError:
-        this.issue = {
-          msg: 'The requested room could not be found.',
-          cause: 'The link might be broken or the room as been closed.',
-        };
-        break;
-      case err instanceof OfflineError:
-        this.issue = {
-          msg: 'No internet connection.',
-          cause: 'Your browser appear to be offline.',
-        };
-        break;
-      case err instanceof BlockedError:
-        this.issue = {
-          msg: 'No relay could be reached.',
-          cause: `This might be due to adblocker blocking public webtorrent relays for unknown reason.<br>
+	private digestError(err: Error): void {
+		switch (true) {
+			case err instanceof TimeoutError:
+				this.issue = {
+					msg: "The requested room could not be found.",
+					cause: "The link might be broken or the room as been closed.",
+				};
+				break;
+			case err instanceof OfflineError:
+				this.issue = {
+					msg: "No internet connection.",
+					cause: "Your browser appear to be offline.",
+				};
+				break;
+			case err instanceof BlockedError:
+				this.issue = {
+					msg: "No relay could be reached.",
+					cause: `This might be due to adblocker blocking public webtorrent relays for unknown reason.<br>
             You can try fixing this issue by deactivating your adblocker.`,
-        };
-        break;
-    }
-  }
+				};
+				break;
+		}
+	}
 }
 </script>
 

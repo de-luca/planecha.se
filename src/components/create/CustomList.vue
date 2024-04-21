@@ -62,70 +62,77 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-facing-decorator';
-import { DeckKind, DeckReqs, REQUIREMENTS, SavedDeck, CardType } from './utils';
-import CardList from './CardList.vue';
-import { useMain } from '#/store/main';
-import { MapType } from '#/model/map';
-import { EternitiesMapDeckType } from '#/model/map/eternities';
+import { Component, Prop, Vue } from "vue-facing-decorator";
+import { MapType } from "#/model/map";
+import { EternitiesMapDeckType } from "#/model/map/eternities";
+import { useMain } from "#/store/main";
+import CardList from "./CardList.vue";
+import {
+	type CardType,
+	type DeckKind,
+	type DeckReqs,
+	REQUIREMENTS,
+	type SavedDeck,
+} from "./utils";
 
 const KIND_MAP = {
-  'all': 'Planes and Phenomena',
-  'planes': 'Only Planes',
+	all: "Planes and Phenomena",
+	planes: "Only Planes",
 };
 
 @Component({
-  emits: ['use', 'builder', 'presets'],
-  components: { CardList },
- })
+	emits: ["use", "builder", "presets"],
+	components: { CardList },
+})
 export default class CustomList extends Vue {
-  @Prop({ required: true })
-  public reqs: DeckReqs;
+	@Prop({ required: true })
+	public reqs: DeckReqs;
 
-  private store = useMain();
+	private store = useMain();
 
-  public search = '';
-  public opened = '';
+	public search = "";
+	public opened = "";
 
-  public get decks(): Map<string, SavedDeck> {
-    return new Map(
-      [...this.store.decks]
-        .filter(([k]) => k.toLowerCase().includes(this.search)),
-    );
-  }
+	public get decks(): Map<string, SavedDeck> {
+		return new Map(
+			[...this.store.decks].filter(([k]) =>
+				k.toLowerCase().includes(this.search),
+			),
+		);
+	}
 
-  public get kind(): DeckKind {
-    return (
-      this.reqs.mapType === MapType.ETERNITIES &&
-      this.reqs.deckType === EternitiesMapDeckType.PLANES
-    )
-      ? 'planes'
-      : 'all';
-  }
+	public get kind(): DeckKind {
+		return this.reqs.mapType === MapType.ETERNITIES &&
+			this.reqs.deckType === EternitiesMapDeckType.PLANES
+			? "planes"
+			: "all";
+	}
 
-  public canUse(deck: SavedDeck): boolean {
-    if (this.kind !== 'all' && deck.kind !== this.kind) {
-      return false;
-    }
+	public canUse(deck: SavedDeck): boolean {
+		if (this.kind !== "all" && deck.kind !== this.kind) {
+			return false;
+		}
 
-    const req = REQUIREMENTS[this.reqs.mapType];
-    return Object.entries(req).every(([k, r]) => {
-      return deck.counts[k as CardType] >= r.min
-        && deck.counts[k as CardType] <= (r.max ?? Infinity);
-    });
-  }
+		const req = REQUIREMENTS[this.reqs.mapType];
+		return Object.entries(req).every(([k, r]) => {
+			return (
+				deck.counts[k as CardType] >= r.min &&
+				deck.counts[k as CardType] <= (r.max ?? Number.POSITIVE_INFINITY)
+			);
+		});
+	}
 
-  public getTag(kind: DeckKind): string {
-    return KIND_MAP[kind];
-  }
+	public getTag(kind: DeckKind): string {
+		return KIND_MAP[kind];
+	}
 
-  public toggleDetails(name: string): void {
-    this.opened = this.opened === name ? '' : name;
-  }
+	public toggleDetails(name: string): void {
+		this.opened = this.opened === name ? "" : name;
+	}
 
-  public remove(name: string): void {
-    this.store.removeDeck(name);
-  }
+	public remove(name: string): void {
+		this.store.removeDeck(name);
+	}
 }
 </script>
 

@@ -19,36 +19,39 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-facing-decorator';
+import { Component, Prop, Vue } from "vue-facing-decorator";
 
 export interface Option<T> {
-  label?: string;
-  value: T;
-  help?: string;
+	label?: string;
+	value: T;
+	help?: string;
 }
 
-@Component({ emits: ['update:modelValue'] })
+@Component({ emits: ["update:modelValue"] })
 export default class ButtonPicker extends Vue {
-  @Prop({ required: true })
-  public modelValue: string;
-  @Prop({ required: false })
-  public label?: string;
-  @Prop({ required: true })
-  public options: Array<Option<string>>;
+	@Prop({ required: true })
+	public modelValue: string;
+	@Prop({ required: false })
+	public label?: string;
+	@Prop({ required: true })
+	public options: Array<Option<string>>;
 
-  public id = Math.random().toString(36).substring(2, 15);
+	public id = Math.random().toString(36).substring(2, 15);
 
-  public get selected(): string {
-    return this.modelValue;
-  }
+	public get selected(): string {
+		return this.modelValue;
+	}
 
-  public set selected(value: string) {
-    this.$emit('update:modelValue', value);
-  }
+	public set selected(value: string) {
+		this.$emit("update:modelValue", value);
+	}
 
-  public get currentHelp(): string {
-    return this.options.find((o: Option<string>) => o.value === this.selected)?.help ?? '';
-  }
+	public get currentHelp(): string {
+		return (
+			this.options.find((o: Option<string>) => o.value === this.selected)
+				?.help ?? ""
+		);
+	}
 }
 </script>
 

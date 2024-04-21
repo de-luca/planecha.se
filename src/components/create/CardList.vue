@@ -20,23 +20,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-facing-decorator';
-import { Card, Plane } from '#/model/card';
-import { Imgable } from '#/components/Imgable';
-import { CardProvider } from '#/services/CardProvider';
+import { Component, Prop } from "vue-facing-decorator";
+import { Imgable } from "#/components/Imgable";
+import { type Card, Plane } from "#/model/card";
+import { getCardList } from "#/services/cardProvider";
 
 @Component
 export default class CardList extends Imgable {
-  @Prop({ required: true })
-  public list: Array<string>;
+	@Prop({ required: true })
+	public list: Array<string>;
 
-  public get cards(): Array<Card> {
-    return CardProvider.getCardList(this.list);
-  }
+	public get cards(): Array<Card> {
+		return getCardList(this.list);
+	}
 
-  public getType(card: Card): string {
-    return card instanceof Plane ? 'Plane' : 'Phenomenon';
-  }
+	public getType(card: Card): string {
+		return card instanceof Plane ? "Plane" : "Phenomenon";
+	}
 }
 </script>
 
@@ -67,3 +67,4 @@ export default class CardList extends Imgable {
   }
 }
 </style>
+#/services/cardProvider

@@ -55,37 +55,39 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-facing-decorator';
-import { WallConfig } from '../types';
-import { PickedLeft, RevealConfig } from './types';
-import { Card } from '#/model/card';
-import { Revealed } from '#/model/map';
-import { Imgable } from '#/components/Imgable';
+import { Component, Prop } from "vue-facing-decorator";
+import { Imgable } from "#/components/Imgable";
+import type { Card } from "#/model/card";
+import type { Revealed } from "#/model/map";
+import type { WallConfig } from "../types";
+import type { PickedLeft, RevealConfig } from "./types";
 
-@Component({ emits: ['done'] })
+@Component({ emits: ["done"] })
 export default class Pick extends Imgable {
-  @Prop({ required: true })
-  public revealed: Revealed;
-  @Prop({ required: true })
-  public config: RevealConfig & WallConfig;
+	@Prop({ required: true })
+	public revealed: Revealed;
+	@Prop({ required: true })
+	public config: RevealConfig & WallConfig;
 
-  public activeTab = 'relevant';
-  public selected: Card | null = null;
+	public activeTab = "relevant";
+	public selected: Card | null = null;
 
-  public confirm(): void {
-    const result: PickedLeft = {
-      picked: [this.selected as Card],
-      left: [],
-    };
-    this.revealed.relevant.forEach((c) => {
-      if (c.id !== this.selected?.id) {
-        result.left.push(c);
-      }
-    });
-    this.revealed.others.forEach(c => result.left.push(c));
+	public confirm(): void {
+		const result: PickedLeft = {
+			picked: [this.selected as Card],
+			left: [],
+		};
+		for (const c of this.revealed.relevant) {
+			if (c.id !== this.selected?.id) {
+				result.left.push(c);
+			}
+		}
+		for (const c of this.revealed.others) {
+			result.left.push(c);
+		}
 
-    this.$emit('done', result);
-  }
+		this.$emit("done", result);
+	}
 }
 </script>
 

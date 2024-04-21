@@ -1,155 +1,179 @@
-import { describe, it, expect } from 'vitest';
-import { MapFactory } from './MapFactory';
-import { DualDeck, DualDeckExported, EncounterMechanic, EncounterTrigger, EternitiesMapDeckType, EternitiesMapSubType, SingleDeck, SingleDeckExported, TileStatus } from './eternities';
-import { Single, Exported, MapType } from '.';
+import { describe, expect, it } from "vitest";
+import { type Exported, MapType, Single } from ".";
+import {
+	DualDeck,
+	type DualDeckExported,
+	EncounterMechanic,
+	EncounterTrigger,
+	EternitiesMapDeckType,
+	EternitiesMapSubType,
+	SingleDeck,
+	type SingleDeckExported,
+	TileStatus,
+} from "./eternities";
+import { MapFactory } from "./factory";
 
-describe('MapFactory.build', () => {
-  it('creates a Single deck Map', () => {
-    const map = MapFactory.build({
-      type: MapType.SINGLE,
-    });
+describe("MapFactory.build", () => {
+	it("creates a Single deck Map", () => {
+		const map = MapFactory.build({
+			type: MapType.SINGLE,
+		});
 
-    expect(map).toBeInstanceOf(Single);
-  });
+		expect(map).toBeInstanceOf(Single);
+	});
 
-  it('creates an EternitesMap with SingleDeck', async () => {
-    const map = MapFactory.build({
-      type: MapType.ETERNITIES,
-      specs: {
-        subType: EternitiesMapSubType.SINGLE_DECK,
-        deckType: EternitiesMapDeckType.PLANES,
-      },
-    });
+	it("creates an EternitesMap with SingleDeck", async () => {
+		const map = MapFactory.build({
+			type: MapType.ETERNITIES,
+			specs: {
+				subType: EternitiesMapSubType.SINGLE_DECK,
+				deckType: EternitiesMapDeckType.PLANES,
+			},
+		});
 
-    expect(map).toBeInstanceOf(SingleDeck);
-  });
+		expect(map).toBeInstanceOf(SingleDeck);
+	});
 
-  it('creates an EternitesMap with DualDeck', async () => {
-    const map = MapFactory.build({
-      type: MapType.ETERNITIES,
-      specs: {
-        subType: EternitiesMapSubType.DUAL_DECK,
-        deckType: EternitiesMapDeckType.PLANES,
-      },
-    });
+	it("creates an EternitesMap with DualDeck", async () => {
+		const map = MapFactory.build({
+			type: MapType.ETERNITIES,
+			specs: {
+				subType: EternitiesMapSubType.DUAL_DECK,
+				deckType: EternitiesMapDeckType.PLANES,
+			},
+		});
 
-    expect(map).toBeInstanceOf(DualDeck);
-  });
+		expect(map).toBeInstanceOf(DualDeck);
+	});
 });
 
-describe('MapFactory.restore', () => {
-  it('restores a Single deck Map', () => {
-    const exported: Exported = {
-      wallStates: {},
-      hasStarted: true,
-      deck: {
-        cards: [
-          { id: '15b979de-c8ee-4664-9ca7-6c4eb3346967' },
-          { id: '38f84e55-049c-441e-b4e2-1e207ab5dbe5' },
-          { id: '25650a32-4014-4065-ad01-7357c3ad3995' },
-          { id: 'd6ab4159-e04e-4991-8a9b-9da302c98e9d' },
-          { id: '805f9dc2-e172-481d-bae7-9a136a3d1e49' },
-        ],
-        played: [],
-      },
-      active: [{
-        id: '82e67c57-6d7a-44cc-ba63-77ce887ab075',
-      }],
-      specs: {
-        type: MapType.SINGLE,
-      },
-    };
+describe("MapFactory.restore", () => {
+	it("restores a Single deck Map", () => {
+		const exported: Exported = {
+			wallStates: {},
+			hasStarted: true,
+			deck: {
+				cards: [
+					{ id: "15b979de-c8ee-4664-9ca7-6c4eb3346967" },
+					{ id: "38f84e55-049c-441e-b4e2-1e207ab5dbe5" },
+					{ id: "25650a32-4014-4065-ad01-7357c3ad3995" },
+					{ id: "d6ab4159-e04e-4991-8a9b-9da302c98e9d" },
+					{ id: "805f9dc2-e172-481d-bae7-9a136a3d1e49" },
+				],
+				played: [],
+			},
+			active: [
+				{
+					id: "82e67c57-6d7a-44cc-ba63-77ce887ab075",
+				},
+			],
+			specs: {
+				type: MapType.SINGLE,
+			},
+		};
 
-    const map = MapFactory.restore(exported);
-    expect(map).toBeInstanceOf(Single);
-  });
+		const map = MapFactory.restore(exported);
+		expect(map).toBeInstanceOf(Single);
+	});
 
-  it('restores an EternitesMap with SingleDeck', () => {
-    const exported: SingleDeckExported = {
-      wallStates: {},
-      hasStarted: true,
-      deck: {
-        cards: [
-          { id: '15b979de-c8ee-4664-9ca7-6c4eb3346967' },
-          { id: '38f84e55-049c-441e-b4e2-1e207ab5dbe5' },
-          { id: '25650a32-4014-4065-ad01-7357c3ad3995' },
-          { id: 'd6ab4159-e04e-4991-8a9b-9da302c98e9d' },
-          { id: '805f9dc2-e172-481d-bae7-9a136a3d1e49' },
-        ],
-        played: [],
-      },
-      active: [{
-        id: '82e67c57-6d7a-44cc-ba63-77ce887ab075',
-      }],
-      specs: {
-        type: MapType.ETERNITIES,
-        subType: EternitiesMapSubType.SINGLE_DECK,
-        deckType: EternitiesMapDeckType.PLANES,
-      },
-      tiles: [{
-        coords: { x: 0, y: 0 },
-        state: TileStatus.ACTIVE,
-        plane: [{
-          id: '82e67c57-6d7a-44cc-ba63-77ce887ab075',
-        }],
-      }],
-    };
+	it("restores an EternitesMap with SingleDeck", () => {
+		const exported: SingleDeckExported = {
+			wallStates: {},
+			hasStarted: true,
+			deck: {
+				cards: [
+					{ id: "15b979de-c8ee-4664-9ca7-6c4eb3346967" },
+					{ id: "38f84e55-049c-441e-b4e2-1e207ab5dbe5" },
+					{ id: "25650a32-4014-4065-ad01-7357c3ad3995" },
+					{ id: "d6ab4159-e04e-4991-8a9b-9da302c98e9d" },
+					{ id: "805f9dc2-e172-481d-bae7-9a136a3d1e49" },
+				],
+				played: [],
+			},
+			active: [
+				{
+					id: "82e67c57-6d7a-44cc-ba63-77ce887ab075",
+				},
+			],
+			specs: {
+				type: MapType.ETERNITIES,
+				subType: EternitiesMapSubType.SINGLE_DECK,
+				deckType: EternitiesMapDeckType.PLANES,
+			},
+			tiles: [
+				{
+					coords: { x: 0, y: 0 },
+					state: TileStatus.ACTIVE,
+					plane: [
+						{
+							id: "82e67c57-6d7a-44cc-ba63-77ce887ab075",
+						},
+					],
+				},
+			],
+		};
 
-    const map = MapFactory.restore(exported);
-    expect(map).toBeInstanceOf(SingleDeck);
-  });
+		const map = MapFactory.restore(exported);
+		expect(map).toBeInstanceOf(SingleDeck);
+	});
 
-  it('restores an EternitesMap with DualDeck', () => {
-    const exported: DualDeckExported = {
-      wallStates: {},
-      hasStarted: true,
-      deck: {
-        cards: [
-          { id: '15b979de-c8ee-4664-9ca7-6c4eb3346967' },
-          { id: '38f84e55-049c-441e-b4e2-1e207ab5dbe5' },
-          { id: '25650a32-4014-4065-ad01-7357c3ad3995' },
-          { id: 'd6ab4159-e04e-4991-8a9b-9da302c98e9d' },
-          { id: '805f9dc2-e172-481d-bae7-9a136a3d1e49' },
-        ],
-        played: [],
-      },
-      active: [{
-        id: '82e67c57-6d7a-44cc-ba63-77ce887ab075',
-      }],
-      specs: {
-        type: MapType.ETERNITIES,
-        subType: EternitiesMapSubType.DUAL_DECK,
-        deckType: EternitiesMapDeckType.ALL,
-      },
-      tiles: [{
-        coords: { x: 0, y: 0 },
-        state: TileStatus.ACTIVE,
-        plane: [{
-          id: '82e67c57-6d7a-44cc-ba63-77ce887ab075',
-        }],
-      }],
-      phenomenaDeck: {
-        cards: [
-          { id: '6dc67a65-31bf-4535-9e02-8f6d6ecefde5' },
-          { id: '7812174b-2dc1-43e8-b98f-639905e20ab7' },
-        ],
-        played: [],
-      },
-      encounterTriggers: {
-        [EncounterTrigger.ON_HELLRIDE]: {
-          enabled: true,
-          mechanic: EncounterMechanic.AUTO,
-          ratio: 1,
-        },
-        [EncounterTrigger.ON_PLANESWALK]: {
-          enabled: true,
-          mechanic: EncounterMechanic.AUTO,
-          ratio: 1 / 6,
-        },
-      },
-    };
+	it("restores an EternitesMap with DualDeck", () => {
+		const exported: DualDeckExported = {
+			wallStates: {},
+			hasStarted: true,
+			deck: {
+				cards: [
+					{ id: "15b979de-c8ee-4664-9ca7-6c4eb3346967" },
+					{ id: "38f84e55-049c-441e-b4e2-1e207ab5dbe5" },
+					{ id: "25650a32-4014-4065-ad01-7357c3ad3995" },
+					{ id: "d6ab4159-e04e-4991-8a9b-9da302c98e9d" },
+					{ id: "805f9dc2-e172-481d-bae7-9a136a3d1e49" },
+				],
+				played: [],
+			},
+			active: [
+				{
+					id: "82e67c57-6d7a-44cc-ba63-77ce887ab075",
+				},
+			],
+			specs: {
+				type: MapType.ETERNITIES,
+				subType: EternitiesMapSubType.DUAL_DECK,
+				deckType: EternitiesMapDeckType.ALL,
+			},
+			tiles: [
+				{
+					coords: { x: 0, y: 0 },
+					state: TileStatus.ACTIVE,
+					plane: [
+						{
+							id: "82e67c57-6d7a-44cc-ba63-77ce887ab075",
+						},
+					],
+				},
+			],
+			phenomenaDeck: {
+				cards: [
+					{ id: "6dc67a65-31bf-4535-9e02-8f6d6ecefde5" },
+					{ id: "7812174b-2dc1-43e8-b98f-639905e20ab7" },
+				],
+				played: [],
+			},
+			encounterTriggers: {
+				[EncounterTrigger.ON_HELLRIDE]: {
+					enabled: true,
+					mechanic: EncounterMechanic.AUTO,
+					ratio: 1,
+				},
+				[EncounterTrigger.ON_PLANESWALK]: {
+					enabled: true,
+					mechanic: EncounterMechanic.AUTO,
+					ratio: 1 / 6,
+				},
+			},
+		};
 
-    const map = MapFactory.restore(exported);
-    expect(map).toBeInstanceOf(DualDeck);
-  });
+		const map = MapFactory.restore(exported);
+		expect(map).toBeInstanceOf(DualDeck);
+	});
 });

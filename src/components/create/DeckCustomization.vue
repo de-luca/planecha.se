@@ -52,28 +52,28 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-facing-decorator';
-import CustomList from './CustomList.vue';
-import PresetList from './PresetList.vue';
-import DeckBuilder from './DeckBuilder.vue';
-import { DeckReqs } from './utils';
-import { Imgable } from '#/components/Imgable';
-import { CardProvider } from '#/services/CardProvider';
+import { Component, Prop } from "vue-facing-decorator";
+import { Imgable } from "#/components/Imgable";
+import { getCardList } from "#/services/cardProvider";
+import CustomList from "./CustomList.vue";
+import DeckBuilder from "./DeckBuilder.vue";
+import PresetList from "./PresetList.vue";
+import type { DeckReqs } from "./utils";
 
 @Component({
-  emits: ['cancel', 'use'],
-  components: { DeckBuilder, CustomList, PresetList },
+	emits: ["cancel", "use"],
+	components: { DeckBuilder, CustomList, PresetList },
 })
 export default class DeckCustomization extends Imgable {
-  @Prop({ required: true })
-  public reqs: DeckReqs;
+	@Prop({ required: true })
+	public reqs: DeckReqs;
 
-  public builder = false;
-  public tab: 'customs' | 'presets' = 'customs';
+	public builder = false;
+	public tab: "customs" | "presets" = "customs";
 
-  public use(cards: Array<string>): void {
-    this.$emit('use', CardProvider.getCardList(cards));
-  }
+	public use(cards: Array<string>): void {
+		this.$emit("use", getCardList(cards));
+	}
 }
 </script>
 
@@ -240,4 +240,4 @@ export default class DeckCustomization extends Imgable {
     display: none;
   }
 }
-</style>
+</style>#/services/cardProvider

@@ -1,2 +1,3 @@
-export * from './Phenomenon';
-export * from './PhenomenonFactory';
+export * from "./Phenomenon";
+export * from "./factory";
+export * from "./special";

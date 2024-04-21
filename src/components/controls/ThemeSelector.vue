@@ -17,35 +17,35 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-facing-decorator';
-import { useMain } from '#/store/main';
+import { Component, Vue } from "vue-facing-decorator";
+import { useMain } from "#/store/main";
 
 const ICONS = {
-  sys: 'cog',
-  drk: 'moon',
-  lgt: 'sun',
+	sys: "cog",
+	drk: "moon",
+	lgt: "sun",
 };
 
 @Component
 export default class ThemeSelector extends Vue {
-  private store = useMain();
+	private store = useMain();
 
-  public get icon(): string {
-    return ICONS[this.theme];
-  }
+	public get icon(): string {
+		return ICONS[this.theme];
+	}
 
-  public get theme(): Theme {
-    return this.store.theme;
-  }
+	public get theme(): Theme {
+		return this.store.theme;
+	}
 
-  public set theme(theme: Theme) {
-    this.store.setTheme(theme);
-    this.applyTheme();
-  }
+	public set theme(theme: Theme) {
+		this.store.setTheme(theme);
+		this.applyTheme();
+	}
 
-  private applyTheme(): void {
-    document.documentElement.setAttribute('data-theme', this.theme);
-  }
+	private applyTheme(): void {
+		document.documentElement.setAttribute("data-theme", this.theme);
+	}
 }
 </script>
 

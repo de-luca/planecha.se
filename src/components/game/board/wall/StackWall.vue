@@ -27,28 +27,28 @@
 </template>
 
 <script lang="ts">
-import * as draggable from 'vuedraggable';
-import { Component, Prop } from 'vue-facing-decorator';
-import { Imgable } from '#/components/Imgable';
-import { useMain } from '#/store/main';
-import { Card } from '#/model/card';
+import { Component, Prop } from "vue-facing-decorator";
+import * as draggable from "vuedraggable";
+import { Imgable } from "#/components/Imgable";
+import type { Card } from "#/model/card";
+import { useMain } from "#/store/main";
 
 @Component({
-  emits: [ 'done' ],
-  components: { draggable },
+	emits: ["done"],
+	components: { draggable },
 })
 export default class StackWall extends Imgable {
-  @Prop({ required: true })
-  public cards: Array<Card> | null;
-  public active: Array<Card> = [];
+	@Prop({ required: true })
+	public cards: Array<Card> | null;
+	public active: Array<Card> = [];
 
-  public created(): void {
-    this.active = [...(this.cards ?? useMain().map.active)];
-  }
+	public created(): void {
+		this.active = [...(this.cards ?? useMain().map.active)];
+	}
 
-  public done(): void {
-    this.$emit('done', this.active);
-  }
+	public done(): void {
+		this.$emit("done", this.active);
+	}
 }
 </script>
 

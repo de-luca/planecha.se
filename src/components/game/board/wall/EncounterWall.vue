@@ -57,48 +57,54 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-facing-decorator';
-import { WallConfig } from './types';
-import { Imgable } from '#/components/Imgable';
-import { EncounterMechanic, TriggerConfig, TriggerConfigEnabled } from '#/model/map/eternities';
-import { useMain } from '#/store/main';
+import { Component, Prop } from "vue-facing-decorator";
+import { Imgable } from "#/components/Imgable";
+import {
+	EncounterMechanic,
+	type TriggerConfig,
+	type TriggerConfigEnabled,
+} from "#/model/map/eternities";
+import { useMain } from "#/store/main";
+import type { WallConfig } from "./types";
 
-@Component({ emits: [ 'planeswalk', 'encounter' ] })
+@Component({ emits: ["planeswalk", "encounter"] })
 export default class EncounterWall extends Imgable {
-  @Prop({ required: true })
-  public config: WallConfig;
-  @Prop({ required: true })
-  public coords: Coordinates;
-  @Prop({ required: true })
-  public triggerConfig: TriggerConfig;
+	@Prop({ required: true })
+	public config: WallConfig;
+	@Prop({ required: true })
+	public coords: Coordinates;
+	@Prop({ required: true })
+	public triggerConfig: TriggerConfig;
 
-  private store = useMain();
+	private store = useMain();
 
-  public rolling = false;
-  public rolled: DiceResult | null = null;
+	public rolling = false;
+	public rolled: DiceResult | null = null;
 
-  public get title(): string {
-    return this.triggerConfig.enabled &&
-      this.triggerConfig.mechanic === EncounterMechanic.MANUAL
-        ? 'Now\'s the time to roll your dice!'
-        : 'Let\'s roll for the encounter!';
-  }
+	public get title(): string {
+		return this.triggerConfig.enabled &&
+			this.triggerConfig.mechanic === EncounterMechanic.MANUAL
+			? "Now's the time to roll your dice!"
+			: "Let's roll for the encounter!";
+	}
 
-  public async roll(): Promise<number> {
-    this.rolling = true;
-    await new Promise((resolve) => window.setTimeout(resolve, 500));
-    this.rolling = false;
-    this.rolled = this.store.rollDice((this.triggerConfig as TriggerConfigEnabled).ratio);
-    return this.rolled;
-  }
+	public async roll(): Promise<number> {
+		this.rolling = true;
+		await new Promise((resolve) => window.setTimeout(resolve, 500));
+		this.rolling = false;
+		this.rolled = this.store.rollDice(
+			(this.triggerConfig as TriggerConfigEnabled).ratio,
+		);
+		return this.rolled;
+	}
 
-  public encounter(): void {
-    this.$emit('encounter', this.coords);
-  }
+	public encounter(): void {
+		this.$emit("encounter", this.coords);
+	}
 
-  public planeswalk(): void {
-    this.$emit('planeswalk', this.coords);
-  }
+	public planeswalk(): void {
+		this.$emit("planeswalk", this.coords);
+	}
 }
 </script>
 

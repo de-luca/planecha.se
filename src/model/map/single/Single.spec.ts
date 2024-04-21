@@ -1,59 +1,59 @@
-import { describe, it, expect } from 'vitest';
-import { Plane } from '../../card';
-import { WallManager } from '../../wall';
-import { Single, MapType } from '..';
-import { CardProvider } from '#/services/CardProvider';
+import { describe, expect, it } from "vitest";
+import { CardProvider } from "#/services/cardProvider";
+import { MapType, Single } from "..";
+import { Plane } from "../../card";
+import { WallManager } from "../../wall";
 
-describe('Single.type', () => {
-  it('returns the type', () => {
-    const map = new Single({
-      deck: CardProvider.getDeck(),
-      wallStates: new WallManager(),
-    });
+describe("Single.type", () => {
+	it("returns the type", () => {
+		const map = new Single({
+			deck: CardProvider.getDeck(),
+			wallStates: new WallManager(),
+		});
 
-    expect(map.specs.type).toEqual(MapType.SINGLE);
-  });
+		expect(map.specs.type).toEqual(MapType.SINGLE);
+	});
 });
 
-describe('Single.planeswalk', () => {
-  it('changes active card', () => {
-    const map = new Single({
-      deck: CardProvider.getDeck(),
-      wallStates: new WallManager(),
-    });
-    const startCard = map.active;
-    const deckSize = map.remaining;
-    const playedSize = map.played.length;
+describe("Single.planeswalk", () => {
+	it("changes active card", () => {
+		const map = new Single({
+			deck: CardProvider.getDeck(),
+			wallStates: new WallManager(),
+		});
+		const startCard = map.active;
+		const deckSize = map.remaining;
+		const playedSize = map.played.length;
 
-    map.planeswalk({ initiator: 'foo' });
+		map.planeswalk({ initiator: "foo" });
 
-    expect(map.active).not.toEqual(startCard);
-    expect(map.remaining).toBeLessThan(deckSize);
-    expect(map.played.length).toBeGreaterThan(playedSize);
-  });
+		expect(map.active).not.toEqual(startCard);
+		expect(map.remaining).toBeLessThan(deckSize);
+		expect(map.played.length).toBeGreaterThan(playedSize);
+	});
 
-  it('changes active card to given planes', () => {
-    const map = new Single({
-      deck: CardProvider.getDeck(),
-      wallStates: new WallManager(),
-    });
-    const startCard = map.active;
-    const deckSize = map.remaining;
-    const playedSize = map.played.length;
+	it("changes active card to given planes", () => {
+		const map = new Single({
+			deck: CardProvider.getDeck(),
+			wallStates: new WallManager(),
+		});
+		const startCard = map.active;
+		const deckSize = map.remaining;
+		const playedSize = map.played.length;
 
-    map.revealUntil({ count: 2, type: Plane });
-    map.planeswalk({
-      initiator: 'foo',
-      planes: map.revealed?.relevant as Array<Plane>,
-    });
-    map.resolveReveal({
-      top: [],
-      bottom: map.revealed?.others ?? [],
-    });
+		map.revealUntil({ count: 2, type: Plane });
+		map.planeswalk({
+			initiator: "foo",
+			planes: map.revealed?.relevant as Array<Plane>,
+		});
+		map.resolveReveal({
+			top: [],
+			bottom: map.revealed?.others ?? [],
+		});
 
-    expect(map.active).not.toEqual(startCard);
-    expect(map.active).toHaveLength(2);
-    expect(map.remaining).toBeLessThan(deckSize);
-    expect(map.played.length).toBeGreaterThan(playedSize);
-  });
+		expect(map.active).not.toEqual(startCard);
+		expect(map.active).toHaveLength(2);
+		expect(map.remaining).toBeLessThan(deckSize);
+		expect(map.played.length).toBeGreaterThan(playedSize);
+	});
 });

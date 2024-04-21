@@ -16,26 +16,26 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-facing-decorator';
-import { WallConfig } from './types';
-import { Imgable } from '#/components/Imgable';
-import { Phenomenon } from '#/model/card';
+import { Component, Prop } from "vue-facing-decorator";
+import { Imgable } from "#/components/Imgable";
+import type { Phenomenon } from "#/model/card";
+import type { WallConfig } from "./types";
 
-import { Planeswalk } from '#/components/svgs';
+import { Planeswalk } from "#/components/svgs";
 
 @Component({
-  emits: [ 'resolve' ],
-  components: { Planeswalk },
+	emits: ["resolve"],
+	components: { Planeswalk },
 })
 export default class PhenomenonWall extends Imgable {
-  @Prop({ required: true })
-  public config: WallConfig;
-  @Prop({ required: true })
-  public phenomenon: Phenomenon;
+	@Prop({ required: true })
+	public config: WallConfig;
+	@Prop({ required: true })
+	public phenomenon: Phenomenon;
 
-  public get imgSrc(): string {
-    return this.buildImgSrc(this.phenomenon);
-  }
+	public get imgSrc(): string {
+		return this.buildImgSrc(this.phenomenon);
+	}
 }
 </script>
 

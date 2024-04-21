@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-const emit = defineEmits(['close']);
+const emit = defineEmits(["close"]);
 const props = defineProps({ scroll: Boolean });
 </script>
 

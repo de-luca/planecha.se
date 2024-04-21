@@ -48,31 +48,30 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-facing-decorator';
-import { WallConfig } from '../types';
-import { RevealConfig } from './types';
-import { Imgable } from '#/components/Imgable';
-import { Revealed } from '#/model/map';
+import { Component, Prop } from "vue-facing-decorator";
+import { Imgable } from "#/components/Imgable";
+import type { Revealed } from "#/model/map";
+import type { WallConfig } from "../types";
+import type { RevealConfig } from "./types";
 
-@Component({ emits: ['done'] })
+@Component({ emits: ["done"] })
 export default class Show extends Imgable {
-  @Prop({ required: true })
-  public revealed: Revealed;
-  @Prop({ required: true })
-  public config: RevealConfig & WallConfig;
+	@Prop({ required: true })
+	public revealed: Revealed;
+	@Prop({ required: true })
+	public config: RevealConfig & WallConfig;
 
-  public activeTab = 'relevant';
+	public activeTab = "relevant";
 
-  public confirm(): void {
-    const picked = this.config.sendShownTo === 'top' ? this.revealed.relevant : [];
-    const left = this.revealed.others.concat(
-      this.config.sendShownTo === 'top'
-        ? []
-        : this.revealed.relevant,
-    );
+	public confirm(): void {
+		const picked =
+			this.config.sendShownTo === "top" ? this.revealed.relevant : [];
+		const left = this.revealed.others.concat(
+			this.config.sendShownTo === "top" ? [] : this.revealed.relevant,
+		);
 
-    this.$emit('done', { picked, left });
-  }
+		this.$emit("done", { picked, left });
+	}
 }
 </script>
 

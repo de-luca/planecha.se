@@ -1,12 +1,12 @@
-import { Plane } from '../Plane';
-import { eventBus, EventType } from '#/services/EventBus';
 import {
-  WallManager,
-  RevealerMode,
-  RevealerSource,
-  RevealerWall,
-  StateKey,
-} from '#/model/wall';
+	RevealerMode,
+	RevealerSource,
+	type RevealerWall,
+	StateKey,
+	type WallManager,
+} from "#/model/wall";
+import { EventType, eventBus } from "#/services/eventBus";
+import { Plane } from "../Plane";
 
 /**
  * Players have no maximum hand size.
@@ -17,21 +17,22 @@ import {
  * You may put it on the bottom of your planar deck.
  */
 export class StairsToInfinity extends Plane {
-  public override get chaosRequireInterraction(): boolean {
-    return true;
-  }
+	public override get chaosRequireInterraction(): boolean {
+		return true;
+	}
 
-  public chaos(walls: WallManager, initiator: string): void {
-    const revealer: RevealerWall = {
-      title: this.name,
-      subTitle: 'Chose to put this card on top or at the bottom the planar deck.',
-      source: RevealerSource.STAIRS_TO_INFINITY,
-      component: RevealerMode.SCRY,
-      sendShownTo: 'bottom',
-      initiator,
-    };
+	public chaos(walls: WallManager, initiator: string): void {
+		const revealer: RevealerWall = {
+			title: this.name,
+			subTitle:
+				"Chose to put this card on top or at the bottom the planar deck.",
+			source: RevealerSource.STAIRS_TO_INFINITY,
+			component: RevealerMode.SCRY,
+			sendShownTo: "bottom",
+			initiator,
+		};
 
-    walls.set(StateKey.REVEALER, revealer);
-    eventBus.emit(EventType.STAIRS_TO_INFINITY);
-  }
+		walls.set(StateKey.REVEALER, revealer);
+		eventBus.emit(EventType.STAIRS_TO_INFINITY);
+	}
 }

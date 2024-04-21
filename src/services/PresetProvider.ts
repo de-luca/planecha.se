@@ -1,21 +1,17 @@
-import decks from '#assets/decks.json';
+import decks from "#assets/decks.json";
 
 interface Set {
-  name: string;
-  code: string;
-  year: number;
+	name: string;
+	code: string;
+	year: number;
 }
 
 export interface PresetDeck {
-  name: string;
-  identity?: string;
-  face?: Array<string>;
-  cards: Array<string>;
-  set: Set;
+	name: string;
+	identity?: string;
+	face?: Array<string>;
+	cards: Array<string>;
+	set: Set;
 }
 
-export class PresetProvider {
-  public static getDecks(): Array<PresetDeck> {
-    return decks;
-  }
-}
+export const getPresetDecks = (): Array<PresetDeck> => decks;

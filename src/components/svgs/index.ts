@@ -1,7 +1,4 @@
-import Chaos from './Chaos.vue';
-import Planeswalk from './Planeswalk.vue';
+import Chaos from "./Chaos.vue";
+import Planeswalk from "./Planeswalk.vue";
 
-export {
-  Chaos,
-  Planeswalk,
-};
+export { Chaos, Planeswalk };

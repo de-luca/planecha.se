@@ -1,12 +1,12 @@
-import { Plane } from '../Plane';
-import { eventBus, EventType } from '#/services/EventBus';
 import {
-  WallManager,
-  RevealerMode,
-  RevealerSource,
-  RevealerWall,
-  StateKey,
-} from '#/model/wall';
+	RevealerMode,
+	RevealerSource,
+	type RevealerWall,
+	StateKey,
+	type WallManager,
+} from "#/model/wall";
+import { EventType, eventBus } from "#/services/eventBus";
+import { Plane } from "../Plane";
 
 /**
  * Whenever a player taps a land for mana,
@@ -19,21 +19,21 @@ import {
  * your planar deck in any order.
  */
 export class TheFertileLandsOfSaulvinia extends Plane {
-  public override get chaosRequireInterraction(): boolean {
-    return true;
-  }
+	public override get chaosRequireInterraction(): boolean {
+		return true;
+	}
 
-  public chaos(walls: WallManager, initiator: string): void {
-    const revealer: RevealerWall = {
-      title: this.name,
-      subTitle: 'Chaos from this plane will trigger.',
-      source: RevealerSource.THE_FERTILE_LANDS_OF_SAULVINIA,
-      component: RevealerMode.SHOW,
-      sendShownTo: 'top',
-      initiator,
-    };
+	public chaos(walls: WallManager, initiator: string): void {
+		const revealer: RevealerWall = {
+			title: this.name,
+			subTitle: "Chaos from this plane will trigger.",
+			source: RevealerSource.THE_FERTILE_LANDS_OF_SAULVINIA,
+			component: RevealerMode.SHOW,
+			sendShownTo: "top",
+			initiator,
+		};
 
-    walls.set(StateKey.REVEALER, revealer);
-    eventBus.emit(EventType.THE_FERTILE_LANDS_OF_SAULVINIA);
-  }
+		walls.set(StateKey.REVEALER, revealer);
+		eventBus.emit(EventType.THE_FERTILE_LANDS_OF_SAULVINIA);
+	}
 }

@@ -45,33 +45,33 @@
 </template>
 
 <script lang="ts">
-import { Component as VueComponent, markRaw } from 'vue';
-import { Component, Vue } from 'vue-facing-decorator';
-import { DiceType } from './dices';
+import { type Component as VueComponent, markRaw } from "vue";
+import { Component, Vue } from "vue-facing-decorator";
+import type { DiceType } from "./dices";
 
-import DiceModal from './modals/DiceModal.vue';
-import * as SVGs from '#/components/svgs/dices';
-import { Chaos, Planeswalk } from '#/components/svgs';
+import { Chaos, Planeswalk } from "#/components/svgs";
+import * as SVGs from "#/components/svgs/dices";
+import DiceModal from "./modals/DiceModal.vue";
 
 @Component({ components: { ...SVGs, Chaos, Planeswalk, DiceModal } })
 export default class DiceMenu extends Vue {
-  public dices: Array<[DiceType, VueComponent]> = [
-    ['d4', markRaw(SVGs.D4)],
-    ['d6', markRaw(SVGs.D6)],
-    ['d8', markRaw(SVGs.D8)],
-    ['d10', markRaw(SVGs.D10)],
-    ['d12', markRaw(SVGs.D12)],
-    ['d20', markRaw(SVGs.D20)],
-  ];
+	public dices: Array<[DiceType, VueComponent]> = [
+		["d4", markRaw(SVGs.D4)],
+		["d6", markRaw(SVGs.D6)],
+		["d8", markRaw(SVGs.D8)],
+		["d10", markRaw(SVGs.D10)],
+		["d12", markRaw(SVGs.D12)],
+		["d20", markRaw(SVGs.D20)],
+	];
 
-  public active = false;
-  public hover = false;
-  public modal: DiceType | null = null;
+	public active = false;
+	public hover = false;
+	public modal: DiceType | null = null;
 
-  public open(type: DiceType): void {
-    this.modal = type;
-    this.active = false;
-  }
+	public open(type: DiceType): void {
+		this.modal = type;
+		this.active = false;
+	}
 }
 </script>
 

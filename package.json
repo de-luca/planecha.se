@@ -10,7 +10,7 @@
     "serve:docker": "vite --port 8080 --host 0.0.0.0",
     "build": "vite build",
     "build:check": "vue-tsc --noEmit",
-    "lint": "eslint 'src/**/*.{ts,vue}'"
+    "lint": "bunx @biomejs/biome check './src' --apply-unsafe"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
@@ -31,6 +31,7 @@
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.7.0",
     "@happy-dom/global-registrator": "^14.2.0",
     "@types/bun": "^1.0.10",
     "@types/lodash.clonedeep": "^4.5.9",

@@ -64,36 +64,41 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-facing-decorator';
-import { useMain } from '#/store/main';
+import { Component, Prop, Vue } from "vue-facing-decorator";
+import { useMain } from "#/store/main";
 
-import { RevealerMode, RevealerSource, RevealerWall, StateKey } from '#/model/wall';
+import {
+	RevealerMode,
+	RevealerSource,
+	type RevealerWall,
+	StateKey,
+} from "#/model/wall";
 
 @Component
 export default class LookAtBtn extends Vue {
-  @Prop({ required: true })
-  public disabled: boolean;
+	@Prop({ required: true })
+	public disabled: boolean;
 
-  private store = useMain();
-  public active = false;
-  public cards = 2;
+	private store = useMain();
+	public active = false;
+	public cards = 2;
 
-  public decrease() {
-    this.cards = Math.max(this.cards - 1, 0);
-  }
+	public decrease() {
+		this.cards = Math.max(this.cards - 1, 0);
+	}
 
-  public look() {
-    this.store.privateReveal({ count: this.cards });
-    const revealer: RevealerWall = {
-      title: `Look at the top ${this.cards} cards of your planar deck`,
-      source: RevealerSource.CUSTOM,
-      component: RevealerMode.SCRY,
-      sendShownTo: 'bottom',
-      initiator: '',
-    };
-    this.store.map.walls.set(StateKey.REVEALER, revealer);
-    this.active = false;
-  }
+	public look() {
+		this.store.privateReveal({ count: this.cards });
+		const revealer: RevealerWall = {
+			title: `Look at the top ${this.cards} cards of your planar deck`,
+			source: RevealerSource.CUSTOM,
+			component: RevealerMode.SCRY,
+			sendShownTo: "bottom",
+			initiator: "",
+		};
+		this.store.map.walls.set(StateKey.REVEALER, revealer);
+		this.active = false;
+	}
 }
 </script>
 

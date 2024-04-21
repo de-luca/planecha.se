@@ -17,15 +17,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-facing-decorator';
-import { ByePayload, HeyPayload, useMain } from '#/store/main';
+import { Component, Vue } from "vue-facing-decorator";
+import { type ByePayload, type HeyPayload, useMain } from "#/store/main";
 
 interface Notif {
-  id: number;
-  text: string;
-  className: string;
-  time: number;
-  interval?: number;
+	id: number;
+	text: string;
+	className: string;
+	time: number;
+	interval?: number;
 }
 
 const DEFAULT_TIME = 10000;
@@ -33,55 +33,66 @@ const TIME_STEP = 10;
 
 @Component
 export default class NotifCenter extends Vue {
-  private store = useMain();
-  private index = 0;
-  public notifs: Map<number, Notif> = new Map();
+	private store = useMain();
+	private index = 0;
+	public notifs: Map<number, Notif> = new Map();
 
-  public created(): void {
-    this.store.$onAction(({ name, args, store, after }) => {
-      switch(name) {
-        case 'hey':
-          after(() => {
-            const notif: Notif = {
-              id: this.index++,
-              text: `<b>${(args[0] as HeyPayload).name}</b> has joined the game`,
-              className: 'is-info',
-              time: DEFAULT_TIME,
-            };
-            notif.interval = window.setInterval(() => this.updateTime(notif.id), TIME_STEP);
-            this.notifs.set(notif.id, notif);
-          });
-          break;
-        case 'bye':
-          const notif: Notif = {
-            id: this.index++,
-            text: `<b>${store.mates.get((args[0] as ByePayload).id) ?? ''}</b> has left the game`,
-            className: 'is-warning',
-            time: DEFAULT_TIME,
-          };
-          notif.interval = window.setInterval(() => this.updateTime(notif.id), TIME_STEP);
-          this.notifs.set(notif.id, notif);
-          break;
-      }
-    });
-  }
+	public created(): void {
+		this.store.$onAction(({ name, args, store, after }) => {
+			switch (name) {
+				case "hey":
+					after(() => {
+						const notif: Notif = {
+							id: this.index++,
+							text: `<b>${
+								(args[0] as HeyPayload).name
+							}</b> has joined the game`,
+							className: "is-info",
+							time: DEFAULT_TIME,
+						};
+						notif.interval = window.setInterval(
+							() => this.updateTime(notif.id),
+							TIME_STEP,
+						);
+						this.notifs.set(notif.id, notif);
+					});
+					break;
+				case "bye": {
+					const notif: Notif = {
+						id: this.index++,
+						text: `<b>${
+							store.mates.get((args[0] as ByePayload).id) ?? ""
+						}</b> has left the game`,
+						className: "is-warning",
+						time: DEFAULT_TIME,
+					};
+					notif.interval = window.setInterval(
+						() => this.updateTime(notif.id),
+						TIME_STEP,
+					);
+					this.notifs.set(notif.id, notif);
+					break;
+				}
+			}
+		});
+	}
 
-  public dismiss(id: number): void {
-    window.clearInterval(this.notifs.get(id)?.interval);
-    this.notifs.delete(id);
-  }
+	public dismiss(id: number): void {
+		window.clearInterval(this.notifs.get(id)?.interval);
+		this.notifs.delete(id);
+	}
 
-  private updateTime(id: number): void {
-    const notif = this.notifs.get(id) as Notif;
+	private updateTime(id: number): void {
+		const notif = this.notifs.get(id) as Notif;
 
-    if (notif.time <= 0) {
-      window.clearInterval(notif.interval);
-      this.dismiss(id);
-      return;
-    }
+		if (notif.time <= 0) {
+			window.clearInterval(notif.interval);
+			this.dismiss(id);
+			return;
+		}
 
-    notif.time = notif.time - TIME_STEP;
-  }
+		notif.time = notif.time - TIME_STEP;
+	}
 }
 </script>
 

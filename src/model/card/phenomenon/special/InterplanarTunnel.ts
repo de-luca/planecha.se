@@ -1,11 +1,11 @@
-import { Phenomenon } from '../Phenomenon';
 import {
-  WallManager,
-  RevealerMode,
-  RevealerSource,
-  RevealerWall,
-  StateKey,
-} from '#/model/wall';
+	RevealerMode,
+	RevealerSource,
+	type RevealerWall,
+	StateKey,
+	type WallManager,
+} from "#/model/wall";
+import { Phenomenon } from "../Phenomenon";
 
 /**
  * When you encounter Interplanar Tunnel,
@@ -16,16 +16,16 @@ import {
  * in a random order.
  */
 export class InterplanarTunnel extends Phenomenon {
-  public enter(walls: WallManager, initiator: string): void {
-    const revealer: RevealerWall = {
-      title: this.name,
-      subTitle: 'Chose a plane to put on top the planar deck.',
-      source: RevealerSource.INTERPLANAR_TUNNEL,
-      component: RevealerMode.PICK,
-      sendShownTo: 'top',
-      initiator,
-    };
+	public enter(walls: WallManager, initiator: string): void {
+		const revealer: RevealerWall = {
+			title: this.name,
+			subTitle: "Chose a plane to put on top the planar deck.",
+			source: RevealerSource.INTERPLANAR_TUNNEL,
+			component: RevealerMode.PICK,
+			sendShownTo: "top",
+			initiator,
+		};
 
-    walls.set(StateKey.REVEALER, revealer);
-  }
+		walls.set(StateKey.REVEALER, revealer);
+	}
 }

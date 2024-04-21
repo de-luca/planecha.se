@@ -66,47 +66,48 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-facing-decorator';
-import { DualDeck, EternitiesMap } from '#/model/map/eternities';
-import { useMain } from '#/store/main';
+import { Component, Vue } from "vue-facing-decorator";
+import { DualDeck, EternitiesMap } from "#/model/map/eternities";
+import { useMain } from "#/store/main";
 
 @Component
 export default class DeckStatus extends Vue {
-  private store = useMain();
+	private store = useMain();
 
-  public get revealed(): number {
-    return (this.store.map.revealed?.others.length ?? 0)
-      + (this.store.map.revealed?.relevant.length ?? 0);
-  }
+	public get revealed(): number {
+		return (
+			(this.store.map.revealed?.others.length ?? 0) +
+			(this.store.map.revealed?.relevant.length ?? 0)
+		);
+	}
 
-  public get active(): number {
-    if (this.store.map instanceof EternitiesMap) {
-      return this.store.map.tiles
-        .reduce((sum, t) => sum + t.plane.length, 0);
-    }
+	public get active(): number {
+		if (this.store.map instanceof EternitiesMap) {
+			return this.store.map.tiles.reduce((sum, t) => sum + t.plane.length, 0);
+		}
 
-    return this.store.map.active.length;
-  }
+		return this.store.map.active.length;
+	}
 
-  public get remaining(): number {
-    return this.store.map.remaining;
-  }
+	public get remaining(): number {
+		return this.store.map.remaining;
+	}
 
-  public get played(): number {
-    return this.store.map.played.length;
-  }
+	public get played(): number {
+		return this.store.map.played.length;
+	}
 
-  public get remainingPhenomena(): number | null {
-    return this.store.map instanceof DualDeck
-      ? this.store.map.remainingPhenomena
-      : null;
-  }
+	public get remainingPhenomena(): number | null {
+		return this.store.map instanceof DualDeck
+			? this.store.map.remainingPhenomena
+			: null;
+	}
 
-  public get playedPhenomena(): number | null {
-    return this.store.map instanceof DualDeck
-      ? this.store.map.playedPhenomena.length
-      : null;
-  }
+	public get playedPhenomena(): number | null {
+		return this.store.map instanceof DualDeck
+			? this.store.map.playedPhenomena.length
+			: null;
+	}
 }
 </script>
 

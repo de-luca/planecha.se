@@ -18,20 +18,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-facing-decorator';
-import { useMain } from '#/store/main';
+import { Component, Vue } from "vue-facing-decorator";
+import { useMain } from "#/store/main";
 
 @Component
 export default class UndoBtn extends Vue {
-  private store = useMain();
+	private store = useMain();
 
-  public get canUndo(): boolean {
-    return this.store.repo.head > 0;
-  }
+	public get canUndo(): boolean {
+		return this.store.repo.head > 0;
+	}
 
-  public undo(): void {
-    this.store.undo();
-  }
+	public undo(): void {
+		this.store.undo();
+	}
 }
 </script>
 

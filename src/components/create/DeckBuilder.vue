@@ -92,114 +92,131 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-facing-decorator';
-import { DeckReqs, DeckState, ProceedType, getDeckState } from './utils';
-import SaveBtn from './SaveBtn.vue';
-import NameModal from './NameModal.vue';
-import DropdownFilter, { Option } from './DropdownFilter.vue';
+import { Component, Prop } from "vue-facing-decorator";
+import DropdownFilter, { type Option } from "./DropdownFilter.vue";
+import NameModal from "./NameModal.vue";
+import SaveBtn from "./SaveBtn.vue";
+import {
+	type DeckReqs,
+	type DeckState,
+	type ProceedType,
+	getDeckState,
+} from "./utils";
 
-import { Imgable } from '#/components/Imgable';
-import { Card, Phenomenon, Plane } from '#/model/card';
-import { CardProvider } from '#/services/CardProvider';
-import { MapType } from '#/model/map';
-import { EternitiesMapDeckType } from '#/model/map/eternities';
-import { useMain } from '#/store/main';
+import { Imgable } from "#/components/Imgable";
+import { type Card, Phenomenon, Plane } from "#/model/card";
+import { MapType } from "#/model/map";
+import { EternitiesMapDeckType } from "#/model/map/eternities";
+import { getAllCards } from "#/services/cardProvider";
+import { useMain } from "#/store/main";
 
-import { SetProvider } from '#/services/SetProvider';
+import { getSets } from "#/services/setProvider";
 
 @Component({
-  emits: ['close', 'use'],
-  components: { DropdownFilter, NameModal, SaveBtn },
+	emits: ["close", "use"],
+	components: { DropdownFilter, NameModal, SaveBtn },
 })
 export default class DeckBuilder extends Imgable {
-  @Prop({ required: true })
-  public reqs!: DeckReqs;
+	@Prop({ required: true })
+	public reqs!: DeckReqs;
 
-  private store = useMain();
+	private store = useMain();
 
-  public readonly sets = SetProvider.getSets();
-  public readonly setFilters = [...this.sets.values()].map((set) => ({
-    label: set.name,
-    value: set.code,
-    icon: set.icon,
-  }));
-  public selectedSets = this.setFilters.map(s => s.value);
+	public readonly sets = getSets();
+	public readonly setFilters = [...this.sets.values()].map((set) => ({
+		label: set.name,
+		value: set.code,
+		icon: set.icon,
+	}));
+	public selectedSets = this.setFilters.map((s) => s.value);
 
-  public readonly typeFilters: Array<Option> = [];
-  public selectedTypes: Array<string> = [];
+	public readonly typeFilters: Array<Option> = [];
+	public selectedTypes: Array<string> = [];
 
+	public nameModalOpen = false;
 
-  public nameModalOpen = false;
+	public cards: Array<Card> = getAllCards();
+	public search = "";
+	public action: ProceedType = "save_use";
 
-  public cards: Array<Card> = CardProvider.getAllCards();
-  public search = '';
-  public action: ProceedType = 'save_use';
+	public deck: Array<Card> = [];
 
-  public deck: Array<Card> = [];
+	public created() {
+		this.typeFilters.push({ label: "Plane" });
+		if (
+			this.reqs.mapType !== MapType.ETERNITIES ||
+			this.reqs.deckType !== EternitiesMapDeckType.PLANES
+		) {
+			this.typeFilters.push({ label: "Phenomenon" });
+		}
+		this.selectedTypes = this.typeFilters.map((t) => t.label);
+	}
 
-  public created() {
-    this.typeFilters.push({ label: 'Plane' });
-    if (
-      this.reqs.mapType !== MapType.ETERNITIES ||
-      this.reqs.deckType !== EternitiesMapDeckType.PLANES
-    ) {
-      this.typeFilters.push({ label: 'Phenomenon' });
-    }
-    this.selectedTypes = this.typeFilters.map(t => t.label);
-  }
+	public mounted() {
+		this.toggle();
+	}
 
-  public mounted() {
-    this.toggle();
-  }
+	public get filtered(): Array<Card> {
+		return this.cards
+			.filter((c) => this.selectedTypes.includes(c.type))
+			.filter((c) => this.selectedSets.some((set) => c.sets.includes(set)))
+			.filter((c) => c.name.toLowerCase().includes(this.search));
+	}
 
-  public get filtered(): Array<Card> {
-    return this.cards
-      .filter(c => this.selectedTypes.includes(c.type))
-      .filter(c => this.selectedSets.some(set => c.sets.includes(set)))
-      .filter(c => c.name.toLowerCase().includes(this.search));
-  }
+	public get deckState(): DeckState {
+		return getDeckState(this.reqs.mapType, this.deck);
+	}
 
-  public get deckState(): DeckState {
-    return getDeckState(this.reqs.mapType, this.deck);
-  }
+	public get partial(): boolean {
+		return this.filtered.some((c) => this.deck.includes(c));
+	}
 
-  public get partial(): boolean {
-    return this.filtered.some(c => this.deck.includes(c));
-  }
+	public get full(): boolean {
+		return this.filtered.every((c) => this.deck.includes(c));
+	}
 
-  public get full(): boolean {
-    return this.filtered.every(c => this.deck.includes(c));
-  }
+	public toggle(): void {
+		this.deck = this.full
+			? this.deck.filter(
+					(c) => this.filtered.findIndex((fc) => fc.id === c.id) === -1,
+				)
+			: [...new Set([...this.filtered, ...this.deck])];
+	}
 
-  public toggle(): void {
-    this.deck = this.full
-      ? this.deck.filter(c => this.filtered.findIndex(fc => fc.id === c.id) === -1)
-      : [...new Set([...this.filtered, ...this.deck])];
-  }
+	public save(deckName: string): void {
+		this.nameModalOpen = false;
+		this.store.addDeck(deckName, {
+			list: this.deck.map((c) => c.id),
+			kind: this.deck.some((c) => c instanceof Phenomenon) ? "all" : "planes",
+			counts: this.deck.reduce(
+				(counts, card) => {
+					counts.cards++;
+					counts[card instanceof Plane ? "planes" : "phenomena"]++;
+					return counts;
+				},
+				{ cards: 0, planes: 0, phenomena: 0 },
+			),
+		});
+		if (this.action === "save_use") {
+			this.$emit(
+				"use",
+				this.deck.map((c) => c.id),
+			);
+			return;
+		}
+		this.$emit("close");
+	}
 
-  public save(deckName: string): void {
-    this.nameModalOpen = false;
-    this.store.addDeck(deckName, {
-      list: this.deck.map(c => c.id),
-      kind: this.deck.some(c => c instanceof Phenomenon) ? 'all' : 'planes',
-      counts: this.deck.reduce((counts, card) => {
-        counts.cards++;
-        counts[card instanceof Plane ? 'planes' : 'phenomena']++;
-        return counts;
-      }, { cards: 0, planes: 0, phenomena: 0 }),
-    });
-    if (this.action === 'save_use') {
-      return this.$emit('use', this.deck.map(c => c.id));
-    }
-    this.$emit('close');
-  }
-
-  public done(): void {
-    if (this.action === 'use') {
-      return this.$emit('use', this.deck.map(c => c.id));
-    }
-    this.nameModalOpen = true;
-  }
+	public done(): void {
+		if (this.action === "use") {
+			this.$emit(
+				"use",
+				this.deck.map((c) => c.id),
+			);
+			return;
+		}
+		this.nameModalOpen = true;
+	}
 }
 </script>
 
@@ -379,3 +396,4 @@ export default class DeckBuilder extends Imgable {
   }
 }
 </style>
+#/services/setProvider#/services/cardProvider

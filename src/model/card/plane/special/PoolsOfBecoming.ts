@@ -1,12 +1,12 @@
-import { Plane } from '../Plane';
-import { eventBus, EventType } from '#/services/EventBus';
 import {
-  WallManager,
-  RevealerMode,
-  RevealerSource,
-  RevealerWall,
-  StateKey,
-} from '#/model/wall';
+	RevealerMode,
+	RevealerSource,
+	type RevealerWall,
+	StateKey,
+	type WallManager,
+} from "#/model/wall";
+import { EventType, eventBus } from "#/services/eventBus";
+import { Plane } from "../Plane";
 
 /**
  * At the beginning of your end step, put the cards in your hand
@@ -17,21 +17,21 @@ import {
  * Then put the revealed cards on the bottom of your planar deck in any order.
  */
 export class PoolsOfBecoming extends Plane {
-  public get chaosRequireInterraction(): boolean {
-    return true;
-  }
+	public get chaosRequireInterraction(): boolean {
+		return true;
+	}
 
-  public chaos(walls: WallManager, initiator: string): void {
-    const revealer: RevealerWall = {
-      title: this.name,
-      subTitle: 'Chaos from these cards will trigger.',
-      source: RevealerSource.POOLS_OF_BECOMING,
-      component: RevealerMode.SHOW,
-      sendShownTo: 'bottom',
-      initiator,
-    };
+	public chaos(walls: WallManager, initiator: string): void {
+		const revealer: RevealerWall = {
+			title: this.name,
+			subTitle: "Chaos from these cards will trigger.",
+			source: RevealerSource.POOLS_OF_BECOMING,
+			component: RevealerMode.SHOW,
+			sendShownTo: "bottom",
+			initiator,
+		};
 
-    walls.set(StateKey.REVEALER, revealer);
-    eventBus.emit(EventType.POOLS_OF_BECOMING);
-  }
+		walls.set(StateKey.REVEALER, revealer);
+		eventBus.emit(EventType.POOLS_OF_BECOMING);
+	}
 }

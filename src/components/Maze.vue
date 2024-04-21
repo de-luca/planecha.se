@@ -4,43 +4,44 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-facing-decorator';
+import { Component, Vue } from "vue-facing-decorator";
 
 const ROWS = 10;
 
 @Component
 export default class Maze extends Vue {
-  private cols = 0;
-  public glyphs = '';
+	private cols = 0;
+	public glyphs = "";
 
-  public created(): void {
-    this.glyphs = Math.random().toString(36).substring(2, 6);
-    this.$nextTick(this.computeCols);
-    window.addEventListener('resize', this.computeCols);
-  }
+	public created(): void {
+		this.glyphs = Math.random().toString(36).substring(2, 6);
+		this.$nextTick(this.computeCols);
+		window.addEventListener("resize", this.computeCols);
+	}
 
-  public unmounted(): void {
-    window.removeEventListener('resize', this.computeCols);
-  }
+	public unmounted(): void {
+		window.removeEventListener("resize", this.computeCols);
+	}
 
-  private computeCols(): void {
-    const canaryWidth = (document.getElementById('canary') as HTMLElement).clientWidth;
-    const screenWidth = window.innerWidth;
+	private computeCols(): void {
+		const canaryWidth = (document.getElementById("canary") as HTMLElement)
+			.clientWidth;
+		const screenWidth = window.innerWidth;
 
-    this.cols = Math.ceil(screenWidth / canaryWidth);
-  }
+		this.cols = Math.ceil(screenWidth / canaryWidth);
+	}
 
-  public get pattern(): string {
-    let pattern = '';
-    for (let r = 0; r < ROWS; r++) {
-      for(let c = 0; c < this.cols; c++) {
-        pattern += this.glyphs;
-      }
-      pattern += '<br>';
-    }
+	public get pattern(): string {
+		let pattern = "";
+		for (let r = 0; r < ROWS; r++) {
+			for (let c = 0; c < this.cols; c++) {
+				pattern += this.glyphs;
+			}
+			pattern += "<br>";
+		}
 
-    return pattern;
-  }
+		return pattern;
+	}
 }
 </script>
 

@@ -1,13 +1,13 @@
-import { Card } from '#/model/card';
-import { RevealerWall } from '#/model/wall';
+import type { Card } from "#/model/card";
+import type { RevealerWall } from "#/model/wall";
 
 export type PickedLeft = {
-  picked: Array<Card>;
-  left: Array<Card>;
-}
+	picked: Array<Card>;
+	left: Array<Card>;
+};
 
 export interface RevealConfig extends RevealerWall {
-  sendShownTo: 'top' | 'bottom';
-  title?: string;
-  subTitle?: string;
+	sendShownTo: "top" | "bottom";
+	title?: string;
+	subTitle?: string;
 }

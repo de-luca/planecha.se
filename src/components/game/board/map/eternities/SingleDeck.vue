@@ -30,22 +30,22 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-facing-decorator';
-import { Eternities } from './Eternities';
+import { Component } from "vue-facing-decorator";
+import { Eternities } from "./Eternities";
 
-import Tile from '#board/map/eternities/tiles/Tile.vue';
-import TileDetails from '#board/map/eternities/tiles/TileDetails.vue';
-import PhenomenonWall from '#board/wall/PhenomenonWall.vue';
+import Tile from "#board/map/eternities/tiles/Tile.vue";
+import TileDetails from "#board/map/eternities/tiles/TileDetails.vue";
+import PhenomenonWall from "#board/wall/PhenomenonWall.vue";
 
 @Component({
-  inheritAttrs: false,
-  components: { Tile, TileDetails, PhenomenonWall },
+	inheritAttrs: false,
+	components: { Tile, TileDetails, PhenomenonWall },
 })
 export default class EternitiesMapSingleDeck extends Eternities {
-  public planeswalk(coords: Coordinates): void {
-    this.hideTileDetails();
-    this.store.planeswalk({ coords });
-  }
+	public planeswalk(coords: Coordinates): void {
+		this.hideTileDetails();
+		this.store.planeswalk({ coords });
+	}
 }
 </script>
 

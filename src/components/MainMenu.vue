@@ -43,26 +43,26 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-facing-decorator';
-import NameModal from './NameModal.vue';
-import { useMain } from '#/store/main';
+import { Component, Vue } from "vue-facing-decorator";
+import { useMain } from "#/store/main";
+import NameModal from "./NameModal.vue";
 
-import ThemeSelector from '#/components/controls/ThemeSelector.vue';
+import ThemeSelector from "#/components/controls/ThemeSelector.vue";
 
 @Component({ components: { ThemeSelector, NameModal } })
 export default class MainMenu extends Vue {
-  private store = useMain();
-  public active = false;
-  public nameModalActive = false;
+	private store = useMain();
+	public active = false;
+	public nameModalActive = false;
 
-  public get selfName(): string | null {
-    return this.store.selfName;
-  }
+	public get selfName(): string | null {
+		return this.store.selfName;
+	}
 
-  public async close(): Promise<void> {
-    await this.$router.push('/');
-    this.store.leave();
-  }
+	public async close(): Promise<void> {
+		await this.$router.push("/");
+		this.store.leave();
+	}
 }
 </script>
 

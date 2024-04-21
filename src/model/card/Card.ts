@@ -1,50 +1,50 @@
-import { WallManager } from '../wall';
-import { CardInterface, ExportedCard } from './CardInterface';
+import type { WallManager } from "../wall";
+import type { CardInterface, ExportedCard } from "./CardInterface";
 
-export type Type = 'Plane' | 'Phenomenon';
+export type Type = "Plane" | "Phenomenon";
 
 export interface Counter {
-  name: string;
-  value: number;
-  start: number;
-  max: number | null;
-  reset: boolean;
+	name: string;
+	value: number;
+	start: number;
+	max: number | null;
+	reset: boolean;
 }
 
 export interface Props {
-  id: string;
-  name: string;
-  typeLine: string;
-  oracleText: string;
-  sets: Array<string>;
-  isUB: boolean;
-  counter?: Counter;
+	id: string;
+	name: string;
+	typeLine: string;
+	oracleText: string;
+	sets: Array<string>;
+	isUB: boolean;
+	counter?: Counter;
 }
 
 export abstract class Card implements CardInterface {
-  public readonly id: string;
-  public readonly name: string;
-  public readonly typeLine: string;
-  public readonly oracleText: string;
-  public readonly sets: Array<string>;
-  public readonly isUB: boolean;
+	public readonly id: string;
+	public readonly name: string;
+	public readonly typeLine: string;
+	public readonly oracleText: string;
+	public readonly sets: Array<string>;
+	public readonly isUB: boolean;
 
-  public constructor(props: Props) {
-    this.id = props.id;
-    this.name = props.name;
-    this.typeLine = props.typeLine;
-    this.oracleText = props.oracleText;
-    this.sets = props.sets;
-    this.isUB = props.isUB;
-  }
+	public constructor(props: Props) {
+		this.id = props.id;
+		this.name = props.name;
+		this.typeLine = props.typeLine;
+		this.oracleText = props.oracleText;
+		this.sets = props.sets;
+		this.isUB = props.isUB;
+	}
 
-  public abstract get type(): Type;
+	public abstract get type(): Type;
 
-  public abstract chaos(walls: WallManager, initiator: string): void;
-  public abstract enter(walls: WallManager, initiator: string): void;
-  public abstract leave(): void;
+	public abstract chaos(walls: WallManager, initiator: string): void;
+	public abstract enter(walls: WallManager, initiator: string): void;
+	public abstract leave(): void;
 
-  public export(): ExportedCard {
-    return { id: this.id };
-  }
+	public export(): ExportedCard {
+		return { id: this.id };
+	}
 }

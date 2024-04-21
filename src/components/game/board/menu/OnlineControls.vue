@@ -90,70 +90,70 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-facing-decorator';
-import { useMain } from '#/store/main';
+import { Component, Vue } from "vue-facing-decorator";
+import { useMain } from "#/store/main";
 
-import FeedbackButton from '#/components/controls/FeedbackButton.vue';
-import NameModal from '#/components/NameModal.vue';
+import NameModal from "#/components/NameModal.vue";
+import FeedbackButton from "#/components/controls/FeedbackButton.vue";
 
 enum BtnText {
-  IDLE = 'Copy',
-  SUCCESS = 'Copied!',
+	IDLE = "Copy",
+	SUCCESS = "Copied!",
 }
 
 @Component({ components: { FeedbackButton, NameModal } })
 export default class OnlineControls extends Vue {
-  private store = useMain();
-  private copyBtnText: BtnText = BtnText.IDLE;
+	private store = useMain();
+	private copyBtnText: BtnText = BtnText.IDLE;
 
-  public error: Error | null = null;
-  public active = false;
-  public nameModalActive = false;
+	public error: Error | null = null;
+	public active = false;
+	public nameModalActive = false;
 
-  public get online(): boolean {
-    return !!this.store.net;
-  }
+	public get online(): boolean {
+		return !!this.store.net;
+	}
 
-  public get playerName(): string {
-    return this.store.selfName!;
-  }
+	public get playerName(): string {
+		return this.store.selfName!;
+	}
 
-  public get roomUrl(): string {
-    return `${window.location.origin}/#/game/${this.store.gameId}`;
-  }
+	public get roomUrl(): string {
+		return `${window.location.origin}/#/game/${this.store.gameId}`;
+	}
 
-  public get mates(): Map<string, string> {
-    return this.store.mates;
-  }
+	public get mates(): Map<string, string> {
+		return this.store.mates;
+	}
 
-  public async open(): Promise<void> {
-    if (!this.store.selfName) {
-      this.nameModalActive = true;
-      return;
-    }
+	public async open(): Promise<void> {
+		if (!this.store.selfName) {
+			this.nameModalActive = true;
+			return;
+		}
 
-    try {
-      await this.store.open();
-      this.$router.replace({
-        name: 'Join',
-        params: { roomId: this.store.gameId },
-      });
-      this.copy();
-    } catch(err) {
-      this.error = new Error(
-        'The game could not be oppened.',
-        { cause: 'The signaling server or your internet connection might be down.' },
-      );
-    }
-  }
+		try {
+			await this.store.open();
+			this.$router.replace({
+				name: "Join",
+				params: { roomId: this.store.gameId },
+			});
+			this.copy();
+		} catch (err) {
+			this.error = new Error("The game could not be oppened.", {
+				cause:
+					"The signaling server or your internet connection might be down.",
+			});
+		}
+	}
 
-  public async copy(): Promise<void> {
-    try {
-      await navigator.clipboard.writeText(this.roomUrl);
-    } catch (err) {
-      console.error(err);
-    }
-  }
+	public async copy(): Promise<void> {
+		try {
+			await navigator.clipboard.writeText(this.roomUrl);
+		} catch (err) {
+			console.error(err);
+		}
+	}
 }
 </script>
 

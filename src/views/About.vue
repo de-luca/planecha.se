@@ -96,7 +96,7 @@
 </template>
 
 <script lang="ts" setup>
-import BrandedFooter from '#/components/BrandedFooter.vue';
+import BrandedFooter from "#/components/BrandedFooter.vue";
 </script>
 
 <style lang="scss" scoped>

@@ -1,63 +1,62 @@
-import { Card, Counter, Props, Type } from '../Card';
-import { ExportedCard } from '../CardInterface';
-import type { WallManager } from '#/model/wall';
+import type { WallManager } from "#/model/wall";
+import { Card, type Counter, type Props, type Type } from "../Card";
+import type { ExportedCard } from "../CardInterface";
 
 export class Plane extends Card {
-  protected _counter?: Counter;
+	protected _counter?: Counter;
 
-  public constructor(props: Props) {
-    super(props);
-    this._counter = props.counter ?? undefined;
-  }
+	public constructor(props: Props) {
+		super(props);
+		this._counter = props.counter ?? undefined;
+	}
 
-  public get type(): Type {
-    return 'Plane';
-  }
+	public get type(): Type {
+		return "Plane";
+	}
 
-  public get counter(): Counter | undefined {
-    return this._counter;
-  }
+	public get counter(): Counter | undefined {
+		return this._counter;
+	}
 
-  public get chaosRequireInterraction(): boolean {
-    return false;
-  }
+	public get chaosRequireInterraction(): boolean {
+		return false;
+	}
 
-  public initCounter(): void {
-    if (this._counter) {
-      this._counter.value = this._counter.start;
-    }
-  }
+	public initCounter(): void {
+		if (this._counter) {
+			this._counter.value = this._counter.start;
+		}
+	}
 
-  public updateCounter(change: number): undefined | number {
-    if (!this._counter) {
-      return undefined;
-    }
+	public updateCounter(change: number): undefined | number {
+		if (!this._counter) {
+			return undefined;
+		}
 
-    this._counter.value = this._counter.value + change < 0
-      ? 0
-      : this._counter.value + change;
+		this._counter.value =
+			this._counter.value + change < 0 ? 0 : this._counter.value + change;
 
-    return this._counter.value;
-  }
+		return this._counter.value;
+	}
 
-  public chaos(_w: WallManager, _i: string): void {
-    return;
-  }
+	public chaos(_w: WallManager, _i: string): void {
+		return;
+	}
 
-  public enter(_w: WallManager, _i: string): void {
-    return;
-  }
+	public enter(_w: WallManager, _i: string): void {
+		return;
+	}
 
-  public leave(): void {
-    if (this._counter?.reset) {
-      this._counter.value = this._counter.start;
-    }
-  }
+	public leave(): void {
+		if (this._counter?.reset) {
+			this._counter.value = this._counter.start;
+		}
+	}
 
-  public export(): ExportedCard {
-    return {
-      id: this.id,
-      counters: this._counter?.value,
-    };
-  }
+	public export(): ExportedCard {
+		return {
+			id: this.id,
+			counters: this._counter?.value,
+		};
+	}
 }

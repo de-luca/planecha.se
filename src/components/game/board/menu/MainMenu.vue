@@ -66,55 +66,58 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-facing-decorator';
-import CloseModal from './modals/CloseModal.vue';
-import ResetModal from './modals/ResetModal.vue';
-import LayoutModal from './modals/LayoutModal.vue';
-import { useMain } from '#/store/main';
+import { Component, Vue } from "vue-facing-decorator";
+import { useMain } from "#/store/main";
+import CloseModal from "./modals/CloseModal.vue";
+import LayoutModal from "./modals/LayoutModal.vue";
+import ResetModal from "./modals/ResetModal.vue";
 
-import ThemeSelector from '#/components/controls/ThemeSelector.vue';
-import NameModal from '#/components/NameModal.vue';
+import NameModal from "#/components/NameModal.vue";
+import ThemeSelector from "#/components/controls/ThemeSelector.vue";
 
 @Component({
-  components: {
-    ThemeSelector,
-    CloseModal, NameModal, ResetModal, LayoutModal,
-  },
+	components: {
+		ThemeSelector,
+		CloseModal,
+		NameModal,
+		ResetModal,
+		LayoutModal,
+	},
 })
 export default class MainMenu extends Vue {
-  private store = useMain();
+	private store = useMain();
 
-  public active = false;
-  public nameModalActive = false;
-  public closeModalActive = false;
-  public resetModalActive = false;
-  public layoutModalActive = false;
+	public active = false;
+	public nameModalActive = false;
+	public closeModalActive = false;
+	public resetModalActive = false;
+	public layoutModalActive = false;
 
-  public get isMulti(): boolean {
-    return this.store.isMulti;
-  }
+	public get isMulti(): boolean {
+		return this.store.isMulti;
+	}
 
-  public get inGame(): boolean {
-    return !!this.store._map;
-  }
+	public get inGame(): boolean {
+		return !!this.store._map;
+	}
 
-  public get online(): boolean {
-    return !!this.store.net;
-  }
+	public get online(): boolean {
+		return !!this.store.net;
+	}
 
-  public get selfName(): string | null {
-    return this.store.selfName;
-  }
+	public get selfName(): string | null {
+		return this.store.selfName;
+	}
 
-  public async close(): Promise<void> {
-    await this.$router.push('/');
-    this.store.leave();
-  }
+	public async close(): Promise<void> {
+		await this.$router.push("/");
+		this.store.leave();
+	}
 
-  public reset(): void {
-    this.store.reset();
-    this.resetModalActive = false;
-  }
+	public reset(): void {
+		this.store.reset();
+		this.resetModalActive = false;
+	}
 }
 </script>
 

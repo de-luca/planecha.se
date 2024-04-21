@@ -39,121 +39,118 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-facing-decorator';
-import { Eternities } from '#board/map/eternities/Eternities';
-import { WallConfig } from '#board/wall/types';
+import { Component } from "vue-facing-decorator";
 import {
-  StateKey,
-  StateOp,
-} from '#/model/wall';
-import {
-  DualDeck as DualDeckMap,
-  EncounterMechanic,
-  EncounterTrigger,
-  EncounterTriggers,
-  TriggerConfig,
-} from '#/model/map/eternities';
+	type DualDeck as DualDeckMap,
+	EncounterMechanic,
+	EncounterTrigger,
+	type EncounterTriggers,
+	type TriggerConfig,
+} from "#/model/map/eternities";
+import { StateKey, StateOp } from "#/model/wall";
+import { Eternities } from "#board/map/eternities/Eternities";
+import type { WallConfig } from "#board/wall/types";
 
-import Tile from '#board/map/eternities/tiles/Tile.vue';
-import TileDetails from '#board/map/eternities/tiles/TileDetails.vue';
-import PhenomenonWall from '#board/wall/PhenomenonWall.vue';
-import EncounterWall from '#board/wall/EncounterWall.vue';
+import Tile from "#board/map/eternities/tiles/Tile.vue";
+import TileDetails from "#board/map/eternities/tiles/TileDetails.vue";
+import EncounterWall from "#board/wall/EncounterWall.vue";
+import PhenomenonWall from "#board/wall/PhenomenonWall.vue";
 
 interface LocalEncounterWallConfig {
-  config: WallConfig;
-  coords: Coordinates;
-  triggerConfig: TriggerConfig;
+	config: WallConfig;
+	coords: Coordinates;
+	triggerConfig: TriggerConfig;
 }
 
 @Component({
-  components: { Tile, TileDetails, PhenomenonWall, EncounterWall },
+	components: { Tile, TileDetails, PhenomenonWall, EncounterWall },
 })
 export default class DualDeck extends Eternities {
-  private triggers: EncounterTriggers;
+	private triggers: EncounterTriggers;
 
-  public created(): void {
-    this.triggers = (this.store.map as DualDeckMap).encounterTriggers;
-  }
+	public created(): void {
+		this.triggers = (this.store.map as DualDeckMap).encounterTriggers;
+	}
 
-  public get encounterWallConfig(): LocalEncounterWallConfig | undefined {
-    const wall =
-      this.store.map.walls.get(StateKey.ENCOUNTER_WALL);
+	public get encounterWallConfig(): LocalEncounterWallConfig | undefined {
+		const wall = this.store.map.walls.get(StateKey.ENCOUNTER_WALL);
 
-    if (!wall) {
-      return undefined;
-    }
+		if (!wall) {
+			return undefined;
+		}
 
-    return {
-      ...wall,
-      config: {
-        mateName: wall.initiator,
-      },
-    };
-  }
+		return {
+			...wall,
+			config: {
+				mateName: wall.initiator,
+			},
+		};
+	}
 
-  public preHellride(coords: Coordinates): void {
-    const config = this.getTriggerConfig(EncounterTrigger.ON_HELLRIDE)
-      ?? this.getTriggerConfig(EncounterTrigger.ON_PLANESWALK);
+	public preHellride(coords: Coordinates): void {
+		const config =
+			this.getTriggerConfig(EncounterTrigger.ON_HELLRIDE) ??
+			this.getTriggerConfig(EncounterTrigger.ON_PLANESWALK);
 
-    this.handleTrigger(coords, config);
-  }
+		this.handleTrigger(coords, config);
+	}
 
-  public prePlaneswalk(coords: Coordinates): void {
-    this.hideTileDetails();
-    this.handleTrigger(
-      coords,
-      this.getTriggerConfig(EncounterTrigger.ON_PLANESWALK),
-    );
-  }
+	public prePlaneswalk(coords: Coordinates): void {
+		this.hideTileDetails();
+		this.handleTrigger(
+			coords,
+			this.getTriggerConfig(EncounterTrigger.ON_PLANESWALK),
+		);
+	}
 
-  public planeswalk(coords: Coordinates): void {
-    this.store.updateWallState({
-      key: StateKey.ENCOUNTER_WALL,
-      op: StateOp.DELETE,
-    });
-    this.store.planeswalk({ coords });
-  }
+	public planeswalk(coords: Coordinates): void {
+		this.store.updateWallState({
+			key: StateKey.ENCOUNTER_WALL,
+			op: StateOp.DELETE,
+		});
+		this.store.planeswalk({ coords });
+	}
 
-  public encounter(coords: Coordinates): void {
-    this.store.updateWallState({
-      key: StateKey.ENCOUNTER_WALL,
-      op: StateOp.DELETE,
-    });
-    this.store.encounter({ coords });
-  }
+	public encounter(coords: Coordinates): void {
+		this.store.updateWallState({
+			key: StateKey.ENCOUNTER_WALL,
+			op: StateOp.DELETE,
+		});
+		this.store.encounter({ coords });
+	}
 
-  private getTriggerConfig(trigger: EncounterTrigger): TriggerConfig | undefined {
-    return this.triggers[trigger].enabled
-      ? this.triggers[trigger]
-      : undefined;
-  }
+	private getTriggerConfig(
+		trigger: EncounterTrigger,
+	): TriggerConfig | undefined {
+		return this.triggers[trigger].enabled ? this.triggers[trigger] : undefined;
+	}
 
-  private handleTrigger(
-    coords: Coordinates,
-    trigger: TriggerConfig | undefined,
-  ): void {
-    if (trigger) {
-      if (
-        trigger.enabled &&
-        trigger.mechanic === EncounterMechanic.AUTO &&
-        trigger.ratio === 1
-      ) {
-        this.encounter(coords);
-      } else {
-        this.store.updateWallState({
-          key: StateKey.ENCOUNTER_WALL,
-          op: StateOp.SET,
-          val: {
-            coords,
-            triggerConfig: trigger,
-            initiator: this.store.logName,
-          },
-        });
-      }
-    } else {
-      this.planeswalk(coords);
-    }
-  }
+	private handleTrigger(
+		coords: Coordinates,
+		trigger: TriggerConfig | undefined,
+	): void {
+		if (trigger) {
+			if (
+				trigger.enabled &&
+				trigger.mechanic === EncounterMechanic.AUTO &&
+				trigger.ratio === 1
+			) {
+				this.encounter(coords);
+			} else {
+				this.store.updateWallState({
+					key: StateKey.ENCOUNTER_WALL,
+					op: StateOp.SET,
+					val: {
+						coords,
+						triggerConfig: trigger,
+						initiator: this.store.logName,
+					},
+				});
+			}
+		} else {
+			this.planeswalk(coords);
+		}
+	}
 }
 </script>
 

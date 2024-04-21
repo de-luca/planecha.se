@@ -1,3 +1,3 @@
-export * from './Plane';
-export * from './PlaneFactory';
-export * from './special';
+export * from "./Plane";
+export * from "./factory";
+export * from "./special";

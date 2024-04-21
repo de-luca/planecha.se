@@ -11,15 +11,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-facing-decorator';
-import { Tile } from '#/model/map/eternities';
+import { Component, Prop, Vue } from "vue-facing-decorator";
+import type { Tile } from "#/model/map/eternities";
 
-@Component({ emits: [ 'hellride' ] })
+@Component({ emits: ["hellride"] })
 export default class Hellrideable extends Vue {
-  @Prop({ required: false })
-  public tile?: Tile;
-  @Prop({ required: true })
-  public hidden: boolean;
+	@Prop({ required: false })
+	public tile?: Tile;
+	@Prop({ required: true })
+	public hidden: boolean;
 }
 </script>
 

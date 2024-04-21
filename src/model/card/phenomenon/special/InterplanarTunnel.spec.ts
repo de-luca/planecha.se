@@ -1,26 +1,31 @@
-import { describe, it, expect } from 'vitest';
-import { InterplanarTunnel } from './InterplanarTunnel';
-import { RevealerMode, RevealerSource, StateKey, WallManager } from '#/model/wall';
+import { describe, expect, it } from "vitest";
+import {
+	RevealerMode,
+	RevealerSource,
+	StateKey,
+	WallManager,
+} from "#/model/wall";
+import { InterplanarTunnel } from "./InterplanarTunnel";
 
-describe('SpatialMerging.enter', () => {
-  it('sets a wall and emit its event', () => {
-    const walls = new WallManager();
-    const interplanarTunnel = new InterplanarTunnel({
-      id: '00000000-0000-0000-0000-000000000000',
-      name: 'Test Phenomenon',
-      typeLine: 'test phenomenon',
-      oracleText: 'some test text',
-      isUB: true,
-      sets: ['ABC'],
-    });
-    interplanarTunnel.enter(walls, 'foo');
-    expect(walls.get(StateKey.REVEALER)).toEqual({
-      title: 'Test Phenomenon',
-      subTitle: 'Chose a plane to put on top the planar deck.',
-      source: RevealerSource.INTERPLANAR_TUNNEL,
-      component: RevealerMode.PICK,
-      sendShownTo: 'top',
-      initiator: 'foo',
-    });
-  });
+describe("SpatialMerging.enter", () => {
+	it("sets a wall and emit its event", () => {
+		const walls = new WallManager();
+		const interplanarTunnel = new InterplanarTunnel({
+			id: "00000000-0000-0000-0000-000000000000",
+			name: "Test Phenomenon",
+			typeLine: "test phenomenon",
+			oracleText: "some test text",
+			isUB: true,
+			sets: ["ABC"],
+		});
+		interplanarTunnel.enter(walls, "foo");
+		expect(walls.get(StateKey.REVEALER)).toEqual({
+			title: "Test Phenomenon",
+			subTitle: "Chose a plane to put on top the planar deck.",
+			source: RevealerSource.INTERPLANAR_TUNNEL,
+			component: RevealerMode.PICK,
+			sendShownTo: "top",
+			initiator: "foo",
+		});
+	});
 });

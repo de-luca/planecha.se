@@ -43,39 +43,39 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-facing-decorator';
-import LookAtBtn from './LookAtBtn.vue';
-import { Phenomenon } from '#/model/card';
-import { EternitiesMap } from '#/model/map/eternities';
-import { useMain } from '#/store/main';
+import { Component, Prop, Vue } from "vue-facing-decorator";
+import { Phenomenon } from "#/model/card";
+import { EternitiesMap } from "#/model/map/eternities";
+import { useMain } from "#/store/main";
+import LookAtBtn from "./LookAtBtn.vue";
 
-import { Chaos, Planeswalk } from '#/components/svgs';
+import { Chaos, Planeswalk } from "#/components/svgs";
 
 @Component({
-  emits: ['chaos', 'planeswalk'],
-  components: { Chaos, Planeswalk, LookAtBtn },
+	emits: ["chaos", "planeswalk"],
+	components: { Chaos, Planeswalk, LookAtBtn },
 })
 export default class MapActions extends Vue {
-  @Prop({ required: true })
-  public disabled: boolean;
+	@Prop({ required: true })
+	public disabled: boolean;
 
-  private store = useMain();
+	private store = useMain();
 
-  public get isEternities(): boolean {
-    return this.store.map instanceof EternitiesMap;
-  }
+	public get isEternities(): boolean {
+		return this.store.map instanceof EternitiesMap;
+	}
 
-  public get hasStarted(): boolean {
-    return this.store.map.hasStarted;
-  }
+	public get hasStarted(): boolean {
+		return this.store.map.hasStarted;
+	}
 
-  public get isPhenomenon(): boolean {
-    return this.store.map.active[0] instanceof Phenomenon;
-  }
+	public get isPhenomenon(): boolean {
+		return this.store.map.active[0] instanceof Phenomenon;
+	}
 
-  public start() {
-    this.store.startGame();
-  }
+	public start() {
+		this.store.startGame();
+	}
 }
 </script>
 

@@ -37,19 +37,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-facing-decorator';
-import { useMain } from '#/store/main';
+import { Component, Vue } from "vue-facing-decorator";
+import { useMain } from "#/store/main";
 
 @Component({
-  emits: ['done', 'cancel'],
+	emits: ["done", "cancel"],
 })
 export default class NameModal extends Vue {
-  private store = useMain();
-  public deckName: string;
+	private store = useMain();
+	public deckName: string;
 
-  public get alreadyExists(): boolean {
-    return this.store.decks.has(this.deckName);
-  }
+	public get alreadyExists(): boolean {
+		return this.store.decks.has(this.deckName);
+	}
 }
 </script>
 

@@ -114,26 +114,31 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-facing-decorator';
-import { EncounterMechanic, EncounterTriggers } from '#/model/map/eternities';
+import { Component, Prop, Vue } from "vue-facing-decorator";
+import {
+	EncounterMechanic,
+	type EncounterTriggers,
+} from "#/model/map/eternities";
 
-@Component({ emits: ['update:modelValue'] })
+@Component({ emits: ["update:modelValue"] })
 export default class EncounterSetup extends Vue {
-  public readonly helpText: Record<EncounterMechanic, string> = {
-    [EncounterMechanic.MANUAL]: 'You\'ll get prompted to roll for the encounter and decide of the outcome.',
-    [EncounterMechanic.AUTO]: 'The encounter will be rolled automaticaly with the probability you defined.',
-  };
+	public readonly helpText: Record<EncounterMechanic, string> = {
+		[EncounterMechanic.MANUAL]:
+			"You'll get prompted to roll for the encounter and decide of the outcome.",
+		[EncounterMechanic.AUTO]:
+			"The encounter will be rolled automaticaly with the probability you defined.",
+	};
 
-  @Prop({ required: true })
-  public modelValue: EncounterTriggers;
+	@Prop({ required: true })
+	public modelValue: EncounterTriggers;
 
-  public get setup(): EncounterTriggers {
-    return this.modelValue;
-  }
+	public get setup(): EncounterTriggers {
+		return this.modelValue;
+	}
 
-  public set setup(value: EncounterTriggers) {
-    this.$emit('update:modelValue', value);
-  }
+	public set setup(value: EncounterTriggers) {
+		this.$emit("update:modelValue", value);
+	}
 }
 </script>
 

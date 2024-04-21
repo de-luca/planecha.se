@@ -1,3 +1,3 @@
 export interface WallConfig {
-  mateName?: string;
+	mateName?: string;
 }

@@ -5,23 +5,23 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-facing-decorator';
-import { Map } from '../Map';
-import { Card as ModelCard } from '#/model/card';
+import { Component } from "vue-facing-decorator";
+import type { Card as ModelCard } from "#/model/card";
+import { Map } from "../Map";
 
-import Card from '#/components/controls/Card.vue';
+import Card from "#/components/controls/Card.vue";
 
 @Component({
-  components: { Card },
+	components: { Card },
 })
 export default class Single extends Map {
-  public get active(): Array<ModelCard> {
-    return this.store.map.active;
-  }
+	public get active(): Array<ModelCard> {
+		return this.store.map.active;
+	}
 
-  public planeswalk(): void {
-    this.store.planeswalk({});
-  }
+	public planeswalk(): void {
+		this.store.planeswalk({});
+	}
 }
 </script>
 

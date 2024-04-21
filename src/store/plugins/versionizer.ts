@@ -1,26 +1,26 @@
-import { PiniaPluginContext } from 'pinia';
-import { isMain } from '../main';
+import type { PiniaPluginContext } from "pinia";
+import { isMain } from "../main";
 
 const actions = [
-  'init',
-  'startGame',
-  'planeswalk',
-  'customPlaneswalk',
-  'encounter',
-  'resolve',
-  'reveal',
-  'resolveReveal',
-  'privateResolveReveal',
-  'updateCounters',
-  'updateWallState',
+	"init",
+	"startGame",
+	"planeswalk",
+	"customPlaneswalk",
+	"encounter",
+	"resolve",
+	"reveal",
+	"resolveReveal",
+	"privateResolveReveal",
+	"updateCounters",
+	"updateWallState",
 ];
 
 export function versionizer({ store }: PiniaPluginContext) {
-  if (isMain(store)) {
-    store.$onAction(({ after, store, name }) => {
-      if (actions.includes(name)) {
-        after(() => store.sync(store.repo.commit(name, store.map.dump())));
-      }
-    }, true);
-  }
+	if (isMain(store)) {
+		store.$onAction(({ after, store, name }) => {
+			if (actions.includes(name)) {
+				after(() => store.sync(store.repo.commit(name, store.map.dump())));
+			}
+		}, true);
+	}
 }

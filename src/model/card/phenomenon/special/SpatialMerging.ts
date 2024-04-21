@@ -1,11 +1,11 @@
-import { Phenomenon } from '../Phenomenon';
 import {
-  WallManager,
-  RevealerMode,
-  RevealerSource,
-  RevealerWall,
-  StateKey,
-} from '#/model/wall';
+	RevealerMode,
+	RevealerSource,
+	type RevealerWall,
+	StateKey,
+	type WallManager,
+} from "#/model/wall";
+import { Phenomenon } from "../Phenomenon";
 
 /**
  * When you encounter Spatial Merging,
@@ -16,16 +16,16 @@ import {
  * bottom of your planar deck in any order.
  */
 export class SpatialMerging extends Phenomenon {
-  public enter(walls: WallManager, initiator: string): void {
-    const revealer: RevealerWall = {
-      title: this.name,
-      subTitle: 'You\'ll planeswalk to these two planes simultaneously.',
-      source: RevealerSource.SPACIAL_MERGING,
-      component: RevealerMode.SHOW,
-      sendShownTo: 'top',
-      initiator,
-    };
+	public enter(walls: WallManager, initiator: string): void {
+		const revealer: RevealerWall = {
+			title: this.name,
+			subTitle: "You'll planeswalk to these two planes simultaneously.",
+			source: RevealerSource.SPACIAL_MERGING,
+			component: RevealerMode.SHOW,
+			sendShownTo: "top",
+			initiator,
+		};
 
-    walls.set(StateKey.REVEALER, revealer);
-  }
+		walls.set(StateKey.REVEALER, revealer);
+	}
 }

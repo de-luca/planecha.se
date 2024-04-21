@@ -19,40 +19,40 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-facing-decorator';
-import { Imgable } from '#/components/Imgable';
-import { useMain } from '#/store/main';
-import { Plane } from '#/model/card';
-import { Tile } from '#/model/map/eternities';
+import { Component, Prop } from "vue-facing-decorator";
+import { Imgable } from "#/components/Imgable";
+import type { Plane } from "#/model/card";
+import type { Tile } from "#/model/map/eternities";
+import { useMain } from "#/store/main";
 
-import Card from '#/components/controls/Card.vue';
-import { Planeswalk } from '#/components/svgs';
+import Card from "#/components/controls/Card.vue";
+import { Planeswalk } from "#/components/svgs";
 
 @Component({
-  emits: [ 'close', 'planeswalk' ],
-  components: { Planeswalk, Card },
+	emits: ["close", "planeswalk"],
+	components: { Planeswalk, Card },
 })
 export default class TileDetails extends Imgable {
-  @Prop({ required: true })
-  public tile: Tile;
+	@Prop({ required: true })
+	public tile: Tile;
 
-  private store = useMain();
+	private store = useMain();
 
-  public get current(): boolean {
-    return this.tile.coords.x === 0 && this.tile.coords.y === 0;
-  }
+	public get current(): boolean {
+		return this.tile.coords.x === 0 && this.tile.coords.y === 0;
+	}
 
-  public get hasStarted(): boolean {
-    return this.store.map.hasStarted;
-  }
+	public get hasStarted(): boolean {
+		return this.store.map.hasStarted;
+	}
 
-  public update(plane: Plane, change: number): void {
-    this.store.updateCounters({ planeId: plane.id, change });
-  }
+	public update(plane: Plane, change: number): void {
+		this.store.updateCounters({ planeId: plane.id, change });
+	}
 
-  public imgSrc(plane: Plane): string {
-    return this.buildImgSrc(plane);
-  }
+	public imgSrc(plane: Plane): string {
+		return this.buildImgSrc(plane);
+	}
 }
 </script>
 

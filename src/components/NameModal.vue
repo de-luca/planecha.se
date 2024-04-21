@@ -20,31 +20,31 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-facing-decorator';
-import { useMain } from '#/store/main';
+import { Component, Prop, Vue } from "vue-facing-decorator";
+import { useMain } from "#/store/main";
 
-import NameInput from '#/components/controls/NameInput.vue';
+import NameInput from "#/components/controls/NameInput.vue";
 
 @Component({
-  components: { NameInput },
-  emits: ['update:active', 'done'],
+	components: { NameInput },
+	emits: ["update:active", "done"],
 })
 export default class NameModal extends Vue {
-  @Prop({ required: true })
-  public active: boolean;
+	@Prop({ required: true })
+	public active: boolean;
 
-  private store = useMain();
-  public name: string = useMain().selfName ?? '';
+	private store = useMain();
+	public name: string = useMain().selfName ?? "";
 
-  public get inGame(): boolean {
-    return !!this.store._map;
-  }
+	public get inGame(): boolean {
+		return !!this.store._map;
+	}
 
-  public save(): void {
-    this.store.setName(this.name);
-    this.$emit('update:active', false);
-    this.$emit('done');
-  }
+	public save(): void {
+		this.store.setName(this.name);
+		this.$emit("update:active", false);
+		this.$emit("done");
+	}
 }
 </script>
 

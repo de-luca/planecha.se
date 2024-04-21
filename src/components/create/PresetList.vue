@@ -44,27 +44,27 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-facing-decorator';
-import CardList from './CardList.vue';
-import { PresetDeck, PresetProvider } from '#/services/PresetProvider';
+import { Component, Vue } from "vue-facing-decorator";
+import { type PresetDeck, getPresetDecks } from "#/services/presetProvider";
+import CardList from "./CardList.vue";
 
 @Component({
-  emits: ['use'],
-  components: { CardList },
+	emits: ["use"],
+	components: { CardList },
 })
 export default class PresetList extends Vue {
-  public search = '';
-  public opened = '';
+	public search = "";
+	public opened = "";
 
-  public get decks(): Array<PresetDeck> {
-    return PresetProvider
-      .getDecks()
-      .filter(({ name }) => name.toLowerCase().includes(this.search));
-  }
+	public get decks(): Array<PresetDeck> {
+		return getPresetDecks().filter(({ name }) =>
+			name.toLowerCase().includes(this.search),
+		);
+	}
 
-  public toggleDetails(name: string): void {
-    this.opened = this.opened === name ? '' : name;
-  }
+	public toggleDetails(name: string): void {
+		this.opened = this.opened === name ? "" : name;
+	}
 }
 </script>
 
@@ -155,3 +155,4 @@ export default class PresetList extends Vue {
   border-bottom: 1px solid var(--border-color);
 }
 </style>
+#/services/presetProvider

@@ -1,3 +1,3 @@
-import type { Wall } from './Wall';
+import type { Wall } from "./Wall";
 
 export interface PhenomenonWall extends Wall {}

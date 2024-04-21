@@ -1,12 +1,12 @@
-import { Plane } from '../Plane';
-import { eventBus, EventType } from '#/services/EventBus';
 import {
-  WallManager,
-  RevealerMode,
-  RevealerSource,
-  RevealerWall,
-  StateKey,
-} from '#/model/wall';
+	RevealerMode,
+	RevealerSource,
+	type RevealerWall,
+	StateKey,
+	type WallManager,
+} from "#/model/wall";
+import { EventType, eventBus } from "#/services/eventBus";
+import { Plane } from "../Plane";
 
 /**
  * When you planeswalk to Norn’s Seedcore, chaos ensues.
@@ -17,21 +17,21 @@ import {
  * Put the rest of the revealed cards on the bottom of your planar deck in any order.
  */
 export class NornsSeedcore extends Plane {
-  public override get chaosRequireInterraction(): boolean {
-    return true;
-  }
+	public override get chaosRequireInterraction(): boolean {
+		return true;
+	}
 
-  public chaos(walls: WallManager, initiator: string): void {
-    const revealer: RevealerWall = {
-      title: this.name,
-      subTitle: 'You\'ll planeswalk to this plane.',
-      source: RevealerSource.NORNS_SEEDCORE,
-      component: RevealerMode.SHOW,
-      sendShownTo: 'top',
-      initiator,
-    };
+	public chaos(walls: WallManager, initiator: string): void {
+		const revealer: RevealerWall = {
+			title: this.name,
+			subTitle: "You'll planeswalk to this plane.",
+			source: RevealerSource.NORNS_SEEDCORE,
+			component: RevealerMode.SHOW,
+			sendShownTo: "top",
+			initiator,
+		};
 
-    walls.set(StateKey.REVEALER, revealer);
-    eventBus.emit(EventType.NORNS_SEEDCORE);
-  }
+		walls.set(StateKey.REVEALER, revealer);
+		eventBus.emit(EventType.NORNS_SEEDCORE);
+	}
 }

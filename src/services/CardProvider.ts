@@ -1,77 +1,62 @@
 import {
-  CardFactory,
-  Card,
-  Props,
-  Plane,
-  Phenomenon,
-  ExportedCard,
-} from '../model/card';
-import cards from '#assets/cards.json';
-
-import { Deck, DeckState } from '#/model/deck/Deck';
-import { shuffle } from '#/utils/shuffle';
+	type Card,
+	type ExportedCard,
+	type Phenomenon,
+	Plane,
+	type Props,
+	build,
+} from "#/model/card";
+import { Deck, type DeckState } from "#/model/deck/Deck";
+import { shuffle } from "#/utils/shuffle";
+import cards from "#assets/cards.json";
 
 type ListInput = ExportedCard | string;
 
-export class CardProvider {
-  private static raw: Map<string, Props> =
-    (cards as Array<Props>).reduce((acc, p) => acc.set(p.id, p), new Map<string, Props>());
+const raw: Map<string, Props> = (cards as Array<Props>).reduce(
+	(acc, p) => acc.set(p.id, p),
+	new Map<string, Props>(),
+);
 
-  public static getCard<T extends Card>(id: string): T {
-    return CardFactory.build((this.raw.get(id) as Props)) as T;
-  }
+export const getCard = <T extends Card>(id: string): T =>
+	build(raw.get(id) as Props) as T;
 
-  public static getAllCards(): Array<Card> {
-    return [...this.raw.values()].map(r => CardFactory.build(r));
-  }
+export const getAllCards = (): Array<Card> =>
+	[...raw.values()].map((r) => build(r));
 
-  public static getCardList<T extends Card>(list: Array<ListInput>): Array<T> {
-    return list.map(item => {
-      if (typeof item === 'string') {
-        return this.getCard<T>(item);
-      }
+export const getCardList = <T extends Card>(list: Array<ListInput>): Array<T> =>
+	list.map((item) => {
+		if (typeof item === "string") {
+			return getCard<T>(item);
+		}
 
-      const card = this.getCard<T>(item.id);
-      if (item.counters && card instanceof Plane && card.counter) {
-        card.counter.value = item.counters;
-      }
+		const card = getCard<T>(item.id);
+		if (item.counters && card instanceof Plane && card.counter) {
+			card.counter.value = item.counters;
+		}
 
-      return card;
-    });
-  }
+		return card;
+	});
 
-  public static getPlaneCards(): Array<Plane> {
-    return [...this.raw.values()]
-      .filter(r => r.typeLine !== 'Phenomenon')
-      .map(r => CardFactory.build(r) as Plane);
-  }
+export const getPlaneCards = (): Array<Plane> =>
+	[...raw.values()]
+		.filter((r) => r.typeLine !== "Phenomenon")
+		.map((r) => build(r) as Plane);
 
-  public static getPhenomenonCards(): Array<Phenomenon> {
-    return [...this.raw.values()]
-      .filter(r => r.typeLine === 'Phenomenon')
-      .map(r => CardFactory.build(r) as Phenomenon);
-  }
+export const getPhenomenonCards = (): Array<Phenomenon> =>
+	[...raw.values()]
+		.filter((r) => r.typeLine === "Phenomenon")
+		.map((r) => build(r) as Phenomenon);
 
-  public static getDeck(): Deck<Card> {
-    return new Deck<Card>(shuffle(this.getAllCards()));
-  }
+export const getDeck = (): Deck<Card> => new Deck<Card>(shuffle(getAllCards()));
 
-  public static getPlaneDeck(): Deck<Plane> {
-    return new Deck<Plane>(shuffle(this.getPlaneCards()));
-  }
+export const getPlaneDeck = (): Deck<Plane> =>
+	new Deck<Plane>(shuffle(getPlaneCards()));
 
-  public static getPhenomenonDeck(): Deck<Phenomenon> {
-    return new Deck<Phenomenon>(shuffle(this.getPhenomenonCards()));
-  }
+export const getPhenomenonDeck = (): Deck<Phenomenon> =>
+	new Deck<Phenomenon>(shuffle(getPhenomenonCards()));
 
-  public static getCustomDeck(list: Array<ListInput>): Deck<Card> {
-    return new Deck<Card>(shuffle(this.getCardList<Card>(list)));
-  }
+export const getCustomDeck = (list: Array<ListInput>): Deck<Card> =>
+	new Deck<Card>(shuffle(getCardList<Card>(list)));
 
-  public static restoreDeck<T extends Card>(state: DeckState): Deck<T> {
-    return new Deck<T>(
-      this.getCardList(state.cards),
-      this.getCardList(state.played),
-    );
-  }
-}
+export const restoreDeck = <T extends Card>(state: DeckState): Deck<T> =>
+	new Deck<T>(getCardList(state.cards), getCardList(state.played));

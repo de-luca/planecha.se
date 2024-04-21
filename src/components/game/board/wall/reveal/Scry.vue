@@ -59,43 +59,42 @@
 </template>
 
 <script lang="ts">
-import * as draggable from 'vuedraggable';
+import * as draggable from "vuedraggable";
 
-import { Component, Prop } from 'vue-facing-decorator';
-import { WallConfig } from '../types';
-import { RevealConfig } from './types';
-import { Imgable } from '#/components/Imgable';
-import { Revealed } from '#/model/map';
-import { Card } from '#/model/card';
+import { Component, Prop } from "vue-facing-decorator";
+import { Imgable } from "#/components/Imgable";
+import type { Card } from "#/model/card";
+import type { Revealed } from "#/model/map";
+import type { WallConfig } from "../types";
+import type { RevealConfig } from "./types";
 
 @Component({
-  emits: ['done'],
-  components: { draggable },
+	emits: ["done"],
+	components: { draggable },
 })
 export default class Test extends Imgable {
-  @Prop({ required: true })
-  public revealed: Revealed;
-  @Prop({ required: true })
-  public config: RevealConfig & WallConfig;
+	@Prop({ required: true })
+	public revealed: Revealed;
+	@Prop({ required: true })
+	public config: RevealConfig & WallConfig;
 
-  public picked: Record<string, boolean> = {};
-  public id = Math.random().toString(36).substring(2, 15);
+	public picked: Record<string, boolean> = {};
+	public id = Math.random().toString(36).substring(2, 15);
 
+	public base: Array<Card> = [];
+	public toTop: Array<Card> = [];
+	public toBottom: Array<Card> = [];
 
-  public base: Array<Card> = [];
-  public toTop: Array<Card> = [];
-  public toBottom: Array<Card> = [];
+	public created() {
+		this.base = [...this.revealed.relevant];
+	}
 
-  public created() {
-    this.base = [...this.revealed.relevant];
-  }
-
-  public confirm(): void {
-    this.$emit('done', {
-      picked: [...this.toTop],
-      left: [...this.revealed.others, ...this.toBottom],
-    });
-  }
+	public confirm(): void {
+		this.$emit("done", {
+			picked: [...this.toTop],
+			left: [...this.revealed.others, ...this.toBottom],
+		});
+	}
 }
 </script>
 
