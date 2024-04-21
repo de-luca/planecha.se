@@ -1,5 +1,5 @@
 import type { Patch } from "#/utils/delta";
-import type { Exported } from "../map";
+import type { Exported } from "../game";
 
 export interface Clone {
 	head: number;

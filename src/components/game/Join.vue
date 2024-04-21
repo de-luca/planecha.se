@@ -55,7 +55,7 @@
           v-if="isMulti && openDeckBuilder"
           @cancel="openDeckBuilder = false"
           @use="setDeck"
-          :reqs="{ mapType: gameData?.mapType }"
+          :reqs="{ mapType: gameData?.gameType }"
         />
 
         <div class="field join-game">
@@ -84,7 +84,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator";
 import type { Card } from "#/model/card";
-import { MapType } from "#/model/map";
+import { GameType } from "#/model/game";
 import { type MainStore, useMain } from "#/store/main";
 import { type DeckState, getDeckState } from "../create/utils";
 
@@ -127,25 +127,25 @@ export default class Join extends Vue {
 	}
 
 	public get gameType(): string {
-		switch (this.gameData?.mapType) {
-			case MapType.SINGLE:
+		switch (this.gameData?.gameType) {
+			case GameType.SINGLE:
 				return "Single Deck";
-			case MapType.MULTI:
+			case GameType.MULTI:
 				return "Multiple Decks";
-			case MapType.ETERNITIES:
+			case GameType.ETERNITIES:
 				return "Eternities Map";
 		}
 		return "";
 	}
 
 	public get isMulti(): boolean {
-		return this.gameData?.mapType === MapType.MULTI;
+		return this.gameData?.gameType === GameType.MULTI;
 	}
 
 	public get isDeckValid(): DeckState {
 		return !this.isMulti
 			? { valid: true, reqs: [] }
-			: getDeckState(this.gameData?.mapType, this.deck);
+			: getDeckState(this.gameData!.gameType, this.deck);
 	}
 
 	public get peerCount(): number {
@@ -166,7 +166,7 @@ export default class Join extends Vue {
 		this.store.setName(this.name);
 		try {
 			await this.store.join({
-				type: this.gameData?.mapType,
+				type: this.gameData!.gameType,
 				cards: this.deck.map((c) => c.id),
 			});
 		} catch (err) {

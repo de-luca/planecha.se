@@ -63,8 +63,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-facing-decorator";
-import { MapType } from "#/model/map";
-import { EternitiesMapDeckType } from "#/model/map/eternities";
+import { GameType } from "#/model/game";
+import { EternitiesMapDeckType } from "#/model/game/eternities";
 import { useMain } from "#/store/main";
 import CardList from "./CardList.vue";
 import {
@@ -102,7 +102,7 @@ export default class CustomList extends Vue {
 	}
 
 	public get kind(): DeckKind {
-		return this.reqs.mapType === MapType.ETERNITIES &&
+		return this.reqs.mapType === GameType.ETERNITIES &&
 			this.reqs.deckType === EternitiesMapDeckType.PLANES
 			? "planes"
 			: "all";

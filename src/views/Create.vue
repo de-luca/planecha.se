@@ -11,7 +11,7 @@
 
       <button-picker
         label="Game mode:"
-        :options="mapTypeOptions"
+        :options="gameTypeOptions"
         v-model="mapType"
       />
 
@@ -77,14 +77,14 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator";
 import type { Card } from "#/model/card";
-import { MapType } from "#/model/map";
+import { GameType } from "#/model/game";
 import {
 	EncounterMechanic,
 	EncounterTrigger,
 	type EncounterTriggers,
 	EternitiesMapDeckType,
 	EternitiesMapSubType,
-} from "#/model/map/eternities";
+} from "#/model/game/eternities";
 import { useMain } from "#/store/main";
 
 import BrandedFooter from "#/components/BrandedFooter.vue";
@@ -104,26 +104,26 @@ import { type DeckState, getDeckState } from "#/components/create/utils";
 	},
 })
 export default class Create extends Vue {
-	public readonly mapTypeRequirements: Record<MapType, string> = {
-		[MapType.SINGLE]: "<b>5 Plane cards</b>.",
-		[MapType.MULTI]: "<b>10 cards</b>.",
-		[MapType.ETERNITIES]: "<b>25 Plane cards</b>.",
+	public readonly gameTypeRequirements: Record<GameType, string> = {
+		[GameType.SINGLE]: "<b>5 Plane cards</b>.",
+		[GameType.MULTI]: "<b>10 cards</b>.",
+		[GameType.ETERNITIES]: "<b>25 Plane cards</b>.",
 	};
 
-	public readonly mapTypeOptions: Array<Option<string>> = [
+	public readonly gameTypeOptions: Array<Option<string>> = [
 		{
 			label: "Single Deck",
-			value: MapType.SINGLE,
+			value: GameType.SINGLE,
 			help: "Rule 901.15. Single Planar Deck Option.",
 		},
 		{
 			label: "Multiple Decks",
-			value: MapType.MULTI,
+			value: GameType.MULTI,
 			help: "Each player provides their 10 cards Planar Deck.",
 		},
 		{
 			label: "Eternities Map",
-			value: MapType.ETERNITIES,
+			value: GameType.ETERNITIES,
 			help: 'The <a target="_blank" rel="noopener noreferrer" href="https://web.archive.org/web/20221005215028/https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19">Eternities Map</a> variant of Planechase.',
 		},
 	];
@@ -157,7 +157,7 @@ export default class Create extends Vue {
 	public openDeckBuilder = false;
 	public creating = false;
 
-	public mapType: MapType = MapType.SINGLE;
+	public mapType: GameType = GameType.SINGLE;
 	public subType: EternitiesMapSubType = EternitiesMapSubType.SINGLE_DECK;
 	public deckType: EternitiesMapDeckType = EternitiesMapDeckType.PLANES;
 
@@ -177,7 +177,7 @@ export default class Create extends Vue {
 	public deck: Array<Card> = [];
 
 	public get showSubType(): boolean {
-		return this.mapType === MapType.ETERNITIES;
+		return this.mapType === GameType.ETERNITIES;
 	}
 
 	public get showDeckType(): boolean {
@@ -191,7 +191,7 @@ export default class Create extends Vue {
 	}
 
 	public get canDefaults(): boolean {
-		return this.mapType !== MapType.MULTI && this.deck.length === 0;
+		return this.mapType !== GameType.MULTI && this.deck.length === 0;
 	}
 
 	public get isDeckValid(): DeckState {
@@ -202,17 +202,17 @@ export default class Create extends Vue {
 
 	public get deckHelp(): string {
 		switch (true) {
-			case this.mapType === MapType.SINGLE:
+			case this.mapType === GameType.SINGLE:
 				return "A default deck containing all Planes and Phenomena will be used.";
-			case this.mapType === MapType.ETERNITIES &&
+			case this.mapType === GameType.ETERNITIES &&
 				this.subType === EternitiesMapSubType.SINGLE_DECK &&
 				this.deckType === EternitiesMapDeckType.PLANES:
 				return "A default deck containing only Planes will be used.";
-			case this.mapType === MapType.ETERNITIES &&
+			case this.mapType === GameType.ETERNITIES &&
 				this.subType === EternitiesMapSubType.SINGLE_DECK &&
 				this.deckType === EternitiesMapDeckType.ALL:
 				return "A default deck containing all Planes and Phenomena will be used.";
-			case this.mapType === MapType.ETERNITIES &&
+			case this.mapType === GameType.ETERNITIES &&
 				this.subType === EternitiesMapSubType.DUAL_DECK:
 				return "Two decks will be used. One with all Planes, the other with all Phenomena.";
 			default:

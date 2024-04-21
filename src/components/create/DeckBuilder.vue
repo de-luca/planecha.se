@@ -105,8 +105,8 @@ import {
 
 import { Imgable } from "#/components/Imgable";
 import { type Card, Phenomenon, Plane } from "#/model/card";
-import { MapType } from "#/model/map";
-import { EternitiesMapDeckType } from "#/model/map/eternities";
+import { GameType } from "#/model/game";
+import { EternitiesMapDeckType } from "#/model/game/eternities";
 import { getAllCards } from "#/services/cardProvider";
 import { useMain } from "#/store/main";
 
@@ -144,7 +144,7 @@ export default class DeckBuilder extends Imgable {
 	public created() {
 		this.typeFilters.push({ label: "Plane" });
 		if (
-			this.reqs.mapType !== MapType.ETERNITIES ||
+			this.reqs.mapType !== GameType.ETERNITIES ||
 			this.reqs.deckType !== EternitiesMapDeckType.PLANES
 		) {
 			this.typeFilters.push({ label: "Phenomenon" });
@@ -396,4 +396,3 @@ export default class DeckBuilder extends Imgable {
   }
 }
 </style>
-#/services/setProvider#/services/cardProvider

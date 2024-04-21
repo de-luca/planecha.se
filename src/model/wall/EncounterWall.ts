@@ -1,4 +1,4 @@
-import type { TriggerConfig } from "../map/eternities";
+import type { TriggerConfig } from "../game/eternities";
 import type { Wall } from "./Wall";
 
 export interface EncounterWall extends Wall {

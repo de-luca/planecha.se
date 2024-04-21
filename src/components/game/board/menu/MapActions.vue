@@ -45,7 +45,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-facing-decorator";
 import { Phenomenon } from "#/model/card";
-import { EternitiesMap } from "#/model/map/eternities";
+import { EternitiesMap } from "#/model/game/eternities";
 import { useMain } from "#/store/main";
 import LookAtBtn from "./LookAtBtn.vue";
 
@@ -62,15 +62,15 @@ export default class MapActions extends Vue {
 	private store = useMain();
 
 	public get isEternities(): boolean {
-		return this.store.map instanceof EternitiesMap;
+		return this.store.game instanceof EternitiesMap;
 	}
 
 	public get hasStarted(): boolean {
-		return this.store.map.hasStarted;
+		return this.store.game.hasStarted;
 	}
 
 	public get isPhenomenon(): boolean {
-		return this.store.map.active[0] instanceof Phenomenon;
+		return this.store.game.active[0] instanceof Phenomenon;
 	}
 
 	public start() {

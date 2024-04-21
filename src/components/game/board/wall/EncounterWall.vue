@@ -63,7 +63,7 @@ import {
 	EncounterMechanic,
 	type TriggerConfig,
 	type TriggerConfigEnabled,
-} from "#/model/map/eternities";
+} from "#/model/game/eternities";
 import { useMain } from "#/store/main";
 import type { WallConfig } from "./types";
 
@@ -196,3 +196,4 @@ export default class EncounterWall extends Imgable {
   }
 }
 </style>
+#/model/game/eternities

@@ -155,4 +155,3 @@ export default class PresetList extends Vue {
   border-bottom: 1px solid var(--border-color);
 }
 </style>
-#/services/presetProvider

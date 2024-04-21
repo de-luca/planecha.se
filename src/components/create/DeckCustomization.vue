@@ -240,4 +240,4 @@ export default class DeckCustomization extends Imgable {
     display: none;
   }
 }
-</style>#/services/cardProvider
+</style>

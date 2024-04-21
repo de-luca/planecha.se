@@ -58,7 +58,7 @@
 import { Component, Prop } from "vue-facing-decorator";
 import { Imgable } from "#/components/Imgable";
 import type { Card } from "#/model/card";
-import type { Revealed } from "#/model/map";
+import type { Revealed } from "#/model/game";
 import type { WallConfig } from "../types";
 import type { PickedLeft, RevealConfig } from "./types";
 

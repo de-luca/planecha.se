@@ -43,7 +43,7 @@ export default class StackWall extends Imgable {
 	public active: Array<Card> = [];
 
 	public created(): void {
-		this.active = [...(this.cards ?? useMain().map.active)];
+		this.active = [...(this.cards ?? useMain().game.active)];
 	}
 
 	public done(): void {

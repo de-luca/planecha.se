@@ -19,7 +19,7 @@ export function versionizer({ store }: PiniaPluginContext) {
 	if (isMain(store)) {
 		store.$onAction(({ after, store, name }) => {
 			if (actions.includes(name)) {
-				after(() => store.sync(store.repo.commit(name, store.map.dump())));
+				after(() => store.sync(store.repo.commit(name, store.game.dump())));
 			}
 		}, true);
 	}

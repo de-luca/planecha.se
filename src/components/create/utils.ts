@@ -1,9 +1,9 @@
 import { Card, Plane } from "#/model/card";
-import { MapType } from "#/model/map";
-import type { EternitiesMapDeckType } from "#/model/map/eternities";
+import { GameType } from "#/model/game";
+import type { EternitiesMapDeckType } from "#/model/game/eternities";
 
 export interface DeckReqs {
-	mapType: MapType;
+	mapType: GameType;
 	deckType?: EternitiesMapDeckType;
 }
 
@@ -30,21 +30,21 @@ export interface Requirement {
 	max?: number;
 }
 
-type Requirements = Record<MapType, Partial<Record<CardType, Requirement>>>;
+type Requirements = Record<GameType, Partial<Record<CardType, Requirement>>>;
 export const REQUIREMENTS: Requirements = {
-	[MapType.SINGLE]: {
+	[GameType.SINGLE]: {
 		planes: { name: "Planes", type: Plane, min: 5 },
 	},
-	[MapType.MULTI]: {
+	[GameType.MULTI]: {
 		cards: { name: "Cards", type: Card, min: 10, max: 10 },
 		planes: { name: "Planes", type: Plane, min: 5 },
 	},
-	[MapType.ETERNITIES]: {
+	[GameType.ETERNITIES]: {
 		planes: { name: "Planes", type: Plane, min: 25 },
 	},
 };
 
-export function getDeckState(type: MapType, deck: Array<Card>): DeckState {
+export function getDeckState(type: GameType, deck: Array<Card>): DeckState {
 	const req = REQUIREMENTS[type];
 	const counts = Object.keys(req).map(() => 0);
 	for (const card of deck) {

@@ -67,4 +67,3 @@ export default class CardList extends Imgable {
   }
 }
 </style>
-#/services/cardProvider

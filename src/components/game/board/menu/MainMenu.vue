@@ -98,7 +98,7 @@ export default class MainMenu extends Vue {
 	}
 
 	public get inGame(): boolean {
-		return !!this.store._map;
+		return !!this.store._game;
 	}
 
 	public get online(): boolean {

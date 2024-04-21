@@ -1,5 +1,5 @@
 import { type Patch, diff } from "#/utils/delta";
-import type { Exported } from "../map";
+import type { Exported } from "../game";
 import { Repo } from "./Repo";
 
 export class LightSyncRepo extends Repo {

@@ -67,7 +67,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator";
-import { DualDeck, EternitiesMap } from "#/model/map/eternities";
+import { DualDeck, EternitiesMap } from "#/model/game/eternities";
 import { useMain } from "#/store/main";
 
 @Component
@@ -76,36 +76,36 @@ export default class DeckStatus extends Vue {
 
 	public get revealed(): number {
 		return (
-			(this.store.map.revealed?.others.length ?? 0) +
-			(this.store.map.revealed?.relevant.length ?? 0)
+			(this.store.game.revealed?.others.length ?? 0) +
+			(this.store.game.revealed?.relevant.length ?? 0)
 		);
 	}
 
 	public get active(): number {
-		if (this.store.map instanceof EternitiesMap) {
-			return this.store.map.tiles.reduce((sum, t) => sum + t.plane.length, 0);
+		if (this.store.game instanceof EternitiesMap) {
+			return this.store.game.tiles.reduce((sum, t) => sum + t.plane.length, 0);
 		}
 
-		return this.store.map.active.length;
+		return this.store.game.active.length;
 	}
 
 	public get remaining(): number {
-		return this.store.map.remaining;
+		return this.store.game.remaining;
 	}
 
 	public get played(): number {
-		return this.store.map.played.length;
+		return this.store.game.played.length;
 	}
 
 	public get remainingPhenomena(): number | null {
-		return this.store.map instanceof DualDeck
-			? this.store.map.remainingPhenomena
+		return this.store.game instanceof DualDeck
+			? this.store.game.remainingPhenomena
 			: null;
 	}
 
 	public get playedPhenomena(): number | null {
-		return this.store.map instanceof DualDeck
-			? this.store.map.playedPhenomena.length
+		return this.store.game instanceof DualDeck
+			? this.store.game.playedPhenomena.length
 			: null;
 	}
 }
@@ -152,4 +152,4 @@ export default class DeckStatus extends Vue {
     }
   }
 }
-</style>
+</style>#/model/game/eternities

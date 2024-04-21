@@ -1,5 +1,5 @@
 import { type Patch, diff, patch } from "#/utils/delta";
-import type { Exported } from "../map";
+import type { Exported } from "../game";
 import type { Clone, MaybeExported, RepoInterface } from "./RepoInterface";
 
 export class Repo implements RepoInterface {

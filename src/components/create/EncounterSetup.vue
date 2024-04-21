@@ -118,7 +118,7 @@ import { Component, Prop, Vue } from "vue-facing-decorator";
 import {
 	EncounterMechanic,
 	type EncounterTriggers,
-} from "#/model/map/eternities";
+} from "#/model/game/eternities";
 
 @Component({ emits: ["update:modelValue"] })
 export default class EncounterSetup extends Vue {

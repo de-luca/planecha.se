@@ -161,4 +161,3 @@ export default class DiceModal extends Vue {
   }
 }
 </style>
-./dices

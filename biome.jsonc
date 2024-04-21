@@ -9,9 +9,6 @@
 			"style": {
 				"noNonNullAssertion": "off"
 			},
-			"suspicious": {
-				"noShadowRestrictedNames": "off"
-			},
 			"recommended": true
 		}
 	}

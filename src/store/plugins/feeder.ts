@@ -1,19 +1,23 @@
 import type { PiniaPluginContext } from "pinia";
 import { type Card, Plane } from "#/model/card";
-import { type ChaosInput, MapType, type UpdateCounterInput } from "#/model/map";
+import {
+	type ChaosInput,
+	GameType,
+	type UpdateCounterInput,
+} from "#/model/game";
 import { isMain } from "../main";
 
 const chaos = '<abbr class="symbol chaos" title="chaos">{CHAOS}</abbr>';
 const plnwlk =
 	'<abbr class="symbol planeswalk" title="planeswalk">{CHAOS}</abbr>';
 
-function gameType(type: MapType): string {
+function gameType(type: GameType): string {
 	switch (type) {
-		case MapType.SINGLE:
+		case GameType.SINGLE:
 			return "Single Deck";
-		case MapType.MULTI:
+		case GameType.MULTI:
 			return "Multiple Decks";
-		case MapType.ETERNITIES:
+		case GameType.ETERNITIES:
 			return "Eternities Map";
 	}
 }
@@ -40,7 +44,7 @@ export function createFeeder({ store }: PiniaPluginContext) {
 						return store.pushToFeed(
 							store.isMulti
 								? "Game starts"
-								: `Game starts on <b>${store.map.active[0].name}</b>`,
+								: `Game starts on <b>${store.game.active[0].name}</b>`,
 						);
 
 					case "addActivePlane":
@@ -51,10 +55,10 @@ export function createFeeder({ store }: PiniaPluginContext) {
 					case "planeswalk":
 						return store.pushToFeed(
 							`<b>${store.logName}</b> ${
-								store.map?.active[0] instanceof Plane
+								store.game?.active[0] instanceof Plane
 									? `${plnwlk} to`
 									: "encountered"
-							} <b>${store.map?.active[0].name}</b>`,
+							} <b>${store.game?.active[0].name}</b>`,
 						);
 
 					case "chaos":
@@ -65,7 +69,7 @@ export function createFeeder({ store }: PiniaPluginContext) {
 
 					case "updateCounters": {
 						const payload = args[0] as UpdateCounterInput;
-						const plane = store.map.active.find(
+						const plane = store.game.active.find(
 							(c: Card) => c.id === payload.planeId,
 						) as Plane;
 						const message =

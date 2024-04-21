@@ -96,7 +96,7 @@ export default class LookAtBtn extends Vue {
 			sendShownTo: "bottom",
 			initiator: "",
 		};
-		this.store.map.walls.set(StateKey.REVEALER, revealer);
+		this.store.game.walls.set(StateKey.REVEALER, revealer);
 		this.active = false;
 	}
 }

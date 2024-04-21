@@ -124,4 +124,3 @@ export default class DiceMenu extends Vue {
   }
 }
 </style>
-./modals/dices

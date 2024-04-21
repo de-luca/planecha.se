@@ -9,7 +9,7 @@ import {
 import type { InitPayload, MainStore } from "#/store/main";
 import { BlockedError, OfflineError, TimeoutError } from "./errors";
 
-import type { MapType } from "#/model/map";
+import type { GameType } from "#/model/game";
 import type { Patch } from "#/utils/delta";
 import { once } from "#/utils/invoke";
 
@@ -37,7 +37,7 @@ export type Hey = {
 };
 
 interface GameData {
-	mapType: MapType;
+	gameType: GameType;
 }
 
 type Props = { store: MainStore } & (

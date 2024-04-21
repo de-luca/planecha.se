@@ -7,17 +7,17 @@ import {
 	type BuildProps,
 	type ChaosInput,
 	type Exported,
-	type MapInterface,
-	MapType,
+	type GameInterface,
+	GameType,
 	type Multi,
 	type PlaneswalkInput,
 	type ResolveRevealInput,
 	type RevealUntilInput,
 	type UpdateCounterInput,
-	build as buildMap,
-	restore as restoreMap,
-} from "#/model/map";
-import { DualDeck, type EncounterInput } from "#/model/map/eternities";
+	build as buildGame,
+	restore as restoreGame,
+} from "#/model/game";
+import { DualDeck, type EncounterInput } from "#/model/game/eternities";
 import { Net, type NetInterface } from "#/model/net/Net";
 import {
 	type Clone,
@@ -58,7 +58,7 @@ export interface JoinPayload {
 export interface InitPayload {
 	mapConfig: BuildProps;
 	repo: Clone;
-	map: Exported;
+	game: Exported;
 	feed: Array<string>;
 }
 
@@ -70,7 +70,7 @@ export interface PlayerLayout {
 export interface State {
 	_config?: BuildProps;
 
-	_map?: MapInterface;
+	_game?: GameInterface;
 	_repo?: RepoInterface;
 	net?: NetInterface;
 
@@ -92,7 +92,7 @@ function getState(): State {
 	return {
 		_config: undefined,
 
-		_map: undefined,
+		_game: undefined,
 		_repo: undefined,
 		net: undefined,
 
@@ -134,9 +134,9 @@ export const useMain = defineStore("main", {
 			if (this._config) return this._config;
 			throw new Error("Config is undefined (store is in unset state)");
 		},
-		map(): MapInterface {
-			if (this._map) return this._map;
-			throw new Error("Map is undefined (store is in unset state)");
+		game(): GameInterface {
+			if (this._game) return this._game;
+			throw new Error("Game is undefined (store is in unset state)");
 		},
 		repo(): RepoInterface {
 			if (this._repo) return this._repo;
@@ -149,20 +149,20 @@ export const useMain = defineStore("main", {
 			return this.net?.gameId;
 		},
 		isMulti(): boolean {
-			return this._config?.type === MapType.MULTI;
+			return this._config?.type === GameType.MULTI;
 		},
 		initPayload(): InitPayload {
 			return {
 				mapConfig: this.config,
 				repo: this.repo.clone(),
-				map: this.map.export(),
+				game: this.game.export(),
 				feed: [...this.feed],
 			};
 		},
 		// gameStatus(): PreflightPayload {
 		//   return {
 		//     mapType: this.config.type,
-		//     hasStarted: this.map.hasStarted,
+		//     hasStarted: this.game.hasStarted,
 		//     players: [
 		//       this.selfName!,
 		//       ...this.mates.values(),
@@ -211,7 +211,7 @@ export const useMain = defineStore("main", {
 		bye(payload: ByePayload): void {
 			this.mates.delete(payload.id);
 			if (this.isMulti) {
-				(this.map as Multi).removeMate(payload.id);
+				(this.game as Multi).removeMate(payload.id);
 				this.playerLayout.players.splice(
 					this.playerLayout.players.findIndex((p) => p === payload.id),
 					1,
@@ -222,17 +222,17 @@ export const useMain = defineStore("main", {
 		init(payload: BuildProps) {
 			this.leave();
 			this._config = payload;
-			this._map = buildMap(payload);
+			this._game = buildGame(payload);
 			this._repo = buildRepo(payload);
 			this.ready = true;
 		},
 
 		async open() {
-			this.net = await Net.create(this, { mapType: this.config.type });
+			this.net = await Net.create(this, { gameType: this.config.type });
 			if (this.isMulti) {
 				this.net.initHandler = (data, peer) =>
 					this.apply(
-						{ event: "__init__", delta: diff<MaybeExported>({}, data.map) },
+						{ event: "__init__", delta: diff<MaybeExported>({}, data.game) },
 						peer,
 					);
 			}
@@ -247,7 +247,7 @@ export const useMain = defineStore("main", {
 		},
 
 		join(payload: BuildProps) {
-			if (payload.type !== MapType.MULTI) {
+			if (payload.type !== GameType.MULTI) {
 				return this.net?.join(
 					once((data) => {
 						this.applyReset(data);
@@ -257,20 +257,20 @@ export const useMain = defineStore("main", {
 			}
 
 			this._config = payload;
-			this._map = buildMap(payload);
+			this._game = buildGame(payload);
 			this._repo = buildRepo(payload);
 
 			return this.net?.join(
 				once((data, peer) => {
 					this.feed = data.feed;
 					this.apply(
-						{ event: "__init__", delta: diff<MaybeExported>({}, data.map) },
+						{ event: "__init__", delta: diff<MaybeExported>({}, data.game) },
 						peer,
 					);
 					this.ready = true;
 					this.net!.initHandler = (data, peer) =>
 						this.apply(
-							{ event: "__init__", delta: diff<MaybeExported>({}, data.map) },
+							{ event: "__init__", delta: diff<MaybeExported>({}, data.game) },
 							peer,
 						);
 				}),
@@ -292,7 +292,7 @@ export const useMain = defineStore("main", {
 			this.net?.sync(patch);
 		},
 		apply(patch: Patch, peer: string): void {
-			this.map.apply(patch, peer);
+			this.game.apply(patch, peer);
 			this.repo.apply(patch);
 		},
 		undo(): void {
@@ -304,21 +304,21 @@ export const useMain = defineStore("main", {
 				return;
 			}
 
-			const base = { ...this.map.dump(), deck: { cards: [], played: [] } };
+			const base = { ...this.game.dump(), deck: { cards: [], played: [] } };
 			this.applyUndo(index);
 			this.net?.sync({
 				event: "__undo__",
 				delta: diff(base, {
-					...this.map.dump(),
+					...this.game.dump(),
 					deck: { cards: [], played: [] },
 				}),
 			});
 		},
 		applyUndo(index: number): void {
-			this.map.restore(this.repo.checkout(index));
+			this.game.restore(this.repo.checkout(index));
 		},
 		reset(): void {
-			this._map = buildMap(this.config);
+			this._game = buildGame(this.config);
 			this._repo = buildRepo(this.config);
 			this.feed = [];
 			this.net?.reset(this.initPayload);
@@ -331,23 +331,23 @@ export const useMain = defineStore("main", {
 			this.feed = payload.feed;
 
 			if (this.isMulti) {
-				this._map = buildMap(this.config);
+				this._game = buildGame(this.config);
 				this._repo = buildRepo(this.config);
 				this.net?.init(this.initPayload);
 				return;
 			}
 
 			this._config = payload.mapConfig;
-			this._map = restoreMap(payload.map);
+			this._game = restoreGame(payload.game);
 			this._repo = restoreRepo(payload);
 		},
 
 		startGame(): void {
-			this.map.start();
+			this.game.start();
 		},
 
 		chaos(payload: Omit<ChaosInput, "initiator">): void {
-			this.map.chaos({ ...payload, initiator: this.logName });
+			this.game.chaos({ ...payload, initiator: this.logName });
 			if (
 				payload.card instanceof Phenomenon ||
 				(payload.card instanceof Plane &&
@@ -358,42 +358,42 @@ export const useMain = defineStore("main", {
 		},
 
 		planeswalk(payload: Omit<PlaneswalkInput, "initiator">): void {
-			this.map.planeswalk({ ...payload, initiator: this.logName });
+			this.game.planeswalk({ ...payload, initiator: this.logName });
 		},
 		addActivePlane(payload: Omit<AddActivePlaneInput, "initiator">): void {
-			this.map.addActivePlane({ ...payload, initiator: this.logName });
+			this.game.addActivePlane({ ...payload, initiator: this.logName });
 		},
 
 		resolve() {
-			this.map.resolve({ initiator: this.logName });
+			this.game.resolve({ initiator: this.logName });
 		},
 		updateCounters(payload: UpdateCounterInput) {
-			this.map.updateCounter(payload);
+			this.game.updateCounter(payload);
 		},
 
 		privateReveal(payload: RevealUntilInput) {
-			this.map.revealUntil(payload);
+			this.game.revealUntil(payload);
 		},
 		privateResolveReveal(payload: ResolveRevealInput) {
-			this.map.resolveReveal(payload);
+			this.game.resolveReveal(payload);
 			!payload.stop && this.resolveOpStack();
 		},
 
 		reveal(payload: RevealUntilInput) {
-			this.map.revealUntil(payload);
+			this.game.revealUntil(payload);
 		},
 		resolveReveal(payload: ResolveRevealInput) {
-			this.map.resolveReveal(payload);
+			this.game.resolveReveal(payload);
 			!payload.stop && this.resolveOpStack();
 		},
 
 		updateWallState(payload: ApplyInput) {
-			this.map.walls.apply(payload);
+			this.game.walls.apply(payload);
 		},
 
 		encounter(payload: Omit<EncounterInput, "initiator">) {
-			if (this.map instanceof DualDeck) {
-				this.map.encounter({ ...payload, initiator: this.logName });
+			if (this.game instanceof DualDeck) {
+				this.game.encounter({ ...payload, initiator: this.logName });
 			}
 		},
 

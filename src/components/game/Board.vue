@@ -33,8 +33,8 @@
       <DeckStatus class="status" />
     </div>
 
-    <div class="map">
-      <component ref="map" :is="mapComponent" />
+    <div class="game">
+      <component ref="game" :is="mapComponent" />
     </div>
 
     <Feed class="feed" />
@@ -59,15 +59,15 @@ import shuffle from "lodash.shuffle";
 import type { Component as VueComponent } from "vue";
 import { Component, Vue } from "vue-facing-decorator";
 import { type Card, Plane } from "#/model/card";
-import { MapType, type Revealed } from "#/model/map";
+import { GameType, type Revealed } from "#/model/game";
 import {
 	type EternitiesMapSpecs,
 	EternitiesMapSubType,
-} from "#/model/map/eternities";
+} from "#/model/game/eternities";
 import { RevealerSource, StateKey } from "#/model/wall";
 import { EventType, eventBus } from "#/services/eventBus";
 import { Op, useMain } from "#/store/main";
-import type { Map as CmpMap } from "#board/map/Map";
+import type { Game as CmpGame } from "#board/game/Game";
 import { getRevealer } from "#board/wall/reveal/factory";
 import type { PickedLeft, RevealConfig } from "#board/wall/reveal/types";
 
@@ -134,14 +134,14 @@ export default class Board extends Vue {
 	}
 
 	public get mapComponent(): VueComponent {
-		const specs = this.store.map.specs;
+		const specs = this.store.game.specs;
 
 		switch (specs.type) {
-			case MapType.SINGLE:
+			case GameType.SINGLE:
 				return Single;
-			case MapType.MULTI:
+			case GameType.MULTI:
 				return Multi;
-			case MapType.ETERNITIES:
+			case GameType.ETERNITIES:
 				return (specs as EternitiesMapSpecs).subType ===
 					EternitiesMapSubType.SINGLE_DECK
 					? SingleDeck
@@ -166,15 +166,15 @@ export default class Board extends Vue {
 			return this.revealed !== undefined;
 		}
 
-		return !this.store.map.walls.isEmpty();
+		return !this.store.game.walls.isEmpty();
 	}
 
 	public get revealed(): Revealed | undefined {
-		return this.store.map.revealed;
+		return this.store.game.revealed;
 	}
 
 	public get revealer(): LocalRevealerConfig | undefined {
-		const revealer = this.store.map.walls.get(StateKey.REVEALER);
+		const revealer = this.store.game.walls.get(StateKey.REVEALER);
 
 		if (!revealer) {
 			return undefined;
@@ -288,10 +288,10 @@ export default class Board extends Vue {
 	}
 
 	public chaos(): void {
-		if (this.useStack(this.store.map.active)) {
+		if (this.useStack(this.store.game.active)) {
 			this.stackWall = true;
 		} else {
-			for (const card of this.store.map.active) {
+			for (const card of this.store.game.active) {
 				this.store.chaos({ card });
 			}
 		}
@@ -312,19 +312,19 @@ export default class Board extends Vue {
 			return;
 		}
 
-		(this.$refs.map as CmpMap).planeswalk();
+		(this.$refs.game as CmpGame).planeswalk();
 	}
 
 	public customPlaneswalk(
-		...args: Parameters<CmpMap["customPlaneswalk"]>
-	): ReturnType<CmpMap["customPlaneswalk"]> {
-		(this.$refs.map as CmpMap).customPlaneswalk(...args);
+		...args: Parameters<CmpGame["customPlaneswalk"]>
+	): ReturnType<CmpGame["customPlaneswalk"]> {
+		(this.$refs.game as CmpGame).customPlaneswalk(...args);
 	}
 
 	public putBack(
-		...args: Parameters<CmpMap["putBack"]>
-	): ReturnType<CmpMap["putBack"]> {
-		(this.$refs.map as CmpMap).putBack(...args);
+		...args: Parameters<CmpGame["putBack"]>
+	): ReturnType<CmpGame["putBack"]> {
+		(this.$refs.game as CmpGame).putBack(...args);
 	}
 
 	private useStack(cards: Array<Card>): boolean {
@@ -343,7 +343,7 @@ export default class Board extends Vue {
   overflow: hidden;
   display: grid;
   grid-template-columns: 5rem 1fr 20px;
-  grid-template-areas: "nav map feed";
+  grid-template-areas: "nav game feed";
   gap: 1rem;
 }
 
@@ -409,8 +409,8 @@ export default class Board extends Vue {
   grid-area: feed;
 }
 
-.map {
-  grid-area: map;
+.game {
+  grid-area: game;
   position: relative;
   margin-left: auto;
   margin-right: auto;

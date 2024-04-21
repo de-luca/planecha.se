@@ -33,7 +33,7 @@ const routes: Array<RouteRecordRaw> = [
 		component: () => import("#/views/Game.vue"),
 		beforeEnter: () => {
 			try {
-				useMain().map;
+				useMain().game;
 				return true;
 			} catch (_) {
 				console.log("NO MAP STATE => /CREATE");

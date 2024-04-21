@@ -37,7 +37,7 @@ export default class NameModal extends Vue {
 	public name: string = useMain().selfName ?? "";
 
 	public get inGame(): boolean {
-		return !!this.store._map;
+		return !!this.store._game;
 	}
 
 	public save(): void {

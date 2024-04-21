@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { diff } from "#/utils/delta";
-import { type Exported, MapType } from "../map";
+import { type Exported, GameType } from "../game";
 import { Repo } from "./Repo";
 
 const exported: Exported = {
 	active: [],
 	deck: { cards: [], played: [] },
 	hasStarted: true,
-	specs: { type: MapType.SINGLE },
+	specs: { type: GameType.SINGLE },
 	wallStates: {},
 };
 
