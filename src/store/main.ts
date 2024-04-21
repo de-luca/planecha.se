@@ -403,7 +403,6 @@ export const useMain = defineStore("main", {
 		resolveOpStack() {
 			console.log("RESOLVE OP STACK");
 			const opr = this.opStack.pop();
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
 			opr && this[opr.op](opr.payload);
 		},
