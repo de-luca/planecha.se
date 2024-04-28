@@ -1,6 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { Phenomenon, Plane } from "../model/card";
-import { CardProvider } from "./cardProvider";
+import {
+	getAllCards,
+	getCard,
+	getCardList,
+	getCustomDeck,
+	getDeck,
+	getPhenomenonCards,
+	getPhenomenonDeck,
+	getPlaneCards,
+	getPlaneDeck,
+	restoreDeck,
+} from "./cardProvider";
 
 import cards from "#assets/cards.json";
 
@@ -8,68 +19,68 @@ const CARD_COUNT = cards.length;
 const PLANE_COUNT = cards.filter((c) => c.typeLine !== "Phenomenon").length;
 const PHENOMENA_COUNT = cards.filter((c) => c.typeLine === "Phenomenon").length;
 
-describe("CardProvider.getCard", () => {
+describe("getCard", () => {
 	it("returns a single card", () => {
-		const card = CardProvider.getCard("43a23de7-0738-4b03-b87d-5a7d1144825c");
+		const card = getCard("43a23de7-0738-4b03-b87d-5a7d1144825c");
 		expect(card.name).toEqual("Glimmervoid Basin");
 	});
 });
 
-describe("CardProvider.getAllCards", () => {
+describe("getAllCards", () => {
 	it("returns all the cards", () => {
-		expect(CardProvider.getAllCards()).toHaveLength(CARD_COUNT);
+		expect(getAllCards()).toHaveLength(CARD_COUNT);
 	});
 });
 
-describe("CardProvider.getCardList", () => {
+describe("getCardList", () => {
 	it("returns only requested cards in order (Array<string>)", () => {
 		const ids = [
 			"15b979de-c8ee-4664-9ca7-6c4eb3346967",
 			"38f84e55-049c-441e-b4e2-1e207ab5dbe5",
 		];
-		const cards = CardProvider.getCardList(ids);
+		const cards = getCardList(ids);
 		expect(cards).toHaveLength(2);
 		expect(cards[0].id).toEqual(ids[0]);
 		expect(cards[1].id).toEqual(ids[1]);
 	});
 
-	it("returns only requested cards in order Array<ExportedCard>", () => {
+	it("returns only requested cards in order Array<CardDump>", () => {
 		const ids = [
 			{ id: "15b979de-c8ee-4664-9ca7-6c4eb3346967" },
 			{ id: "38f84e55-049c-441e-b4e2-1e207ab5dbe5" },
 		];
-		const cards = CardProvider.getCardList(ids);
+		const cards = getCardList(ids);
 		expect(cards).toHaveLength(2);
 		expect(cards[0].id).toEqual(ids[0].id);
 		expect(cards[1].id).toEqual(ids[1].id);
 	});
 });
 
-describe("CardProvider.getPlaneCards", () => {
+describe("getPlaneCards", () => {
 	it("returns only planes", () => {
-		const planes = CardProvider.getPlaneCards();
+		const planes = getPlaneCards();
 		expect(planes).toHaveLength(PLANE_COUNT);
 		expect(planes.every((p) => p instanceof Plane)).toBe(true);
 	});
 });
 
-describe("CardProvider.getPhenomenonCards", () => {
+describe("getPhenomenonCards", () => {
 	it("returns only phenomena", () => {
-		const phenomena = CardProvider.getPhenomenonCards();
+		const phenomena = getPhenomenonCards();
 		expect(phenomena).toHaveLength(PHENOMENA_COUNT);
 		expect(phenomena.every((p) => p instanceof Phenomenon)).toBe(true);
 	});
 });
 
-describe("CardProvider.getDeck", () => {
+describe("getDeck", () => {
 	it("returns a shuffled deck with all cards available", () => {
-		expect(CardProvider.getDeck().remaining).toEqual(CARD_COUNT);
+		expect(getDeck().remaining).toEqual(CARD_COUNT);
 	});
 });
 
-describe("CardProvider.getPlaneDeck", () => {
+describe("getPlaneDeck", () => {
 	it("returns a deck with only planes", () => {
-		const planeDeck = CardProvider.getPlaneDeck();
+		const planeDeck = getPlaneDeck();
 		expect(planeDeck.remaining).toEqual(PLANE_COUNT);
 		while (planeDeck.remaining > 0) {
 			expect(planeDeck.draw()).toBeInstanceOf(Plane);
@@ -77,9 +88,9 @@ describe("CardProvider.getPlaneDeck", () => {
 	});
 });
 
-describe("CardProvider.getPhenomenonDeck", () => {
+describe("getPhenomenonDeck", () => {
 	it("returns a deck with only phenomena", () => {
-		const phenomenonDeck = CardProvider.getPhenomenonDeck();
+		const phenomenonDeck = getPhenomenonDeck();
 		expect(phenomenonDeck.remaining).toEqual(PHENOMENA_COUNT);
 		while (phenomenonDeck.remaining > 0) {
 			expect(phenomenonDeck.draw()).toBeInstanceOf(Phenomenon);
@@ -87,13 +98,13 @@ describe("CardProvider.getPhenomenonDeck", () => {
 	});
 });
 
-describe("CardProvider.getCustomDeck", () => {
+describe("getCustomDeck", () => {
 	it("returns a deck with only requested cards", () => {
 		const ids = [
 			"15b979de-c8ee-4664-9ca7-6c4eb3346967",
 			"38f84e55-049c-441e-b4e2-1e207ab5dbe5",
 		];
-		const deck = CardProvider.getCustomDeck(ids);
+		const deck = getCustomDeck(ids);
 		expect(deck.remaining).toEqual(2);
 		while (deck.remaining > 0) {
 			expect(ids).toContain(deck.draw().id);
@@ -101,9 +112,9 @@ describe("CardProvider.getCustomDeck", () => {
 	});
 });
 
-describe("CardProvider.restoreDeck", () => {
+describe("restoreDeck", () => {
 	it("returns a Deck from a DeckState", () => {
-		const deck = CardProvider.restoreDeck({
+		const deck = restoreDeck({
 			cards: [{ id: "15b979de-c8ee-4664-9ca7-6c4eb3346967" }],
 			played: [{ id: "38f84e55-049c-441e-b4e2-1e207ab5dbe5" }],
 		});

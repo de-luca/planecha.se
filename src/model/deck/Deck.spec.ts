@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { CardProvider } from "#/services/cardProvider";
+import { getDeck } from "#/services/cardProvider";
 import { Card, Plane } from "../card";
 
 import cards from "#assets/cards.json";
@@ -8,7 +8,7 @@ const CARD_COUNT = cards.length;
 
 describe("Deck.draw", () => {
 	it("draws a card", () => {
-		const deck = CardProvider.getDeck();
+		const deck = getDeck();
 		expect(deck.remaining).toEqual(CARD_COUNT);
 		const drawn = deck.draw();
 		expect(drawn).toBeInstanceOf(Card);
@@ -16,7 +16,7 @@ describe("Deck.draw", () => {
 	});
 
 	it("reshuffle and draws a card", () => {
-		const deck = CardProvider.getDeck();
+		const deck = getDeck();
 		const shuffleSpy = vi.spyOn(deck, "shuffle");
 		while (deck.remaining > 0) {
 			deck.setPlayed(deck.draw());
@@ -33,7 +33,7 @@ describe("Deck.draw", () => {
 
 describe("Deck.setPlayed", () => {
 	it("sets a played card in the played pile", () => {
-		const deck = CardProvider.getDeck();
+		const deck = getDeck();
 		const drawn = deck.draw();
 		deck.setPlayed(drawn);
 		expect(deck.remaining).toEqual(CARD_COUNT - 1);
@@ -43,7 +43,7 @@ describe("Deck.setPlayed", () => {
 
 describe("Deck.drawPlane", () => {
 	it("draws a plane", () => {
-		const deck = CardProvider.getDeck();
+		const deck = getDeck();
 		const drawn = deck.drawPlane();
 		expect(drawn).toBeInstanceOf(Plane);
 		expect(deck.remaining).toEqual(CARD_COUNT - deck.played.length - 1);
@@ -52,7 +52,7 @@ describe("Deck.drawPlane", () => {
 
 describe("Deck.shuffle", () => {
 	it("shuffled played cards back", () => {
-		const deck = CardProvider.getDeck();
+		const deck = getDeck();
 		while (deck.remaining > 0) {
 			deck.setPlayed(deck.draw());
 		}
@@ -66,7 +66,7 @@ describe("Deck.shuffle", () => {
 
 describe("Deck.revealUntil", () => {
 	it("reveals a given number of requested Plane", () => {
-		const deck = CardProvider.getDeck();
+		const deck = getDeck();
 		const revealed = deck.revealUntil(2, Plane);
 		expect(revealed.relevant).toHaveLength(2);
 		for (const card of revealed.relevant) {
@@ -78,7 +78,7 @@ describe("Deck.revealUntil", () => {
 	});
 
 	it("reveals a given number of requested Card", () => {
-		const deck = CardProvider.getDeck();
+		const deck = getDeck();
 		const revealed = deck.revealUntil(2);
 		expect(revealed.relevant).toHaveLength(2);
 		expect(revealed.others).toHaveLength(0);
@@ -90,7 +90,7 @@ describe("Deck.revealUntil", () => {
 
 describe("Deck.putOnTop", () => {
 	it("puts given cards on top of the deck", () => {
-		const deck = CardProvider.getDeck();
+		const deck = getDeck();
 		const card = deck.draw();
 		deck.putOnTop([card]);
 		expect(deck.remaining).toEqual(CARD_COUNT);
@@ -100,7 +100,7 @@ describe("Deck.putOnTop", () => {
 
 describe("Deck.putOnTheBottom", () => {
 	it("puts given cards on the bottom of the deck", () => {
-		const deck = CardProvider.getDeck();
+		const deck = getDeck();
 		const card = deck.draw();
 		deck.putOnTheBottom([card]);
 		expect(deck.remaining).toEqual(CARD_COUNT);

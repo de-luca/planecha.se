@@ -1,11 +1,11 @@
 import { type Patch, diff, patch } from "#/utils/delta";
-import type { Exported } from "../game";
-import type { Clone, MaybeExported, RepoInterface } from "./RepoInterface";
+import type { GameDump } from "../game";
+import type { Clone, MaybeDump, RepoInterface } from "./RepoInterface";
 
 export class Repo implements RepoInterface {
 	private static readonly UNSTABLE_EVENT = ["reveal", "updateWallState"];
 
-	private _stage?: Exported;
+	private _stage?: GameDump;
 	private _head: number;
 	private _patches: Array<Patch>;
 
@@ -27,7 +27,7 @@ export class Repo implements RepoInterface {
 		return i;
 	}
 
-	public commit(event: string, newVersion: Exported): Patch {
+	public commit(event: string, newVersion: GameDump): Patch {
 		const patch = {
 			event,
 			delta: diff(this._stage, newVersion),
@@ -39,7 +39,7 @@ export class Repo implements RepoInterface {
 
 	public apply(p: Patch): void {
 		if (p.delta) {
-			this._stage = patch<MaybeExported, Exported>(this._stage ?? {}, p.delta);
+			this._stage = patch<MaybeDump, GameDump>(this._stage ?? {}, p.delta);
 		}
 		this.updateIndex(p);
 	}
@@ -51,15 +51,15 @@ export class Repo implements RepoInterface {
 		this._head = this._patches.push(patch) - 1;
 	}
 
-	public checkout(index: number): Exported {
+	public checkout(index: number): GameDump {
 		let base = {};
 		for (let i = 0; i <= index; i++)
 			if (this._patches[i].delta) {
-				base = patch<MaybeExported, Exported>(base, this._patches[i].delta!);
+				base = patch<MaybeDump, GameDump>(base, this._patches[i].delta!);
 			}
 		this._head = index;
-		this._stage = base as Exported;
-		return base as Exported;
+		this._stage = base as GameDump;
+		return base as GameDump;
 	}
 
 	public clone(): Clone {

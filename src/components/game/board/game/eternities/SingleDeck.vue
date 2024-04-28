@@ -33,8 +33,8 @@
 import { Component } from "vue-facing-decorator";
 import { Eternities } from "./Eternities";
 
-import Tile from "#board/map/eternities/tiles/Tile.vue";
-import TileDetails from "#board/map/eternities/tiles/TileDetails.vue";
+import Tile from "#board/game/eternities/tiles/Tile.vue";
+import TileDetails from "#board/game/eternities/tiles/TileDetails.vue";
 import PhenomenonWall from "#board/wall/PhenomenonWall.vue";
 
 @Component({

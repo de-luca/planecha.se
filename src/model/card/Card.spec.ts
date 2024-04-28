@@ -16,7 +16,7 @@ class TestCard extends Card {
 	}
 }
 
-describe("Card.export", () => {
+describe("Card.dump", () => {
 	it("exports the state of the card", () => {
 		const card = new TestCard({
 			id: "00000000-0000-0000-0000-000000000000",
@@ -27,7 +27,7 @@ describe("Card.export", () => {
 			sets: ["ABC"],
 		});
 
-		expect(card.export()).toEqual({
+		expect(card.dump()).toEqual({
 			id: "00000000-0000-0000-0000-000000000000",
 		});
 	});

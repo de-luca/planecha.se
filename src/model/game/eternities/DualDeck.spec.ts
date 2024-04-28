@@ -7,7 +7,7 @@ import { DualDeck, EncounterMechanic } from "./DualDeck";
 import { EternitiesMapDeckType, EternitiesMapSubType } from "./EternitiesMap";
 
 describe("DualDeck.specs", () => {
-	it("returns a tile from an exported payload", () => {
+	it("produces expected specs", () => {
 		const game = new DualDeck({
 			deck: getPlaneDeck(),
 			phenomenaDeck: getPhenomenonDeck(),
@@ -38,7 +38,7 @@ describe("DualDeck.specs", () => {
 });
 
 describe("DualDeck.encounter", () => {
-	it("returns a tile from an exported payload", () => {
+	it("uses the phenomena deck on encounter", () => {
 		const game = new DualDeck({
 			deck: getPlaneDeck(),
 			phenomenaDeck: getPhenomenonDeck(),
@@ -101,8 +101,8 @@ describe("DualDeck.resolve", () => {
 	});
 });
 
-describe("DualDeck.export", () => {
-	it("exports the state of the map", () => {
+describe("DualDeck.dump", () => {
+	it("dumps the state of the map", () => {
 		const game = new DualDeck({
 			deck: getPlaneDeck(),
 			phenomenaDeck: getPhenomenonDeck(),
@@ -119,18 +119,16 @@ describe("DualDeck.export", () => {
 				},
 			},
 		});
-		const exported = game.export();
-		expect(exported.specs.type).toEqual(GameType.ETERNITIES);
-		expect(exported.specs.subType).toEqual(EternitiesMapSubType.DUAL_DECK);
-		expect(exported.specs.deckType).toEqual(EternitiesMapDeckType.PLANES);
-		expect(exported.deck.cards).toHaveLength(game.remaining);
-		expect(exported.deck.played).toHaveLength(game.played.length);
-		expect(exported.phenomenaDeck.cards).toHaveLength(game.remainingPhenomena);
-		expect(exported.phenomenaDeck.played).toHaveLength(
-			game.playedPhenomena.length,
-		);
-		expect(exported.active).toHaveLength(game.active.length);
-		expect(exported.encounterTriggers).toEqual({
+		const dump = game.dump();
+		expect(dump.specs.type).toEqual(GameType.ETERNITIES);
+		expect(dump.specs.subType).toEqual(EternitiesMapSubType.DUAL_DECK);
+		expect(dump.specs.deckType).toEqual(EternitiesMapDeckType.PLANES);
+		expect(dump.deck.cards).toHaveLength(game.remaining);
+		expect(dump.deck.played).toHaveLength(game.played.length);
+		expect(dump.phenomenaDeck.cards).toHaveLength(game.remainingPhenomena);
+		expect(dump.phenomenaDeck.played).toHaveLength(game.playedPhenomena.length);
+		expect(dump.active).toHaveLength(game.active.length);
+		expect(dump.encounterTriggers).toEqual({
 			ON_HELLRIDE: {
 				enabled: true,
 				mechanic: EncounterMechanic.AUTO,
@@ -140,9 +138,9 @@ describe("DualDeck.export", () => {
 				enabled: false,
 			},
 		});
-		const exportedIds = exported.active.map((exported) => exported.id);
+		const dumpedIds = dump.active.map((c) => c.id);
 		for (const card of game.active) {
-			expect(exportedIds).toContain(card.id);
+			expect(dumpedIds).toContain(card.id);
 		}
 	});
 });

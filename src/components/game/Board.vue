@@ -71,10 +71,10 @@ import type { Game as CmpGame } from "#board/game/Game";
 import { getRevealer } from "#board/wall/reveal/factory";
 import type { PickedLeft, RevealConfig } from "#board/wall/reveal/types";
 
-import DualDeck from "#board/map/eternities/DualDeck.vue";
-import SingleDeck from "#board/map/eternities/SingleDeck.vue";
-import Multi from "#board/map/multi/Multi.vue";
-import Single from "#board/map/single/Single.vue";
+import DualDeck from "#board/game/eternities/DualDeck.vue";
+import SingleDeck from "#board/game/eternities/SingleDeck.vue";
+import Multi from "#board/game/multi/Multi.vue";
+import Single from "#board/game/single/Single.vue";
 
 import DeckStatus from "#board/menu/DeckStatus.vue";
 import DiceBtn from "#board/menu/DiceBtn.vue";

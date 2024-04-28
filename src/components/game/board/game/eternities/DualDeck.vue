@@ -51,8 +51,8 @@ import { StateKey, StateOp } from "#/model/wall";
 import { Eternities } from "#board/game/eternities/Eternities";
 import type { WallConfig } from "#board/wall/types";
 
-import Tile from "#board/map/eternities/tiles/Tile.vue";
-import TileDetails from "#board/map/eternities/tiles/TileDetails.vue";
+import Tile from "#board/game/eternities/tiles/Tile.vue";
+import TileDetails from "#board/game/eternities/tiles/TileDetails.vue";
 import EncounterWall from "#board/wall/EncounterWall.vue";
 import PhenomenonWall from "#board/wall/PhenomenonWall.vue";
 

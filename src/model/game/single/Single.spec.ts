@@ -1,59 +1,59 @@
 import { describe, expect, it } from "vitest";
-import { CardProvider } from "#/services/cardProvider";
+import { getDeck } from "#/services/cardProvider";
 import { GameType, Single } from "..";
 import { Plane } from "../../card";
 import { WallManager } from "../../wall";
 
 describe("Single.type", () => {
 	it("returns the type", () => {
-		const map = new Single({
-			deck: CardProvider.getDeck(),
+		const game = new Single({
+			deck: getDeck(),
 			wallStates: new WallManager(),
 		});
 
-		expect(map.specs.type).toEqual(GameType.SINGLE);
+		expect(game.specs.type).toEqual(GameType.SINGLE);
 	});
 });
 
 describe("Single.planeswalk", () => {
 	it("changes active card", () => {
-		const map = new Single({
-			deck: CardProvider.getDeck(),
+		const game = new Single({
+			deck: getDeck(),
 			wallStates: new WallManager(),
 		});
-		const startCard = map.active;
-		const deckSize = map.remaining;
-		const playedSize = map.played.length;
+		const startCard = game.active;
+		const deckSize = game.remaining;
+		const playedSize = game.played.length;
 
-		map.planeswalk({ initiator: "foo" });
+		game.planeswalk({ initiator: "foo" });
 
-		expect(map.active).not.toEqual(startCard);
-		expect(map.remaining).toBeLessThan(deckSize);
-		expect(map.played.length).toBeGreaterThan(playedSize);
+		expect(game.active).not.toEqual(startCard);
+		expect(game.remaining).toBeLessThan(deckSize);
+		expect(game.played.length).toBeGreaterThan(playedSize);
 	});
 
 	it("changes active card to given planes", () => {
-		const map = new Single({
-			deck: CardProvider.getDeck(),
+		const game = new Single({
+			deck: getDeck(),
 			wallStates: new WallManager(),
 		});
-		const startCard = map.active;
-		const deckSize = map.remaining;
-		const playedSize = map.played.length;
+		const startCard = game.active;
+		const deckSize = game.remaining;
+		const playedSize = game.played.length;
 
-		map.revealUntil({ count: 2, type: Plane });
-		map.planeswalk({
+		game.revealUntil({ count: 2, type: Plane });
+		game.planeswalk({
 			initiator: "foo",
-			planes: map.revealed?.relevant as Array<Plane>,
+			planes: game.revealed?.relevant as Array<Plane>,
 		});
-		map.resolveReveal({
+		game.resolveReveal({
 			top: [],
-			bottom: map.revealed?.others ?? [],
+			bottom: game.revealed?.others ?? [],
 		});
 
-		expect(map.active).not.toEqual(startCard);
-		expect(map.active).toHaveLength(2);
-		expect(map.remaining).toBeLessThan(deckSize);
-		expect(map.played.length).toBeGreaterThan(playedSize);
+		expect(game.active).not.toEqual(startCard);
+		expect(game.active).toHaveLength(2);
+		expect(game.remaining).toBeLessThan(deckSize);
+		expect(game.played.length).toBeGreaterThan(playedSize);
 	});
 });

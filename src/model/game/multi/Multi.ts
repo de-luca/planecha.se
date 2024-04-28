@@ -1,19 +1,19 @@
 import { Deck } from "#/model/deck/Deck";
 import { WallManager } from "#/model/wall";
 import { type Patch, patch } from "#/utils/delta";
-import { Game as BaseMap, type GameProps } from "../Game";
+import { Game, type GameProps } from "../Game";
 import {
 	type AddActivePlaneInput,
-	type Exported,
+	type GameDump,
 	type GameSpecs,
 	GameType,
 	type PlaneswalkInput,
 	type ResolveInput,
 } from "../GameInterface";
-import { LightMulti } from "./LightMap";
+import { PartialMulti } from "./PartialMulti";
 
-export class Multi extends BaseMap {
-	public readonly mateStates: Map<string, LightMulti>;
+export class Multi extends Game {
+	public readonly mateStates: Map<string, PartialMulti>;
 
 	public constructor(props: GameProps) {
 		super(props);
@@ -53,15 +53,15 @@ export class Multi extends BaseMap {
 
 	public apply(p: Patch, peer: string): void {
 		if (p.event === "__init__") {
-			const map = new LightMulti({
+			const game = new PartialMulti({
 				deck: new Deck([]),
 				wallStates: new WallManager(),
 			});
-			map.restore(patch({}, p.delta!));
-			if (map.hasStarted) {
+			game.restore(patch({}, p.delta!));
+			if (game.hasStarted) {
 				this.start();
 			}
-			this.mateStates.set(peer, map);
+			this.mateStates.set(peer, game);
 			return;
 		}
 
@@ -72,7 +72,7 @@ export class Multi extends BaseMap {
 		this.planeswalk(input);
 	}
 
-	public export(): Exported {
+	public dump(): GameDump {
 		return {
 			...super.dump(),
 			deck: { cards: [], played: [] },

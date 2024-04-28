@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { Phenomenon, PhenomenonFactory } from ".";
+import { Phenomenon, build } from ".";
 import type { Props } from "..";
 import { InterplanarTunnel } from "./special";
 
@@ -14,11 +14,11 @@ const props: Props = {
 
 describe("PhenomenonFactory.build", () => {
 	it("builds a simple Phenomenon", () => {
-		expect(PhenomenonFactory.build(props)).toBeInstanceOf(Phenomenon);
+		expect(build(props)).toBeInstanceOf(Phenomenon);
 	});
 
 	it("builds a special Phenomenon", () => {
 		props.id = "7812174b-2dc1-43e8-b98f-639905e20ab7";
-		expect(PhenomenonFactory.build(props)).toBeInstanceOf(InterplanarTunnel);
+		expect(build(props)).toBeInstanceOf(InterplanarTunnel);
 	});
 });

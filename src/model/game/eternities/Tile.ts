@@ -1,15 +1,15 @@
 import { getCardList } from "#/services/cardProvider";
-import type { ExportedCard, Plane } from "../../card";
+import type { CardDump, Plane } from "../../card";
 
 export enum TileStatus {
 	ACTIVE = "active",
 	VISIBLE = "visible",
 }
 
-export interface ExportedTile {
+export interface TileDump {
 	coords: Coordinates;
 	state: TileStatus;
-	plane: Array<ExportedCard>;
+	plane: Array<CardDump>;
 }
 
 export class Tile {
@@ -47,15 +47,15 @@ export class Tile {
 		this._plane = planes;
 	}
 
-	public static fromExport(tile: ExportedTile): Tile {
+	public static fromDump(tile: TileDump): Tile {
 		return new Tile(tile.coords, tile.state, getCardList(tile.plane));
 	}
 
-	public export(): ExportedTile {
+	public dump(): TileDump {
 		return {
 			coords: { ...this._coords },
 			state: this._state,
-			plane: this._plane.map((p) => p.export()),
+			plane: this._plane.map((p) => p.dump()),
 		};
 	}
 }

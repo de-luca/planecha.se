@@ -1,7 +1,7 @@
 import type { Patch } from "#/utils/delta";
-import type { Card, ExportedCard, Plane } from "../card";
-import type { DeckState } from "../deck/Deck";
-import type { WallManagerInterface, WallStateMap } from "../wall";
+import type { Card, CardDump, Plane } from "../card";
+import type { DeckDump } from "../deck/Deck";
+import type { WallManagerInterface, WallStateDump } from "../wall";
 
 export enum GameType {
 	SINGLE = "single",
@@ -13,12 +13,12 @@ export interface GameSpecs {
 	type: GameType;
 }
 
-export interface Exported {
+export interface GameDump {
 	specs: GameSpecs;
-	wallStates: WallStateMap;
+	wallStates: WallStateDump;
 	hasStarted: boolean;
-	deck: DeckState;
-	active: Array<ExportedCard>;
+	deck: DeckDump;
+	active: Array<CardDump>;
 	revealed?: { relevant: Array<string>; others: Array<string> };
 }
 
@@ -95,8 +95,7 @@ export interface GameInterface {
 	addActivePlane(input: AddActivePlaneInput): void;
 	resolve(input: ResolveInput): void;
 	updateCounter(input: UpdateCounterInput): void;
-	export(): Exported;
-	dump(): Exported;
+	dump(): GameDump;
 	apply(patch: Patch, peerId: string): void;
-	restore(state: Exported): void;
+	restore(state: GameDump): void;
 }

@@ -3,6 +3,6 @@ export * from "./GameInterface";
 export * from "./factory";
 
 export * from "./multi/Multi";
-export * from "./multi/LightMap";
+export * from "./multi/PartialMulti";
 
 export * from "./single/Single";

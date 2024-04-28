@@ -1,18 +1,18 @@
 import type { Patch } from "#/utils/delta";
-import type { Exported } from "../game";
+import type { GameDump } from "../game";
 
 export interface Clone {
 	head: number;
 	patches: Array<Patch>;
 }
 
-export type MaybeExported = Exported | Record<string, never> | undefined;
+export type MaybeDump = GameDump | Record<string, never> | undefined;
 
 export interface RepoInterface {
 	head: number;
 	getStableIndex(index?: number): number;
-	commit(event: string, newVersion: Exported): Patch;
+	commit(event: string, newVersion: GameDump): Patch;
 	apply(patch: Patch): void;
-	checkout(index: number): Exported;
+	checkout(index: number): GameDump;
 	clone(): Clone;
 }

@@ -1,32 +1,32 @@
 import { WallManager } from "#/model/wall";
 import { getCardList } from "#/services/cardProvider";
 import { Game } from "../Game";
-import { type Exported, type GameSpecs, GameType } from "../GameInterface";
+import { type GameDump, type GameSpecs, GameType } from "../GameInterface";
 
-export class LightMulti extends Game {
+export class PartialMulti extends Game {
 	public get specs(): GameSpecs {
 		return { type: GameType.MULTI };
 	}
 
 	public planeswalk(): void {
-		throw new Error("Read Only LightMap");
+		throw new Error("Read Only PartialMulti");
 	}
 
 	public addActivePlane(): void {
-		throw new Error("Read Only LightMap");
+		throw new Error("Read Only PartialMulti");
 	}
 
 	public resolve(): void {
-		throw new Error("Read Only LightMap");
+		throw new Error("Read Only PartialMulti");
 	}
 
-	public dump(): Exported {
+	public dump(): GameDump {
 		return {
 			specs: this.specs,
 			hasStarted: this._hasStarted,
-			wallStates: this._wallStates.export(),
+			wallStates: this._wallStates.dump(),
 			deck: { cards: [], played: [] },
-			active: this._active.map((c) => c.export()),
+			active: this._active.map((c) => c.dump()),
 			revealed:
 				this._revealed === undefined
 					? undefined
@@ -37,7 +37,7 @@ export class LightMulti extends Game {
 		};
 	}
 
-	public restore(state: Exported): void {
+	public restore(state: GameDump): void {
 		this._hasStarted = state.hasStarted;
 		this._wallStates = new WallManager(state.wallStates);
 		this._active = getCardList(state.active);

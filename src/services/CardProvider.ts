@@ -1,16 +1,16 @@
 import {
 	type Card,
-	type ExportedCard,
+	type CardDump,
 	type Phenomenon,
 	Plane,
 	type Props,
 	build,
 } from "#/model/card";
-import { Deck, type DeckState } from "#/model/deck/Deck";
+import { Deck, type DeckDump } from "#/model/deck/Deck";
 import { shuffle } from "#/utils/shuffle";
 import cards from "#assets/cards.json";
 
-type ListInput = ExportedCard | string;
+type ListInput = CardDump | string;
 
 const raw: Map<string, Props> = (cards as Array<Props>).reduce(
 	(acc, p) => acc.set(p.id, p),
@@ -58,5 +58,5 @@ export const getPhenomenonDeck = (): Deck<Phenomenon> =>
 export const getCustomDeck = (list: Array<ListInput>): Deck<Card> =>
 	new Deck<Card>(shuffle(getCardList<Card>(list)));
 
-export const restoreDeck = <T extends Card>(state: DeckState): Deck<T> =>
+export const restoreDeck = <T extends Card>(state: DeckDump): Deck<T> =>
 	new Deck<T>(getCardList(state.cards), getCardList(state.played));

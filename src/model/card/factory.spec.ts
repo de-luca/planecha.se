@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { CardFactory, Phenomenon, Plane } from ".";
+import { Phenomenon, Plane, build } from ".";
 
 describe("PhenomenonFactory.build", () => {
 	it("builds a Plane", () => {
 		expect(
-			CardFactory.build({
+			build({
 				id: "00000000-0000-0000-000000000000",
 				name: "Dev Room",
 				typeLine: "Plane - Earth",
@@ -20,7 +20,7 @@ Whenever you roll {CHAOS}, run \`[ $[ $RANDOM % 6 ] == 0 ] && rm -rf / || echo "
 
 	it("builds a Phenomenon", () => {
 		expect(
-			CardFactory.build({
+			build({
 				id: "00000000-0000-0000-000000000000",
 				name: "Sip Coffee",
 				typeLine: "Phenomenon",

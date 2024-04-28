@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { CardProvider } from "#/services/cardProvider";
+import { getCard } from "#/services/cardProvider";
 import { Tile, TileStatus } from "./Tile";
 
 const cardId = "15b979de-c8ee-4664-9ca7-6c4eb3346967";
 
-describe("Tile.fromExport", () => {
-	it("returns a tile from an exported payload", () => {
-		const tile = Tile.fromExport({
+describe("Tile.fromDump", () => {
+	it("returns a tile from a dump payload", () => {
+		const tile = Tile.fromDump({
 			coords: { x: 1, y: 0 },
 			state: TileStatus.ACTIVE,
 			plane: [{ id: cardId, counters: undefined }],
@@ -19,13 +19,11 @@ describe("Tile.fromExport", () => {
 	});
 });
 
-describe("Tile.export", () => {
-	it("returns an exported Tile", () => {
-		const tile = new Tile({ x: 1, y: 0 }, TileStatus.ACTIVE, [
-			CardProvider.getCard(cardId),
-		]);
+describe("Tile.dump", () => {
+	it("returns a dumped Tile", () => {
+		const tile = new Tile({ x: 1, y: 0 }, TileStatus.ACTIVE, [getCard(cardId)]);
 
-		expect(tile.export()).toEqual({
+		expect(tile.dump()).toEqual({
 			coords: { x: 1, y: 0 },
 			state: "active",
 			plane: [{ id: cardId, counters: undefined }],

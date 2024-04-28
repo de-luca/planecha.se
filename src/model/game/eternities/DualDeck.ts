@@ -1,11 +1,11 @@
 import type { Phenomenon } from "#/model/card";
-import type { Deck, DeckState } from "#/model/deck/Deck";
+import type { Deck, DeckDump } from "#/model/deck/Deck";
 import { StateKey } from "#/model/wall";
 import { restoreDeck } from "#/services/cardProvider";
 import { GameType, type Initable, type ResolveInput } from "../GameInterface";
 import {
 	type EternitiesMapDeckType,
-	type EternitiesMapExported,
+	type EternitiesMapDump,
 	type EternitiesMapSpecs,
 	EternitiesMapSubType,
 } from "./EternitiesMap";
@@ -38,8 +38,8 @@ export interface TriggerConfigDisabled extends BaseTriggerConfig {
 export type TriggerConfig = TriggerConfigEnabled | TriggerConfigDisabled;
 export type EncounterTriggers = Record<EncounterTrigger, TriggerConfig>;
 
-export interface DualDeckExported extends EternitiesMapExported {
-	phenomenaDeck: DeckState;
+export interface DualDeckDump extends EternitiesMapDump {
+	phenomenaDeck: DeckDump;
 	encounterTriggers: EncounterTriggers;
 }
 
@@ -103,16 +103,16 @@ export class DualDeck extends SingleDeck {
 		});
 	}
 
-	public override export(): DualDeckExported {
+	public override dump(): DualDeckDump {
 		return {
-			...super.export(),
-			phenomenaDeck: this._phenomenaDeck.export(),
+			...super.dump(),
+			phenomenaDeck: this._phenomenaDeck.dump(),
 			encounterTriggers: this._encounterTriggers,
 		};
 	}
 
-	public override restore(state: DualDeckExported): void {
-		super.restore(state);
-		this._phenomenaDeck = restoreDeck(state.phenomenaDeck);
+	public override restore(dump: DualDeckDump): void {
+		super.restore(dump);
+		this._phenomenaDeck = restoreDeck(dump.phenomenaDeck);
 	}
 }

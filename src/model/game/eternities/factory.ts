@@ -12,18 +12,18 @@ import {
 import type { GameInterface } from "../GameInterface";
 import {
 	DualDeck,
-	type DualDeckExported,
+	type DualDeckDump,
 	type EncounterTriggers,
 } from "./DualDeck";
 import {
 	EternitiesMapDeckType,
-	type EternitiesMapExported,
+	type EternitiesMapDump,
 	type EternitiesMapSpecs,
 	EternitiesMapSubType,
 } from "./EternitiesMap";
 import {
 	SingleDeck,
-	type SingleDeckExported,
+	type SingleDeckDump,
 	type SingleDeckProps,
 } from "./SingleDeck";
 import { Tile } from "./Tile";
@@ -53,35 +53,35 @@ export const build = (
 	});
 };
 
-export const restore = (payload: EternitiesMapExported): GameInterface => {
-	const specs = payload.specs as EternitiesMapSpecs;
+export const restore = (dump: EternitiesMapDump): GameInterface => {
+	const specs = dump.specs as EternitiesMapSpecs;
 	const props: SingleDeckProps = {
-		wallStates: new WallManager(payload.wallStates),
-		hasStarted: payload.hasStarted,
+		wallStates: new WallManager(dump.wallStates),
+		hasStarted: dump.hasStarted,
 		deckType: specs.deckType,
-		deck: restoreDeck<Plane>(payload.deck),
-		active: getCardList<Plane>(payload.active),
-		revealed: payload.revealed
+		deck: restoreDeck<Plane>(dump.deck),
+		active: getCardList<Plane>(dump.active),
+		revealed: dump.revealed
 			? {
-					relevant: getCardList<Card>(payload.revealed.relevant),
-					others: getCardList<Card>(payload.revealed.others),
+					relevant: getCardList<Card>(dump.revealed.relevant),
+					others: getCardList<Card>(dump.revealed.others),
 				}
 			: undefined,
-		tiles: payload.tiles?.map(Tile.fromExport),
+		tiles: dump.tiles?.map(Tile.fromDump),
 	};
 
 	if (specs.subType === EternitiesMapSubType.SINGLE_DECK) {
 		return new SingleDeck({
 			...props,
-			destination: (payload as SingleDeckExported).destination,
+			destination: (dump as SingleDeckDump).destination,
 		});
 	}
 
 	return new DualDeck({
 		...props,
 		deckType: EternitiesMapDeckType.PLANES,
-		phenomenaDeck: restoreDeck((payload as DualDeckExported).phenomenaDeck),
-		encounterTriggers: (payload as DualDeckExported).encounterTriggers,
+		phenomenaDeck: restoreDeck((dump as DualDeckDump).phenomenaDeck),
+		encounterTriggers: (dump as DualDeckDump).encounterTriggers,
 	});
 };
 

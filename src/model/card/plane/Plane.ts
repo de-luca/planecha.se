@@ -1,6 +1,6 @@
 import type { WallManager } from "#/model/wall";
 import { Card, type Counter, type Props, type Type } from "../Card";
-import type { ExportedCard } from "../CardInterface";
+import type { CardDump } from "../CardInterface";
 
 export class Plane extends Card {
 	protected _counter?: Counter;
@@ -53,7 +53,7 @@ export class Plane extends Card {
 		}
 	}
 
-	public export(): ExportedCard {
+	public dump(): CardDump {
 		return {
 			id: this.id,
 			counters: this._counter?.value,

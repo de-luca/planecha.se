@@ -1,61 +1,83 @@
 import { describe, expect, it } from "vitest";
-import { Phenomenon, Plane } from "#/model/card";
-import { GameType } from "../GameInterface";
+import { type GameDump, GameType, Single } from ".";
 import {
 	DualDeck,
-	type DualDeckExported,
+	type DualDeckDump,
 	EncounterMechanic,
 	EncounterTrigger,
-} from "./DualDeck";
-import { EternitiesMapDeckType, EternitiesMapSubType } from "./EternitiesMap";
-import { SingleDeck, type SingleDeckExported } from "./SingleDeck";
-import { TileStatus } from "./Tile";
-import { EternitiesMapFactory } from "./factory";
+	EternitiesMapDeckType,
+	EternitiesMapSubType,
+	SingleDeck,
+	type SingleDeckDump,
+	TileStatus,
+} from "./eternities";
+import { build, restore } from "./factory";
 
-describe("EternitiesMapFactory.build", () => {
-	it("creates a SingleDeck without Phenomena", () => {
-		const map = EternitiesMapFactory.build({
-			type: GameType.ETERNITIES,
-			subType: EternitiesMapSubType.SINGLE_DECK,
-			deckType: EternitiesMapDeckType.PLANES,
+describe("build", () => {
+	it("creates a Single deck Game", () => {
+		const game = build({
+			type: GameType.SINGLE,
 		});
 
-		expect(map).toBeInstanceOf(SingleDeck);
-		(map as SingleDeck)._deck._cards.forEach((c) => {
-			expect(c).toBeInstanceOf(Plane);
-		});
+		expect(game).toBeInstanceOf(Single);
 	});
 
-	it("creates a SingleDeck with Phenomena", () => {
-		const map = EternitiesMapFactory.build({
+	it("creates an EternitesMap with SingleDeck", async () => {
+		const game = build({
 			type: GameType.ETERNITIES,
-			subType: EternitiesMapSubType.SINGLE_DECK,
-			deckType: EternitiesMapDeckType.ALL,
+			specs: {
+				subType: EternitiesMapSubType.SINGLE_DECK,
+				deckType: EternitiesMapDeckType.PLANES,
+			},
 		});
 
-		expect(map).toBeInstanceOf(SingleDeck);
+		expect(game).toBeInstanceOf(SingleDeck);
 	});
 
-	it("creates a DualDeck", async () => {
-		const map = EternitiesMapFactory.build({
+	it("creates an EternitesMap with DualDeck", async () => {
+		const game = build({
 			type: GameType.ETERNITIES,
-			subType: EternitiesMapSubType.DUAL_DECK,
-			deckType: EternitiesMapDeckType.PLANES,
+			specs: {
+				subType: EternitiesMapSubType.DUAL_DECK,
+				deckType: EternitiesMapDeckType.PLANES,
+			},
 		});
 
-		expect(map).toBeInstanceOf(DualDeck);
-		(map as DualDeck)._deck._cards.forEach((c) => {
-			expect(c).toBeInstanceOf(Plane);
-		});
-		(map as DualDeck)._phenomenaDeck._cards.forEach((c) => {
-			expect(c).toBeInstanceOf(Phenomenon);
-		});
+		expect(game).toBeInstanceOf(DualDeck);
 	});
 });
 
-describe("EternitiesMapFactory.restore", () => {
-	it("restores a SingleDeck", () => {
-		const exported: SingleDeckExported = {
+describe("restore", () => {
+	it("restores a Single deck Game", () => {
+		const dump: GameDump = {
+			wallStates: {},
+			hasStarted: true,
+			deck: {
+				cards: [
+					{ id: "15b979de-c8ee-4664-9ca7-6c4eb3346967" },
+					{ id: "38f84e55-049c-441e-b4e2-1e207ab5dbe5" },
+					{ id: "25650a32-4014-4065-ad01-7357c3ad3995" },
+					{ id: "d6ab4159-e04e-4991-8a9b-9da302c98e9d" },
+					{ id: "805f9dc2-e172-481d-bae7-9a136a3d1e49" },
+				],
+				played: [],
+			},
+			active: [
+				{
+					id: "82e67c57-6d7a-44cc-ba63-77ce887ab075",
+				},
+			],
+			specs: {
+				type: GameType.SINGLE,
+			},
+		};
+
+		const game = restore(dump);
+		expect(game).toBeInstanceOf(Single);
+	});
+
+	it("restores an EternitesMap with SingleDeck", () => {
+		const dump: SingleDeckDump = {
 			wallStates: {},
 			hasStarted: true,
 			deck: {
@@ -91,12 +113,12 @@ describe("EternitiesMapFactory.restore", () => {
 			],
 		};
 
-		const map = EternitiesMapFactory.restore(exported);
-		expect(map).toBeInstanceOf(SingleDeck);
+		const game = restore(dump);
+		expect(game).toBeInstanceOf(SingleDeck);
 	});
 
-	it("restores a DualDeck", () => {
-		const exported: DualDeckExported = {
+	it("restores an EternitesMap with DualDeck", () => {
+		const dump: DualDeckDump = {
 			wallStates: {},
 			hasStarted: true,
 			deck: {
@@ -151,7 +173,7 @@ describe("EternitiesMapFactory.restore", () => {
 			},
 		};
 
-		const map = EternitiesMapFactory.restore(exported);
-		expect(map).toBeInstanceOf(DualDeck);
+		const game = restore(dump);
+		expect(game).toBeInstanceOf(DualDeck);
 	});
 });

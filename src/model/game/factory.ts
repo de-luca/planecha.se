@@ -6,10 +6,10 @@ import {
 } from "#/services/cardProvider";
 import type { Card } from "../card";
 import { WallManager } from "../wall";
-import { type Exported, type GameInterface, GameType } from "./GameInterface";
+import { type GameDump, type GameInterface, GameType } from "./GameInterface";
 import {
 	type EncounterTriggers,
-	type EternitiesMapExported,
+	type EternitiesMapDump,
 	type EternitiesMapSpecs,
 	build as buildEM,
 	restore as restoreEM,
@@ -48,23 +48,23 @@ export const build = (props: BuildProps): GameInterface => {
 	}
 };
 
-export const restore = (payload: Exported): GameInterface => {
-	switch (payload.specs.type) {
+export const restore = (dump: GameDump): GameInterface => {
+	switch (dump.specs.type) {
 		case GameType.SINGLE:
 			return new Single({
-				deck: restoreDeck<Card>(payload.deck),
-				wallStates: new WallManager(payload.wallStates),
-				hasStarted: payload.hasStarted,
-				active: getCardList<Card>(payload.active),
-				revealed: payload.revealed
+				deck: restoreDeck<Card>(dump.deck),
+				wallStates: new WallManager(dump.wallStates),
+				hasStarted: dump.hasStarted,
+				active: getCardList<Card>(dump.active),
+				revealed: dump.revealed
 					? {
-							relevant: getCardList<Card>(payload.revealed.relevant),
-							others: getCardList<Card>(payload.revealed.others),
+							relevant: getCardList<Card>(dump.revealed.relevant),
+							others: getCardList<Card>(dump.revealed.others),
 						}
 					: undefined,
 			});
 		case GameType.ETERNITIES:
-			return restoreEM(payload as EternitiesMapExported);
+			return restoreEM(dump as EternitiesMapDump);
 		default:
 			throw new Error("Incompatible");
 	}

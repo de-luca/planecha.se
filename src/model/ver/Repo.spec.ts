@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { diff } from "#/utils/delta";
-import { type Exported, GameType } from "../game";
+import { type GameDump, GameType } from "../game";
 import { Repo } from "./Repo";
 
-const exported: Exported = {
+const dump: GameDump = {
 	active: [],
 	deck: { cards: [], played: [] },
 	hasStarted: true,
@@ -48,7 +48,7 @@ describe("Repo.getStableIndex", () => {
 describe("Repo.commit", () => {
 	it("returns an a patch after applying it", () => {
 		const repo = new Repo();
-		const patch = repo.commit("test", exported);
+		const patch = repo.commit("test", dump);
 		expect(patch.event).toEqual("test");
 		expect(patch.delta).not.toBeUndefined();
 	});
@@ -70,14 +70,14 @@ describe("Repo.checkout", () => {
 	it("returns an increased head pointer", () => {
 		const repo = new Repo();
 
-		const v0 = { ...exported };
+		const v0 = { ...dump };
 		repo.apply({
 			event: "test",
 			delta: diff(undefined, v0),
 		});
 
-		const v1: Exported = {
-			...exported,
+		const v1: GameDump = {
+			...dump,
 			active: [{ id: "00000000-0000-0000-0000-000000000000" }],
 		};
 		repo.apply({
@@ -85,8 +85,8 @@ describe("Repo.checkout", () => {
 			delta: diff(v0, v1),
 		});
 
-		const v2: Exported = {
-			...exported,
+		const v2: GameDump = {
+			...dump,
 			active: [
 				{ id: "00000000-0000-0000-0000-000000000000" },
 				{ id: "00000000-0000-0000-0000-000000000001" },
@@ -97,8 +97,8 @@ describe("Repo.checkout", () => {
 			delta: diff(v1, v2),
 		});
 
-		const v3: Exported = {
-			...exported,
+		const v3: GameDump = {
+			...dump,
 			active: [
 				{ id: "00000000-0000-0000-0000-000000000000" },
 				{ id: "00000000-0000-0000-0000-000000000001" },

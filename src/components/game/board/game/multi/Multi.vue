@@ -44,17 +44,17 @@ export default class Multi extends Game {
 
 	public get actives(): Array<Active> {
 		return this.store.playerLayout.players.reduce<Array<Active>>((acc, id) => {
-			const map =
+			const game =
 				id === ""
 					? this.store.game
 					: (this.store.game as MultiGame).mateStates.get(id);
 
-			if (map) {
+			if (game) {
 				acc.push({
 					yours: id === "",
 					mate: this.store.getMateName(id),
-					active: map.active,
-					started: map.hasStarted,
+					active: game.active,
+					started: game.hasStarted,
 				});
 			}
 

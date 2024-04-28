@@ -110,8 +110,8 @@ describe("Plane.leave", () => {
 	});
 });
 
-describe("Plane.export", () => {
-	it("exports the state of the plane (no counters)", () => {
+describe("Plane.dump", () => {
+	it("dumps the state of the plane (no counters)", () => {
 		const plane = new Plane({
 			id: "00000000-0000-0000-0000-000000000000",
 			name: "Test Plane",
@@ -121,12 +121,12 @@ describe("Plane.export", () => {
 			sets: ["ABC"],
 		});
 
-		expect(plane.export()).toEqual({
+		expect(plane.dump()).toEqual({
 			id: "00000000-0000-0000-0000-000000000000",
 		});
 	});
 
-	it("exports the state of the plane (with counters)", () => {
+	it("dumps the state of the plane (with counters)", () => {
 		const plane = new Plane({
 			id: "00000000-0000-0000-0000-000000000000",
 			name: "Test Plane",
@@ -143,7 +143,7 @@ describe("Plane.export", () => {
 			},
 		});
 
-		expect(plane.export()).toEqual({
+		expect(plane.dump()).toEqual({
 			id: "00000000-0000-0000-0000-000000000000",
 			counters: 6,
 		});

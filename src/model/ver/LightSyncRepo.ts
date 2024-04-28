@@ -1,11 +1,11 @@
 import { type Patch, diff } from "#/utils/delta";
-import type { Exported } from "../game";
+import type { GameDump } from "../game";
 import { Repo } from "./Repo";
 
 export class LightSyncRepo extends Repo {
-	private stage?: Exported;
+	private stage?: GameDump;
 
-	public commit(event: string, newVersion: Exported): Patch {
+	public commit(event: string, newVersion: GameDump): Patch {
 		super.commit(event, newVersion);
 
 		const exportLight = {

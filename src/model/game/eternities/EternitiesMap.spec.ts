@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { WallManager } from "#/model/wall";
-import { CardProvider } from "#/services/cardProvider";
+import { getDeck } from "#/services/cardProvider";
 import { GameType } from "..";
 import {
 	EternitiesMap,
@@ -30,11 +30,11 @@ class TestMap extends EternitiesMap {
 
 describe("EternitiesMap.initializeTiles", () => {
 	it("initializes board tiles", () => {
-		const map = new TestMap({
-			deck: CardProvider.getDeck(),
+		const game = new TestMap({
+			deck: getDeck(),
 			wallStates: new WallManager(),
 			deckType: EternitiesMapDeckType.ALL,
 		});
-		expect(map.tiles).toHaveLength(5);
+		expect(game.tiles).toHaveLength(5);
 	});
 });

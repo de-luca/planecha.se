@@ -1,5 +1,5 @@
 import type { WallManager } from "../wall";
-import type { CardInterface, ExportedCard } from "./CardInterface";
+import type { CardDump, CardInterface } from "./CardInterface";
 
 export type Type = "Plane" | "Phenomenon";
 
@@ -44,7 +44,7 @@ export abstract class Card implements CardInterface {
 	public abstract enter(walls: WallManager, initiator: string): void;
 	public abstract leave(): void;
 
-	public export(): ExportedCard {
+	public dump(): CardDump {
 		return { id: this.id };
 	}
 }

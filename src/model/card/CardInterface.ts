@@ -1,6 +1,6 @@
 import type { WallManager } from "../wall";
 
-export interface ExportedCard {
+export interface CardDump {
 	id: string;
 	counters?: number;
 }
@@ -14,5 +14,5 @@ export interface CardInterface {
 	chaos(walls: WallManager, initiator: string): void;
 	enter(walls: WallManager, initiator: string): void;
 	leave(): void;
-	export(): ExportedCard;
+	dump(): CardDump;
 }

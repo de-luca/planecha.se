@@ -6,7 +6,7 @@ import { StateKey, WallManager } from "../wall";
 import type {
 	AddActivePlaneInput,
 	ChaosInput,
-	Exported,
+	GameDump,
 	GameInterface,
 	GameSpecs,
 	PlaneswalkInput,
@@ -109,13 +109,13 @@ export abstract class Game implements GameInterface {
 		this._revealed = undefined;
 	}
 
-	public dump(): Exported {
+	public dump(): GameDump {
 		return {
 			specs: this.specs,
 			hasStarted: this._hasStarted,
-			wallStates: this._wallStates.export(),
-			deck: this._deck.export(),
-			active: this._active.map((c) => c.export()),
+			wallStates: this._wallStates.dump(),
+			deck: this._deck.dump(),
+			active: this._active.map((c) => c.dump()),
 			revealed:
 				this._revealed === undefined
 					? undefined
@@ -126,10 +126,6 @@ export abstract class Game implements GameInterface {
 		};
 	}
 
-	public export(): Exported {
-		return this.dump();
-	}
-
 	public apply(patch: Patch, _peer: string): void {
 		const state = this.crunchState(patch);
 		if (state) {
@@ -137,11 +133,11 @@ export abstract class Game implements GameInterface {
 		}
 	}
 
-	protected crunchState(p: Patch): Exported | undefined {
-		return p.delta ? patch(this.export(), p.delta) : undefined;
+	protected crunchState(p: Patch): GameDump | undefined {
+		return p.delta ? patch(this.dump(), p.delta) : undefined;
 	}
 
-	public restore(state: Exported): void {
+	public restore(state: GameDump): void {
 		this._hasStarted = state.hasStarted;
 		this._wallStates = new WallManager(state.wallStates);
 		this._deck = restoreDeck(state.deck);

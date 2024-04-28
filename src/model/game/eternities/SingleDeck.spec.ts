@@ -131,23 +131,23 @@ describe("SingleDeck.planeswalk", () => {
 	});
 });
 
-describe("SingleDeck.export", () => {
-	it("exports the state of the map", () => {
-		const map = new SingleDeck({
+describe("SingleDeck.dump", () => {
+	it("dumps the state of the game", () => {
+		const game = new SingleDeck({
 			deckType: EternitiesMapDeckType.PLANES,
 			deck: getPlaneDeck(),
 			wallStates: new WallManager(),
 		});
-		const exported = map.export();
-		expect(exported.specs.type).toEqual(GameType.ETERNITIES);
-		expect(exported.specs.subType).toEqual(EternitiesMapSubType.SINGLE_DECK);
-		expect(exported.specs.deckType).toEqual(EternitiesMapDeckType.PLANES);
-		expect(exported.deck.cards).toHaveLength(map.remaining);
-		expect(exported.deck.played).toHaveLength(map.played.length);
-		expect(exported.active).toHaveLength(map.active.length);
-		const exportedIds = exported.active.map((exported) => exported.id);
-		for (const card of map.active) {
-			expect(exportedIds).toContain(card.id);
+		const dump = game.dump();
+		expect(dump.specs.type).toEqual(GameType.ETERNITIES);
+		expect(dump.specs.subType).toEqual(EternitiesMapSubType.SINGLE_DECK);
+		expect(dump.specs.deckType).toEqual(EternitiesMapDeckType.PLANES);
+		expect(dump.deck.cards).toHaveLength(game.remaining);
+		expect(dump.deck.played).toHaveLength(game.played.length);
+		expect(dump.active).toHaveLength(game.active.length);
+		const cardIds = dump.active.map((c) => c.id);
+		for (const card of game.active) {
+			expect(cardIds).toContain(card.id);
 		}
 	});
 });

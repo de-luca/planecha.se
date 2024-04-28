@@ -9,7 +9,7 @@ import {
 } from "../GameInterface";
 import {
 	EternitiesMap,
-	type EternitiesMapExported,
+	type EternitiesMapDump,
 	type EternitiesMapProps,
 	type EternitiesMapSpecs,
 	EternitiesMapSubType,
@@ -17,7 +17,7 @@ import {
 } from "./EternitiesMap";
 import { Tile, TileStatus } from "./Tile";
 
-export interface SingleDeckExported extends EternitiesMapExported {
+export interface SingleDeckDump extends EternitiesMapDump {
 	destination?: Coordinates;
 }
 
@@ -215,15 +215,15 @@ export class SingleDeck extends EternitiesMap {
 		});
 	}
 
-	public override export(): SingleDeckExported {
+	public override dump(): SingleDeckDump {
 		return {
-			...super.export(),
+			...super.dump(),
 			destination: this._destination,
 		};
 	}
 
-	public override restore(state: SingleDeckExported): void {
-		super.restore(state);
-		this._destination = state.destination;
+	public override restore(dump: SingleDeckDump): void {
+		super.restore(dump);
+		this._destination = dump.destination;
 	}
 }

@@ -1,9 +1,9 @@
 import { shuffle } from "#/utils/shuffle";
-import { Card, type ExportedCard, Plane } from "../card";
+import { Card, type CardDump, Plane } from "../card";
 
-export interface DeckState {
-	cards: Array<ExportedCard>;
-	played: Array<ExportedCard>;
+export interface DeckDump {
+	cards: Array<CardDump>;
+	played: Array<CardDump>;
 }
 
 export class Deck<T extends Card> {
@@ -90,10 +90,10 @@ export class Deck<T extends Card> {
 		this._cards.push(...cards);
 	}
 
-	public export(): DeckState {
+	public dump(): DeckDump {
 		return {
-			cards: this._cards.map((c) => c.export()),
-			played: this._played.map((c) => c.export()),
+			cards: this._cards.map((c) => c.dump()),
+			played: this._played.map((c) => c.dump()),
 		};
 	}
 }

@@ -3,10 +3,10 @@ import { Game, type GameProps } from "../Game";
 import type {
 	CustomEternitiesPlaneswalkInput,
 	EternitiesPlaneswalkInput,
-	Exported,
+	GameDump,
 	GameSpecs,
 } from "../GameInterface";
-import { type ExportedTile, Tile, TileStatus } from "./Tile";
+import { Tile, type TileDump, TileStatus } from "./Tile";
 
 export enum EternitiesMapSubType {
 	SINGLE_DECK = "SINGLE_DECK",
@@ -23,9 +23,9 @@ export interface EternitiesMapSpecs extends GameSpecs {
 	deckType: EternitiesMapDeckType;
 }
 
-export interface EternitiesMapExported extends Exported {
+export interface EternitiesMapDump extends GameDump {
 	specs: EternitiesMapSpecs;
-	tiles: Array<ExportedTile>;
+	tiles: Array<TileDump>;
 }
 
 export interface EternitiesMapProps extends GameProps {
@@ -99,16 +99,16 @@ export abstract class EternitiesMap extends Game {
 		return Math.abs(coords.x) === 1 && Math.abs(coords.y) === 1;
 	}
 
-	public override export(): EternitiesMapExported {
+	public override dump(): EternitiesMapDump {
 		return {
-			...super.export(),
+			...super.dump(),
 			specs: this.specs,
-			tiles: this.tiles.map((t) => t.export()),
+			tiles: this.tiles.map((t) => t.dump()),
 		};
 	}
 
-	public override restore(state: EternitiesMapExported): void {
-		super.restore(state);
-		this._tiles = (state.tiles as Array<ExportedTile>).map(Tile.fromExport);
+	public override restore(dump: EternitiesMapDump): void {
+		super.restore(dump);
+		this._tiles = dump.tiles.map(Tile.fromDump);
 	}
 }

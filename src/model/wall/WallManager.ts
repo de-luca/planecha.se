@@ -19,6 +19,8 @@ export interface WallStateMap {
 	[StateKey.ENCOUNTER_WALL]?: EncounterWall;
 }
 
+export type WallStateDump = WallStateMap;
+
 type ApplySetInput = { op: StateOp.SET } & (
 	| { key: StateKey.REVEALER; val: RevealerWall }
 	| { key: StateKey.PHENOMENON_WALL; val: PhenomenonWall }
@@ -39,7 +41,7 @@ export interface WallManagerInterface {
 	isEmpty(): boolean;
 	delete<T extends StateKey>(key: T): void;
 	apply(input: ApplyInput): void;
-	export(): WallStateMap;
+	dump(): WallStateMap;
 }
 
 export class WallManager implements WallManagerInterface {
@@ -62,7 +64,8 @@ export class WallManager implements WallManagerInterface {
 	}
 
 	public isEmpty(): boolean {
-		return !Object.entries(this.walls).some(Boolean);
+		const entries = Object.entries(this.walls);
+		return entries.length === 0 || entries.some(Boolean);
 	}
 
 	public delete<T extends StateKey>(key: T): void {
@@ -80,7 +83,7 @@ export class WallManager implements WallManagerInterface {
 		}
 	}
 
-	public export(): WallStateMap {
+	public dump(): WallStateDump {
 		return { ...this.walls };
 	}
 }

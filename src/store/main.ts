@@ -6,7 +6,7 @@ import {
 	type AddActivePlaneInput,
 	type BuildProps,
 	type ChaosInput,
-	type Exported,
+	type GameDump,
 	type GameInterface,
 	GameType,
 	type Multi,
@@ -21,7 +21,7 @@ import { DualDeck, type EncounterInput } from "#/model/game/eternities";
 import { Net, type NetInterface } from "#/model/net/Net";
 import {
 	type Clone,
-	type MaybeExported,
+	type MaybeDump,
 	type RepoInterface,
 	build as buildRepo,
 	restore as restoreRepo,
@@ -58,7 +58,7 @@ export interface JoinPayload {
 export interface InitPayload {
 	mapConfig: BuildProps;
 	repo: Clone;
-	game: Exported;
+	game: GameDump;
 	feed: Array<string>;
 }
 
@@ -155,7 +155,7 @@ export const useMain = defineStore("main", {
 			return {
 				mapConfig: this.config,
 				repo: this.repo.clone(),
-				game: this.game.export(),
+				game: this.game.dump(),
 				feed: [...this.feed],
 			};
 		},
@@ -232,7 +232,7 @@ export const useMain = defineStore("main", {
 			if (this.isMulti) {
 				this.net.initHandler = (data, peer) =>
 					this.apply(
-						{ event: "__init__", delta: diff<MaybeExported>({}, data.game) },
+						{ event: "__init__", delta: diff<MaybeDump>({}, data.game) },
 						peer,
 					);
 			}
@@ -264,13 +264,13 @@ export const useMain = defineStore("main", {
 				once((data, peer) => {
 					this.feed = data.feed;
 					this.apply(
-						{ event: "__init__", delta: diff<MaybeExported>({}, data.game) },
+						{ event: "__init__", delta: diff<MaybeDump>({}, data.game) },
 						peer,
 					);
 					this.ready = true;
 					this.net!.initHandler = (data, peer) =>
 						this.apply(
-							{ event: "__init__", delta: diff<MaybeExported>({}, data.game) },
+							{ event: "__init__", delta: diff<MaybeDump>({}, data.game) },
 							peer,
 						);
 				}),
