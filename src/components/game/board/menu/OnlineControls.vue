@@ -37,10 +37,10 @@
                 </button>
               </div>
             </div>
-            <p class="help" v-if="!error">You need to open your game to invite people to join.</p>
+            <p class="help" v-if="!issue">You need to open your game to invite people to join.</p>
             <p class="help is-danger" v-else>
-              <b>{{ error.message }}</b><br>
-              {{ error.cause }}
+              <b>{{ issue.msg }}</b><br>
+              {{ issue.cause }}
             </p>
           </div>
         </div>
@@ -95,18 +95,26 @@ import { useMain } from "#/store/main";
 
 import NameModal from "#/components/NameModal.vue";
 import FeedbackButton from "#/components/controls/FeedbackButton.vue";
+import {
+	BlockedError,
+	OfflineError,
+	ServerError,
+	TimeoutError,
+} from "#/model/net";
 
 enum BtnText {
 	IDLE = "Copy",
 	SUCCESS = "Copied!",
 }
 
+type Issue = { msg: string; cause: string };
+
 @Component({ components: { FeedbackButton, NameModal } })
 export default class OnlineControls extends Vue {
 	private store = useMain();
 	private copyBtnText: BtnText = BtnText.IDLE;
 
-	public error: Error | null = null;
+	public issue: Issue | null = null;
 	public active = false;
 	public nameModalActive = false;
 
@@ -140,10 +148,7 @@ export default class OnlineControls extends Vue {
 			});
 			this.copy();
 		} catch (err) {
-			this.error = new Error("The game could not be oppened.", {
-				cause:
-					"The signaling server or your internet connection might be down.",
-			});
+			this.digestError(err as Error);
 		}
 	}
 
@@ -153,6 +158,27 @@ export default class OnlineControls extends Vue {
 		} catch (err) {
 			console.error(err);
 		}
+	}
+
+	private digestError(err: Error): void {
+		console.log(err);
+		const issue: Partial<Issue> = { msg: "The game could not be oppened." };
+		switch (true) {
+			case err instanceof TimeoutError:
+				issue.cause = "The link might be broken or the room as been closed.";
+				break;
+			case err instanceof OfflineError:
+				issue.cause = "Your browser appears to be offline.";
+				break;
+			case err instanceof BlockedError:
+				issue.cause = `This might be due to adblocker blocking public webtorrent relays for unknown reason.<br>
+					You can try fixing this issue by deactivating your adblocker.`;
+				break;
+			case err instanceof ServerError:
+				issue.cause = "The signaling server might be down.";
+				break;
+		}
+		this.issue = issue as Issue;
 	}
 }
 </script>

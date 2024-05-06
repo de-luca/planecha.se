@@ -9,9 +9,18 @@ import {
 import type { InitPayload, MainStore } from "#/store/main";
 import { BlockedError, OfflineError, TimeoutError } from "./errors";
 
-import type { GameType } from "#/model/game";
 import type { Patch } from "#/utils/delta";
 import { once } from "#/utils/invoke";
+import {
+	type BootParams,
+	type CreateParams,
+	EventType,
+	type GameData,
+	type Hey,
+	type InitHandler,
+	type NetInterface,
+	type Props,
+} from "./NetInterface";
 
 const CHARSET =
 	"0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
@@ -21,59 +30,9 @@ export const genId = (n: number) =>
 		.map(() => CHARSET[Math.floor(Math.random() * CHARSET.length)])
 		.join("");
 
-export enum EventType {
-	BOOT = "BOOT",
-	JOIN = "JOIN",
-	INIT = "INIT",
-	HEY = "HEY",
-	SYNC = "SYNC",
-	UNDO = "UNDO",
-	FEED = "FEED",
-	RESET = "RESET",
-}
-
-export type Hey = {
-	name: string;
-};
-
-interface GameData {
-	gameType: GameType;
-}
-
-type Props = { store: MainStore } & (
-	| {
-			gameId: string;
-			gameData?: undefined;
-	  }
-	| {
-			gameId?: undefined;
-			gameData: GameData;
-	  }
-);
-
-type InitHandler = Parameters<ActionReceiver<InitPayload>>[0];
-
 type AsType<T> = { [P in keyof T]: AsType<T[P]> };
 
-export interface NetInterface {
-	gameId: string;
-	gameData: GameData;
-	peerCount: number;
-
-	set initHandler(handler: InitHandler);
-
-	join(handler: InitHandler): Promise<void>;
-
-	hey(data: Hey): void;
-	sync(patch: Patch): void;
-	undo(index: number): void;
-	feed(log: string): void;
-	reset(payload: InitPayload): void;
-	init(payload: InitPayload): void;
-	leave(): void;
-}
-
-export class Net implements NetInterface {
+export class TrysteroNet implements NetInterface {
 	private store: MainStore;
 	private room: Room;
 
@@ -214,15 +173,18 @@ export class Net implements NetInterface {
 		this._initReceiver(handler);
 	}
 
-	public static async create(
-		store: MainStore,
-		gameData: GameData,
-	): Promise<Net> {
-		return new Net({ store, gameData });
+	public static async create({
+		store,
+		gameData,
+	}: CreateParams): Promise<TrysteroNet> {
+		return new TrysteroNet({ store, gameData });
 	}
 
-	public static async boot(store: MainStore, gameId: string): Promise<Net> {
-		const net = new Net({ store, gameId });
+	public static async boot({
+		store,
+		gameId,
+	}: BootParams): Promise<TrysteroNet> {
+		const net = new TrysteroNet({ store, gameId });
 		await net._boot;
 		return net;
 	}

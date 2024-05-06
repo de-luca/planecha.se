@@ -18,7 +18,11 @@ import {
 	restore as restoreGame,
 } from "#/model/game";
 import { DualDeck, type EncounterInput } from "#/model/game/eternities";
-import { Net, type NetInterface } from "#/model/net/Net";
+import {
+	type NetInterface,
+	boot as bootNet,
+	create as createNet,
+} from "#/model/net";
 import {
 	type Clone,
 	type MaybeDump,
@@ -228,7 +232,10 @@ export const useMain = defineStore("main", {
 		},
 
 		async open() {
-			this.net = await Net.create(this, { gameType: this.config.type });
+			this.net = await createNet({
+				store: this,
+				gameData: { gameType: this.config.type },
+			});
 			if (this.isMulti) {
 				this.net.initHandler = (data, peer) =>
 					this.apply(
@@ -242,7 +249,7 @@ export const useMain = defineStore("main", {
 
 		async preJoin(roomId: string) {
 			this.leave();
-			this.net = await Net.boot(this, roomId);
+			this.net = await bootNet({ store: this, gameId: roomId });
 			return this.net.gameData;
 		},
 

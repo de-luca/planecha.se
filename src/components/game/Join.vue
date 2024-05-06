@@ -91,7 +91,12 @@ import { type DeckState, getDeckState } from "../create/utils";
 import BrandedFooter from "#/components/BrandedFooter.vue";
 import NameInput from "#/components/controls/NameInput.vue";
 import DeckCustomization from "#/components/create/DeckCustomization.vue";
-import { BlockedError, OfflineError, TimeoutError } from "#/model/net/errors";
+import {
+	BlockedError,
+	OfflineError,
+	ServerError,
+	TimeoutError,
+} from "#/model/net";
 
 type Issue = { msg: string; cause: string };
 
@@ -188,7 +193,7 @@ export default class Join extends Vue {
 			case err instanceof OfflineError:
 				this.issue = {
 					msg: "No internet connection.",
-					cause: "Your browser appear to be offline.",
+					cause: "Your browser appears to be offline.",
 				};
 				break;
 			case err instanceof BlockedError:
@@ -196,6 +201,12 @@ export default class Join extends Vue {
 					msg: "No relay could be reached.",
 					cause: `This might be due to adblocker blocking public webtorrent relays for unknown reason.<br>
             You can try fixing this issue by deactivating your adblocker.`,
+				};
+				break;
+			case err instanceof ServerError:
+				this.issue = {
+					msg: "Signaling server could not be reached.",
+					cause: "The signaling server might be down.",
 				};
 				break;
 		}
