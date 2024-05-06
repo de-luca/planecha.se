@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 /// <reference types="bun-types" />
 
 import { resolve, join } from 'node:path';
@@ -55,15 +54,6 @@ export default defineConfig({
       '#': pathSrc,
       '#assets': pathAssets,
       '#board': pathBoard,
-    },
-  },
-  test: {
-    environment: 'jsdom',
-    setupFiles: ['./tests/setup-file.ts'],
-    deps: {
-      inline: [
-        'simple-peer-light',
-      ],
     },
   },
 });
