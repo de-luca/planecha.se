@@ -25,7 +25,7 @@ import {
 const CHARSET =
 	"0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
 
-export const genId = (n: number) =>
+const genId = (n: number) =>
 	[...Array(n)]
 		.map(() => CHARSET[Math.floor(Math.random() * CHARSET.length)])
 		.join("");

@@ -40,7 +40,6 @@ export class BeaconNet implements NetInterface {
 		this.ready = !gameId;
 		this._gameId = gameId;
 		this._gameData = gameData;
-		this._gameData = gameData;
 
 		this.store = store;
 		this.bridge = Bridge.withBeacon(import.meta.env.VITE_BEACON_URL);
