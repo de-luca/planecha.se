@@ -1,23 +1,21 @@
-import type { EncounterWall } from "./EncounterWall";
-import type { PhenomenonWall } from "./PhenomenonWall";
-import type { RevealerWall } from "./RevealerWall";
+import type { EncounterWall, PhenomenonWall, RevealerWall } from "./types";
 
 export enum StateKey {
-	REVEALER = "REVEALER",
-	PHENOMENON_WALL = "PHENOMENON_WALL",
-	ENCOUNTER_WALL = "ENCOUNTER_WALL",
+	REVEALER = 0,
+	PHENOMENON_WALL = 1,
+	ENCOUNTER_WALL = 2,
 }
 
 export enum StateOp {
-	SET = "set",
-	DELETE = "delete",
+	SET = 0,
+	DELETE = 1,
 }
 
-export interface WallStateMap {
+export type WallStateMap = {
 	[StateKey.REVEALER]?: RevealerWall;
 	[StateKey.PHENOMENON_WALL]?: PhenomenonWall;
 	[StateKey.ENCOUNTER_WALL]?: EncounterWall;
-}
+};
 
 export type WallStateDump = WallStateMap;
 
@@ -34,7 +32,7 @@ type ApplyDelInput = {
 
 export type ApplyInput = ApplySetInput | ApplyDelInput;
 
-export interface WallManagerInterface {
+export type WallManagerInterface = {
 	set<T extends StateKey>(key: T, value: WallStateMap[T]): void;
 	get<T extends StateKey>(key: T): WallStateMap[T] | undefined;
 	has(key: StateKey): boolean;
@@ -42,7 +40,7 @@ export interface WallManagerInterface {
 	delete<T extends StateKey>(key: T): void;
 	apply(input: ApplyInput): void;
 	dump(): WallStateMap;
-}
+};
 
 export class WallManager implements WallManagerInterface {
 	private walls: WallStateMap;

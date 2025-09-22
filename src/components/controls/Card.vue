@@ -1,35 +1,81 @@
 <template>
-  <div v-if="!hidden">
-    <div class="card-container">
-      <div v-if="counters" class="counters tags has-addons">
-        <span v-if="!ro" class="tag is-primary minus" @click.stop="update(-1)">
-          <fa icon="minus" fixed-width />
-        </span>
-        <span class="tag is-primary value">
-          {{ counters.value }}
-        </span>
-        <span v-if="!ro" class="tag is-primary plus" @click.stop="update(1)">
-          <fa icon="plus" fixed-width />
-        </span>
-      </div>
-      <img :class="{ phenomenon: isPhenomenon }" :src="imgSrc">
-    </div>
-  </div>
-  <div v-else class="hidden">
-    <img src="/cards/back.jpg">
+  <img v-if="hidden"
+    src="/cards/back.jpg"
+    class="max-w-[800px] max-h-full w-full rounded-[3.5%/4.75%] drop-shadow-[1px_1px_1px_#585858]"
+  />
+  <div v-else class="outer relative w-fit">
+    <NumberField 
+      v-if="counter !== undefined" 
+      class="w-[10rem] absolute right-0 -top-10" 
+      :default-value="counter.start" 
+      :min="0"
+      v-model="counterValue"
+    >
+      <NumberFieldContent>
+        <NumberFieldDecrement />
+        <NumberFieldInput />
+        <NumberFieldIncrement />
+      </NumberFieldContent>
+    </NumberField>
+    <img 
+      :src="buildImgSrc(card)"
+      class="inner h-full w-full rounded-[3.5%/4.75%] drop-shadow-[1px_1px_1px_#585858]"
+      :class="{ '!drop-shadow-[0_0_5px_#DC143C,0_0_5px_#DC143C,0_0_5px_#DC143C]': card instanceof Phenomenon }"
+    />
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { computed } from "vue";
+
+import {
+	NumberField,
+	NumberFieldContent,
+	NumberFieldDecrement,
+	NumberFieldIncrement,
+	NumberFieldInput,
+} from "@/components/ui/number-field";
+
+import { useMain } from "@/store/main";
+import { buildImgSrc } from "../../utils/img";
+
+import { type Card, Phenomenon, Plane } from "@/model/card";
+
+const {
+	card,
+	hidden = false,
+	ro = false,
+} = defineProps<{
+	card: Card;
+	hidden?: boolean;
+	ro?: boolean;
+}>();
+
+const counter = card instanceof Plane ? card.counter : undefined;
+
+const store = useMain();
+
+const counterValue = computed({
+	get: () => counter?.value,
+	set: (value) => {
+		const change = (value ?? 0) - (counter?.value ?? 0);
+		if (change !== 0) {
+			store.updateCounters({ planeId: card.id, change });
+		}
+	},
+});
+</script>
+
+<!-- <script lang="ts">
 import { Component, Prop } from "vue-facing-decorator";
-import { Imgable } from "#/components/Imgable";
+import { Imgable } from "@/components/Imgable";
 import {
 	type Counter,
 	type Card as ModelCard,
 	Phenomenon,
 	Plane,
-} from "#/model/card";
-import { useMain } from "#/store/main";
+} from "@/model/card";
+import { useMain } from "@/store/main";
 
 @Component
 export default class Card extends Imgable {
@@ -61,9 +107,9 @@ export default class Card extends Imgable {
 		this.store.updateCounters({ planeId: this.card.id, change });
 	}
 }
-</script>
+</script> -->
 
-<style lang="scss" scoped>
+<!-- <style lang="scss" scoped>
 .card-container {
   height: inherit;
   width: fit-content;
@@ -105,4 +151,4 @@ img {
     }
   }
 }
-</style>
+</style> -->

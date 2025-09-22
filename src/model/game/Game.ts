@@ -1,5 +1,5 @@
-import { getCardList, restoreDeck } from "#/services/cardProvider";
-import { type Patch, patch } from "#/utils/delta";
+import { getCardList, restoreDeck } from "@/services/cardProvider";
+import { type Patch, patch } from "@/utils/delta";
 import type { Card, Plane } from "../card";
 import type { Deck } from "../deck/Deck";
 import { StateKey, WallManager } from "../wall";
@@ -17,13 +17,13 @@ import type {
 	UpdateCounterInput,
 } from "./GameInterface";
 
-export interface GameProps {
+export type GameProps = {
 	wallStates: WallManager;
 	hasStarted?: boolean;
 	deck: Deck<Card>;
 	active?: Array<Card>;
 	revealed?: Revealed;
-}
+};
 
 export abstract class Game implements GameInterface {
 	protected _deck: Deck<Card>;

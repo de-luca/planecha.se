@@ -1,14 +1,13 @@
-import { Deck } from "#/model/deck/Deck";
-import { WallManager } from "#/model/wall";
-import { type Patch, patch } from "#/utils/delta";
+import { Deck } from "@/model/deck/Deck";
+import { WallManager } from "@/model/wall";
+import { type Patch, patch } from "@/utils/delta";
 import { Game, type GameProps } from "../Game";
-import {
-	type AddActivePlaneInput,
-	type GameDump,
-	type GameSpecs,
-	GameType,
-	type PlaneswalkInput,
-	type ResolveInput,
+import type {
+	AddActivePlaneInput,
+	GameDump,
+	GameSpecs,
+	PlaneswalkInput,
+	ResolveInput,
 } from "../GameInterface";
 import { PartialMulti } from "./PartialMulti";
 
@@ -22,7 +21,7 @@ export class Multi extends Game {
 	}
 
 	public get specs(): GameSpecs {
-		return { type: GameType.MULTI };
+		return { type: "multi" };
 	}
 
 	public planeswalk(input: PlaneswalkInput): void {

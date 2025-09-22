@@ -1,12 +1,11 @@
 import {
 	getCardList,
-	getCustomDeck,
-	getDeck,
+	getDeckFromList,
 	restoreDeck,
-} from "#/services/cardProvider";
+} from "@/services/cardProvider";
 import type { Card } from "../card";
 import { WallManager } from "../wall";
-import { type GameDump, type GameInterface, GameType } from "./GameInterface";
+import type { GameDump, GameInterface, GameType } from "./GameInterface";
 import {
 	type EncounterTriggers,
 	type EternitiesMapDump,
@@ -14,43 +13,43 @@ import {
 	build as buildEM,
 	restore as restoreEM,
 } from "./eternities";
-import { Multi } from "./multi/Multi";
-import { Single } from "./single/Single";
+import { Multi } from "./multi";
+import { Single } from "./single";
 
-export interface BuildProps {
+export type BuildProps = {
 	type: GameType;
-	cards?: Array<string>;
+	cards: Array<string>;
 	specs?: Omit<EternitiesMapSpecs, "type">;
 	encounterTriggers?: EncounterTriggers;
-}
+};
 
 export const build = (props: BuildProps): GameInterface => {
 	switch (props.type) {
-		case GameType.SINGLE:
+		case "single":
 			return new Single({
 				wallStates: new WallManager(),
-				deck: props.cards ? getCustomDeck(props.cards) : getDeck(),
+				deck: getDeckFromList(props.cards),
 			});
-		case GameType.MULTI:
+		case "multi":
 			return new Multi({
 				wallStates: new WallManager(),
-				deck: props.cards ? getCustomDeck(props.cards) : getDeck(),
+				deck: getDeckFromList(props.cards),
 			});
-		case GameType.ETERNITIES:
+		case "eternities":
 			return buildEM(
 				{
 					type: props.type,
 					...(props.specs as Omit<EternitiesMapSpecs, "type">),
 				},
-				props.encounterTriggers,
 				props.cards,
+				props.encounterTriggers,
 			);
 	}
 };
 
 export const restore = (dump: GameDump): GameInterface => {
 	switch (dump.specs.type) {
-		case GameType.SINGLE:
+		case "single":
 			return new Single({
 				deck: restoreDeck<Card>(dump.deck),
 				wallStates: new WallManager(dump.wallStates),
@@ -63,7 +62,7 @@ export const restore = (dump: GameDump): GameInterface => {
 						}
 					: undefined,
 			});
-		case GameType.ETERNITIES:
+		case "eternities":
 			return restoreEM(dump as EternitiesMapDump);
 		default:
 			throw new Error("Incompatible");

@@ -4,8 +4,8 @@ import {
 	type RevealerWall,
 	StateKey,
 	type WallManager,
-} from "#/model/wall";
-import { Phenomenon } from "../Phenomenon";
+} from "@/model/wall";
+import { SpecialPhenomenon } from "./SpecialPhenomenon";
 
 /**
  * When you encounter Interplanar Tunnel,
@@ -15,7 +15,7 @@ import { Phenomenon } from "../Phenomenon";
  * then put the rest of the revealed cards on the bottom
  * in a random order.
  */
-export class InterplanarTunnel extends Phenomenon {
+export class InterplanarTunnel extends SpecialPhenomenon {
 	public enter(walls: WallManager, initiator: string): void {
 		const revealer: RevealerWall = {
 			title: this.name,

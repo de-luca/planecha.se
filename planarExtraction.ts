@@ -6,6 +6,7 @@ export { };
 
 interface ScryfallCard {
   oracle_id: string;
+  released_at: string;
   name: string;
   type_line: string;
   oracle_text: string;
@@ -13,6 +14,8 @@ interface ScryfallCard {
   set: string;
   set_name: string;
   security_stamp?: string;
+  border_color: string;
+  promo_types?: Array<string>;
 }
 
 interface ScryfallResponse {
@@ -29,11 +32,14 @@ interface Card {
   oracleText: string;
   sets: Array<string>;
   isUB: boolean;
+  isGold: boolean;
+  isPlaytest: boolean;
 }
 
 interface Set {
   code: string;
   name: string;
+  year: number;
 }
 
 const CARD_DIR = join(import.meta.dir, 'public', 'cards');
@@ -53,7 +59,7 @@ async function fetchAllPrints(): Promise<Array<ScryfallCard>> {
 
 async function buildImg(url: string, out: string): Promise<void> {
   const proc = Bun.spawn(
-    [ 'convert', '-', '-resize', '680', '-rotate', '90', out ],
+    [ 'magick', '-', '-resize', '680', '-rotate', '90', out ],
     { stdin: 'pipe' },
   );
   proc.stdin.write(await (await fetch(url)).arrayBuffer());
@@ -61,34 +67,47 @@ async function buildImg(url: string, out: string): Promise<void> {
   await proc.exited;
 }
 
+function weightCard(card: Card): number {
+  if (card.isGold && !card.isPlaytest) return 1
+  if (card.isGold && card.isPlaytest) return 2
+  if (!card.isGold && card.isPlaytest) return 3
+  return 0
+}
 
-const cards = new Map<string, Card>();
-const sets = new Map<string, Set>();
+
+const cardMap = new Map<string, Card>();
+const setMap = new Map<string, Set>();
 
 for (const print of await fetchAllPrints()) {
-  const card = cards.get(print.oracle_id);
-  if (!sets.has(print.set)) {
-    sets.set(print.set, {
+  const card = cardMap.get(print.oracle_id);
+  if (!setMap.has(print.set)) {
+    setMap.set(print.set, {
       code: print.set,
       name: print.set_name,
+      year: Number(print.released_at.split('-')[0]),
     });
   }
   if (card) {
-    card.sets.push(print.set);
+    card.sets = [...new Set([...card.sets, print.set])];
   } else {
-    cards.set(print.oracle_id, {
+    cardMap.set(print.oracle_id, {
       id: print.oracle_id,
       name: print.name,
       typeLine: print.type_line,
       oracleText: print.oracle_text,
       sets: [print.set],
       isUB: print.security_stamp === 'triangle',
+      isGold: print.border_color === 'gold',
+      isPlaytest: print.promo_types?.includes('playtest') ?? false,
     });
-    await buildImg(print.image_uris.normal, join(CARD_DIR, `${print.oracle_id}.jpg`));
+    // await buildImg(print.image_uris.normal, join(CARD_DIR, `${print.oracle_id}.jpg`));
     console.log(`Built ${print.name}`);
   }
 }
 
+const cards = [...cardMap.values()]
+  .sort((a, b) => weightCard(a) - weightCard(b));
+
 await buildImg(CARD_BACK, join(CARD_DIR, 'back.jpg'));
-await Bun.write('./src/assets/cards.json', JSON.stringify([...cards.values()]));
-await Bun.write('./src/assets/sets.json', JSON.stringify([...sets.values()]));
+await Bun.write('./src/assets/cards.json', JSON.stringify(cards));
+await Bun.write('./src/assets/sets.json', JSON.stringify([...setMap.values()]));

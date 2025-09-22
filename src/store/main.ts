@@ -1,14 +1,12 @@
 import { type Store, defineStore } from "pinia";
 
-import type { SavedDeck } from "#/components/create/utils";
-import { Phenomenon, Plane } from "#/model/card";
+import { SpecialPlane } from "@/model/card";
 import {
 	type AddActivePlaneInput,
 	type BuildProps,
 	type ChaosInput,
 	type GameDump,
 	type GameInterface,
-	GameType,
 	type Multi,
 	type PlaneswalkInput,
 	type ResolveRevealInput,
@@ -16,103 +14,89 @@ import {
 	type UpdateCounterInput,
 	build as buildGame,
 	restore as restoreGame,
-} from "#/model/game";
-import { DualDeck, type EncounterInput } from "#/model/game/eternities";
+} from "@/model/game";
+import { DualDeck, type EncounterInput } from "@/model/game/eternities";
 import {
 	type NetInterface,
 	boot as bootNet,
 	create as createNet,
-} from "#/model/net";
+} from "@/model/net";
+import { Stack, type StackInterface } from "@/model/stack/Stack";
 import {
 	type Clone,
 	type MaybeDump,
 	type RepoInterface,
 	build as buildRepo,
 	restore as restoreRepo,
-} from "#/model/ver";
-import type { ApplyInput } from "#/model/wall";
-import { eventBus } from "#/services/eventBus";
-import { type Patch, diff } from "#/utils/delta";
-import { once } from "#/utils/invoke";
+} from "@/model/ver";
+import type { ApplyInput } from "@/model/wall";
+import { eventBus } from "@/services/eventBus";
+import type {
+	CoinFlipResult,
+	DiceResult,
+	Layout,
+	PlanarDiceResult,
+} from "@/types";
+import { type Patch, diff } from "@/utils/delta";
+import { once } from "@/utils/invoke";
 
-export enum Op {
-	CHAOS = "chaos",
-	RESOLVE_REVEAL = "resolveReveal",
-}
-
-export interface OpRequest {
-	op: Op;
-	payload?: unknown;
-}
-
-export interface HeyPayload {
+export type HeyPayload = {
 	id: string;
 	name: string;
-}
-
-export interface ByePayload {
-	id: string;
-}
-
-export interface JoinPayload {
+};
+export type ByePayload = { id: string };
+export type JoinPayload = {
 	roomId: string;
 	name: string;
-}
-
-export interface InitPayload {
+};
+export type InitPayload = {
 	mapConfig: BuildProps;
 	repo: Clone;
 	game: GameDump;
 	feed: Array<string>;
-}
+};
 
-export interface PlayerLayout {
+export type PlayerLayout = {
 	layout: Layout;
 	players: Array<string>;
-}
+};
 
-export interface State {
+export type State = {
 	_config?: BuildProps;
 
 	_game?: GameInterface;
 	_repo?: RepoInterface;
+	_stack?: StackInterface;
+
 	net?: NetInterface;
 
 	ready: boolean;
 
 	feed: Array<string>;
-	opStack: Array<OpRequest>;
 
 	mates: Map<string, string>;
-	selfName: string | null;
-	theme: Theme;
-	decks: Map<string, SavedDeck>;
+	selfName?: string;
 	playerLayout: PlayerLayout;
-}
+};
 
 function getState(): State {
-	const serializedDecks = localStorage.getItem("decks");
-
 	return {
 		_config: undefined,
 
 		_game: undefined,
 		_repo: undefined,
+		_stack: undefined,
+
 		net: undefined,
 
 		ready: false,
 
 		feed: [],
-		opStack: [],
+		// opStack: [],
 
 		mates: new Map(),
 
-		selfName: localStorage.getItem("selfName"),
-		theme: (localStorage.getItem("theme") as Theme) ?? "sys",
-		decks:
-			serializedDecks !== null
-				? new Map(JSON.parse(serializedDecks) as Array<[string, SavedDeck]>)
-				: new Map(),
+		selfName: localStorage.getItem("selfName") ?? undefined,
 		playerLayout: {
 			layout: (localStorage.getItem("layout") as Layout) ?? "x2",
 			players: [""],
@@ -146,6 +130,10 @@ export const useMain = defineStore("main", {
 			if (this._repo) return this._repo;
 			throw new Error("Repo is undefined (store is in unset state)");
 		},
+		stack(): StackInterface {
+			if (this._stack) return this._stack;
+			throw new Error("Stack is undefined (store is in unset state)");
+		},
 		logName(): string {
 			return this.net ? this.selfName! : "You";
 		},
@@ -153,7 +141,7 @@ export const useMain = defineStore("main", {
 			return this.net?.gameId;
 		},
 		isMulti(): boolean {
-			return this._config?.type === GameType.MULTI;
+			return this._config?.type === "multi";
 		},
 		initPayload(): InitPayload {
 			return {
@@ -163,23 +151,9 @@ export const useMain = defineStore("main", {
 				feed: [...this.feed],
 			};
 		},
-		// gameStatus(): PreflightPayload {
-		//   return {
-		//     mapType: this.config.type,
-		//     hasStarted: this.game.hasStarted,
-		//     players: [
-		//       this.selfName!,
-		//       ...this.mates.values(),
-		//     ],
-		//   };
-		// },
 	},
 
 	actions: {
-		setTheme(theme: Theme): void {
-			this.theme = theme;
-			localStorage.setItem("theme", this.theme);
-		},
 		setName(name: string): void {
 			this.selfName = name;
 			localStorage.setItem("selfName", this.selfName);
@@ -188,20 +162,6 @@ export const useMain = defineStore("main", {
 		setLayout(layout: Layout): void {
 			this.playerLayout.layout = layout;
 			localStorage.setItem("layout", layout);
-		},
-		addDeck(name: string, deck: SavedDeck): void {
-			this.decks.set(name, deck);
-			localStorage.setItem(
-				"decks",
-				JSON.stringify(Array.from(this.decks.entries())),
-			);
-		},
-		removeDeck(name: string): void {
-			this.decks.delete(name);
-			localStorage.setItem(
-				"decks",
-				JSON.stringify(Array.from(this.decks.entries())),
-			);
 		},
 
 		getMateName(id?: string): string {
@@ -228,6 +188,7 @@ export const useMain = defineStore("main", {
 			this._config = payload;
 			this._game = buildGame(payload);
 			this._repo = buildRepo(payload);
+			this._stack = new Stack();
 			this.ready = true;
 		},
 
@@ -254,7 +215,7 @@ export const useMain = defineStore("main", {
 		},
 
 		join(payload: BuildProps) {
-			if (payload.type !== GameType.MULTI) {
+			if (payload.type !== "multi") {
 				return this.net?.join(
 					once((data) => {
 						this.applyReset(data);
@@ -355,13 +316,12 @@ export const useMain = defineStore("main", {
 
 		chaos(payload: Omit<ChaosInput, "initiator">): void {
 			this.game.chaos({ ...payload, initiator: this.logName });
-			if (
-				payload.card instanceof Phenomenon ||
-				(payload.card instanceof Plane &&
-					!payload.card.chaosRequireInterraction)
-			) {
-				this.resolveOpStack();
+			if (!(payload.card instanceof SpecialPlane)) {
+				this.resolveStack();
 			}
+			// if (payload.card instanceof Phenomenon || payload.card instanceof SpecialPlane) {
+			// 	this.resolveOpStack();
+			// }
 		},
 
 		planeswalk(payload: Omit<PlaneswalkInput, "initiator">): void {
@@ -383,7 +343,7 @@ export const useMain = defineStore("main", {
 		},
 		privateResolveReveal(payload: ResolveRevealInput) {
 			this.game.resolveReveal(payload);
-			!payload.stop && this.resolveOpStack();
+			// !payload.stop && this.resolveOpStack();
 		},
 
 		reveal(payload: RevealUntilInput) {
@@ -391,7 +351,7 @@ export const useMain = defineStore("main", {
 		},
 		resolveReveal(payload: ResolveRevealInput) {
 			this.game.resolveReveal(payload);
-			!payload.stop && this.resolveOpStack();
+			// !payload.stop && this.resolveOpStack();
 		},
 
 		updateWallState(payload: ApplyInput) {
@@ -404,14 +364,28 @@ export const useMain = defineStore("main", {
 			}
 		},
 
-		pushOpToStack(op: Op, payload: unknown) {
-			this.opStack.push({ op, payload });
-		},
-		resolveOpStack() {
+		// pushOpToStack(op: Op, payload: unknown) {
+		// 	this.opStack.push({ op, payload });
+		// },
+		// resolveOpStack() {
+		// 	console.log("RESOLVE OP STACK");
+		// 	const opr = this.opStack.pop();
+		// 	console.log(opr);
+		// 	if (opr) {
+		// 		// @ts-ignore
+		// 		opr && this[opr.op](opr.payload);
+		// 		// this.resolveOpStack();
+		// 	}
+		// },
+
+		resolveStack() {
 			console.log("RESOLVE OP STACK");
-			const opr = this.opStack.pop();
-			// @ts-ignore
-			opr && this[opr.op](opr.payload);
+			const op = this.stack.pop();
+			console.log(op);
+			if (op) {
+				// @ts-ignore
+				this.chaos(op);
+			}
 		},
 
 		rollDice(sides: number): DiceResult {

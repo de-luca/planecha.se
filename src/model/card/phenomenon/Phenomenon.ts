@@ -1,4 +1,4 @@
-import type { WallManager } from "#/model/wall";
+import type { WallManager } from "@/model/wall";
 import { Card, type Type } from "../Card";
 
 export class Phenomenon extends Card {

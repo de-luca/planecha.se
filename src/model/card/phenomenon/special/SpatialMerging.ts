@@ -4,8 +4,8 @@ import {
 	type RevealerWall,
 	StateKey,
 	type WallManager,
-} from "#/model/wall";
-import { Phenomenon } from "../Phenomenon";
+} from "@/model/wall";
+import { SpecialPhenomenon } from "./SpecialPhenomenon";
 
 /**
  * When you encounter Spatial Merging,
@@ -15,7 +15,7 @@ import { Phenomenon } from "../Phenomenon";
  * Put all other cards revealed this way on the
  * bottom of your planar deck in any order.
  */
-export class SpatialMerging extends Phenomenon {
+export class SpatialMerging extends SpecialPhenomenon {
 	public enter(walls: WallManager, initiator: string): void {
 		const revealer: RevealerWall = {
 			title: this.name,

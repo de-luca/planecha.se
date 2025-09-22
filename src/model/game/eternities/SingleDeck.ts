@@ -1,29 +1,25 @@
-import { Phenomenon, type Plane } from "#/model/card";
-import { StateKey } from "#/model/wall";
-import {
-	type AddActivePlaneInput,
-	type CustomEternitiesPlaneswalkInput,
-	type EternitiesPlaneswalkInput,
-	GameType,
-	type ResolveInput,
+import { Phenomenon, type Plane } from "@/model/card";
+import { StateKey } from "@/model/wall";
+import type { Coordinates } from "@/types";
+import type {
+	AddActivePlaneInput,
+	CustomEternitiesPlaneswalkInput,
+	EternitiesPlaneswalkInput,
+	ResolveInput,
 } from "../GameInterface";
 import {
 	EternitiesMap,
 	type EternitiesMapDump,
 	type EternitiesMapProps,
 	type EternitiesMapSpecs,
-	EternitiesMapSubType,
 	type PlaneswalkInput,
 } from "./EternitiesMap";
 import { Tile, TileStatus } from "./Tile";
 
-export interface SingleDeckDump extends EternitiesMapDump {
+export type SingleDeckDump = EternitiesMapDump & { destination?: Coordinates };
+export type SingleDeckProps = EternitiesMapProps & {
 	destination?: Coordinates;
-}
-
-export interface SingleDeckProps extends EternitiesMapProps {
-	destination?: Coordinates;
-}
+};
 
 export class SingleDeck extends EternitiesMap {
 	protected _destination?: Coordinates;
@@ -35,8 +31,8 @@ export class SingleDeck extends EternitiesMap {
 
 	public get specs(): EternitiesMapSpecs {
 		return {
-			type: GameType.ETERNITIES,
-			subType: EternitiesMapSubType.SINGLE_DECK,
+			type: "eternities",
+			subType: "single",
 			deckType: this._deckType,
 		};
 	}

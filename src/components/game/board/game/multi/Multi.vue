@@ -1,29 +1,85 @@
 <template>
-  <div class="wrapper" :class="layout">
-    <div class="active" v-for="(a, i) in actives" :key="i">
-      <card v-if="a.active.length === 1" :card="a.active[0]" :hidden="!a.started" />
-      <div v-else @click="shown = a">
-        <fa icon="ellipsis" size="10x" />
+  <div 
+    class="grid grid-rows-2 grid-flow-dense gap-[1rem] h-full py-[1rem]" 
+    :class="layout"
+  >
+    <div 
+      class="flex flex-col items-center justify-center gap-[.5rem] py-[1rem]" 
+      v-for="(b, i) in boards" :key="i"
+    >
+      <Card v-if="b.active.length === 1" :card="b.active[0]" :hidden="!b.started" />
+      <div v-else @click="shown = b">
+        <Ellipsis />
       </div>
-      <h1>{{ a.mate }}</h1>
+      <h1>{{ b.mate }}</h1>
     </div>
   </div>
 
-  <modal v-if="shown" :scroll="true" @close="shown = null">
-    <div class="details">
-      <h1 class="title">{{ shown.yours ? 'Your board' : shown.mate + '\'s board' }}</h1>
-      <card v-for="card in shown.active" :key="card.id" :card="card" :ro="!shown.yours" />
-    </div>
-  </modal>
+  <BoardDetails
+    :board="shown"
+    @close="shown = undefined"
+  />
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { Ellipsis } from "lucide-vue-next";
+import { computed, ref } from "vue";
+
+import Card from "@/components/controls/Card.vue";
+import { type Board, BoardDetails } from "./controls";
+
+import type { Multi } from "@/model/game/multi/Multi";
+import { useMain } from "@/store";
+import { useGame } from "../game";
+
+const store = useMain();
+const { customPlaneswalk, putBack } = useGame();
+
+const shown = ref<Board>();
+
+const layout = computed(() => {
+	switch (store.playerLayout.layout) {
+		case "x2":
+			return "grid-cols-2";
+		case "x3":
+			return "grid-cols-3";
+	}
+});
+
+const boards = computed(() => {
+	return store.playerLayout.players.reduce<Array<Board>>((acc, id) => {
+		const game =
+			id === "" ? store.game : (store.game as Multi).mateStates.get(id);
+
+		if (game) {
+			acc.push({
+				yours: id === "",
+				mate: store.getMateName(id),
+				active: game.active,
+				started: game.hasStarted,
+			});
+		}
+
+		return acc;
+	}, []);
+});
+
+const planeswalk = () => store.planeswalk({});
+
+defineExpose({
+	planeswalk,
+	customPlaneswalk,
+	putBack,
+});
+</script>
+
+<!-- <script lang="ts">
 import { Component } from "vue-facing-decorator";
-import type { Card as ModelCard } from "#/model/card";
-import type { Multi as MultiGame } from "#/model/game/multi/Multi";
+import type { Card as ModelCard } from "@/model/card";
+import type { Multi as MultiGame } from "@/model/game/multi/Multi";
 import { Game } from "../Game";
 
-import Card from "#/components/controls/Card.vue";
+import Card from "@/components/controls/Card.vue";
 
 interface Active {
 	yours: boolean;
@@ -78,9 +134,9 @@ export default class Multi extends Game {
 		this.store.planeswalk({});
 	}
 }
-</script>
+</script> -->
 
-<style lang="scss" scoped>
+<!-- <style lang="scss" scoped>
 .wrapper {
   display: grid;
   grid-auto-flow: dense;
@@ -121,4 +177,4 @@ export default class Multi extends Game {
   gap: 2.5rem;
   padding: 2.5rem 1rem;
 }
-</style>
+</style> -->

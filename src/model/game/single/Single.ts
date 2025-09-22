@@ -1,10 +1,9 @@
 import { Game, type GameProps } from "../Game";
-import {
-	type AddActivePlaneInput,
-	type GameSpecs,
-	GameType,
-	type PlaneswalkInput,
-	type ResolveInput,
+import type {
+	AddActivePlaneInput,
+	GameSpecs,
+	PlaneswalkInput,
+	ResolveInput,
 } from "../GameInterface";
 
 export class Single extends Game {
@@ -14,7 +13,7 @@ export class Single extends Game {
 	}
 
 	public get specs(): GameSpecs {
-		return { type: GameType.SINGLE };
+		return { type: "single" };
 	}
 
 	public planeswalk(input: PlaneswalkInput): void {

@@ -6,10 +6,10 @@ import {
 import cloneDeep from "lodash.clonedeep";
 
 export type Delta = jsonDelta;
-export interface Patch {
+export type Patch = {
 	event: string;
 	delta?: Delta;
-}
+};
 
 export const diff = <T>(a: T, b: T): Delta => jsonDiff({ left: a, right: b });
 

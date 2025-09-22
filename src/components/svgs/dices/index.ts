@@ -1,9 +1,7 @@
-import Coin from "./Coin.vue";
-import D4 from "./D4.vue";
-import D6 from "./D6.vue";
-import D8 from "./D8.vue";
-import D10 from "./D10.vue";
-import D12 from "./D12.vue";
-import D20 from "./D20.vue";
-
-export { Coin, D4, D6, D8, D10, D12, D20 };
+export { default as Coin } from "./Coin.vue";
+export { default as D4 } from "./D4.vue";
+export { default as D6 } from "./D6.vue";
+export { default as D8 } from "./D8.vue";
+export { default as D10 } from "./D10.vue";
+export { default as D12 } from "./D12.vue";
+export { default as D20 } from "./D20.vue";

@@ -1,3 +1,4 @@
+import type { InitPayload, MainStore } from "@/store/main";
 import {
 	type ActionReceiver,
 	type ActionSender,
@@ -6,11 +7,10 @@ import {
 	getRelaySockets,
 	joinRoom,
 } from "trystero";
-import type { InitPayload, MainStore } from "#/store/main";
 import { BlockedError, OfflineError, TimeoutError } from "./errors";
 
-import type { Patch } from "#/utils/delta";
-import { once } from "#/utils/invoke";
+import type { Patch } from "@/utils/delta";
+import { once } from "@/utils/invoke";
 import {
 	type BootParams,
 	type CreateParams,
@@ -62,7 +62,7 @@ export class TrysteroNet implements NetInterface {
 
 		this.room = joinRoom({ appId: import.meta.env.VITE_APP_ID }, this._gameId);
 
-		const [bootSender, bootReceiver] = this.room.makeAction<AsType<GameData>>(
+		const [bootSender, bootReceiver] = this.room.makeAction<GameData>(
 			EventType.BOOT,
 		);
 		const [joinSender, joinReceiver] = this.room.makeAction<null>(
@@ -72,7 +72,7 @@ export class TrysteroNet implements NetInterface {
 			AsType<InitPayload>
 		>(EventType.INIT);
 		const [heySender, heyReceiver] = this.room.makeAction<Hey>(EventType.HEY);
-		const [syncSender, syncReceiver] = this.room.makeAction<AsType<Patch>>(
+		const [syncSender, syncReceiver] = this.room.makeAction<Patch>(
 			EventType.SYNC,
 		);
 		const [undoSender, undoReceiver] = this.room.makeAction<number>(

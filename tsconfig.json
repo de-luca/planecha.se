@@ -22,9 +22,8 @@
       "vite-plugin-pwa/client"
     ],
     "paths": {
-      "#/*": ["src/*"],
-      "#assets/*": ["src/assets/*"],
-      "#board/*": ["src/components/game/board/*"]
+      "@/*": ["./src/*"],
+      "#assets/*": ["src/assets/*"]
     },
     "lib": [
       "esnext",

@@ -1,28 +1,16 @@
 <template>
-  <div class="field">
-    <label class="label" v-html="label"></label>
-    <div class="field has-addons">
-      <div class="control">
-        <input
-            v-model="name"
-            class="input"
-            type="text"
-            placeholder="Fblthp"
-            :required="required"
-          >
-      </div>
-      <div class="control">
-        <a class="button is-primary" @click="randomize" title="Randomize name">
-          <fa icon="dice-d20" fixed-width />
-        </a>
-      </div>
-    </div>
-    <p class="help" v-if="help" v-html="help"></p>
-  </div>
+	<div class="flex w-full items-center gap-1.5">
+		<Input type="text" v-model="username" placeholder="Fblthp" />
+		<Button variant="outline" size="icon" @click.prevent="randomize" title="Randomize name">
+			<Shuffle class="w-4 h-4" />
+		</Button>
+	</div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-facing-decorator";
+<script setup lang="ts">
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Shuffle } from "lucide-vue-next";
 
 const ADJS = [
 	"Nuclear",
@@ -218,42 +206,10 @@ const NOUNS = [
 	"[object Object]",
 ];
 
-@Component({ emits: ["update:modelValue"] })
-export default class NameInput extends Vue {
-	@Prop({ required: true })
-	public modelValue: string;
-
-	@Prop({ required: true })
-	public label: string;
-
-	@Prop({ required: false })
-	public help: string;
-
-	@Prop({ required: false, default: false })
-	public required: boolean;
-
-	public get name(): string {
-		return this.modelValue;
-	}
-
-	public set name(value: string) {
-		this.$emit("update:modelValue", value);
-	}
-
-	public randomize(): void {
-		const adj = ADJS[Math.floor(Math.random() * ADJS.length)];
-		const noun = NOUNS[Math.floor(Math.random() * NOUNS.length)];
-		this.name = `${adj} ${noun}`;
-	}
-}
+const username = defineModel<string>();
+const randomize = () => {
+	username.value = `${ADJS[Math.floor(Math.random() * ADJS.length)]} ${
+		NOUNS[Math.floor(Math.random() * NOUNS.length)]
+	}`;
+};
 </script>
-
-<style lang="scss" scoped>
-.field.has-addons {
-  margin-bottom: 0;
-
-  .control:first-child {
-    flex-grow: 1;
-  }
-}
-</style>

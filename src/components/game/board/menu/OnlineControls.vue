@@ -1,5 +1,58 @@
 <template>
-  <div
+  <DropdownMenu>
+    <DropdownMenuTrigger title="Online controls">
+      <Button variant="ghost" class="w-[3.5rem]">
+        <UserRoundCog class="!h-full !w-full" />
+      </Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent side="right" class="w-[25rem]">
+      <template v-if="!online">
+        <DropdownMenuLabel class="flex items-center gap-2">
+          <DoorOpen /> Open Game
+        </DropdownMenuLabel>
+        <DropdownMenuLabel class="flex justify-between gap-1">
+          <Button class="w-full" @click="open">
+            Open Game to Multiplayer
+          </Button>
+        </DropdownMenuLabel>
+        <DropdownMenuLabel class="text-muted-foreground text-xs">
+          You need to open your game to invite people to join.
+        </DropdownMenuLabel>
+      </template>
+      <template v-else>
+        <DropdownMenuLabel class="flex items-center gap-2">
+          <UserRoundPlus /> Invite players
+        </DropdownMenuLabel>
+        <DropdownMenuLabel class="flex w-full max-w-sm items-center gap-1.5">
+          <Input type="text" v-model="roomUrl" readonly />
+          <FeedbackButton variant="outline" size="icon" :timeout="1000" >
+            <template v-slot:idle>
+              <Clipboard />
+            </template>
+            <template v-slot:action>
+              <ClipboardCheck />
+            </template>
+          </FeedbackButton>
+        </DropdownMenuLabel>
+        <DropdownMenuLabel class="text-muted-foreground text-xs">
+          Give this thing to people!
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel class="flex items-center gap-2">
+          <UsersRound /> Current Players
+        </DropdownMenuLabel>
+        <DropdownMenuLabel>
+          {{ store.selfName }} <em class="text-muted-foreground">(that's you!)</em>
+        </DropdownMenuLabel>
+        <DropdownMenuLabel v-for="[id, name] in store.mates" :key="id">
+          {{ name }}
+        </DropdownMenuLabel>
+      </template>
+    </DropdownMenuContent>
+  </DropdownMenu>
+
+
+  <!-- <div
     :class="{ 'is-active': active }"
     class="dropdown"
   >
@@ -86,142 +139,189 @@
     </div>
   </div>
 
-  <name-modal v-model:active="nameModalActive" @done="open" />
+  <name-modal v-model:active="nameModalActive" @done="open" /> -->
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-facing-decorator";
-import { useMain } from "#/store/main";
+<script setup lang="ts">
+import {
+	Clipboard,
+	ClipboardCheck,
+	DoorOpen,
+	UserRoundCog,
+	UserRoundPlus,
+	UsersRound,
+} from "lucide-vue-next";
+import { computed, ref } from "vue";
+import { useRouter } from "vue-router";
 
-import NameModal from "#/components/NameModal.vue";
-import FeedbackButton from "#/components/controls/FeedbackButton.vue";
+import { Button } from "@/components/ui/button";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+import FeedbackButton from "@/components/controls/FeedbackButton.vue";
+
 import {
 	BlockedError,
 	OfflineError,
 	ServerError,
 	TimeoutError,
-} from "#/model/net";
+} from "@/model/net";
+import { useMain } from "@/store/main";
 
-enum BtnText {
-	IDLE = "Copy",
-	SUCCESS = "Copied!",
-}
+type Issue = Partial<{ msg: string; cause: string }>;
 
-type Issue = { msg: string; cause: string };
+const store = useMain();
+const router = useRouter();
 
-@Component({ components: { FeedbackButton, NameModal } })
-export default class OnlineControls extends Vue {
-	private store = useMain();
-	private copyBtnText: BtnText = BtnText.IDLE;
+const issue = ref<Issue>();
 
-	public issue: Issue | null = null;
-	public active = false;
-	public nameModalActive = false;
+const online = computed(() => !!store.net);
+const roomUrl = computed(() => {
+	console.log(`${window.location.origin}/@/game/${store.gameId}`);
+	return `${window.location.origin}/@/game/${store.gameId}`;
+});
 
-	public get online(): boolean {
-		return !!this.store.net;
+const copy = async () => {
+	try {
+		await navigator.clipboard.writeText(roomUrl.value);
+	} catch (err) {
+		console.error(err);
 	}
+};
 
-	public get playerName(): string {
-		return this.store.selfName!;
+const digestError = (err: Error) => {
+	console.log(err);
+	issue.value = { msg: "The game could not be oppened." };
+	switch (true) {
+		case err instanceof TimeoutError:
+			issue.value.cause =
+				"The link might be broken or the room as been closed.";
+			break;
+		case err instanceof OfflineError:
+			issue.value.cause = "Your browser appears to be offline.";
+			break;
+		case err instanceof BlockedError:
+			issue.value.cause = `This might be due to adblocker blocking public webtorrent relays for unknown reason.<br>
+        You can try fixing this issue by deactivating your adblocker.`;
+			break;
+		case err instanceof ServerError:
+			issue.value.cause = "The signaling server might be down.";
+			break;
 	}
+};
 
-	public get roomUrl(): string {
-		return `${window.location.origin}/#/game/${this.store.gameId}`;
+const open = async () => {
+	try {
+		await store.open();
+		router.replace({ name: "Join", params: { roomId: store.gameId } });
+		copy();
+		console.log(store.gameId);
+	} catch (err) {
+		digestError(err as Error);
 	}
+};
 
-	public get mates(): Map<string, string> {
-		return this.store.mates;
-	}
+// import { Component, Vue } from "vue-facing-decorator";
+// import { useMain } from "@/store/main";
 
-	public async open(): Promise<void> {
-		if (!this.store.selfName) {
-			this.nameModalActive = true;
-			return;
-		}
+// import NameModal from "@/components/NameModal.vue";
+// import FeedbackButton from "@/components/controls/FeedbackButton.vue";
+// import {
+// 	BlockedError,
+// 	OfflineError,
+// 	ServerError,
+// 	TimeoutError,
+// } from "@/model/net";
 
-		try {
-			await this.store.open();
-			this.$router.replace({
-				name: "Join",
-				params: { roomId: this.store.gameId },
-			});
-			this.copy();
-		} catch (err) {
-			this.digestError(err as Error);
-		}
-	}
+// enum BtnText {
+// 	IDLE = "Copy",
+// 	SUCCESS = "Copied!",
+// }
 
-	public async copy(): Promise<void> {
-		try {
-			await navigator.clipboard.writeText(this.roomUrl);
-		} catch (err) {
-			console.error(err);
-		}
-	}
+// type Issue = { msg: string; cause: string };
 
-	private digestError(err: Error): void {
-		console.log(err);
-		const issue: Partial<Issue> = { msg: "The game could not be oppened." };
-		switch (true) {
-			case err instanceof TimeoutError:
-				issue.cause = "The link might be broken or the room as been closed.";
-				break;
-			case err instanceof OfflineError:
-				issue.cause = "Your browser appears to be offline.";
-				break;
-			case err instanceof BlockedError:
-				issue.cause = `This might be due to adblocker blocking public webtorrent relays for unknown reason.<br>
-					You can try fixing this issue by deactivating your adblocker.`;
-				break;
-			case err instanceof ServerError:
-				issue.cause = "The signaling server might be down.";
-				break;
-		}
-		this.issue = issue as Issue;
-	}
-}
+// @Component({ components: { FeedbackButton, NameModal } })
+// export default class OnlineControls extends Vue {
+// 	private store = useMain();
+// 	private copyBtnText: BtnText = BtnText.IDLE;
+
+// 	public issue: Issue | null = null;
+// 	public active = false;
+// 	public nameModalActive = false;
+
+// 	public get online(): boolean {
+// 		return !!this.store.net;
+// 	}
+
+// 	public get playerName(): string {
+// 		return this.store.selfName!;
+// 	}
+
+// 	public get roomUrl(): string {
+// 		return `${window.location.origin}/@/game/${this.store.gameId}`;
+// 	}
+
+// 	public get mates(): Map<string, string> {
+// 		return this.store.mates;
+// 	}
+
+// 	public async open(): Promise<void> {
+// 		if (!this.store.selfName) {
+// 			this.nameModalActive = true;
+// 			return;
+// 		}
+
+// 		try {
+// 			await this.store.open();
+// 			this.$router.replace({
+// 				name: "Join",
+// 				params: { roomId: this.store.gameId },
+// 			});
+// 			this.copy();
+// 		} catch (err) {
+// 			this.digestError(err as Error);
+// 		}
+// 	}
+
+// 	public async copy(): Promise<void> {
+// 		try {
+// 			await navigator.clipboard.writeText(this.roomUrl);
+// 		} catch (err) {
+// 			console.error(err);
+// 		}
+// 	}
+
+// 	private digestError(err: Error): void {
+// 		console.log(err);
+// 		const issue: Partial<Issue> = { msg: "The game could not be oppened." };
+// 		switch (true) {
+// 			case err instanceof TimeoutError:
+// 				issue.cause = "The link might be broken or the room as been closed.";
+// 				break;
+// 			case err instanceof OfflineError:
+// 				issue.cause = "Your browser appears to be offline.";
+// 				break;
+// 			case err instanceof BlockedError:
+// 				issue.cause = `This might be due to adblocker blocking public webtorrent relays for unknown reason.<br>
+// 					You can try fixing this issue by deactivating your adblocker.`;
+// 				break;
+// 			case err instanceof ServerError:
+// 				issue.cause = "The signaling server might be down.";
+// 				break;
+// 		}
+// 		this.issue = issue as Issue;
+// 	}
+// }
 </script>
-
-<style lang="scss" scoped>
-#copy {
-  width: 5rem;
-  background-color: transparent;
-  color: var(--text-color);
-}
-
-.click-trap {
-  display: none;
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  background-color: transparent;
-  z-index: 3;
-}
-
-.dropdown.is-active .click-trap {
-  display: block;
-}
-
-.dropdown-menu {
-  width: 30rem;
-  top: -100%;
-  left: 5rem;
-
-  .dropdown-content {
-    color: var(--text-color);
-    background-color: var(--bg-color);
-    border: 1px solid var(--border-color);
-
-    .dropdown-divider {
-      background-color: var(--border-color);
-    }
-
-    .dropdown-item {
-      color: var(--text-color);
-    }
-  }
-}
-</style>

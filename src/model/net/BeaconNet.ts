@@ -5,8 +5,8 @@ import {
 	Bridge,
 } from "@planecha.se/bridge";
 
-import type { InitPayload, MainStore } from "#/store/main";
-import type { Patch } from "#/utils/delta";
+import type { InitPayload, MainStore } from "@/store/main";
+import type { Patch } from "@/utils/delta";
 import {
 	type BootParams,
 	type CreateParams,

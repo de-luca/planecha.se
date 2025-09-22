@@ -1,81 +1,115 @@
 <template>
-  <div class="modal" style="display: flex">
-    <div class="modal-background"></div>
-    <div class="modal-content">
-
-      <div class="header">
-        <p class="muted"><em><b>{{ config.mateName }}</b> encountered</em></p>
-        <h1 class="title" v-if="config.title" v-html="config.title"></h1>
-        <h2 class="subtitle" v-if="config.subTitle" v-html="config.subTitle"></h2>
-      </div>
-
-      <div class="tabs is-centered is-medium" v-if="revealed.others.length > 0">
-        <ul>
-          <li :class="{ 'is-active': activeTab === 'relevant' }">
-            <a @click="activeTab = 'relevant'">Relevant Cards ({{ revealed.relevant.length }})</a>
-          </li>
-          <li :class="{ 'is-active': activeTab === 'others' }">
-            <a @click="activeTab = 'others'">Others ({{ revealed.others.length }})</a>
-          </li>
-        </ul>
-      </div>
-
-      <div class="revealed">
-        <div class="relevant" v-if="activeTab === 'relevant'">
-          <div class="card-wrapper" v-for="c in revealed.relevant" :key="c.id">
-            <img :src="buildImgSrc(c)">
+  <AlertDialog :open="true">
+    <AlertDialogContent class="bg-unset border-none h-[90%] w-[90%] !max-w-none flex flex-col">
+      <AlertDialogHeader class="h-full">
+        <AlertDialogTitle>
+          <div class="text-muted-foreground text-xs">
+            <template v-if="config.tagline">
+              {{ config.tagline }}
+            </template>
+            <template v-else>
+              <b>{{ config.mateName }}</b> encountered
+            </template>
           </div>
-        </div>
+          {{ config.title }}
+        </AlertDialogTitle>
+        
+        <AlertDialogDescription class="mb-10">
+          {{ config.subTitle }}
+        </AlertDialogDescription>
 
-        <div class="others" v-if="activeTab === 'others' && revealed.others.length > 0">
-          <div class="card-wrapper" v-for="c in revealed.others" :key="c.id">
-            <img :src="buildImgSrc(c)">
-          </div>
-        </div>
+        <StackStatus />
 
-        <div class="others empty" v-if="activeTab === 'others' && revealed.others.length === 0">
-          <em>Such Empty!</em>
-        </div>
-      </div>
+        <Tabs default-value="relevant" class="h-full">
+          <TabsList class="bg-unset w-full">
+            <TabsTrigger value="relevant">
+              Relevant cards
+            </TabsTrigger>
+            <TabsTrigger value="other">
+              Others
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="relevant">
+            <div class="flex justify-center items-center gap-5 h-full mr-[20vw]">
+              <div v-for="c in revealed.relevant" :key="c.id" class="min-w-[20vw] w-[20vw] max-h-[60vh] hover:z-2">
+                <img :src="buildImgSrc(c)" class="max-w-[40vw] animate-down rounded-[3.5%/4.75%] drop-shadow-[1px_1px_1px_#585858]">
+              </div>
+            </div>
+          </TabsContent>
+          <TabsContent value="other">
+            <div v-if="revealed.others.length > 0" class="flex justify-center items-center gap-5 h-full mr-[20vw]">
+              <div  v-for="c in revealed.others" :key="c.id" class="min-w-[20vw] w-[20vw] max-h-[60vh] hover:z-2">
+                <img :src="buildImgSrc(c)" class="max-w-[40vw] animate-down grayscale rounded-[3.5%/4.75%] drop-shadow-[1px_1px_1px_#585858]">
+              </div>
+            </div>
+            <div v-else class="h-full flex flex-col items-center justify-center text-xl text-muted-foreground">
+              Such Empty!
+            </div>
+          </TabsContent>
+        </Tabs>
+      </AlertDialogHeader>
 
-      <div class="confirm">
-        <button class="button is-secondary is-medium" @click="confirm">
-          Okay
-        </button>
-      </div>
-    </div>
-  </div>
+      <AlertDialogFooter class="h-fit">
+        <AlertDialogAction @click="confirm" class="w-[20rem]">Okay</AlertDialogAction>
+      </AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialog>
 </template>
 
-<script lang="ts">
-import { Component, Prop } from "vue-facing-decorator";
-import { Imgable } from "#/components/Imgable";
-import type { Revealed } from "#/model/game";
+<script setup lang="ts">
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import type { Revealed } from "@/model/game";
+import { buildImgSrc } from "@/utils/img";
+
+import type { RevealConfig } from ".";
 import type { WallConfig } from "../types";
-import type { RevealConfig } from "./types";
 
-@Component({ emits: ["done"] })
-export default class Show extends Imgable {
-	@Prop({ required: true })
-	public revealed: Revealed;
-	@Prop({ required: true })
-	public config: RevealConfig & WallConfig;
+import { useMain } from "@/store/main";
+import StackStatus from "../StackStatus.vue";
 
-	public activeTab = "relevant";
+const store = useMain();
 
-	public confirm(): void {
-		const picked =
-			this.config.sendShownTo === "top" ? this.revealed.relevant : [];
-		const left = this.revealed.others.concat(
-			this.config.sendShownTo === "top" ? [] : this.revealed.relevant,
-		);
+const emit = defineEmits(["done"]);
+const { revealed, config } = defineProps<{
+	revealed: Revealed;
+	config: RevealConfig & WallConfig;
+}>();
 
-		this.$emit("done", { picked, left });
-	}
-}
+const confirm = () =>
+	emit("done", {
+		picked: config.sendShownTo === "top" ? revealed.relevant : [],
+		left: revealed.others.concat(
+			config.sendShownTo === "top" ? [] : revealed.relevant,
+		),
+	});
 </script>
 
-<style lang="scss" scoped>
-$card-width: 40vw;
-@import "../scss/multi-reveal";
+<style lang="css" scoped>
+@keyframes up {
+  0% { transform: translateY(0) }
+  100% { transform: translateY(-2rem) }
+}
+
+@keyframes down {
+  0% { transform: translateY(-2rem) }
+  100% { transform: translateY(0) }
+}
+
+.animate-down {
+  animation: down 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+.animate-down:hover {
+  animation: up 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
 </style>
+

@@ -5,7 +5,6 @@ import * as Special from "./special";
 type SpecialConstructor = { new (props: Props): Plane };
 
 const specials: Map<string, SpecialConstructor> = new Map([
-	["d6ab4159-e04e-4991-8a9b-9da302c98e9d", Special.Aretopolis],
 	["f133e42a-2962-4781-b413-ce2127f17c26", Special.PoolsOfBecoming],
 	["7a425df4-7010-462e-9cb5-20389bac721c", Special.StairsToInfinity],
 	["ab72ff80-738a-4468-aecf-5d806143f791", Special.NornsSeedcore],

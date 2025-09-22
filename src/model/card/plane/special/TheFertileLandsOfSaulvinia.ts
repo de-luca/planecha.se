@@ -4,9 +4,10 @@ import {
 	type RevealerWall,
 	StateKey,
 	type WallManager,
-} from "#/model/wall";
-import { EventType, eventBus } from "#/services/eventBus";
+} from "@/model/wall";
+import { EventType, eventBus } from "@/services/eventBus";
 import { Plane } from "../Plane";
+import { SpecialPlane } from "./SpecialPlane";
 
 /**
  * Whenever a player taps a land for mana,
@@ -18,13 +19,10 @@ import { Plane } from "../Plane";
  * Then put all cards revealed this way on the bottom of
  * your planar deck in any order.
  */
-export class TheFertileLandsOfSaulvinia extends Plane {
-	public override get chaosRequireInterraction(): boolean {
-		return true;
-	}
-
+export class TheFertileLandsOfSaulvinia extends SpecialPlane {
 	public chaos(walls: WallManager, initiator: string): void {
 		const revealer: RevealerWall = {
+			tagline: "Chaos ensues on",
 			title: this.name,
 			subTitle: "Chaos from this plane will trigger.",
 			source: RevealerSource.THE_FERTILE_LANDS_OF_SAULVINIA,

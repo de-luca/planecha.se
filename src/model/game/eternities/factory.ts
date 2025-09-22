@@ -1,26 +1,18 @@
-import type { Card, Plane } from "#/model/card";
-import type { Deck } from "#/model/deck/Deck";
-import { WallManager } from "#/model/wall";
+import type { Card, Plane } from "@/model/card";
+import { WallManager } from "@/model/wall";
 import {
 	getCardList,
-	getCustomDeck,
-	getDeck,
-	getPhenomenonDeck,
-	getPlaneDeck,
+	getDeckFromList,
+	getDecksFromList,
 	restoreDeck,
-} from "#/services/cardProvider";
+} from "@/services/cardProvider";
 import type { GameInterface } from "../GameInterface";
 import {
 	DualDeck,
 	type DualDeckDump,
 	type EncounterTriggers,
 } from "./DualDeck";
-import {
-	EternitiesMapDeckType,
-	type EternitiesMapDump,
-	type EternitiesMapSpecs,
-	EternitiesMapSubType,
-} from "./EternitiesMap";
+import type { EternitiesMapDump, EternitiesMapSpecs } from "./EternitiesMap";
 import {
 	SingleDeck,
 	type SingleDeckDump,
@@ -30,25 +22,25 @@ import { Tile } from "./Tile";
 
 export const build = (
 	specs: EternitiesMapSpecs,
+	cards: Array<string>,
 	encounterTriggers?: EncounterTriggers,
-	cards?: Array<string>,
 ): GameInterface => {
-	const deck = buildDeck(specs, cards);
 	const state = new WallManager();
 
-	if (specs.subType === EternitiesMapSubType.SINGLE_DECK) {
+	if (specs.subType === "single") {
 		return new SingleDeck({
-			deck,
+			deck: getDeckFromList(cards),
 			wallStates: state,
 			deckType: specs.deckType,
 		});
 	}
 
+	const decks = getDecksFromList(cards);
 	return new DualDeck({
-		deck,
+		deck: decks.plane,
 		wallStates: state,
-		deckType: EternitiesMapDeckType.PLANES,
-		phenomenaDeck: getPhenomenonDeck(),
+		deckType: "planes",
+		phenomenaDeck: decks.phenomenon,
 		encounterTriggers: encounterTriggers as EncounterTriggers,
 	});
 };
@@ -70,7 +62,7 @@ export const restore = (dump: EternitiesMapDump): GameInterface => {
 		tiles: dump.tiles?.map(Tile.fromDump),
 	};
 
-	if (specs.subType === EternitiesMapSubType.SINGLE_DECK) {
+	if (specs.subType === "single") {
 		return new SingleDeck({
 			...props,
 			destination: (dump as SingleDeckDump).destination,
@@ -79,24 +71,8 @@ export const restore = (dump: EternitiesMapDump): GameInterface => {
 
 	return new DualDeck({
 		...props,
-		deckType: EternitiesMapDeckType.PLANES,
+		deckType: "planes",
 		phenomenaDeck: restoreDeck((dump as DualDeckDump).phenomenaDeck),
 		encounterTriggers: (dump as DualDeckDump).encounterTriggers,
 	});
-};
-
-const buildDeck = (
-	specs: EternitiesMapSpecs,
-	cards?: Array<string>,
-): Deck<Card> => {
-	switch (true) {
-		case cards !== undefined:
-			return getCustomDeck(cards as Array<string>);
-		case specs.subType === EternitiesMapSubType.DUAL_DECK:
-			return getPlaneDeck();
-		case specs.deckType === EternitiesMapDeckType.ALL:
-			return getDeck();
-		default:
-			return getPlaneDeck();
-	}
 };

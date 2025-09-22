@@ -18,6 +18,8 @@ export interface Props {
 	oracleText: string;
 	sets: Array<string>;
 	isUB: boolean;
+	isGold: boolean;
+	isPlaytest: boolean;
 	counter?: Counter;
 }
 
@@ -28,6 +30,8 @@ export abstract class Card implements CardInterface {
 	public readonly oracleText: string;
 	public readonly sets: Array<string>;
 	public readonly isUB: boolean;
+	public readonly isGold: boolean;
+	public readonly isPlaytest: boolean;
 
 	public constructor(props: Props) {
 		this.id = props.id;
@@ -36,10 +40,11 @@ export abstract class Card implements CardInterface {
 		this.oracleText = props.oracleText;
 		this.sets = props.sets;
 		this.isUB = props.isUB;
+		this.isGold = props.isGold;
+		this.isPlaytest = props.isPlaytest;
 	}
 
 	public abstract get type(): Type;
-
 	public abstract chaos(walls: WallManager, initiator: string): void;
 	public abstract enter(walls: WallManager, initiator: string): void;
 	public abstract leave(): void;

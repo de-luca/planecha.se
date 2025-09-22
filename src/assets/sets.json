@@ -1,7 +1,9 @@
 [
-	{ "code": "who", "name": "Doctor Who" },
-	{ "code": "moc", "name": "March of the Machine Commander" },
-	{ "code": "opca", "name": "Planechase Anthology Planes" },
-	{ "code": "opc2", "name": "Planechase 2012 Planes" },
-	{ "code": "ohop", "name": "Planechase Planes" }
+	{ "code": "unk", "name": "Unknown Event", "year": 2025 },
+	{ "code": "pssc", "name": "Secret Lair Showcase Planes", "year": 2025 },
+	{ "code": "who", "name": "Doctor Who", "year": 2023 },
+	{ "code": "moc", "name": "March of the Machine Commander", "year": 2023 },
+	{ "code": "opca", "name": "Planechase Anthology Planes", "year": 2018 },
+	{ "code": "opc2", "name": "Planechase 2012 Planes", "year": 2012 },
+	{ "code": "ohop", "name": "Planechase Planes", "year": 2009 }
 ]

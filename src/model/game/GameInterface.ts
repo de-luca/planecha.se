@@ -1,74 +1,59 @@
-import type { Patch } from "#/utils/delta";
+import type { Coordinates } from "@/types";
+import type { Patch } from "@/utils/delta";
 import type { Card, CardDump, Plane } from "../card";
 import type { DeckDump } from "../deck/Deck";
 import type { WallManagerInterface, WallStateDump } from "../wall";
 
-export enum GameType {
-	SINGLE = "single",
-	MULTI = "multi",
-	ETERNITIES = "eternities",
-}
+export type GameType = "single" | "multi" | "eternities";
+export type GameSpecs = { type: GameType };
 
-export interface GameSpecs {
-	type: GameType;
-}
-
-export interface GameDump {
+export type GameDump = {
 	specs: GameSpecs;
 	wallStates: WallStateDump;
 	hasStarted: boolean;
 	deck: DeckDump;
 	active: Array<CardDump>;
 	revealed?: { relevant: Array<string>; others: Array<string> };
-}
+};
 
-export interface Revealed {
+export type Revealed = {
 	relevant: Array<Card>;
 	others: Array<Card>;
-}
+};
 
-export interface Initable {
-	initiator: string;
-}
+export type Initable = { initiator: string };
 
-export interface ChaosInput extends Initable {
-	card: Card;
-}
+export type ChaosInput = Initable & { card: Card };
 
 export type SinglePlaneswalkInput = Initable;
 
-export interface CustomSinglePlaneswalkInput extends SinglePlaneswalkInput {
+export type CustomSinglePlaneswalkInput = SinglePlaneswalkInput & {
 	planes: Array<Plane>;
-}
+};
 
-export interface EternitiesPlaneswalkInput extends Initable {
-	coords: Coordinates;
-}
+export type EternitiesPlaneswalkInput = Initable & { coords: Coordinates };
 
-export interface CustomEternitiesPlaneswalkInput
-	extends EternitiesPlaneswalkInput {
+export type CustomEternitiesPlaneswalkInput = EternitiesPlaneswalkInput & {
 	planes: Array<Plane>;
-}
+};
 
-export interface AddActivePlaneInput extends Initable {
-	plane: Plane;
-}
+export type AddActivePlaneInput = Initable & { plane: Plane };
 
-export interface UpdateCounterInput {
+export type UpdateCounterInput = {
 	planeId: string;
 	change: number;
-}
+};
 
-export interface RevealUntilInput {
+export type RevealUntilInput = {
 	count: number;
 	type?: typeof Card;
-}
+};
 
-export interface ResolveRevealInput {
+export type ResolveRevealInput = {
 	top: Array<Card>;
 	bottom: Array<Card>;
 	stop?: boolean;
-}
+};
 
 export type PlaneswalkInput =
 	| SinglePlaneswalkInput
@@ -77,7 +62,7 @@ export type PlaneswalkInput =
 	| CustomEternitiesPlaneswalkInput;
 export type ResolveInput = Initable;
 
-export interface GameInterface {
+export type GameInterface = {
 	specs: GameSpecs;
 	ready: Promise<void>;
 	hasStarted: boolean;
@@ -98,4 +83,4 @@ export interface GameInterface {
 	dump(): GameDump;
 	apply(patch: Patch, peerId: string): void;
 	restore(state: GameDump): void;
-}
+};

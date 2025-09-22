@@ -1,4 +1,4 @@
-import { type Patch, diff } from "#/utils/delta";
+import { type Patch, diff } from "@/utils/delta";
 import type { GameDump } from "../game";
 import { Repo } from "./Repo";
 

@@ -1,4 +1,5 @@
-export * from "./Aretopolis";
+export * from "./SpecialPlane";
+
 export * from "./PoolsOfBecoming";
 export * from "./StairsToInfinity";
 export * from "./NornsSeedcore";

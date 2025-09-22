@@ -1,5 +1,2 @@
-export * from "./Wall";
+export * from "./types";
 export * from "./WallManager";
-export * from "./RevealerWall";
-export * from "./PhenomenonWall";
-export * from "./EncounterWall";

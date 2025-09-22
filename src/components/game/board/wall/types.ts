@@ -1,3 +1,1 @@
-export interface WallConfig {
-	mateName?: string;
-}
+export type WallConfig = { mateName?: string };

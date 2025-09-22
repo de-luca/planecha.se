@@ -1,7 +1,7 @@
-import moc from "./moc.vue";
-import ohop from "./ohop.vue";
-import opc2 from "./opc2.vue";
-import opca from "./opca.vue";
-import who from "./who.vue";
-
-export { moc, ohop, opc2, opca, who };
+export { default as moc } from "./moc.vue";
+export { default as ohop } from "./ohop.vue";
+export { default as opc2 } from "./opc2.vue";
+export { default as opca } from "./opca.vue";
+export { default as pssc } from "./pssc.vue";
+export { default as unk } from "./unk.vue";
+export { default as who } from "./who.vue";

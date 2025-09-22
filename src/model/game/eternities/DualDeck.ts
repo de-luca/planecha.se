@@ -1,57 +1,38 @@
-import type { Phenomenon } from "#/model/card";
-import type { Deck, DeckDump } from "#/model/deck/Deck";
-import { StateKey } from "#/model/wall";
-import { restoreDeck } from "#/services/cardProvider";
-import { GameType, type Initable, type ResolveInput } from "../GameInterface";
-import {
-	type EternitiesMapDeckType,
-	type EternitiesMapDump,
-	type EternitiesMapSpecs,
-	EternitiesMapSubType,
-} from "./EternitiesMap";
+import type { Phenomenon } from "@/model/card";
+import type { Deck, DeckDump } from "@/model/deck/Deck";
+import { StateKey } from "@/model/wall";
+import { restoreDeck } from "@/services/cardProvider";
+import type { Coordinates } from "@/types";
+import type { Initable, ResolveInput } from "../GameInterface";
+import type { EternitiesMapDump, EternitiesMapSpecs } from "./EternitiesMap";
 import { SingleDeck, type SingleDeckProps } from "./SingleDeck";
 
-export enum EncounterTrigger {
-	ON_PLANESWALK = "ON_PLANESWALK",
-	ON_HELLRIDE = "ON_HELLRIDE",
-}
+export type EncounterTrigger = "onPlaneswalk" | "onHellride";
+export type EncounterMode = "manual" | "auto";
 
-export enum EncounterMechanic {
-	MANUAL = "MANUAL",
-	AUTO = "AUTO",
-}
-
-interface BaseTriggerConfig {
+export type TriggerConfigDisabled = {
 	enabled: boolean;
-	mechanic?: EncounterMechanic;
+	mode?: EncounterMode;
 	ratio?: number;
-}
-export interface TriggerConfigEnabled extends BaseTriggerConfig {
+};
+export type TriggerConfigEnabled = Required<TriggerConfigDisabled> & {
 	enabled: true;
-	mechanic: EncounterMechanic;
-	ratio: number;
-}
-export interface TriggerConfigDisabled extends BaseTriggerConfig {
-	enabled: false;
-}
-
+};
 export type TriggerConfig = TriggerConfigEnabled | TriggerConfigDisabled;
 export type EncounterTriggers = Record<EncounterTrigger, TriggerConfig>;
 
-export interface DualDeckDump extends EternitiesMapDump {
+export type DualDeckDump = EternitiesMapDump & {
 	phenomenaDeck: DeckDump;
 	encounterTriggers: EncounterTriggers;
-}
+};
 
-export interface DualDeckProps extends SingleDeckProps {
-	deckType: EternitiesMapDeckType.PLANES;
+export type DualDeckProps = SingleDeckProps & {
+	deckType: "planes";
 	phenomenaDeck: Deck<Phenomenon>;
 	encounterTriggers: EncounterTriggers;
-}
+};
 
-export interface EncounterInput extends Initable {
-	coords: Coordinates;
-}
+export type EncounterInput = Initable & { coords: Coordinates };
 
 export class DualDeck extends SingleDeck {
 	private _phenomenaDeck: Deck<Phenomenon>;
@@ -65,8 +46,8 @@ export class DualDeck extends SingleDeck {
 
 	public get specs(): EternitiesMapSpecs {
 		return {
-			type: GameType.ETERNITIES,
-			subType: EternitiesMapSubType.DUAL_DECK,
+			type: "eternities",
+			subType: "dual",
 			deckType: this._deckType,
 		};
 	}

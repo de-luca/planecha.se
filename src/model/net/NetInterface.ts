@@ -1,8 +1,8 @@
+import type { InitPayload, MainStore } from "@/store/main";
 import type { ActionReceiver } from "trystero";
-import type { InitPayload, MainStore } from "#/store/main";
 
-import type { GameType } from "#/model/game";
-import type { Patch } from "#/utils/delta";
+import type { GameType } from "@/model/game";
+import type { Patch } from "@/utils/delta";
 
 export enum EventType {
 	BOOT = "BOOT",
@@ -15,13 +15,8 @@ export enum EventType {
 	RESET = "RESET",
 }
 
-export type Hey = {
-	name: string;
-};
-
-export interface GameData {
-	gameType: GameType;
-}
+export type Hey = { name: string };
+export type GameData = { gameType: GameType };
 
 export type CreateParams = {
 	store: MainStore;
@@ -46,7 +41,7 @@ export type Props = { store: MainStore } & (
 
 export type InitHandler = Parameters<ActionReceiver<InitPayload>>[0];
 
-export interface NetInterface {
+export type NetInterface = {
 	gameId: string;
 	gameData: GameData;
 	peerCount: number;
@@ -62,4 +57,4 @@ export interface NetInterface {
 	reset(payload: InitPayload): void;
 	init(payload: InitPayload): void;
 	leave(): void;
-}
+};

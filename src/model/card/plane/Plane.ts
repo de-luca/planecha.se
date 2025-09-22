@@ -1,4 +1,4 @@
-import type { WallManager } from "#/model/wall";
+import type { WallManager } from "@/model/wall";
 import { Card, type Counter, type Props, type Type } from "../Card";
 import type { CardDump } from "../CardInterface";
 
@@ -16,10 +16,6 @@ export class Plane extends Card {
 
 	public get counter(): Counter | undefined {
 		return this._counter;
-	}
-
-	public get chaosRequireInterraction(): boolean {
-		return false;
 	}
 
 	public initCounter(): void {

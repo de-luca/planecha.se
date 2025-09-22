@@ -1,5 +1,20 @@
 <template>
-  <div class="wrapper" :class="{ open: open }">
+  <Sheet :modal="false">
+    <SheetTrigger class="absolute bottom-[1rem] right-[1rem]">
+      <Button variant="outline" size="icon" title="Show logs">
+        <Logs />
+      </Button>
+    </SheetTrigger>
+    <SheetContent>
+      <SheetHeader class="h-full">
+        <SheetTitle class="text-xl">⟁</SheetTitle>
+        <SheetDescription class="h-full text-foreground overflow-x-auto">
+          <p v-for="m in store.feed" :key="m" v-html="m"></p>
+        </SheetDescription>
+      </SheetHeader>
+    </SheetContent>
+  </Sheet>
+  <!-- <div class="wrapper" :class="{ open: open }">
     <div
       class="toggle"
       title="Toggle game logs"
@@ -12,12 +27,30 @@
       <p>⟁</p>
       <p v-for="m in messages" :key="m" v-html="m"></p>
     </div>
-  </div>
+  </div> -->
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { Logs } from "lucide-vue-next";
+
+import { Button } from "@/components/ui/button";
+import {
+	Sheet,
+	SheetContent,
+	SheetDescription,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from "@/components/ui/sheet";
+
+import { useMain } from "@/store/main";
+
+const store = useMain();
+</script>
+
+<!-- <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator";
-import { useMain } from "#/store/main";
+import { useMain } from "@/store/main";
 
 @Component
 export default class Feed extends Vue {
@@ -28,9 +61,9 @@ export default class Feed extends Vue {
 		return this.store.feed;
 	}
 }
-</script>
+</script> -->
 
-<style lang="scss" scoped>
+<!-- <style lang="scss" scoped>
 @keyframes open {
   0% { transform: translateX(0) }
   100% { transform: translateX(-20rem) }
@@ -106,4 +139,4 @@ export default class Feed extends Vue {
     }
   }
 }
-</style>
+</style> -->

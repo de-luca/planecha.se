@@ -2,23 +2,18 @@
   <component :is="comp" />
 </template>
 
-<script lang="ts">
-import type { Component as VueComponent } from "vue";
-import { Component, Vue } from "vue-facing-decorator";
-import { useMain } from "#/store/main";
+<script setup lang="ts">
+import { useMain } from "@/store/main";
+import { computed } from "vue";
+import { useRoute } from "vue-router";
 
-import Board from "#/components/game/Board.vue";
-import Join from "#/components/game/Join.vue";
+import Board from "@/components/game/Board.vue";
+import Join from "@/components/game/Join.vue";
 
-@Component({ components: { Board, Join } })
-export default class Game extends Vue {
-	private store = useMain();
+const store = useMain();
+const route = useRoute();
 
-	public get comp(): VueComponent {
-		if (this.$route.params.roomId && (!this.store.ready || !this.store._game)) {
-			return Join;
-		}
-		return Board;
-	}
-}
+const comp = computed(() =>
+	route.params.roomId && (!store.ready || !store._game) ? Join : Board,
+);
 </script>

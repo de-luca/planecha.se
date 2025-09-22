@@ -1,36 +1,27 @@
 <template>
-  <button @click.prevent="click">{{ text }}</button>
+  <Button @click.prevent="click" :size="size" :variant="variant">
+	<slot v-if="idle" name="idle" />
+	<slot v-else name="action" />
+  </Button>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-facing-decorator";
+<script setup lang="ts">
+import { ref } from "vue";
 
-export interface Option<T> {
-	label?: string;
-	value: T;
-	help?: string;
-}
+import { Button, type ButtonVariants } from "@/components/ui/button";
 
-@Component
-export default class FeedbackButton extends Vue {
-	@Prop({ required: true })
-	public idleText: string;
-	@Prop({ required: true })
-	public actionText: string;
-	@Prop({ required: true })
-	public timeout: number;
+const { timeout, variant, size } = defineProps<{
+	timeout: number;
+	variant: ButtonVariants["variant"];
+	size: ButtonVariants["size"];
+}>();
 
-	public text = "";
+const idle = ref(true);
 
-	public created(): void {
-		this.text = this.idleText;
-	}
-
-	public click(): void {
-		this.text = this.actionText;
-		setTimeout(() => {
-			this.text = this.idleText;
-		}, this.timeout);
-	}
-}
+const click = () => {
+	idle.value = false;
+	setTimeout(() => {
+		idle.value = true;
+	}, timeout);
+};
 </script>

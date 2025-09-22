@@ -1,4 +1,4 @@
-import { shuffle } from "#/utils/shuffle";
+import { shuffle } from "@/utils/shuffle";
 import { Card, type CardDump, Plane } from "../card";
 
 export interface DeckDump {

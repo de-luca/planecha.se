@@ -4,9 +4,9 @@ import {
 	type RevealerWall,
 	StateKey,
 	type WallManager,
-} from "#/model/wall";
-import { EventType, eventBus } from "#/services/eventBus";
-import { Plane } from "../Plane";
+} from "@/model/wall";
+import { EventType, eventBus } from "@/services/eventBus";
+import { SpecialPlane } from "./SpecialPlane";
 
 /**
  * Players have no maximum hand size.
@@ -16,13 +16,10 @@ import { Plane } from "../Plane";
  * Whenever you roll {CHAOS}, reveal the top card of your planar deck.
  * You may put it on the bottom of your planar deck.
  */
-export class StairsToInfinity extends Plane {
-	public override get chaosRequireInterraction(): boolean {
-		return true;
-	}
-
+export class StairsToInfinity extends SpecialPlane {
 	public chaos(walls: WallManager, initiator: string): void {
 		const revealer: RevealerWall = {
+			tagline: "Chaos ensues on",
 			title: this.name,
 			subTitle:
 				"Chose to put this card on top or at the bottom the planar deck.",

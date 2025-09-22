@@ -1,28 +1,25 @@
+import { type Card, Plane } from "@/model/card";
+import type { ChaosInput, GameType, UpdateCounterInput } from "@/model/game";
+import type { CoinFlipResult, PlanarDiceResult } from "@/types";
 import type { PiniaPluginContext } from "pinia";
-import { type Card, Plane } from "#/model/card";
-import {
-	type ChaosInput,
-	GameType,
-	type UpdateCounterInput,
-} from "#/model/game";
 import { isMain } from "../main";
 
 const chaos = '<abbr class="symbol chaos" title="chaos">{CHAOS}</abbr>';
 const plnwlk =
-	'<abbr class="symbol planeswalk" title="planeswalk">{CHAOS}</abbr>';
+	'<abbr class="symbol planeswalk" title="planeswalk">{PLNWLK}</abbr>';
 
 function gameType(type: GameType): string {
 	switch (type) {
-		case GameType.SINGLE:
+		case "single":
 			return "Single Deck";
-		case GameType.MULTI:
+		case "multi":
 			return "Multiple Decks";
-		case GameType.ETERNITIES:
+		case "eternities":
 			return "Eternities Map";
 	}
 }
 
-export function createFeeder({ store }: PiniaPluginContext) {
+export function feeder({ store }: PiniaPluginContext) {
 	if (isMain(store)) {
 		store.$onAction(({ after, name: action, args, store }) => {
 			after((returned) => {

@@ -1,118 +1,29 @@
 <template>
-  <div class="theme-selector">
-    <label title="Select color theme">
-      <span class="pre">
-        <fa :icon="icon" fixed-width />
-      </span>
-      <select v-model="theme">
-        <option value="sys">System</option>
-        <option value="drk">Dark</option>
-        <option value="lgt">Light</option>
-      </select>
-      <span class="post">
-        <fa icon="sort" fixed-width />
-      </span>
-    </label>
-  </div>
+  <ToggleGroup v-model="theme" type="single" variant="outline">
+    <ToggleGroupItem value="auto" aria-label="Toggle auto">
+      <LaptopMinimal class="h-4 w-4" />
+    </ToggleGroupItem>
+    <ToggleGroupItem value="dark" aria-label="Toggle dark">
+      <Moon class="h-4 w-4" />
+    </ToggleGroupItem>
+    <ToggleGroupItem value="light" aria-label="Toggle light">
+      <Sun class="h-4 w-4" />
+    </ToggleGroupItem>
+  </ToggleGroup>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-facing-decorator";
-import { useMain } from "#/store/main";
+<script setup lang="ts">
+import { useColorMode } from "@vueuse/core";
+import { LaptopMinimal, Moon, Sun } from "lucide-vue-next";
+import { computed } from "vue";
 
-const ICONS = {
-	sys: "cog",
-	drk: "moon",
-	lgt: "sun",
-};
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
-@Component
-export default class ThemeSelector extends Vue {
-	private store = useMain();
-
-	public get icon(): string {
-		return ICONS[this.theme];
-	}
-
-	public get theme(): Theme {
-		return this.store.theme;
-	}
-
-	public set theme(theme: Theme) {
-		this.store.setTheme(theme);
-		this.applyTheme();
-	}
-
-	private applyTheme(): void {
-		document.documentElement.setAttribute("data-theme", this.theme);
-	}
-}
+const mode = useColorMode();
+const theme = computed({
+	get: () => mode.store.value,
+	set: (val: "light" | "dark" | "auto") => {
+		mode.value = val;
+	},
+});
 </script>
-
-<style lang="scss" scoped>
-.theme-selector {
-  position: relative;
-  width: max-content;
-  font-size: initial;
-  line-height: 1.5;
-
-  &.is-full-height {
-    height: 2.5rem;
-
-    span, select {
-      height: 100%;
-      font-size: 1rem;
-    }
-  }
-
-  span {
-    position: absolute;
-    pointer-events: none;
-    z-index: 1;
-    color: var(--text-color);
-    cursor: pointer;
-    padding-bottom: calc(0.5em - 1px);
-    padding-left: .5em;
-    padding-right: .5em;
-    padding-top: calc(0.5em - 1px);
-    font-size: 0.75rem;
-    border: 1px solid transparent;
-    height: 2.5em;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-
-    &.pre {
-      left: 0;
-    }
-
-    &.post {
-      right: 0;
-    }
-  }
-
-  select {
-    -webkit-appearance: none;
-
-    color: var(--btn-secondary-color);
-    background-color: var(--btn-secondary-bg);
-    border-color: var(--btn-secondary-border);
-
-    border-radius: 4px;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    cursor: pointer;
-    font-size: .75rem;
-    height: 2.5em;
-    appearance: none;
-
-    &:hover {
-      background-color: var(--btn-secondary-hover-bg);
-    }
-
-    &:active {
-      background-color: var(--btn-secondary-active-bg);
-    }
-  }
-}
-</style>

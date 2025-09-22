@@ -1,12 +1,15 @@
-import { type Phenomenon, Plane } from "#/model/card";
+import { computed, ref } from "vue";
+
+import { type Phenomenon, Plane } from "@/model/card";
 import type {
 	EternitiesMap as EternitiesMapModel,
 	SingleDeck,
 	Tile,
-} from "#/model/game/eternities";
-import { type PhenomenonWall, RevealerSource, StateKey } from "#/model/wall";
-import type { PickedLeft } from "#board/wall/reveal/types";
-import { Game } from "../Game";
+} from "@/model/game/eternities";
+import { type PhenomenonWall, RevealerSource, StateKey } from "@/model/wall";
+import { useMain } from "@/store";
+import type { PickedLeft } from "../../wall";
+import { useGame } from "../game";
 
 interface LocalPhenomenonWallConfig {
 	config: PhenomenonWall & { mateName?: string };
@@ -14,61 +17,74 @@ interface LocalPhenomenonWallConfig {
 	seeder: (() => void) | null;
 }
 
-export abstract class Eternities extends Game {
-	public readonly off: number = 4;
-	public displayedTile: Tile | null = null;
+export const useEternities = () => {
+	const store = useMain();
+	const {
+		hasStarted,
+		customPlaneswalk: superCustomPlaneswalk,
+		putBack,
+	} = useGame();
 
-	public get phenomenonWallConfig(): LocalPhenomenonWallConfig | undefined {
-		if ((this.store.game as SingleDeck).destination) {
-			let seeder: (() => void) | null = null;
-			switch (this.store.game.walls.get(StateKey.REVEALER)?.source) {
-				case RevealerSource.INTERPLANAR_TUNNEL:
-					seeder = () => this.store.reveal({ count: 5, type: Plane });
-					break;
-				case RevealerSource.SPACIAL_MERGING:
-					seeder = () => this.store.reveal({ count: 2, type: Plane });
-					break;
+	const OFF = 4;
+
+	const displayedTile = ref<Tile>();
+
+	const phenomenonWallConfig = computed(
+		(): LocalPhenomenonWallConfig | undefined => {
+			if ((store.game as SingleDeck).destination) {
+				let seeder: (() => void) | null = null;
+				switch (store.game.walls.get(StateKey.REVEALER)?.source) {
+					case RevealerSource.INTERPLANAR_TUNNEL:
+						seeder = () => store.reveal({ count: 5, type: Plane });
+						break;
+					case RevealerSource.SPACIAL_MERGING:
+						seeder = () => store.reveal({ count: 2, type: Plane });
+						break;
+				}
+
+				const wall = store.game.walls.get(StateKey.PHENOMENON_WALL);
+
+				return {
+					seeder,
+					phenomenon: store.game.active[0] as Phenomenon,
+					config: {
+						...wall!,
+						mateName: wall?.initiator,
+					},
+				};
 			}
 
-			const wall = this.store.game.walls.get(StateKey.PHENOMENON_WALL);
+			return undefined;
+		},
+	);
 
-			return {
-				seeder,
-				phenomenon: this.store.game.active[0] as Phenomenon,
-				config: {
-					...wall!,
-					mateName: wall?.initiator,
-				},
-			};
-		}
+	const unreachable = (x: number, y: number) =>
+		Math.abs(x - OFF) + Math.abs(y - OFF) > 3;
+	const getTile = (x: number, y: number) =>
+		(store.game as EternitiesMapModel).tiles.find(
+			(tile) => tile.coords.x === x - OFF && tile.coords.y === y - OFF,
+		);
+	const showTileDetails = (tile: Tile) => {
+		displayedTile.value = tile;
+	};
+	const hideTileDetails = () => {
+		displayedTile.value = undefined;
+	};
+	const customPlaneswalk = (choices: PickedLeft) => {
+		superCustomPlaneswalk(choices);
+		store.resolve();
+	};
 
-		return undefined;
-	}
-
-	public unreachable(x: number, y: number): boolean {
-		return Math.abs(x - this.off) + Math.abs(y - this.off) > 3;
-	}
-
-	public getTile(x: number, y: number): Tile | undefined {
-		return (this.store.game as EternitiesMapModel).tiles.find((tile) => {
-			return tile.coords.x === x - this.off && tile.coords.y === y - this.off;
-		});
-	}
-
-	public showTileDetails(tile: Tile): void {
-		this.displayedTile = tile;
-	}
-
-	public hideTileDetails(): void {
-		this.displayedTile = null;
-	}
-
-	public resolve(): void {
-		this.store.resolve();
-	}
-
-	public customPlaneswalk(choices: PickedLeft): void {
-		super.customPlaneswalk(choices);
-		this.store.resolve();
-	}
-}
+	return {
+		OFF,
+		hasStarted,
+		putBack,
+		displayedTile,
+		phenomenonWallConfig,
+		unreachable,
+		getTile,
+		showTileDetails,
+		hideTileDetails,
+		customPlaneswalk,
+	};
+};

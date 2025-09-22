@@ -1,16 +1,17 @@
-import { getCardList } from "#/services/cardProvider";
+import { getCardList } from "@/services/cardProvider";
+import type { Coordinates } from "@/types";
 import type { CardDump, Plane } from "../../card";
 
 export enum TileStatus {
-	ACTIVE = "active",
-	VISIBLE = "visible",
+	ACTIVE = 0,
+	VISIBLE = 1,
 }
 
-export interface TileDump {
+export type TileDump = {
 	coords: Coordinates;
 	state: TileStatus;
 	plane: Array<CardDump>;
-}
+};
 
 export class Tile {
 	private _coords: Coordinates;

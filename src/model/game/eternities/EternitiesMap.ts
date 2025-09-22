@@ -1,4 +1,5 @@
-import type { Plane } from "#/model/card";
+import type { Plane } from "@/model/card";
+import type { Coordinates } from "@/types";
 import { Game, type GameProps } from "../Game";
 import type {
 	CustomEternitiesPlaneswalkInput,
@@ -8,30 +9,23 @@ import type {
 } from "../GameInterface";
 import { Tile, type TileDump, TileStatus } from "./Tile";
 
-export enum EternitiesMapSubType {
-	SINGLE_DECK = "SINGLE_DECK",
-	DUAL_DECK = "DUAL_DECK",
-}
+export type EternitiesMapSubType = "single" | "dual";
+export type EternitiesMapDeckType = "planes" | "all";
 
-export enum EternitiesMapDeckType {
-	PLANES = "PLANES",
-	ALL = "ALL",
-}
-
-export interface EternitiesMapSpecs extends GameSpecs {
+export type EternitiesMapSpecs = GameSpecs & {
 	subType: EternitiesMapSubType;
 	deckType: EternitiesMapDeckType;
-}
+};
 
-export interface EternitiesMapDump extends GameDump {
+export type EternitiesMapDump = GameDump & {
 	specs: EternitiesMapSpecs;
 	tiles: Array<TileDump>;
-}
+};
 
-export interface EternitiesMapProps extends GameProps {
+export type EternitiesMapProps = GameProps & {
 	deckType: EternitiesMapDeckType;
 	tiles?: Array<Tile>;
-}
+};
 
 export type PlaneswalkInput =
 	| EternitiesPlaneswalkInput

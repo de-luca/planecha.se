@@ -1,39 +1,24 @@
 <template>
-  <tip>
-    <template #btn>
-      <button
-        title="Undo last action"
-        class="button is-ghost"
-        :disabled="!canUndo"
-        @click="undo"
-        @keyup.space.prevent
-      >
-        <fa icon="undo-alt" fixed-width size="lg" />
-      </button>
-    </template>
-    <template #tip>
-      {{ canUndo ? 'Undo last action' : 'No action to undo' }}
-    </template>
-  </tip>
+  <Button 
+    variant="ghost" 
+    class="w-[3.5rem]"
+    :disabled="!canUndo"
+    @click="store.undo"
+    @keyup.space.prevent
+    :title="canUndo ? 'Undo last action' : 'No action to undo'"
+  >
+    <Undo class="!h-full !w-full"/>
+  </Button>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-facing-decorator";
-import { useMain } from "#/store/main";
+<script setup lang="ts">
+import { Undo } from "lucide-vue-next";
+import { computed } from "vue";
 
-@Component
-export default class UndoBtn extends Vue {
-	private store = useMain();
+import { Button } from "@/components/ui/button";
 
-	public get canUndo(): boolean {
-		return this.store.repo.head > 0;
-	}
+import { useMain } from "@/store/main";
 
-	public undo(): void {
-		this.store.undo();
-	}
-}
+const store = useMain();
+const canUndo = computed(() => store.repo.head > 0);
 </script>
-
-<style lang="scss" scoped>
-</style>

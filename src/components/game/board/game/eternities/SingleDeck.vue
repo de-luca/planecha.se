@@ -1,12 +1,13 @@
 <template>
-  <div class="wrapper">
+  <div class="h-full grid grid-rows-7 grid-cols-7 gap-[1rem]">
     <template v-for="y in 7" :key="y">
-      <tile
+      <Tile
         v-for="x in 7"
+        class="flex flex-col justify-center items-center"
         :key="x"
         :tile="getTile(x, y)"
-        :x="x - off"
-        :y="y - off"
+        :x="x - OFF"
+        :y="y - OFF"
         :hidden="!hasStarted"
         @hellride="planeswalk"
         @show="showTileDetails"
@@ -14,22 +15,54 @@
     </template>
   </div>
 
-  <tile-details
-    v-if="displayedTile"
+  <TileDetails
     :tile="displayedTile"
     @close="hideTileDetails"
     @planeswalk="planeswalk"
   />
 
-  <phenomenon-wall
+  <PhenomenonWall
     v-if="phenomenonWallConfig"
     :config="phenomenonWallConfig.config"
     :phenomenon="phenomenonWallConfig.phenomenon"
-    @resolve="(phenomenonWallConfig.seeder ?? resolve)()"
+    @resolve="(phenomenonWallConfig.seeder ?? store.resolve)()"
   />
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { PhenomenonWall } from "@/components/game/board/wall";
+import { Tile, TileDetails } from "./controls";
+
+import { useMain } from "@/store";
+import type { Coordinates } from "@/types";
+import { useEternities } from "./Eternities";
+
+const store = useMain();
+const {
+	OFF,
+	hasStarted,
+	displayedTile,
+	phenomenonWallConfig,
+	getTile,
+	showTileDetails,
+	hideTileDetails,
+	customPlaneswalk,
+	putBack,
+} = useEternities();
+
+const planeswalk = (coords: Coordinates) => {
+	hideTileDetails();
+	store.planeswalk({ coords });
+};
+
+defineExpose({
+	planeswalk,
+	customPlaneswalk,
+	putBack,
+});
+</script>
+
+<!-- <script lang="ts">
 import { Component } from "vue-facing-decorator";
 import { Eternities } from "./Eternities";
 
@@ -47,23 +80,5 @@ export default class EternitiesMapSingleDeck extends Eternities {
 		this.store.planeswalk({ coords });
 	}
 }
-</script>
+</script> -->
 
-<style lang="scss" scoped>
-.wrapper {
-  height: 100%;
-  padding: 1rem;
-  display: grid;
-  grid-template-rows: repeat(7, 1fr);
-  grid-template-columns: repeat(7, 1fr);
-  gap: 1rem;
-  align-content: center;
-}
-
-.tile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-</style>

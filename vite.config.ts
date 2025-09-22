@@ -4,14 +4,15 @@ import { resolve, join } from 'node:path';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import Vue from '@vitejs/plugin-vue';
+import tailwindcss from '@tailwindcss/vite';
 
 const pathSrc = resolve(__dirname, 'src');
 const pathAssets = join(pathSrc, 'assets');
-const pathBoard = join(pathSrc, 'components', 'game', 'board');
 
 export default defineConfig({
   plugins: [
     Vue(),
+    tailwindcss(),
     VitePWA({
       base: '/',
       srcDir: 'src',
@@ -51,9 +52,8 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '#': pathSrc,
+      '@': pathSrc,
       '#assets': pathAssets,
-      '#board': pathBoard,
     },
   },
 });

@@ -6,6 +6,7 @@
 
 ### Building card assets and data
 ```sh
+brew install imagemagick
 ./planar_extraction.sh
 ```
 

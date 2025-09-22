@@ -1,11 +1,11 @@
-import { WallManager } from "#/model/wall";
-import { getCardList } from "#/services/cardProvider";
+import { WallManager } from "@/model/wall";
+import { getCardList } from "@/services/cardProvider";
 import { Game } from "../Game";
-import { type GameDump, type GameSpecs, GameType } from "../GameInterface";
+import type { GameDump, GameSpecs } from "../GameInterface";
 
 export class PartialMulti extends Game {
 	public get specs(): GameSpecs {
-		return { type: GameType.MULTI };
+		return { type: "multi" };
 	}
 
 	public planeswalk(): void {
