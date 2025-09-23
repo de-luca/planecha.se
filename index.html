@@ -1,50 +1,108 @@
 <!DOCTYPE html>
-
 <html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+		<meta name="theme-color" content="#111111">
+		<link
+			rel="apple-touch-icon"
+			sizes="57x57"
+			href="/favicon/57x57.png"
+			importance="low"
+		>
+		<link
+			rel="apple-touch-icon"
+			sizes="60x60"
+			href="/favicon/60x60.png"
+			importance="low"
+		>
+		<link
+			rel="apple-touch-icon"
+			sizes="72x72"
+			href="/favicon/72x72.png"
+			importance="low"
+		>
+		<link
+			rel="apple-touch-icon"
+			sizes="76x76"
+			href="/favicon/76x76.png"
+			importance="low"
+		>
+		<link
+			rel="apple-touch-icon"
+			sizes="114x114"
+			href="/favicon/114x114.png"
+			importance="low"
+		>
+		<link
+			rel="apple-touch-icon"
+			sizes="120x120"
+			href="/favicon/120x120.png"
+			importance="low"
+		>
+		<link
+			rel="apple-touch-icon"
+			sizes="144x144"
+			href="/favicon/144x144.png"
+			importance="low"
+		>
+		<link
+			rel="apple-touch-icon"
+			sizes="152x152"
+			href="/favicon/152x152.png"
+			importance="low"
+		>
+		<link rel="icon shortcut" type="image/x-icon" href="/favicon/favicon.ico">
+		<link
+			rel="mask-icon"
+			href="/favicon/safari-pinned-tab.svg"
+			color="#111111"
+			importance="low"
+		>
+		<title>Planecha.se</title>
+	</head>
 
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <meta name="theme-color" content="#111111">
-    <link rel="apple-touch-icon" sizes="57x57" href="/favicon/57x57.png" importance="low">
-    <link rel="apple-touch-icon" sizes="60x60" href="/favicon/60x60.png" importance="low">
-    <link rel="apple-touch-icon" sizes="72x72" href="/favicon/72x72.png" importance="low">
-    <link rel="apple-touch-icon" sizes="76x76" href="/favicon/76x76.png" importance="low">
-    <link rel="apple-touch-icon" sizes="114x114" href="/favicon/114x114.png" importance="low">
-    <link rel="apple-touch-icon" sizes="120x120" href="/favicon/120x120.png" importance="low">
-    <link rel="apple-touch-icon" sizes="144x144" href="/favicon/144x144.png" importance="low">
-    <link rel="apple-touch-icon" sizes="152x152" href="/favicon/152x152.png" importance="low">
-    <link rel="icon shortcut" type="image/x-icon" href="/favicon/favicon.ico">
-    <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#111111" importance="low">
-    <title>Planecha.se</title>
-  </head>
+	<body>
+		<noscript>
+			<p>
+				<strong>⟁ Planecha.se</strong>
+				<br>A Planechase companion app for people playing remotely (or locally)
+			</p>
+			<p>This app require Javascript to run.</p>
+			<p>
+				<em>Planecha.se</em>uses
+				<a
+					href="https://en.wikipedia.org/wiki/WebRTC"
+					rel="noopener noreferrer"
+					target="_blank"
+					>WebRTC</a
+				>
+				to transmit the game between players in the same game.
+				<br>
+				In order for users to connect with each other, a "signaling server" is
+				used.
+				<br>
+				This allows them to find the route to connect through the maze of the
+				internet.
+			</p>
+			<p>
+				The app does not require you to create an account, login or any personal
+				informations from players and aim to be as privacy friendly as possible.
+				<br>
+				The only server connection is with the "signaling server" and can be
+				audited
+				<a
+					href="https://github.com/de-luca/beacon"
+					rel="noopener noreferrer"
+					target="_blank"
+					>here</a
+				>.
+			</p>
+		</noscript>
 
-  <body>
-    <noscript>
-      <p>
-        <strong>⟁ Planecha.se</strong><br>
-        A Planechase companion app for people playing remotely (or locally)
-      </p>
-      <p>This app require Javascript to run.</p>
-      <p>
-        <em>Planecha.se</em> uses
-        <a href="https://en.wikipedia.org/wiki/WebRTC" rel="noopener noreferrer" target="_blank">WebRTC</a>
-        to transmit the game between players in the same game.<br>
-        In order for users to connect with each other, a "signaling server" is used.<br>
-        This allows them to find the route to connect through the maze of the internet.
-      </p>
-      <p>
-        The app does not require you to create an account, login or any personal informations from players
-        and aim to be as privacy friendly as possible.<br>
-        The only server connection is with the "signaling server" and can be audited
-        <a href="https://github.com/de-luca/beacon" rel="noopener noreferrer" target="_blank">here</a>.
-      </p>
-    </noscript>
+		<div id="app"></div>
 
-    <div id="app"></div>
-
-    <script type="module" src="/src/main.ts"></script>
-  </body>
-
+		<script type="module" src="/src/main.ts"></script>
+	</body>
 </html>

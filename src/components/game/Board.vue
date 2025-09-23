@@ -79,9 +79,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, useTemplateRef } from "vue";
 import type { Component } from "vue";
-
+import { computed, onMounted, ref, useTemplateRef } from "vue";
+import { Maze } from "@/components/controls";
+import { type Card, Plane, SpecialPlane } from "@/model/card";
+import type { EternitiesMapSpecs } from "@/model/game/eternities";
+import { RevealerSource, StateKey } from "@/model/wall";
+import { EventType, eventBus } from "@/services/eventBus";
+import { useMain } from "@/store/main";
+import { shuffle } from "@/utils/shuffle";
+import { DualDeck, Multi, Single, SingleDeck } from "./board/game";
 import {
 	DeckStatus,
 	DiceMenu,
@@ -92,25 +99,12 @@ import {
 	OnlineControls,
 	UndoBtn,
 } from "./board/menu";
-
-import { Maze } from "@/components/controls";
-
-import { DualDeck, Multi, Single, SingleDeck } from "./board/game";
-
-import type { EternitiesMapSpecs } from "@/model/game/eternities";
-import { RevealerSource, StateKey } from "@/model/wall";
-import { useMain } from "@/store/main";
 import {
+	getRevealer,
 	type PickedLeft,
 	type RevealConfig,
 	StackWall,
-	getRevealer,
 } from "./board/wall";
-
-import { type Card, Plane, SpecialPlane } from "@/model/card";
-import { shuffle } from "@/utils/shuffle";
-
-import { EventType, eventBus } from "@/services/eventBus";
 
 type LocalRevealerConfig = {
 	component: Component;
@@ -281,14 +275,14 @@ const planeswalk = () => {
 	if (revealer.value?.seeder) {
 		revealer.value.seeder();
 	} else {
-		// @ts-ignore
+		// @ts-expect-error
 		game.value!.planeswalk();
 	}
 };
 
 // biome-ignore lint/suspicious/noExplicitAny: ignore
 const customPlaneswalk = (...args: any) =>
-	// @ts-ignore
+	// @ts-expect-error
 	game.value!.customPlaneswalk(...args);
 
 const chaos = () => {

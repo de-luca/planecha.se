@@ -116,6 +116,7 @@
 
 
 <script setup lang="ts">
+import { ref } from "vue";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -126,15 +127,12 @@ import {
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
+import type { Card } from "@/model/card";
 import type { Revealed } from "@/model/game";
 import { buildImgSrc } from "@/utils/img";
-
-import type { Card } from "@/model/card";
-import { ref } from "vue";
-import type { PickedLeft, RevealConfig } from ".";
 import StackStatus from "../StackStatus.vue";
 import type { WallConfig } from "../types";
+import type { PickedLeft, RevealConfig } from ".";
 
 const emit = defineEmits(["done"]);
 const { revealed, config } = defineProps<{

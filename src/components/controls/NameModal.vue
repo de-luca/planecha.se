@@ -54,9 +54,6 @@
 import { toTypedSchema } from "@vee-validate/zod";
 import { ref } from "vue";
 import * as z from "zod";
-
-import { useMain } from "@/store/main";
-
 import NameInput from "@/components/controls/NameInput.vue";
 import { Button } from "@/components/ui/button";
 import {
@@ -77,6 +74,7 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
+import { useMain } from "@/store/main";
 
 const store = useMain();
 

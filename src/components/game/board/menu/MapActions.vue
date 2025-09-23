@@ -110,7 +110,7 @@
 <script setup lang="ts">
 import { Eye, Play } from "lucide-vue-next";
 import { computed, ref } from "vue";
-
+import { Chaos, Planeswalk } from "@/components/svgs/symbols";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -126,14 +126,10 @@ import {
 	NumberFieldIncrement,
 	NumberFieldInput,
 } from "@/components/ui/number-field";
-
-import { Chaos, Planeswalk } from "@/components/svgs/symbols";
-
-import { useMain } from "@/store/main";
-
 import { Phenomenon } from "@/model/card";
 import { EternitiesMap } from "@/model/game/eternities";
 import { RevealerMode, RevealerSource, StateKey } from "@/model/wall";
+import { useMain } from "@/store/main";
 
 defineEmits(["planeswalk", "chaos"]);
 const { disabled } = defineProps<{ disabled: boolean }>();

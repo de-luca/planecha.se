@@ -1,6 +1,6 @@
+import type { Component } from "vue";
 import type { Card } from "@/model/card";
 import type { RevealerWall } from "@/model/wall";
-import type { Component } from "vue";
 
 import { RevealerMode } from "@/model/wall";
 import Pick from "./Pick.vue";

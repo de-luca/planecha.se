@@ -41,7 +41,8 @@
 <script setup lang="ts">
 import { Dices, LoaderCircle } from "lucide-vue-next";
 import { h, markRaw, ref } from "vue";
-
+import * as SVGs from "@/components/svgs/dices";
+import { Chaos, Planeswalk } from "@/components/svgs/symbols";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
@@ -50,9 +51,6 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-import * as SVGs from "@/components/svgs/dices";
-import { Chaos, Planeswalk } from "@/components/svgs/symbols";
 import { useMain } from "@/store/main";
 
 const DICES = {

@@ -1,7 +1,7 @@
 import {
-	type RouteRecordRaw,
 	createRouter,
 	createWebHashHistory,
+	type RouteRecordRaw,
 } from "vue-router";
 
 import { useMain } from "@/store/main";

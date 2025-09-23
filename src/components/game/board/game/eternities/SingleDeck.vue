@@ -31,10 +31,9 @@
 
 <script setup lang="ts">
 import { PhenomenonWall } from "@/components/game/board/wall";
-import { Tile, TileDetails } from "./controls";
-
 import { useMain } from "@/store";
 import type { Coordinates } from "@/types";
+import { Tile, TileDetails } from "./controls";
 import { useEternities } from "./Eternities";
 
 const store = useMain();

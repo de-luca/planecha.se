@@ -1,5 +1,5 @@
-import type { BaseList } from "@/types/index";
 import type { VNode } from "vue";
+import type { BaseList } from "@/types/index";
 
 export type DeckList = {
 	list: BaseList;

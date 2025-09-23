@@ -7,6 +7,7 @@ import {
 
 import type { InitPayload, MainStore } from "@/store/main";
 import type { Patch } from "@/utils/delta";
+import { OfflineError, ServerError } from "./errors";
 import {
 	type BootParams,
 	type CreateParams,
@@ -16,7 +17,6 @@ import {
 	type NetInterface,
 	type Props,
 } from "./NetInterface";
-import { OfflineError, ServerError } from "./errors";
 
 export class BeaconNet implements NetInterface {
 	private store: MainStore;

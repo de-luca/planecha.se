@@ -1,9 +1,10 @@
-import { type Store, defineStore } from "pinia";
+import { defineStore, type Store } from "pinia";
 
 import { SpecialPlane } from "@/model/card";
 import {
 	type AddActivePlaneInput,
 	type BuildProps,
+	build as buildGame,
 	type ChaosInput,
 	type GameDump,
 	type GameInterface,
@@ -11,22 +12,21 @@ import {
 	type PlaneswalkInput,
 	type ResolveRevealInput,
 	type RevealUntilInput,
-	type UpdateCounterInput,
-	build as buildGame,
 	restore as restoreGame,
+	type UpdateCounterInput,
 } from "@/model/game";
 import { DualDeck, type EncounterInput } from "@/model/game/eternities";
 import {
-	type NetInterface,
 	boot as bootNet,
 	create as createNet,
+	type NetInterface,
 } from "@/model/net";
 import { Stack, type StackInterface } from "@/model/stack/Stack";
 import {
+	build as buildRepo,
 	type Clone,
 	type MaybeDump,
 	type RepoInterface,
-	build as buildRepo,
 	restore as restoreRepo,
 } from "@/model/ver";
 import type { ApplyInput } from "@/model/wall";
@@ -37,7 +37,7 @@ import type {
 	Layout,
 	PlanarDiceResult,
 } from "@/types";
-import { type Patch, diff } from "@/utils/delta";
+import { diff, type Patch } from "@/utils/delta";
 import { once } from "@/utils/invoke";
 
 export type HeyPayload = {
@@ -165,7 +165,7 @@ export const useMain = defineStore("main", {
 		},
 
 		getMateName(id?: string): string {
-			return id ? this.mates.get(id) ?? "Fblthp" : "You";
+			return id ? (this.mates.get(id) ?? "Fblthp") : "You";
 		},
 
 		hey(payload: HeyPayload): void {
@@ -177,7 +177,7 @@ export const useMain = defineStore("main", {
 			if (this.isMulti) {
 				(this.game as Multi).removeMate(payload.id);
 				this.playerLayout.players.splice(
-					this.playerLayout.players.findIndex((p) => p === payload.id),
+					this.playerLayout.players.indexOf(payload.id),
 					1,
 				);
 			}
@@ -372,7 +372,7 @@ export const useMain = defineStore("main", {
 		// 	const opr = this.opStack.pop();
 		// 	console.log(opr);
 		// 	if (opr) {
-		// 		// @ts-ignore
+		// 		// @ts-expect-error
 		// 		opr && this[opr.op](opr.payload);
 		// 		// this.resolveOpStack();
 		// 	}
@@ -383,7 +383,7 @@ export const useMain = defineStore("main", {
 			const op = this.stack.pop();
 			console.log(op);
 			if (op) {
-				// @ts-ignore
+				// @ts-expect-error
 				this.chaos(op);
 			}
 		},

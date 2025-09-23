@@ -1,16 +1,15 @@
-import type { InitPayload, MainStore } from "@/store/main";
 import {
 	type ActionReceiver,
 	type ActionSender,
-	type Room,
 	// @ts-expect-error Typing is kinda broken
 	getRelaySockets,
 	joinRoom,
+	type Room,
 } from "trystero";
-import { BlockedError, OfflineError, TimeoutError } from "./errors";
-
+import type { InitPayload, MainStore } from "@/store/main";
 import type { Patch } from "@/utils/delta";
 import { once } from "@/utils/invoke";
+import { BlockedError, OfflineError, TimeoutError } from "./errors";
 import {
 	type BootParams,
 	type CreateParams,

@@ -35,11 +35,9 @@ import {
 	NumberFieldIncrement,
 	NumberFieldInput,
 } from "@/components/ui/number-field";
-
+import { type Card, Phenomenon, Plane } from "@/model/card";
 import { useMain } from "@/store/main";
 import { buildImgSrc } from "../../utils/img";
-
-import { type Card, Phenomenon, Plane } from "@/model/card";
 
 const {
 	card,

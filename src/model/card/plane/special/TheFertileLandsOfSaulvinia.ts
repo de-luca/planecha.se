@@ -6,7 +6,6 @@ import {
 	type WallManager,
 } from "@/model/wall";
 import { EventType, eventBus } from "@/services/eventBus";
-import { Plane } from "../Plane";
 import { SpecialPlane } from "./SpecialPlane";
 
 /**

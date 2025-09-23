@@ -153,7 +153,7 @@ import {
 } from "lucide-vue-next";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
-
+import FeedbackButton from "@/components/controls/FeedbackButton.vue";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -169,8 +169,6 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-import FeedbackButton from "@/components/controls/FeedbackButton.vue";
 
 import {
 	BlockedError,

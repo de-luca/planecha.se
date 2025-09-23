@@ -19,7 +19,8 @@
 
 <script setup lang="ts">
 import { Cog } from "lucide-vue-next";
-
+import NameModal from "@/components/controls/NameModal.vue";
+import ThemeSelector from "@/components/controls/ThemeSelector.vue";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -28,7 +29,4 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-import NameModal from "@/components/controls/NameModal.vue";
-import ThemeSelector from "@/components/controls/ThemeSelector.vue";
 </script>

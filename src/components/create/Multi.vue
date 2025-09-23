@@ -37,7 +37,7 @@
 import { LoaderCircle } from "lucide-vue-next";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-
+import DeckManager from "@/components/deck-manager/DeckManager.vue";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -48,8 +48,6 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-
-import DeckManager from "@/components/deck-manager/DeckManager.vue";
 
 import { useMain } from "@/store/main";
 import type { BaseList } from "@/types/index";

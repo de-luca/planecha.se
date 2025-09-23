@@ -1,22 +1,42 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.0.5/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.2.4/schema.json",
+	"assist": { "actions": { "source": { "organizeImports": "on" } } },
 	"files": {
-	    "includes": ["**", "!src/components/ui/**"]
-  	},
-	"assist": {
-		"actions": {
-			"source": {
-				"organizeImports": "on"
-			}
+		"includes": ["**", "!src/components/ui"]
+	},
+	"html": {
+		"formatter": {
+			"enabled": true
 		}
 	},
+
 	"linter": {
 		"enabled": true,
 		"rules": {
+			"recommended": true,
 			"style": {
 				"noNonNullAssertion": "off"
 			},
-			"recommended": true
+			"suspicious": {
+				"noUnknownAtRules": "off"
+			}
 		}
-	}
+	},
+	"overrides": [
+		{
+			"includes": ["**/*.vue"],
+			"linter": {
+				"rules": {
+					"style": {
+						"useConst": "off",
+						"useImportType": "off"
+					},
+					"correctness": {
+						"noUnusedVariables": "off",
+						"noUnusedImports": "off"
+					}
+				}
+			}
+		}
+	]
 }

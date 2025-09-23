@@ -1,7 +1,7 @@
+import type { PiniaPluginContext } from "pinia";
 import { type Card, Plane } from "@/model/card";
 import type { ChaosInput, GameType, UpdateCounterInput } from "@/model/game";
 import type { CoinFlipResult, PlanarDiceResult } from "@/types";
-import type { PiniaPluginContext } from "pinia";
 import { isMain } from "../main";
 
 const chaos = '<abbr class="symbol chaos" title="chaos">{CHAOS}</abbr>';

@@ -147,7 +147,10 @@
 import { CircleAlert, LoaderCircle } from "lucide-vue-next";
 import { computed, onMounted, ref, toValue } from "vue";
 import { useRoute } from "vue-router";
-
+import BrandedFooter from "@/components/controls/BrandedFooter.vue";
+import Maze from "@/components/controls/Maze.vue";
+import NameInput from "@/components/controls/NameInput.vue";
+import DeckManager from "@/components/deck-manager/DeckManager.vue";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -158,11 +161,6 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-
-import BrandedFooter from "@/components/controls/BrandedFooter.vue";
-import Maze from "@/components/controls/Maze.vue";
-import NameInput from "@/components/controls/NameInput.vue";
-import DeckManager from "@/components/deck-manager/DeckManager.vue";
 
 import {
 	BlockedError,

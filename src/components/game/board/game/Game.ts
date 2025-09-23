@@ -1,6 +1,6 @@
+import { computed } from "vue";
 import { useMain } from "@/store";
 import { shuffle } from "@/utils/shuffle";
-import { computed } from "vue";
 import type { PickedLeft } from "../wall/reveal";
 
 export const useGame = () => {

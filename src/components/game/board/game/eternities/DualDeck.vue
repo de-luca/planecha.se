@@ -43,8 +43,6 @@
 import { computed } from "vue";
 
 import { EncounterWall, PhenomenonWall } from "@/components/game/board/wall";
-import { Tile, TileDetails } from "./controls";
-
 import type {
 	DualDeck,
 	EncounterTrigger,
@@ -53,6 +51,7 @@ import type {
 import { StateKey, StateOp } from "@/model/wall";
 import { useMain } from "@/store";
 import type { Coordinates } from "@/types";
+import { Tile, TileDetails } from "./controls";
 import { useEternities } from "./Eternities";
 
 const store = useMain();

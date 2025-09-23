@@ -1,5 +1,5 @@
-import type { Card } from "@/model/card";
 import shffl from "lodash.shuffle";
+import type { Card } from "@/model/card";
 
 const defaultLoops = 10;
 

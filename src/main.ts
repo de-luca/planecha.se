@@ -2,11 +2,11 @@ import { registerSW } from "virtual:pwa-register";
 import App from "@/App.vue";
 import Link from "@/components/controls/Link.vue";
 import "@/main.css";
-import { router } from "@/router";
-import { feeder, notifier, versionizer } from "@/store/plugins";
 import { useColorMode } from "@vueuse/core";
 import { createPinia } from "pinia";
 import { createApp } from "vue";
+import { router } from "@/router";
+import { feeder, notifier, versionizer } from "@/store/plugins";
 
 useColorMode();
 registerSW({ immediate: true });

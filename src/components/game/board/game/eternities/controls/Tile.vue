@@ -12,8 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import type { Tile as TileModel } from "@/model/game/eternities";
 import { type Component, computed } from "vue";
+import type { Tile as TileModel } from "@/model/game/eternities";
 import { Current, Hellrideable, Planewalkable, Unreachable } from "./tiles";
 
 const emit = defineEmits(["show", "hellride"]);

@@ -26,11 +26,10 @@ import { Ellipsis } from "lucide-vue-next";
 import { computed, ref } from "vue";
 
 import Card from "@/components/controls/Card.vue";
-import { type Board, BoardDetails } from "./controls";
-
 import type { Multi } from "@/model/game/multi/Multi";
 import { useMain } from "@/store";
 import { useGame } from "../game";
+import { type Board, BoardDetails } from "./controls";
 
 const store = useMain();
 const { customPlaneswalk, putBack } = useGame();

@@ -35,13 +35,12 @@
 </template>
 
 <script setup lang="ts">
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 import BrandedFooter from "@/components/controls/BrandedFooter.vue";
 import Maze from "@/components/controls/Maze.vue";
 import Eternities from "@/components/create/Eternities.vue";
 import Multi from "@/components/create/Multi.vue";
 import Single from "@/components/create/Single.vue";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // @Component({
 // 	components: {

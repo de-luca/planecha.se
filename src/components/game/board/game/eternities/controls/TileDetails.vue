@@ -43,12 +43,10 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-
 import Card from "@/components/controls/Card.vue";
 import { Planeswalk } from "@/components/svgs/symbols";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 import type { Tile } from "@/model/game/eternities";
 import { useMain } from "@/store";

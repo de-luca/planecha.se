@@ -1,7 +1,6 @@
-import type { InitPayload, MainStore } from "@/store/main";
 import type { ActionReceiver } from "trystero";
-
 import type { GameType } from "@/model/game";
+import type { InitPayload, MainStore } from "@/store/main";
 import type { Patch } from "@/utils/delta";
 
 export enum EventType {

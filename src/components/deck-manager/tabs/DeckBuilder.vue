@@ -297,10 +297,11 @@ import {
 	useVueTable,
 } from "@tanstack/vue-table";
 import { useVirtualizer } from "@tanstack/vue-virtual";
+import { toTypedSchema } from "@vee-validate/zod";
 import { ChevronUp, CirclePlus, Eye, X } from "lucide-vue-next";
-import { type VNode, computed, h, ref } from "vue";
+import { computed, h, ref, type VNode } from "vue";
 import { toast } from "vue-sonner";
-
+import * as z from "zod";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -347,6 +348,8 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
+
+import { valueUpdater } from "@/components/ui/table/utils";
 import { Textarea } from "@/components/ui/textarea";
 import {
 	Tooltip,
@@ -354,18 +357,11 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-import { valueUpdater } from "@/components/ui/table/utils";
-
 import type { Card } from "@/model/card";
-
 import { getAllCards } from "@/services/cardProvider";
 import { getSets } from "@/services/setProvider";
-import { buildImgSrc } from "@/utils/img";
-
 import { useDecks } from "@/store/decks";
-import { toTypedSchema } from "@vee-validate/zod";
-import * as z from "zod";
+import { buildImgSrc } from "@/utils/img";
 import type { DeckList, Props } from "../utils";
 
 const SETS = getSets();

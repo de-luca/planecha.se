@@ -160,7 +160,7 @@
 import { LoaderCircle } from "lucide-vue-next";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
-
+import DeckManager from "@/components/deck-manager/DeckManager.vue";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -181,8 +181,6 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-
-import DeckManager from "@/components/deck-manager/DeckManager.vue";
 
 import type {
 	EncounterMode,

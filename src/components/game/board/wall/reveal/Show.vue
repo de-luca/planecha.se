@@ -69,13 +69,11 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import type { Revealed } from "@/model/game";
-import { buildImgSrc } from "@/utils/img";
-
-import type { RevealConfig } from ".";
-import type { WallConfig } from "../types";
-
 import { useMain } from "@/store/main";
+import { buildImgSrc } from "@/utils/img";
 import StackStatus from "../StackStatus.vue";
+import type { WallConfig } from "../types";
+import type { RevealConfig } from ".";
 
 const store = useMain();
 

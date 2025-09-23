@@ -209,15 +209,12 @@ import {
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
+import type { Card as CardModel } from "@/model/card";
 import type { Revealed } from "@/model/game";
 import { buildImgSrc } from "@/utils/img";
-
-import type { RevealConfig } from ".";
-import type { WallConfig } from "../types";
-
-import type { Card as CardModel } from "@/model/card";
 import StackStatus from "../StackStatus.vue";
+import type { WallConfig } from "../types";
+import type { RevealConfig } from ".";
 
 const emit = defineEmits(["done"]);
 const { revealed, config } = defineProps<{

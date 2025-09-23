@@ -1,3 +1,3 @@
-export * from "./NetInterface";
-export * from "./factory";
 export * from "./errors";
+export * from "./factory";
+export * from "./NetInterface";

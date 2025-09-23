@@ -5,14 +5,14 @@ import {
 } from "@/services/cardProvider";
 import type { Card } from "../card";
 import { WallManager } from "../wall";
-import type { GameDump, GameInterface, GameType } from "./GameInterface";
 import {
+	build as buildEM,
 	type EncounterTriggers,
 	type EternitiesMapDump,
 	type EternitiesMapSpecs,
-	build as buildEM,
 	restore as restoreEM,
 } from "./eternities";
+import type { GameDump, GameInterface, GameType } from "./GameInterface";
 import { Multi } from "./multi";
 import { Single } from "./single";
 

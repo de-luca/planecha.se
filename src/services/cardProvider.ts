@@ -1,14 +1,14 @@
+import cards from "#assets/cards.json";
 import {
+	build,
 	type Card,
 	type CardDump,
 	type Phenomenon,
 	Plane,
 	type Props,
-	build,
 } from "@/model/card";
 import { Deck, type DeckDump } from "@/model/deck/Deck";
 import { shuffle } from "@/utils/shuffle";
-import cards from "#assets/cards.json";
 
 type ListInput = CardDump | string;
 
@@ -37,9 +37,7 @@ export const getCardList = <T extends Card>(list: Array<ListInput>): Array<T> =>
 		return card;
 	});
 
-export const getCardByFilter = (filters: {
-	sets: Array<string>;
-}) =>
+export const getCardByFilter = (filters: { sets: Array<string> }) =>
 	[...raw.values()]
 		.filter((r) => filters.sets.some((s) => r.sets.includes(s)))
 		.map((r) => build(r));

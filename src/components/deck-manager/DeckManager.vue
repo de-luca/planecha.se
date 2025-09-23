@@ -103,7 +103,7 @@
 </template>
 
 <script setup lang="ts">
-import { KeepAlive, computed, ref } from "vue";
+import { computed, KeepAlive, ref } from "vue";
 
 import { Card, CardHeader } from "@/components/ui/card";
 import {
@@ -115,7 +115,8 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
+import { Phenomenon } from "@/model/card";
+import type { BaseList } from "@/types/index";
 import { CardCount } from "./controls";
 import {
 	CustomList,
@@ -124,9 +125,6 @@ import {
 	ListList,
 	PreconList,
 } from "./tabs";
-
-import { Phenomenon } from "@/model/card";
-import type { BaseList } from "@/types/index";
 import type { DeckList, Props } from "./utils";
 
 const DEFAULT_TAB = "custom";

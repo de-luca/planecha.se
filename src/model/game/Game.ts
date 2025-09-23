@@ -12,8 +12,8 @@ import type {
 	PlaneswalkInput,
 	ResolveInput,
 	ResolveRevealInput,
-	RevealUntilInput,
 	Revealed,
+	RevealUntilInput,
 	UpdateCounterInput,
 } from "./GameInterface";
 

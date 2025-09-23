@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { type VNode, ref } from "vue";
+import { ref, type VNode } from "vue";
 
 type ConfirmState = {
 	open: boolean;

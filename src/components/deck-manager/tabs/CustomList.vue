@@ -77,16 +77,13 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-import { CardCount, CardTable } from "../controls";
-
-import { useDecks } from "@/store/decks";
-import { useUI } from "@/store/ui";
-
 import type { Card } from "@/model/card";
 import { getCardList } from "@/services/cardProvider";
+import { useDecks } from "@/store/decks";
+import { useUI } from "@/store/ui";
 import type { SavedDeck } from "@/types/index";
-import { type DeckList, type Props, isDeckListUseable } from "../utils";
+import { CardCount, CardTable } from "../controls";
+import { type DeckList, isDeckListUseable, type Props } from "../utils";
 
 type Deck = Omit<SavedDeck, "cards"> & { cards: Array<Card> };
 

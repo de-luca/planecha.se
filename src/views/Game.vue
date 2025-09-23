@@ -3,12 +3,11 @@
 </template>
 
 <script setup lang="ts">
-import { useMain } from "@/store/main";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
-
 import Board from "@/components/game/Board.vue";
 import Join from "@/components/game/Join.vue";
+import { useMain } from "@/store/main";
 
 const store = useMain();
 const route = useRoute();

@@ -53,12 +53,10 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-import { CardCount, CardTable } from "../controls";
-
 import { getPrecons } from "@/services/preconProvider";
 import type { Precon } from "@/types/index";
-import { type DeckList, type Props, isDeckListUseable } from "../utils";
+import { CardCount, CardTable } from "../controls";
+import { type DeckList, isDeckListUseable, type Props } from "../utils";
 
 const emit = defineEmits(["use"]);
 const { minCards, maxCards, minPlanes, phenomena } = defineProps<Props>();
