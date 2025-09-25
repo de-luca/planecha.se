@@ -36,8 +36,13 @@
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-
-            <Button variant="destructive" size="sm" class="h-7 mr-2" @click.prevent.stop="remove(deck.name)">
+            <div>
+            <Button 
+              variant="destructive" 
+              size="sm" 
+              class="h-7 mr-2" 
+              @click.prevent.stop="remove(deck.name)"
+            >
               Delete
             </Button>
             <Button 
@@ -49,6 +54,7 @@
             >
               Use
             </Button>
+            </div>
           </div>  
         </AccordionTrigger>
         <AccordionContent>
@@ -142,59 +148,4 @@ const toDeckList = (deck: Deck): DeckList => {
 		component: buildDesc(deck),
 	};
 };
-
-// @Component({
-// 	emits: ["use", "builder", "presets"],
-// 	components: { CardList },
-// })
-// export default class CustomList extends Vue {
-// 	@Prop({ required: true })
-// 	public reqs: DeckReqs;
-
-// 	private store = useMain();
-
-// 	public search = "";
-// 	public opened = "";
-
-// 	public get decks(): Map<string, SavedDeck> {
-// 		return new Map(
-// 			[...this.store.decks].filter(([k]) =>
-// 				k.toLowerCase().includes(this.search),
-// 			),
-// 		);
-// 	}
-
-// 	public get kind(): DeckKind {
-// 		return this.reqs.mapType === GameType.ETERNITIES &&
-// 			this.reqs.deckType === EternitiesMapDeckType.PLANES
-// 			? "planes"
-// 			: "all";
-// 	}
-
-// 	public canUse(deck: SavedDeck): boolean {
-// 		if (this.kind !== "all" && deck.kind !== this.kind) {
-// 			return false;
-// 		}
-
-// 		const req = REQUIREMENTS[this.reqs.mapType];
-// 		return Object.entries(req).every(([k, r]) => {
-// 			return (
-// 				deck.counts[k as CardType] >= r.min &&
-// 				deck.counts[k as CardType] <= (r.max ?? Number.POSITIVE_INFINITY)
-// 			);
-// 		});
-// 	}
-
-// 	public getTag(kind: DeckKind): string {
-// 		return KIND_MAP[kind];
-// 	}
-
-// 	public toggleDetails(name: string): void {
-// 		this.opened = this.opened === name ? "" : name;
-// 	}
-
-// 	public remove(name: string): void {
-// 		this.store.removeDeck(name);
-// 	}
-// }
 </script>

@@ -5,8 +5,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useRoute } from "vue-router";
-import Board from "@/components/game/Board.vue";
-import Join from "@/components/game/Join.vue";
+import { Board, Join } from "@/components/game";
 import { useMain } from "@/store/main";
 
 const store = useMain();

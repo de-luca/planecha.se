@@ -75,7 +75,7 @@ export class BeaconNet implements NetInterface {
 			if (this.ready) {
 				initSender(this.store.initPayload, peerId);
 			}
-			heySender({ name: this.store.selfName! }, peerId);
+			heySender({ name: this.store.username! }, peerId);
 		});
 
 		heyReceiver((data, peerId) => {
@@ -83,7 +83,7 @@ export class BeaconNet implements NetInterface {
 				store.mates.set(peerId, data.name);
 			} else {
 				store.hey({ ...data, id: peerId });
-				heySender({ name: store.selfName! }, peerId);
+				heySender({ name: store.username! }, peerId);
 			}
 		});
 

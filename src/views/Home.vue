@@ -38,7 +38,7 @@
         <Button variant="link">
           <l href="https://dungeon.planecha.se">Dungeon</l>
         </Button>
-        <Button variant="link">
+        <Button variant="link" class="underline underline-offset-4">
           <router-link to="/about">About</router-link>
         </Button>
       </nav>
@@ -47,24 +47,20 @@
     <BrandedFooter>
       <p class="leading-7 [&:not(:first-child)]:mt-5">
         Planecha.se is unofficial Fan Content permitted under the
-        <l class="font-medium text-primary underline underline-offset-4" href="https://company.wizards.com/en/legal/fancontentpolicy">Fan Content Policy</l>.
+        <l class="font-medium text-primary" href="https://company.wizards.com/en/legal/fancontentpolicy">Fan Content Policy</l>.
         Not approved/endorsed by Wizards.<br>
         Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC.
       </p>
       <p class="leading-7 [&:not(:first-child)]:mt-5">
-        Card data are provided by <l class="font-medium text-primary underline underline-offset-4" href="https://scryfall.com">Scryfall</l>.
+        Card data is provided by <l class="font-medium text-primary" href="https://scryfall.com">Scryfall</l>.
       </p>
       <p class="leading-7 [&:not(:first-child)]:mt-5">
-        Planecha.se uses icons provided by <l class="font-medium text-primary underline underline-offset-4" href="https://fontawesome.com">Font Awesome</l>
-        according to the <l class="font-medium text-primary underline underline-offset-4" href="https://fontawesome.com/license">Font Awesome License</l>.
-      </p>
-      <p class="leading-7 [&:not(:first-child)]:mt-5">
-        Dices icons by Fritz Duggan from <l class="font-medium text-primary underline underline-offset-4" href="https://thenounproject.com/browse/collection-icon/dice-150631/">Noun Project</l>.
+        Dices icons by Fritz Duggan from <l class="font-medium text-primary" href="https://thenounproject.com/browse/collection-icon/dice-150631/">Noun Project</l>.
         <br/>
-        Coin icon by Iain Hector from <l class="font-medium text-primary underline underline-offset-4" href="https://thenounproject.com/icon/coin-55698/">Noun Project</l>.
+        Coin icon by Iain Hector from <l class="font-medium text-primary" href="https://thenounproject.com/icon/coin-55698/">Noun Project</l>.
       </p>
       <p class="leading-7 [&:not(:first-child)]:mt-5">
-        The "maze" background font is from <l class="font-medium text-primary underline underline-offset-4" href="http://mazeletter.xyz/">Mazeletter</l>.
+        The "maze" background font is from <l class="font-medium text-primary" href="http://mazeletter.xyz/">Mazeletter</l>.
       </p>
       <p class="leading-7 [&:not(:first-child)]:mt-5">
         Build version: 
@@ -77,9 +73,7 @@
 </template>
 
 <script lang="ts" setup>
-import BrandedFooter from "@/components/controls/BrandedFooter.vue";
-import Maze from "@/components/controls/Maze.vue";
-
+import { BrandedFooter, Maze } from "@/components/controls";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 

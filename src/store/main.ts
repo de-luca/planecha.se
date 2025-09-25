@@ -75,7 +75,7 @@ export type State = {
 	feed: Array<string>;
 
 	mates: Map<string, string>;
-	selfName?: string;
+	username?: string;
 	playerLayout: PlayerLayout;
 };
 
@@ -92,11 +92,10 @@ function getState(): State {
 		ready: false,
 
 		feed: [],
-		// opStack: [],
 
 		mates: new Map(),
 
-		selfName: localStorage.getItem("selfName") ?? undefined,
+		username: localStorage.getItem("username") ?? undefined,
 		playerLayout: {
 			layout: (localStorage.getItem("layout") as Layout) ?? "x2",
 			players: [""],
@@ -135,7 +134,7 @@ export const useMain = defineStore("main", {
 			throw new Error("Stack is undefined (store is in unset state)");
 		},
 		logName(): string {
-			return this.net ? this.selfName! : "You";
+			return this.net ? this.username! : "You";
 		},
 		gameId(): string | undefined {
 			return this.net?.gameId;
@@ -155,9 +154,9 @@ export const useMain = defineStore("main", {
 
 	actions: {
 		setName(name: string): void {
-			this.selfName = name;
-			localStorage.setItem("selfName", this.selfName);
-			this.net?.hey({ name: this.selfName });
+			this.username = name;
+			localStorage.setItem("username", this.username);
+			this.net?.hey({ name: this.username });
 		},
 		setLayout(layout: Layout): void {
 			this.playerLayout.layout = layout;
@@ -319,9 +318,6 @@ export const useMain = defineStore("main", {
 			if (!(payload.card instanceof SpecialPlane)) {
 				this.resolveStack();
 			}
-			// if (payload.card instanceof Phenomenon || payload.card instanceof SpecialPlane) {
-			// 	this.resolveOpStack();
-			// }
 		},
 
 		planeswalk(payload: Omit<PlaneswalkInput, "initiator">): void {
@@ -343,7 +339,6 @@ export const useMain = defineStore("main", {
 		},
 		privateResolveReveal(payload: ResolveRevealInput) {
 			this.game.resolveReveal(payload);
-			// !payload.stop && this.resolveOpStack();
 		},
 
 		reveal(payload: RevealUntilInput) {
@@ -351,7 +346,6 @@ export const useMain = defineStore("main", {
 		},
 		resolveReveal(payload: ResolveRevealInput) {
 			this.game.resolveReveal(payload);
-			// !payload.stop && this.resolveOpStack();
 		},
 
 		updateWallState(payload: ApplyInput) {
@@ -363,20 +357,6 @@ export const useMain = defineStore("main", {
 				this.game.encounter({ ...payload, initiator: this.logName });
 			}
 		},
-
-		// pushOpToStack(op: Op, payload: unknown) {
-		// 	this.opStack.push({ op, payload });
-		// },
-		// resolveOpStack() {
-		// 	console.log("RESOLVE OP STACK");
-		// 	const opr = this.opStack.pop();
-		// 	console.log(opr);
-		// 	if (opr) {
-		// 		// @ts-expect-error
-		// 		opr && this[opr.op](opr.payload);
-		// 		// this.resolveOpStack();
-		// 	}
-		// },
 
 		resolveStack() {
 			console.log("RESOLVE OP STACK");

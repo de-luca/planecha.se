@@ -8,6 +8,7 @@ import {
 } from "trystero";
 import type { InitPayload, MainStore } from "@/store/main";
 import type { Patch } from "@/utils/delta";
+import { generateLocation } from "@/utils/generator";
 import { once } from "@/utils/invoke";
 import { BlockedError, OfflineError, TimeoutError } from "./errors";
 import {
@@ -20,14 +21,6 @@ import {
 	type NetInterface,
 	type Props,
 } from "./NetInterface";
-
-const CHARSET =
-	"0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
-
-const genId = (n: number) =>
-	[...Array(n)]
-		.map(() => CHARSET[Math.floor(Math.random() * CHARSET.length)])
-		.join("");
 
 type AsType<T> = { [P in keyof T]: AsType<T[P]> };
 
@@ -54,7 +47,7 @@ export class TrysteroNet implements NetInterface {
 	private constructor({ store, gameId, gameData }: Props) {
 		this.store = store;
 		this.ready = !gameId;
-		this._gameId = gameId ?? genId(20);
+		this._gameId = gameId ?? generateLocation();
 		if (gameData) {
 			this._gameData = gameData;
 		}
@@ -114,7 +107,7 @@ export class TrysteroNet implements NetInterface {
 
 		joinReceiver((_, peerId) => {
 			this.ready && initSender(this.store.initPayload, peerId);
-			heySender({ name: this.store.selfName! }, peerId);
+			heySender({ name: this.store.username! }, peerId);
 		});
 
 		heyReceiver((data, peerId) => {
@@ -122,7 +115,7 @@ export class TrysteroNet implements NetInterface {
 				store.mates.set(peerId, data.name);
 			} else {
 				store.hey({ ...data, id: peerId });
-				heySender({ name: store.selfName! }, peerId);
+				heySender({ name: store.username! }, peerId);
 			}
 		});
 

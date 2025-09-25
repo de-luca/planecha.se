@@ -61,5 +61,5 @@ const counter: Map<string, Counter> = new Map([
 export const build = (props: Props): Plane =>
 	new (specials.get(props.id) ?? Plane)({
 		...props,
-		counter: counter.get(props.id),
+		counter: counter.has(props.id) ? { ...counter.get(props.id)! } : undefined,
 	});

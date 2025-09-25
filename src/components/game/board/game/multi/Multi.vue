@@ -25,7 +25,7 @@
 import { Ellipsis } from "lucide-vue-next";
 import { computed, ref } from "vue";
 
-import Card from "@/components/controls/Card.vue";
+import { Card } from "@/components/controls";
 import type { Multi } from "@/model/game/multi/Multi";
 import { useMain } from "@/store";
 import { useGame } from "../game";
@@ -71,109 +71,3 @@ defineExpose({
 	putBack,
 });
 </script>
-
-<!-- <script lang="ts">
-import { Component } from "vue-facing-decorator";
-import type { Card as ModelCard } from "@/model/card";
-import type { Multi as MultiGame } from "@/model/game/multi/Multi";
-import { Game } from "../Game";
-
-import Card from "@/components/controls/Card.vue";
-
-interface Active {
-	yours: boolean;
-	mate: string;
-	active: Array<ModelCard>;
-	started: boolean;
-}
-
-@Component({
-	components: { Card },
-})
-export default class Multi extends Game {
-	public shown: Active | null = null;
-
-	public get layout(): Layout {
-		return this.store.playerLayout.layout;
-	}
-
-	public get actives(): Array<Active> {
-		return this.store.playerLayout.players.reduce<Array<Active>>((acc, id) => {
-			const game =
-				id === ""
-					? this.store.game
-					: (this.store.game as MultiGame).mateStates.get(id);
-
-			if (game) {
-				acc.push({
-					yours: id === "",
-					mate: this.store.getMateName(id),
-					active: game.active,
-					started: game.hasStarted,
-				});
-			}
-
-			return acc;
-		}, []);
-		// return [{
-		//   yours: true,
-		//   mate: this.store.getMateName(),
-		//   active: this.store.game.active,
-		// }].concat(
-		//   [...(this.store.game as MultiGame).mateStates.entries()]
-		//     .map(([peer, map]) => ({
-		//       yours: false,
-		//       mate: this.store.getMateName(peer),
-		//       active: map.active,
-		//     })),
-		// );
-	}
-
-	public planeswalk(): void {
-		this.store.planeswalk({});
-	}
-}
-</script> -->
-
-<!-- <style lang="scss" scoped>
-.wrapper {
-  display: grid;
-  grid-auto-flow: dense;
-  grid-template-rows: calc((100vh - 3rem) / 2);
-  gap: 1rem;
-
-  height: 100%;
-  padding: 1rem 0;
-
-  &.x2 { grid-template-columns: repeat(2, 1fr) }
-  &.x3 { grid-template-columns: repeat(3, 1fr) }
-
-
-  .active {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: .5rem;
-    padding: 1rem 0;
-
-    div:first-of-type {
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: calc((100vh - 3rem) / 2 - 5rem);
-    }
-  }
-}
-
-.details {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2.5rem;
-  padding: 2.5rem 1rem;
-}
-</style> -->

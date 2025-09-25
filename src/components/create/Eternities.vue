@@ -160,7 +160,7 @@
 import { LoaderCircle } from "lucide-vue-next";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
-import DeckManager from "@/components/deck-manager/DeckManager.vue";
+import { DeckManager } from "@/components/deck-manager";
 import { Button } from "@/components/ui/button";
 import {
 	Card,

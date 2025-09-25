@@ -15,7 +15,6 @@
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          
           <div>
             <Button 
               variant="outline" 
@@ -27,7 +26,7 @@
               Use
             </Button>
           </div>
-        </div>  
+        </div> 
       </AccordionTrigger>
       <AccordionContent>
         <CardTable :phenomena="phenomena" :cards="precon.cards" />

@@ -1,7 +1,7 @@
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger class="group flex items-center" as-child>
-      <Button variant="ghost" class="hover:cursor-pointer h-9 w-9">
+      <Button variant="ghost" class="h-9 w-9">
         <Cog class="group-hover:motion-safe:animate-spin size-7" />
       </Button>
     </DropdownMenuTrigger>
@@ -11,7 +11,14 @@
       </DropdownMenuLabel>
       <DropdownMenuSeparator />
       <DropdownMenuLabel class="flex gap-10 justify-between items-center">
-        Username: <NameModal />
+        Username: 
+        <Button 
+          @click="nameState.open = true"
+          class="w-50" 
+          variant="secondary"
+        >
+          {{ store.username ?? 'Not set' }}
+        </Button>
       </DropdownMenuLabel>
     </DropdownMenuContent>
   </DropdownMenu>
@@ -19,8 +26,7 @@
 
 <script setup lang="ts">
 import { Cog } from "lucide-vue-next";
-import NameModal from "@/components/controls/NameModal.vue";
-import ThemeSelector from "@/components/controls/ThemeSelector.vue";
+import { ThemeSelector } from "@/components/controls";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -29,4 +35,8 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useMain, useUI } from "@/store";
+
+const store = useMain();
+const nameState = useUI().name;
 </script>

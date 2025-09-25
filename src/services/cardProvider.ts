@@ -42,18 +42,6 @@ export const getCardByFilter = (filters: { sets: Array<string> }) =>
 		.filter((r) => filters.sets.some((s) => r.sets.includes(s)))
 		.map((r) => build(r));
 
-// export const getPlaneCards = (): Array<Plane> =>
-// 	[...raw.values()]
-// 		.filter((r) => r.typeLine !== "Phenomenon")
-// 		.map((r) => build(r) as Plane);
-
-// export const getPhenomenonCards = (): Array<Phenomenon> =>
-// 	[...raw.values()]
-// 		.filter((r) => r.typeLine === "Phenomenon")
-// 		.map((r) => build(r) as Phenomenon);
-
-// export const getDeck = (): Deck<Card> => new Deck<Card>(shuffle(getAllCards()));
-
 export const getDeckFromList = (list: Array<ListInput>): Deck<Card> =>
 	new Deck<Card>(shuffle(getCardList<Card>(list)));
 

@@ -16,9 +16,6 @@
 			"recommended": true,
 			"style": {
 				"noNonNullAssertion": "off"
-			},
-			"suspicious": {
-				"noUnknownAtRules": "off"
 			}
 		}
 	},
@@ -34,6 +31,16 @@
 					"correctness": {
 						"noUnusedVariables": "off",
 						"noUnusedImports": "off"
+					}
+				}
+			}
+		},
+		{
+			"includes": ["src/main.css"],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noUnknownAtRules": "off"
 					}
 				}
 			}

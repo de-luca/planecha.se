@@ -7,7 +7,7 @@ const actions = ["hey", "bye"];
 export function notifier({ store }: PiniaPluginContext) {
 	if (isMain(store)) {
 		store.$onAction(({ after, args, name }) => {
-			if (!actions.includes(name)) return;
+			if (!actions.includes(name) || store.mates.size === 0) return;
 
 			let username = "";
 			let action = "";

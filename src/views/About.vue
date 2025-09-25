@@ -3,9 +3,9 @@
     <div class="relative flex flex-col justify-center items-center h-[15rem]">
       <Maze mode="parent" :dim="{ h: { v: 15, u: 'rem' } }" />
       <router-link title="Back Home" to="/" class="max-w-fit font-[Arial] text-[6rem] text-center">
-        <div class="hover:text-muted-foreground hover:cursor-pointer relative inline-block w-[7rem] z-1 rotate-180 translate-x-[3.5rem]">⟁</div>
-        <div class="hover:text-muted-foreground hover:cursor-pointer relative inline-block w-[7rem] z-2">⟁</div>
-        <div class="hover:text-muted-foreground hover:cursor-pointer relative inline-block w-[7rem] z-1 rotate-180 translate-x-[-3.5rem]">⟁</div>
+        <div class="hover:text-muted-foreground relative inline-block w-[7rem] z-1 rotate-180 translate-x-[3.5rem]">⟁</div>
+        <div class="hover:text-muted-foreground relative inline-block w-[7rem] z-2">⟁</div>
+        <div class="hover:text-muted-foreground relative inline-block w-[7rem] z-1 rotate-180 translate-x-[-3.5rem]">⟁</div>
       </router-link>
     </div>
 
@@ -20,11 +20,11 @@
         remotely without the need to currate a Planar deck or a dedicated setup for it.
       </p>
       <p class="leading-7 [&:not(:first-child)]:mt-5">
-        It can be used in combination with <l class="font-medium text-primary underline underline-offset-4" href="https://www.spelltable.com">SpellTable</l>
+        It can be used in combination with <l class="font-medium text-primary" href="https://www.spelltable.com">SpellTable</l>
         for fully remote game or locally when you don't have a deck or when you need that precious space on your table.
       </p>
       <p class="leading-7 [&:not(:first-child)]:mt-5">
-        <em>Planecha.se</em> is open source and its code can be found <l class="font-medium text-primary underline underline-offset-4" href="https://github.com/de-luca/planecha.se">here</l>.
+        <em>Planecha.se</em> is open source and its code can be found <l class="font-medium text-primary" href="https://github.com/de-luca/planecha.se">here</l>.
       </p>
 
       <h2
@@ -39,7 +39,7 @@
             <b>Single Deck Planechase</b>
             <p>
               The "Single Planar Deck Option" described in
-              <l class="font-medium text-primary underline underline-offset-4" href="https://magic.wizards.com/en/game-info/gameplay/rules-and-formats/rules">rule</l> 901.15.
+              <l class="font-medium text-primary" href="https://magic.wizards.com/en/game-info/gameplay/rules-and-formats/rules">rule</l> 901.15.
             </p>
           </li>
           <li>
@@ -51,8 +51,8 @@
           <li>
             <b>Eternities Map</b>
             <p>
-              The Planechase variant described <l class="font-medium text-primary underline underline-offset-4" href="https://web.archive.org/web/20221005215028/https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19">here (archived article)</l>
-              or in the <l class="font-medium text-primary underline underline-offset-4" href="https://youtu.be/TGJaJ29Zs6o">Professor's video</l>.<br>
+              The Planechase variant described <l class="font-medium text-primary" href="https://web.archive.org/web/20221005215028/https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19">here (archived article)</l>
+              or in the <l class="font-medium text-primary" href="https://youtu.be/TGJaJ29Zs6o">Professor's video</l>.<br>
               Multiple variants and configurations are also availables such as Phenomena encountering and dedicated Phenomena deck.
             </p>
           </li>
@@ -78,8 +78,8 @@
           <li>
             <b>Eternities Map</b>
             <p>
-              The Planechase variant described <l class="font-medium text-primary underline underline-offset-4" href="https://web.archive.org/web/20221005215028/https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19">here (archived article)</l>
-              or in the <l class="font-medium text-primary underline underline-offset-4" href="https://youtu.be/TGJaJ29Zs6o">Professor's video</l>.<br>
+              The Planechase variant described <l class="font-medium text-primary" href="https://web.archive.org/web/20221005215028/https://magic.wizards.com/en/articles/archive/feature/eternities-map-2010-07-19">here (archived article)</l>
+              or in the <l class="font-medium text-primary" href="https://youtu.be/TGJaJ29Zs6o">Professor's video</l>.<br>
               Multiple variants and configurations are also availables such as Phenomena encountering and dedicated Phenomena deck.
             </p>
           </li>
@@ -93,7 +93,7 @@
       </h2>
       <p class="leading-7 [&:not(:first-child)]:mt-5">
         <em>Planecha.se</em> uses a signaling server to allow players to connect to each other.<br>
-        The server's sources can be found <l class="font-medium text-primary underline underline-offset-4" href="https://github.com/de-luca/beacon">here</l>.
+        The server's sources can be found <l class="font-medium text-primary" href="https://github.com/de-luca/beacon">here</l>.
       </p>
       <p class="leading-7 [&:not(:first-child)]:mt-5">
         The app does not require you to create an account, login or any personal informations from players
@@ -136,6 +136,5 @@
 </template>
 
 <script setup lang="ts">
-import BrandedFooter from "@/components/controls/BrandedFooter.vue";
-import Maze from "@/components/controls/Maze.vue";
+import { BrandedFooter, Maze } from "@/components/controls";
 </script>

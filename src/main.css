@@ -195,6 +195,14 @@
 	--maze-color: oklch(0.2178 0 0);
 }
 
+button,
+a {
+	cursor: pointer;
+}
+button:disabled {
+	cursor: not-allowed;
+}
+
 @keyframes animate-shake {
 	0% {
 		transform: rotate(-15deg);

@@ -11,6 +11,12 @@ type ConfirmState = {
 	onCancel: () => void;
 };
 
+type NameState = {
+	open: boolean;
+	onAction: () => void;
+	onCancel: () => void;
+};
+
 export const useUI = defineStore("ui", () => {
 	const confirm = ref<ConfirmState>({
 		open: false,
@@ -18,5 +24,11 @@ export const useUI = defineStore("ui", () => {
 		onCancel: () => {},
 	});
 
-	return { confirm };
+	const name = ref<NameState>({
+		open: false,
+		onAction: () => {},
+		onCancel: () => {},
+	});
+
+	return { confirm, name };
 });

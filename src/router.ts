@@ -23,7 +23,7 @@ const routes: Array<RouteRecordRaw> = [
 		component: () => import("@/views/Create.vue"),
 	},
 	{
-		path: "/game/:roomId([0-9a-zA-Z-]*)",
+		path: "/game/:roomId([a-z-]*)",
 		name: "Join",
 		component: () => import("@/views/Game.vue"),
 	},

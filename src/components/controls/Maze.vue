@@ -126,12 +126,10 @@ const computeDimensions = () => {
   margin: 0;
   padding: 0;
   text-align: left;
-  /* font-size: 10vh; */
   line-height: 1em;
   overflow: hidden;
   white-space: nowrap;
   pointer-events: none;
-  /* width: 100vw; */
 }
 
 #canary {

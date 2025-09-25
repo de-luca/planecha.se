@@ -2,20 +2,11 @@
   <Form 
     v-slot="{ handleSubmit }" 
     as="" 
-    :initial-values="{ username: store.selfName }" 
+    :initial-values="{ username: store.username }" 
     keep-values 
     :validation-schema="formSchema"
   >
-    <Dialog :open="isOpen" @update:open="isOpen = $event">
-      <DialogTrigger as-child>
-        <Button 
-          @click.prevent.stop="console.log($event)"
-          class="w-50" 
-          variant="secondary"
-        >
-          {{ store.selfName ?? 'Not set' }}
-        </Button>
-      </DialogTrigger>
+    <Dialog :open="state.open" @update:open="state.open = $event">
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Update your Username</DialogTitle>
@@ -52,9 +43,8 @@
 
 <script setup lang="ts">
 import { toTypedSchema } from "@vee-validate/zod";
-import { ref } from "vue";
 import * as z from "zod";
-import NameInput from "@/components/controls/NameInput.vue";
+import { NameInput } from "@/components/controls";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -74,11 +64,11 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
+import { useUI } from "@/store";
 import { useMain } from "@/store/main";
 
+const state = useUI().name;
 const store = useMain();
-
-const isOpen = ref(false);
 
 const formSchema = toTypedSchema(
 	z.object({
@@ -89,6 +79,6 @@ const formSchema = toTypedSchema(
 // biome-ignore lint/suspicious/noExplicitAny: ignore
 const onSubmit = (values: any) => {
 	store.setName(values.username);
-	isOpen.value = false;
+	state.onAction();
 };
 </script>
