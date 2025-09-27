@@ -3,15 +3,21 @@
     class="grid grid-rows-2 grid-flow-dense gap-[1rem] h-full py-[1rem]" 
     :class="layout"
   >
-    <div 
-      class="flex flex-col items-center justify-center gap-[.5rem] py-[1rem]" 
+	<div 
+      class="flex flex-col justify-center items-center pt-[3rem] [&_.inner]:max-w-[800px] xl:[&_.outer]:h-full" 
       v-for="(b, i) in boards" :key="i"
     >
-      <Card v-if="b.active.length === 1" :card="b.active[0]" :hidden="!b.started" />
-      <div v-else @click="shown = b">
-        <Ellipsis />
-      </div>
-      <h1>{{ b.mate }}</h1>
+		<div class="flex items-center justify-center w-full h-[90%]">
+			<Card v-if="b.active.length === 1" :card="b.active[0]" :hidden="!b.started" />
+			<Button v-else class="flex flex-col h-50 w-75" variant="ghost" @click="shown = b">
+				<Ellipsis class="!h-10 !w-10" />
+				{{ b.active.length }} Planes
+			</Button>
+		</div>
+		
+      	<div class="h-[10%] flex items-center text-md text-muted-foreground">
+			{{ b.mate }}
+		</div>
     </div>
   </div>
 
@@ -26,10 +32,12 @@ import { Ellipsis } from "lucide-vue-next";
 import { computed, ref } from "vue";
 
 import { Card } from "@/components/controls";
+import { Button } from "@/components/ui/button";
 import type { Multi } from "@/model/game/multi/Multi";
 import { useMain } from "@/store";
 import { useGame } from "../game";
-import { type Board, BoardDetails } from "./controls";
+import { BoardDetails } from "./controls";
+import { Board } from "./types";
 
 const store = useMain();
 const { customPlaneswalk, putBack } = useGame();

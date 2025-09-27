@@ -25,7 +25,7 @@
         <div class="mt-6 flex flex-col items-center">
           <div class="pb-1">
             <Badge variant="secondary">NEW</Badge>
-            MagicCon Unknown Event Planes
+            Added MagicCon Unknown Event Planes
           </div>
           <div>
             <Badge>NEW</Badge>

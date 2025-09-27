@@ -1,5 +1,5 @@
 <template>
-  <HoverCard>
+  <HoverCard v-if="stack.size">
     <HoverCardTrigger title="Effects on the stack" class="absolute top-1 right-1">
       <Button variant="outline" class="w-[3.5rem]">
         <Layers class="!h-full !w-full" />

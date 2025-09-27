@@ -42,7 +42,7 @@ export class BeaconNet implements NetInterface {
 		this._gameData = gameData;
 
 		this.store = store;
-		this.bridge = Bridge.withBeacon(import.meta.env.VITE_BEACON_URL);
+		this.bridge = Bridge.withBeacon(import.meta.env.VITE_BEACON_URL!);
 
 		const [initSender, initReceiver] = this.bridge.makeAction<InitPayload>(
 			EventType.INIT,

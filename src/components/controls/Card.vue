@@ -1,28 +1,30 @@
 <template>
-  <img v-if="hidden"
-    src="/cards/back.jpg"
-    class="max-w-[800px] max-h-full w-full rounded-[3.5%/4.75%] drop-shadow-[1px_1px_1px_#585858]"
-  />
-  <div v-else class="outer relative w-fit">
-    <NumberField 
-      v-if="counter !== undefined" 
-      class="w-[10rem] absolute right-0 -top-10" 
-      :default-value="counter.start" 
-      :min="0"
-      v-model="counterValue"
-      :disabled="ro"
-    >
-      <NumberFieldContent>
-        <NumberFieldDecrement />
-        <NumberFieldInput />
-        <NumberFieldIncrement />
-      </NumberFieldContent>
-    </NumberField>
-    <img 
-      :src="buildImgSrc(card)"
-      class="inner h-full w-full rounded-[3.5%/4.75%] drop-shadow-[1px_1px_1px_#585858]"
-      :class="{ '!drop-shadow-[0_0_5px_#DC143C,0_0_5px_#DC143C,0_0_5px_#DC143C]': card instanceof Phenomenon }"
+  <div class="outer relative w-fit">
+    <img v-if="hidden"
+      src="/cards/back.jpg"
+      class="max-w-[800px] max-h-full w-full rounded-[3.5%/4.75%] drop-shadow-[1px_1px_1px_#585858]"
     />
+    <template v-else>
+      <NumberField 
+        v-if="counter !== undefined" 
+        class="w-[10rem] absolute right-0 -top-10" 
+        :default-value="counter.start" 
+        :min="0"
+        v-model="counterValue"
+        :disabled="ro"
+      >
+        <NumberFieldContent>
+          <NumberFieldDecrement />
+          <NumberFieldInput />
+          <NumberFieldIncrement />
+        </NumberFieldContent>
+      </NumberField>
+      <img 
+        :src="buildImgSrc(card)"
+        class="inner h-full w-full rounded-[3.5%/4.75%] drop-shadow-[1px_1px_1px_#585858]"
+        :class="{ '!drop-shadow-[0_0_5px_#DC143C,0_0_5px_#DC143C,0_0_5px_#DC143C]': card instanceof Phenomenon }"
+      />
+    </template>
   </div>
 </template>
 

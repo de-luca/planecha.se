@@ -23,9 +23,9 @@ const planeswalk = () => store.planeswalk({});
 const layout = computed(() => {
 	switch (true) {
 		case active.value.length >= 3:
-			return "grid-cols-2 grid-rows-2 gap-y-[3rem] py-[3rem] [&_.outer]:h-full";
+			return "grid-cols-2 grid-rows-2 gap-y-[3rem] py-[3rem] xl:[&_.outer]:h-full";
 		case active.value.length === 2:
-			return "grid-cols-2 grid-rows-1 gap-y-[1rem] py-[1rem] [&_.inner]:max-w-[800px]";
+			return "grid-cols-1 md:grid-cols-2 grid-rows-2 md:grid-rows-1 gap-y-[1rem] py-[1rem] [&_.inner]:max-w-[800px]";
 		case active.value.length === 1:
 			return "grid-cols-1 grid-rows-1 gap-y-[1rem] py-[1rem] [&_.inner]:max-w-[800px] [&_.outer]:flex [&_.outer]:flex-col [&_.outer]:justify-center [&_.outer]:items-center";
 	}

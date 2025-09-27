@@ -25,8 +25,8 @@
             </TabsTrigger>
           </TabsList>
           <TabsContent value="relevant">
-            <div class="flex justify-center items-center gap-5 h-full mr-[40vh]">
-               <div v-for="c in revealed.relevant" :key="c.id" class="min-w-[15vh] w-[15vh] max-h-[60vh] hover:z-2">
+            <div class="flex justify-center items-center gap-5 h-full mr-[20%]">
+               <div v-for="c in revealed.relevant" :key="c.id" class="min-w-[15vh] w-[10%] max-h-[60vh] hover:z-2">
                 <label>
                   <input class="hidden" type="radio" :value="c" v-model="selected">
                   <img :src="buildImgSrc(c)" class="max-w-[30vw] animate-down rounded-[3.5%/4.75%] drop-shadow-[1px_1px_1px_#585858]">
@@ -35,8 +35,8 @@
             </div>
           </TabsContent>
           <TabsContent value="other">
-            <div v-if="revealed.others.length > 0" class="flex justify-center items-center gap-5 h-full mr-[20vh]">
-              <div  v-for="c in revealed.others" :key="c.id" class="min-w-[15vh] w-[15vh] max-h-[60vh] hover:z-2">
+            <div v-if="revealed.others.length > 0" class="flex justify-center items-center gap-5 h-full mr-[20%]">
+              <div  v-for="c in revealed.others" :key="c.id" class="min-w-[15vh] w-[10%] max-h-[60vh] hover:z-2">
                 <img :src="buildImgSrc(c)" class="max-w-[30vw] animate-down grayscale rounded-[3.5%/4.75%] drop-shadow-[1px_1px_1px_#585858]">
               </div>
             </div>

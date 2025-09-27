@@ -1,4 +1,1 @@
-export {
-	type Board,
-	default as BoardDetails,
-} from "./BoardDetails.vue";
+export { default as BoardDetails } from "./BoardDetails.vue";

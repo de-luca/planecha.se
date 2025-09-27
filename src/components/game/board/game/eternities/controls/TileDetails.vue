@@ -62,17 +62,26 @@ const header = computed(() => {
 		case current.value:
 			return {
 				title: "You are here!",
-				desc: "This is the currently active plane.",
+				desc:
+					tile?.plane.length === 1
+						? "This is the currently active plane."
+						: "These are the currently active planes.",
 			};
 		case !current.value && reachable.value:
 			return {
 				title: "Planeswalk here?",
-				desc: "This plane is reachable.",
+				desc:
+					tile?.plane.length === 1
+						? "This plane is reachable."
+						: "These planes are reachable.",
 			};
 		default:
 			return {
 				title: "Too far!",
-				desc: "This plane is out for reach from your current position.",
+				desc:
+					tile?.plane.length === 1
+						? "This plane is out of reach from your current position."
+						: "These planes are out of reach from your current position.",
 			};
 	}
 });
@@ -81,9 +90,9 @@ const layout = computed(() => {
 	if (!tile) return "";
 	switch (true) {
 		case tile?.plane?.length >= 3:
-			return "grid-cols-2 gap-y-[3rem] [&_.outer]:h-full";
+			return "grid-cols-2 gap-y-[3rem] xl:[&_.outer]:h-full";
 		case tile?.plane?.length === 2:
-			return "grid-cols-2 grid-rows-1 gap-y-[1rem] py-[1rem] [&_.inner]:max-w-[800px]";
+			return "grid-cols-1 md:grid-cols-2 grid-rows-2 md:grid-rows-1 gap-y-[1rem] py-[1rem] [&_.inner]:max-w-[800px] h-full md:[&_.outer]:h-fit";
 		case tile?.plane?.length === 1:
 			return "grid-cols-1 grid-rows-1 gap-y-[1rem] py-[1rem] [&_.inner]:max-w-[800px] [&_.outer]:flex [&_.outer]:flex-col [&_.outer]:justify-center [&_.outer]:items-center";
 	}
