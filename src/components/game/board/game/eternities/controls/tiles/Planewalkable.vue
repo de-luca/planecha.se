@@ -11,7 +11,10 @@
       :card="tile.plane[0]" 
       :ro="true" 
     />
-    <Ellipsis v-else />
+    <template v-else>
+      <Ellipsis />
+      {{ tile?.plane.length }} Planes
+    </template>
   </div>
   <div v-else>
     <img src="/cards/back.jpg" class="max-h-full max-w-full rounded-[3.5%/4.75%] drop-shadow-[1px_1px_1px_#585858]">

@@ -22,7 +22,6 @@ Start dev server:
 bun dev
 ```
 
-
 ## Credits and Attribution
 
 Portions of this project are unofficial Fan Content permitted under the Wizards of the Coast Fan Content Policy.  

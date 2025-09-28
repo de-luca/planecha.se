@@ -13,11 +13,12 @@
     />
     <div 
       v-else 
-      class="flex flex-col gap-1"
+      class="flex flex-col items-center gap-1"
       :title="tile?.plane.length + ' planes'"
     >
       <MapPin />
       <Ellipsis />
+      {{ tile?.plane.length }} Planes
     </div>
   </div>
 </template>

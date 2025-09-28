@@ -6,7 +6,10 @@
       :card="tile.plane[0]" 
       :ro="true"
     />
-    <Ellipsis v-else :title="tile?.plane.length + 'planes'" />
+    <template v-else>
+      <Ellipsis />
+      {{ tile?.plane.length }} Planes
+    </template>
   </div>
 </template>
 
