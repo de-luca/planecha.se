@@ -199,7 +199,11 @@ export const useMain = defineStore("main", {
 			if (this.isMulti) {
 				this.net.initHandler = (data, peer) =>
 					this.apply(
-						{ event: "__init__", delta: diff<MaybeDump>({}, data.game) },
+						{
+							event: "__init__",
+							stable: true,
+							delta: diff<MaybeDump>({}, data.game),
+						},
 						peer,
 					);
 			}
@@ -231,13 +235,21 @@ export const useMain = defineStore("main", {
 				once((data, peer) => {
 					this.feed = data.feed;
 					this.apply(
-						{ event: "__init__", delta: diff<MaybeDump>({}, data.game) },
+						{
+							event: "__init__",
+							stable: true,
+							delta: diff<MaybeDump>({}, data.game),
+						},
 						peer,
 					);
 					this.ready = true;
 					this.net!.initHandler = (data, peer) =>
 						this.apply(
-							{ event: "__init__", delta: diff<MaybeDump>({}, data.game) },
+							{
+								event: "__init__",
+								stable: true,
+								delta: diff<MaybeDump>({}, data.game),
+							},
 							peer,
 						);
 				}),
@@ -275,6 +287,7 @@ export const useMain = defineStore("main", {
 			this.applyUndo(index);
 			this.net?.sync({
 				event: "__undo__",
+				stable: true,
 				delta: diff(base, {
 					...this.game.dump(),
 					deck: { cards: [], played: [] },

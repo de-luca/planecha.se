@@ -3,8 +3,6 @@ import type { GameDump } from "../game";
 import type { Clone, MaybeDump, RepoInterface } from "./RepoInterface";
 
 export class Repo implements RepoInterface {
-	private static readonly UNSTABLE_EVENT = ["reveal", "updateWallState"];
-
 	private _stage?: GameDump;
 	private _head: number;
 	private _patches: Array<Patch>;
@@ -21,15 +19,16 @@ export class Repo implements RepoInterface {
 
 	public getStableIndex(from?: number): number {
 		let i = from ?? this._head - 1;
-		while (Repo.UNSTABLE_EVENT.includes(this._patches[i].event)) {
+		while (!this._patches[i].stable) {
 			i--;
 		}
 		return i;
 	}
 
-	public commit(event: string, newVersion: GameDump): Patch {
+	public commit(event: string, stable: boolean, newVersion: GameDump): Patch {
 		const patch = {
 			event,
+			stable,
 			delta: diff(this._stage, newVersion),
 		};
 		this._stage = newVersion;

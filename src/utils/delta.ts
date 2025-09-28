@@ -8,6 +8,7 @@ import cloneDeep from "lodash.clonedeep";
 export type Delta = jsonDelta;
 export type Patch = {
 	event: string;
+	stable: boolean;
 	delta?: Delta;
 };
 

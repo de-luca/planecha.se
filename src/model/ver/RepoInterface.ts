@@ -11,7 +11,7 @@ export type MaybeDump = GameDump | Record<string, never> | undefined;
 export type RepoInterface = {
 	head: number;
 	getStableIndex(index?: number): number;
-	commit(event: string, newVersion: GameDump): Patch;
+	commit(event: string, stable: boolean, newVersion: GameDump): Patch;
 	apply(patch: Patch): void;
 	checkout(index: number): GameDump;
 	clone(): Clone;
