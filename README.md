@@ -10,31 +10,16 @@ brew install imagemagick
 ./planar_extraction.sh
 ```
 
-### The yarn way
+### Setup project
 
 Install dependencies:
 ```sh
-yarn install
+bun install
 ```
 
 Start dev server:
 ```sh
-yarn dev
-```
-
-### The docker-compose way
-
-*There's a docker-compose file if you are that kind of person... ( ͡° ͜ʖ ͡°)*  
-*You might also want to use some alias like `fig` and `run`.*
-
-Install dependencies:
-```sh
-docker-compose run yarn install
-```
-
-Start dev server
-```sh
-docker-compose up [-d]
+bun dev
 ```
 
 
