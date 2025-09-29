@@ -116,7 +116,7 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Phenomenon } from "@/model/card";
-import type { BaseList } from "@/types/index";
+import type { BaseList } from "@/types";
 import { CardCount } from "./controls";
 import {
 	CustomList,

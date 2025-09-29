@@ -1,68 +1,68 @@
 <template>
-  <div class="h-[80vh]" >
-    <div 
-      v-if="decksStore.decks.size === 0"
-      class="h-full w-full flex flex-col justify-center items-center gap-5"
-    >
-      <div class="text-xl text-muted-foreground">
-        You don't have any custom decks.
-      </div>
-      <div class="flex gap-2">
-        <Button variant="default" @click="tab = 'builder'">
-          Build your own
-        </Button>
-        <Button variant="secondary" @click="tab = 'precons'">
-          Use a preconstructed deck
-        </Button>
-        <Button variant="outline" @click="tab = 'lists'">
-          Use a card list
-        </Button>
-      </div>
-    </div>
+  	<div class="h-[80vh]" >
+		<div 
+			v-if="decksStore.decks.size === 0"
+			class="h-full w-full flex flex-col justify-center items-center gap-5"
+		>
+			<div class="text-xl text-muted-foreground">
+				You don't have any custom decks.
+			</div>
+			<div class="flex gap-2">
+				<Button variant="default" @click="tab = 'builder'">
+					Build your own
+				</Button>
+				<Button variant="secondary" @click="tab = 'precons'">
+					Use a preconstructed deck
+				</Button>
+				<Button variant="outline" @click="tab = 'lists'">
+					Use a card list
+				</Button>
+			</div>
+		</div>
 
-    <Accordion v-else type="single" class="w-full h-[80vh] overflow-y-auto" collapsible>
-      <AccordionItem v-for="deck in decks" :key="deck.name" :value="deck.name">
-        <AccordionTrigger class="items-center" :class="{ 'text-muted-foreground': !deck.useable.useable }">
-          <component class="grow-2 basis-0" :is="buildDesc(deck)" />
-          <CardCount :phenomena="phenomena" :counts="deck.counts" />
-          <div class="basis-0 grow-1 flex justify-end items-center gap-3 pr-3">
-            <TooltipProvider v-if="!deck.useable.useable">
-              <Tooltip>
-                <TooltipTrigger>
-                  <TriangleAlert />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p v-for="issue in deck.useable.issues">{{ issue }}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <div>
-            <Button 
-              variant="destructive" 
-              size="sm" 
-              class="h-7 mr-2" 
-              @click.prevent.stop="remove(deck.name)"
-            >
-              Delete
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              class="h-7" 
-              :disabled="!deck.useable.useable"
-              @click.prevent.stop="$emit('use', toDeckList(deck))"
-            >
-              Use
-            </Button>
-            </div>
-          </div>  
-        </AccordionTrigger>
-        <AccordionContent>
-          <CardTable :phenomena="phenomena" :cards="deck.cards" />
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
-  </div>
+		<Accordion v-else type="single" class="w-full h-[80vh] overflow-y-auto" collapsible>
+			<AccordionItem v-for="deck in decks" :key="deck.name" :value="deck.name">
+				<AccordionTrigger class="items-center" :class="{ 'text-muted-foreground': !deck.useable.useable }">
+					<component class="grow-2 basis-0" :is="buildDesc(deck)" />
+					<CardCount :phenomena="phenomena" :counts="deck.counts" />
+					<div class="basis-0 grow-1 flex justify-end items-center gap-2 pr-2">
+						<TooltipProvider v-if="!deck.useable.useable">
+							<Tooltip>
+								<TooltipTrigger>
+									<TriangleAlert />
+								</TooltipTrigger>
+								<TooltipContent>
+									<p v-for="issue in deck.useable.issues">{{ issue }}</p>
+								</TooltipContent>
+							</Tooltip>
+						</TooltipProvider>
+						<div>
+							<Button 
+								variant="destructive" 
+								size="sm" 
+								class="h-7 mr-2" 
+								@click.prevent.stop="remove(deck.name)"
+							>
+								Delete
+							</Button>
+							<Button 
+								variant="outline" 
+								size="sm" 
+								class="h-7" 
+								:disabled="!deck.useable.useable"
+								@click.prevent.stop="$emit('use', toDeckList(deck))"
+							>
+								Use
+							</Button>
+						</div>
+					</div>  
+				</AccordionTrigger>
+				<AccordionContent>
+					<CardTable :phenomena="phenomena" :cards="deck.cards" />
+				</AccordionContent>
+			</AccordionItem>
+		</Accordion>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -85,9 +85,8 @@ import {
 } from "@/components/ui/tooltip";
 import type { Card } from "@/model/card";
 import { getCardList } from "@/services/cardProvider";
-import { useDecks } from "@/store/decks";
-import { useUI } from "@/store/ui";
-import type { SavedDeck } from "@/types/index";
+import { useDecks, useUI } from "@/store";
+import type { SavedDeck } from "@/types";
 import { CardCount, CardTable } from "../controls";
 import { type DeckList, isDeckListUseable, type Props } from "../utils";
 

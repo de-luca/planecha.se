@@ -189,7 +189,7 @@ import type {
 	TriggerConfig,
 } from "@/model/game/eternities";
 import { useMain } from "@/store";
-import type { BaseList } from "@/types/index";
+import type { BaseList } from "@/types";
 
 const router = useRouter();
 const store = useMain();

@@ -5,6 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 import Vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
+
 // import vueDevTools from "vite-plugin-vue-devtools";
 
 const pathSrc = resolve(__dirname, "src");

@@ -50,7 +50,7 @@ import {
 import { Label } from "@/components/ui/label";
 
 import { useMain } from "@/store/main";
-import type { BaseList } from "@/types/index";
+import type { BaseList } from "@/types";
 
 const router = useRouter();
 const store = useMain();

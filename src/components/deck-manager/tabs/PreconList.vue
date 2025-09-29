@@ -53,7 +53,7 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { getPrecons } from "@/services/preconProvider";
-import type { Precon } from "@/types/index";
+import type { Precon } from "@/types";
 import { CardCount, CardTable } from "../controls";
 import { type DeckList, isDeckListUseable, type Props } from "../utils";
 

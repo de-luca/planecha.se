@@ -99,7 +99,7 @@ import {
 	TimeoutError,
 } from "@/model/net";
 import { type MainStore, useMain } from "@/store/main";
-import type { BaseList } from "@/types/index";
+import type { BaseList } from "@/types";
 
 type Issue = { msg: string; cause: string };
 

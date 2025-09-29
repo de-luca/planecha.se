@@ -1,14 +1,32 @@
 <template>
   <Accordion type="single" class="w-full h-[80vh] overflow-y-auto" collapsible>
-    <AccordionItem v-for="list in getLists()" :key="list.name" :value="list.name">
-      <AccordionTrigger class="items-center">
+    <AccordionItem v-for="list in lists" :key="list.name" :value="list.name">
+      <AccordionTrigger class="items-center" :class="{ 'text-muted-foreground': !list.useable.useable }">
         <component class="grow-2 basis-0" :is="buildDesc(list)" />
         <CardCount :phenomena="phenomena" :counts="list.counts" />
-        <div class="basis-1 grow text-right pr-3">
-          <Button variant="outline" size="sm" class="h-7" @click.prevent.stop="$emit('use', toDeckList(list))">
-            Use
-          </Button>
-        </div>  
+        <div class="basis-0 grow-1 flex justify-end items-center gap-2 pr-2">
+          <TooltipProvider v-if="!list.useable.useable">
+            <Tooltip>
+              <TooltipTrigger>
+                <TriangleAlert />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p v-for="issue in list.useable.issues">{{ issue }}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <div>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              class="h-7"
+              :disabled="!list.useable.useable"
+              @click.prevent.stop="$emit('use', toDeckList(list))"
+            >
+              Use
+            </Button>
+          </div>
+        </div>
       </AccordionTrigger>
       <AccordionContent>
         <CardTable :phenomena="phenomena" :cards="list.cards" />
@@ -36,7 +54,8 @@ export const DEFAULT_LIST = toDeckList(getDefaultList());
 </script>
 
 <script setup lang="ts">
-import { h } from 'vue';
+import { TriangleAlert } from "lucide-vue-next";
+import { computed, h } from 'vue';
 
 import { 
   Accordion, 
@@ -45,6 +64,12 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 import {
   CardCount, 
@@ -52,10 +77,17 @@ import {
 } from '../controls';
 
 import { getLists } from '@/services/listProvider';
-import { List } from '@/types/index';
+import { List } from '@/types';
 
-import { Props } from '../utils';
+import { isDeckListUseable, Props } from '../utils';
 
 const { minCards, maxCards, minPlanes, phenomena } = defineProps<Props>();
 const emit = defineEmits(['use']);
+
+const lists = computed(() =>
+	getLists().map((l) => ({
+		...l,
+		useable: isDeckListUseable(l, { minCards, maxCards, minPlanes, phenomena }),
+	})),
+);
 </script>

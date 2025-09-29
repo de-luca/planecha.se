@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Counts } from "@/types/index";
+import type { Counts } from "@/types";
 
 const { counts, phenomena } = defineProps<{
 	counts: Counts;

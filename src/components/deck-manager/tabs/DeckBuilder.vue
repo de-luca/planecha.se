@@ -348,7 +348,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-
 import { valueUpdater } from "@/components/ui/table/utils";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -360,7 +359,7 @@ import {
 import type { Card } from "@/model/card";
 import { getAllCards } from "@/services/cardProvider";
 import { getSets } from "@/services/setProvider";
-import { useDecks } from "@/store/decks";
+import { useDecks } from "@/store";
 import { buildImgSrc } from "@/utils/img";
 import type { DeckList, Props } from "../utils";
 
