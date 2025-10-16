@@ -9,21 +9,21 @@ export function notifier({ store }: PiniaPluginContext) {
 		store.$onAction(({ after, args, name }) => {
 			if (!actions.includes(name) || store.mates.size === 0) return;
 
-			let username = "";
+			let playerName = "";
 			let action = "";
 
 			switch (name) {
 				case "hey":
-					username = (args[0] as HeyPayload).name;
+					playerName = (args[0] as HeyPayload).name;
 					action = "joined";
 					break;
 				case "bye":
-					username = store.mates.get((args[0] as ByePayload).id) ?? "";
+					playerName = store.mates.get((args[0] as ByePayload).id) ?? "";
 					action = "left";
 					break;
 			}
 
-			after(() => toast(`${username} has ${action} the game`));
+			after(() => toast(`${playerName} has ${action} the game`));
 		}, true);
 	}
 }

@@ -1,6 +1,7 @@
 [
 	{
 		"default": true,
+		"id": "592d06cc-f152-457b-9f22-b310292d0976",
 		"name": "All in universe Planechase cards",
 		"desc": "All the black bordered cards from the MTG IP",
 		"filters": {
@@ -8,6 +9,7 @@
 		}
 	},
 	{
+		"id": "a164ac9f-7c64-40a4-8e16-bfc4c6e25cf2",
 		"name": "A big ball of wibbly wobbly, timey wimey cards",
 		"desc": "All cards from the Doctor Who set",
 		"filters": {
@@ -15,6 +17,7 @@
 		}
 	},
 	{
+		"id": "800c4da4-572b-4968-a183-3cc07126b01b",
 		"name": "Elesh Norn is Mommy",
 		"desc": "All cards from the March of the Machine set",
 		"filters": {
@@ -22,6 +25,7 @@
 		}
 	},
 	{
+		"id": "4c5498ac-125c-4eaa-83bc-5b15cb393ebe",
 		"name": "The OG Planechase",
 		"desc": "All cards from the first two Planechase sets",
 		"filters": {
@@ -29,6 +33,7 @@
 		}
 	},
 	{
+		"id": "c83ab1c4-257e-4b21-98d1-79cd6c4df7c8",
 		"name": "Convention simulator",
 		"desc": "All gold bordered and playtest cards from conventions",
 		"filters": {

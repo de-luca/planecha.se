@@ -1,12 +1,12 @@
 <template>
   <Toaster />
   <AlertDialog />
-  <NameDialog />
+  <PlayerNameDialog />
   <router-view />
 </template>
 
 <script setup lang="ts">
-import { AlertDialog, NameDialog } from "@/components/controls";
+import { AlertDialog, PlayerNameDialog } from "@/components/controls";
 import { Toaster } from "@/components/ui/sonner";
 import "vue-sonner/style.css";
 </script>

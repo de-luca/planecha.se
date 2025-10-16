@@ -75,7 +75,7 @@ export type State = {
 	feed: Array<string>;
 
 	mates: Map<string, string>;
-	username?: string;
+	playerName?: string;
 	playerLayout: PlayerLayout;
 };
 
@@ -95,7 +95,7 @@ function getState(): State {
 
 		mates: new Map(),
 
-		username: localStorage.getItem("username") ?? undefined,
+		playerName: localStorage.getItem("playerName") ?? undefined,
 		playerLayout: {
 			layout: (localStorage.getItem("layout") as Layout) ?? "x2",
 			players: [""],
@@ -134,7 +134,7 @@ export const useMain = defineStore("main", {
 			throw new Error("Stack is undefined (store is in unset state)");
 		},
 		logName(): string {
-			return this.net ? this.username! : "You";
+			return this.net ? this.playerName! : "You";
 		},
 		gameId(): string | undefined {
 			return this.net?.gameId;
@@ -154,9 +154,9 @@ export const useMain = defineStore("main", {
 
 	actions: {
 		setName(name: string): void {
-			this.username = name;
-			localStorage.setItem("username", this.username);
-			this.net?.hey({ name: this.username });
+			this.playerName = name;
+			localStorage.setItem("playerName", this.playerName);
+			this.net?.hey({ name: this.playerName });
 		},
 		setLayout(layout: Layout): void {
 			this.playerLayout.layout = layout;

@@ -11,13 +11,13 @@
       </DropdownMenuLabel>
       <DropdownMenuSeparator />
       <DropdownMenuLabel class="flex gap-10 justify-between items-center">
-        Username: 
+        Player Name: 
         <Button 
-          @click="nameState.open = true"
+          @click="openPlayerName()"
           class="w-50" 
           variant="secondary"
         >
-          {{ store.username ?? 'Not set' }}
+          {{ store.playerName ?? 'Not set' }}
         </Button>
       </DropdownMenuLabel>
     </DropdownMenuContent>
@@ -38,5 +38,5 @@ import {
 import { useMain, useUI } from "@/store";
 
 const store = useMain();
-const nameState = useUI().name;
+const { openPlayerName } = useUI();
 </script>

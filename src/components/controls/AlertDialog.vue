@@ -1,15 +1,15 @@
 <template>
-  <AlertDialog :open="state.open" @update:open="state.open = $event">
+  <AlertDialog :open="confirm.open" @update:open="confirm.open = $event">
     <AlertDialogContent>
       <AlertDialogHeader>
-        <AlertDialogTitle>{{ state.title }}</AlertDialogTitle>
+        <AlertDialogTitle>{{ confirm.title }}</AlertDialogTitle>
         <AlertDialogDescription>
-          <component :is="state.description" />
+          <component :is="confirm.description" />
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
-        <AlertDialogCancel @click="state.onCancel">{{ state.cancelLabel }}</AlertDialogCancel>
-        <AlertDialogAction @click="state.onAction" >{{ state.actionLabel }}</AlertDialogAction>
+        <AlertDialogCancel @click="confirm.onCancel">{{ confirm.cancelLabel }}</AlertDialogCancel>
+        <AlertDialogAction @click="confirm.onAction" >{{ confirm.actionLabel }}</AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
   </AlertDialog>
@@ -29,5 +29,5 @@ import {
 
 import { useUI } from "@/store/ui";
 
-const state = useUI().confirm;
+const { confirm } = useUI();
 </script>

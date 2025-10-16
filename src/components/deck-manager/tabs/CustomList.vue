@@ -8,7 +8,7 @@
 				You don't have any custom decks.
 			</div>
 			<div class="flex gap-2">
-				<Button variant="default" @click="tab = 'builder'">
+				<Button variant="default" @click="emit('build')">
 					Build your own
 				</Button>
 				<Button variant="secondary" @click="tab = 'precons'">
@@ -21,7 +21,7 @@
 		</div>
 
 		<Accordion v-else type="single" class="w-full h-[80vh] overflow-y-auto" collapsible>
-			<AccordionItem v-for="deck in decks" :key="deck.name" :value="deck.name">
+			<AccordionItem v-for="deck in decks" :key="deck.id" :value="deck.id">
 				<AccordionTrigger class="items-center" :class="{ 'text-muted-foreground': !deck.useable.useable }">
 					<component class="grow-2 basis-0" :is="buildDesc(deck)" />
 					<CardCount :phenomena="phenomena" :counts="deck.counts" />
@@ -37,16 +37,18 @@
 							</Tooltip>
 						</TooltipProvider>
 						<div>
-							<Button 
+							<DeckMenu :list="deck" />
+						</div>
+						<div>
+							<!-- <Button 
 								variant="destructive" 
 								size="sm" 
 								class="h-7 mr-2" 
 								@click.prevent.stop="remove(deck.name)"
 							>
 								Delete
-							</Button>
+							</Button> -->
 							<Button 
-								variant="outline" 
 								size="sm" 
 								class="h-7" 
 								:disabled="!deck.useable.useable"
@@ -68,7 +70,6 @@
 <script setup lang="ts">
 import { TriangleAlert } from "lucide-vue-next";
 import { computed, h } from "vue";
-import { toast } from "vue-sonner";
 
 import {
 	Accordion,
@@ -85,19 +86,18 @@ import {
 } from "@/components/ui/tooltip";
 import type { Card } from "@/model/card";
 import { getCardList } from "@/services/cardProvider";
-import { useDecks, useUI } from "@/store";
+import { useDecks } from "@/store";
 import type { SavedDeck } from "@/types";
-import { CardCount, CardTable } from "../controls";
+import { CardCount, CardTable, DeckMenu } from "../controls";
 import { type DeckList, isDeckListUseable, type Props } from "../utils";
 
 type Deck = Omit<SavedDeck, "cards"> & { cards: Array<Card> };
 
 const tab = defineModel();
 const { minCards, maxCards, minPlanes, phenomena } = defineProps<Props>();
-const emit = defineEmits(["use"]);
+const emit = defineEmits(["use", "build"]);
 
 const decksStore = useDecks();
-const confirm = useUI().confirm;
 
 const decks = computed(() =>
 	[...decksStore.decks.values()]
@@ -115,25 +115,6 @@ const decks = computed(() =>
 			}),
 		})),
 );
-
-const remove = (name: string) => {
-	confirm.title = "Remove deck";
-	confirm.description = h("div", [
-		h("p", ['You are about to delete the deck "', h("strong", name), '".']),
-		h("p", "This cannot be undone."),
-	]);
-	confirm.cancelLabel = "Cancel";
-	confirm.actionLabel = "Remove";
-	confirm.onCancel = () => {
-		confirm.open = false;
-	};
-	confirm.onAction = () => {
-		decksStore.removeDeck(name);
-		confirm.open = false;
-		toast("Deck removed");
-	};
-	confirm.open = true;
-};
 
 const buildDesc = (deck: Deck) =>
 	h("div", { class: "basis-1 grow" }, [

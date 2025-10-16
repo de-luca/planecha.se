@@ -5,6 +5,6 @@ export { default as FeedbackButton } from "./FeedbackButton.vue";
 export { default as Link } from "./Link.vue";
 export { default as MainMenu } from "./MainMenu.vue";
 export { default as Maze } from "./Maze.vue";
-export { default as NameDialog } from "./NameDialog.vue";
-export { default as NameInput } from "./NameInput.vue";
+export { default as PlayerNameDialog } from "./PlayerNameDialog.vue";
+export { default as PlayerNameInput } from "./PlayerNameInput.vue";
 export { default as ThemeSelector } from "./ThemeSelector.vue";

@@ -37,10 +37,10 @@
             </CardHeader>
             <CardContent class="space-y-5">
               <div class="grid gap-2">
-                <Label>Username</Label>
-                <NameInput v-model="username" />
+                <Label>Player Name</Label>
+                <PlayerNameInput v-model="playerName" />
                 <div class="text-muted-foreground text-sm">
-                  This username will only be saved on your computer.
+                  This name will only be saved on your computer.
                 </div>
               </div>
               <div v-if="isMulti" class="grid gap-2">
@@ -79,7 +79,7 @@
 import { CircleAlert, LoaderCircle } from "lucide-vue-next";
 import { computed, onMounted, onUnmounted, ref, toValue } from "vue";
 import { useRoute } from "vue-router";
-import { BrandedFooter, Maze, NameInput } from "@/components/controls";
+import { BrandedFooter, Maze, PlayerNameInput } from "@/components/controls";
 import { DeckManager } from "@/components/deck-manager";
 import { Button } from "@/components/ui/button";
 import {
@@ -110,7 +110,7 @@ const gameData = ref<Awaited<ReturnType<MainStore["preJoin"]>>>();
 const loading = ref(true);
 const joining = ref(false);
 const issue = ref<Issue>();
-const username = ref(store.username);
+const playerName = ref(store.playerName);
 const deck = ref<BaseList>();
 const abortController = ref(new AbortController());
 
@@ -189,7 +189,7 @@ const digestError = (err: Error) => {
 
 const join = async () => {
 	joining.value = true;
-	store.setName(toValue(username)!);
+	store.setName(toValue(playerName)!);
 	try {
 		await store.join({
 			type: gameData.value!.gameType,

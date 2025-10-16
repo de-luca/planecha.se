@@ -42,7 +42,7 @@
           <UsersRound /> Current Players
         </DropdownMenuLabel>
         <DropdownMenuLabel>
-          {{ store.username }} <em class="text-muted-foreground">(that's you!)</em>
+          {{ store.playerName }} <em class="text-muted-foreground">(that's you!)</em>
         </DropdownMenuLabel>
         <DropdownMenuLabel v-for="[id, name] in store.mates" :key="id">
           {{ name }}
@@ -86,7 +86,7 @@ type Issue = Partial<{ msg: string; cause: string }>;
 
 const store = useMain();
 const router = useRouter();
-const nameState = useUI().name;
+const { openPlayerName } = useUI();
 
 const issue = ref<Issue>();
 const isOpen = ref(false);
@@ -126,13 +126,11 @@ const digestError = (err: Error) => {
 };
 
 const attemptOpen = () => {
-	if (!store.username) {
-		nameState.onAction = async () => {
-			nameState.open = false;
+	if (!store.playerName) {
+		openPlayerName(async () => {
 			await open();
 			isOpen.value = true;
-		};
-		nameState.open = true;
+		});
 		isOpen.value = false;
 	} else {
 		open();

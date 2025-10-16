@@ -1,5 +1,5 @@
 import rawLists from "#assets/lists.json";
-import type { List } from "../types/index";
+import type { List } from "@/types";
 import { getCardByFilter } from "./cardProvider";
 
 const buildList = (list: (typeof rawLists)[0]): List => {

@@ -7,6 +7,7 @@ export type Counts = {
 };
 
 export type BaseList = {
+	id: string;
 	name: string;
 	cards: Array<Card>;
 	counts: Counts;
@@ -30,6 +31,7 @@ export type List = BaseList & {
 };
 
 export type SavedDeck = {
+	id: string;
 	name: string;
 	desc?: string;
 	cards: Array<string>;

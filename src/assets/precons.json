@@ -1,5 +1,6 @@
 [
 	{
+		"id": "1cd0daba-3e05-472e-be75-6aed469e9224",
 		"name": "Blast from the Past",
 		"identity": ["g", "w", "u"],
 		"face": ["The Fourth Doctor", "Sarah Jane Smith"],
@@ -27,6 +28,7 @@
 		}
 	},
 	{
+		"id": "085b0c50-bc40-4c22-ac08-80d5d8708802",
 		"name": "Timey-Wimey",
 		"identity": ["u", "r", "w"],
 		"face": ["The Tenth Doctor", "Rose Tyler"],
@@ -54,6 +56,7 @@
 		}
 	},
 	{
+		"id": "115027b7-8e6f-48f8-ba71-3cc22b80f65a",
 		"name": "Masters of Evil",
 		"identity": ["u", "b", "r"],
 		"face": ["Davros, Dalek Creator"],
@@ -81,6 +84,7 @@
 		}
 	},
 	{
+		"id": "ed9464e6-7a01-403c-9de3-302a39749c40",
 		"name": "Paradox Power",
 		"identity": ["g", "u", "r"],
 		"face": ["The Thirteenth Doctor", "Yasmin Khan"],
@@ -108,6 +112,7 @@
 		}
 	},
 	{
+		"id": "d7614bda-e0e1-4b7e-a184-8b53df65569b",
 		"name": "Growing Threat",
 		"identity": ["w", "b"],
 		"face": ["Brimaz, Blight of Oreskos"],
@@ -135,6 +140,7 @@
 		}
 	},
 	{
+		"id": "fcd561f7-0c40-4e9e-9785-35e9e0d91da2",
 		"name": "Cavalry Charge",
 		"identity": ["w", "u", "b"],
 		"face": ["Sidar Jabari of Zhalfir"],
@@ -162,6 +168,7 @@
 		}
 	},
 	{
+		"id": "b15f8260-18e9-433f-8b0a-b04e8b11ea8a",
 		"name": "Call for Backup",
 		"identity": ["r", "g", "w"],
 		"face": ["Bright-Palm, Soul Awakener"],
@@ -189,6 +196,7 @@
 		}
 	},
 	{
+		"id": "3f35350c-f4a6-4f78-a5fa-84675cf0bb56",
 		"name": "Divine Convocation",
 		"identity": ["u", "r", "w"],
 		"face": ["Kasla, the Broken Halo"],
@@ -216,6 +224,7 @@
 		}
 	},
 	{
+		"id": "ca5c995d-e047-45f9-9310-fe6926731506",
 		"name": "Tinker Time",
 		"identity": ["g", "u", "r"],
 		"face": ["Gimbal, Gremlin Prodigy"],
@@ -243,6 +252,7 @@
 		}
 	},
 	{
+		"id": "e9c442d8-a8e7-4e97-b049-015985f5c28e",
 		"name": "Chaos Reigns",
 		"cards": [
 			"fb9651f5-1aec-4812-a044-3c1b60e6651f",
@@ -268,6 +278,7 @@
 		}
 	},
 	{
+		"id": "38c357f5-4627-46a8-8441-e9120e33077d",
 		"name": "Night of the Ninja",
 		"cards": [
 			"ce8139b9-31f3-464d-86ea-7efbdbfce478",
@@ -293,6 +304,7 @@
 		}
 	},
 	{
+		"id": "0b6f659a-5f11-46bc-9ebe-12e267a30519",
 		"name": "Primordial Hunger",
 		"cards": [
 			"1799d361-85e7-4c04-aa04-6f83e6499573",
@@ -318,6 +330,7 @@
 		}
 	},
 	{
+		"id": "ab216e52-db0f-4fb8-805f-31ca782fe2d1",
 		"name": "Savage Auras",
 		"cards": [
 			"25650a32-4014-4065-ad01-7357c3ad3995",
@@ -343,6 +356,7 @@
 		}
 	},
 	{
+		"id": "062174ae-e29c-4974-82c1-4651aa13bde1",
 		"name": "Elemental Thunder",
 		"cards": [
 			"23fe1c21-c396-4ebf-a8b0-22d697952b34",
@@ -368,6 +382,7 @@
 		}
 	},
 	{
+		"id": "062174ae-e29c-4974-82c1-4651aa13bde1",
 		"name": "Metallic Dreams",
 		"cards": [
 			"82e67c57-6d7a-44cc-ba63-77ce887ab075",
@@ -393,6 +408,7 @@
 		}
 	},
 	{
+		"id": "c903c6a0-620e-4420-a2f2-039d1f746adb",
 		"name": "Strike Force",
 		"cards": [
 			"15b979de-c8ee-4664-9ca7-6c4eb3346967",
@@ -418,6 +434,7 @@
 		}
 	},
 	{
+		"id": "9789e108-31d4-4075-87bb-5bff815bce47",
 		"name": "Zombie Empire",
 		"cards": [
 			"8eb442a9-5e61-4e2e-983d-b49b04be2575",

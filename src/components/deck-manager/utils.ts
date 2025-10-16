@@ -14,7 +14,7 @@ export type Props = {
 };
 
 export const isDeckListUseable = (
-	list: BaseList,
+	list: Omit<BaseList, "id" | "name">,
 	props: Props,
 ): {
 	useable: boolean;

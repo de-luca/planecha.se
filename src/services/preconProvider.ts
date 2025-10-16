@@ -1,5 +1,5 @@
 import decks from "#assets/precons.json";
-import type { Precon } from "../types/index";
+import type { Precon } from "@/types";
 import { getCardList } from "./cardProvider";
 
 const buildPrecon = (precon: (typeof decks)[0]): Precon => ({

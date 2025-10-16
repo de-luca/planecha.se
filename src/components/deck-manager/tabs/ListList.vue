@@ -16,8 +16,10 @@
             </Tooltip>
           </TooltipProvider>
           <div>
+							<DeckMenu :ro="true" :list="list" />
+          </div>
+          <div>
             <Button 
-              variant="outline" 
               size="sm" 
               class="h-7"
               :disabled="!list.useable.useable"
@@ -74,6 +76,7 @@ import {
 import {
   CardCount, 
   CardTable,
+  DeckMenu,
 } from '../controls';
 
 import { getLists } from '@/services/listProvider';

@@ -2,29 +2,29 @@
   <Form 
     v-slot="{ handleSubmit }" 
     as="" 
-    :initial-values="{ username: store.username }" 
+    :initial-values="{ playerName: store.playerName }" 
     keep-values 
     :validation-schema="formSchema"
   >
-    <Dialog :open="state.open" @update:open="state.open = $event">
+    <Dialog :open="playerName.open" @update:open="playerName.open = $event">
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Update your Username</DialogTitle>
+          <DialogTitle>Update your Player Name</DialogTitle>
           <DialogDescription>
-            Update the username other people see you as.<br>
+            Update the name other people see you as.<br>
             Only people joining you on a game will see this name.
           </DialogDescription>
         </DialogHeader>
 
         <form id="dialogForm" @submit="handleSubmit($event, onSubmit)">
-          <FormField v-slot="{ componentField }" name="username">
+          <FormField v-slot="{ componentField }" name="playerName">
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Player Name</FormLabel>
               <FormControl>
-                <NameInput v-bind="componentField" />
+                <PlayerNameInput v-bind="componentField" />
               </FormControl>
               <FormDescription>
-                This username will only be saved on your computer.
+                This name will only be saved on your computer.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
-import { NameInput } from "@/components/controls";
+import { PlayerNameInput } from "@/components/controls";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -53,7 +53,6 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from "@/components/ui/dialog";
 import {
 	Form,
@@ -67,18 +66,19 @@ import {
 import { useUI } from "@/store";
 import { useMain } from "@/store/main";
 
-const state = useUI().name;
+const { playerName, closePlayerName } = useUI();
 const store = useMain();
 
 const formSchema = toTypedSchema(
 	z.object({
-		username: z.string().min(2).max(50),
+		playerName: z.string().min(2).max(50),
 	}),
 );
 
 // biome-ignore lint/suspicious/noExplicitAny: ignore
 const onSubmit = (values: any) => {
-	store.setName(values.username);
-	state.onAction();
+	store.setName(values.playerName);
+	playerName.onAction();
+	closePlayerName();
 };
 </script>

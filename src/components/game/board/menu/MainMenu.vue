@@ -11,13 +11,13 @@
       </DropdownMenuLabel>
       <DropdownMenuSeparator />
       <DropdownMenuLabel class="flex gap-10 justify-between items-center">
-        Username:
+        Player Name:
         <Button 
-          @click="name.open = true; isOpen = false"
+          @click="openPlayerName(); isOpen = false"
           class="w-50" 
           variant="secondary"
         >
-          {{ store.username ?? 'Not set' }}
+          {{ store.playerName ?? 'Not set' }}
         </Button>
       </DropdownMenuLabel>
       <DropdownMenuSeparator />
@@ -118,7 +118,7 @@ import { useMain, useUI } from "@/store";
 
 const router = useRouter();
 const store = useMain();
-const { confirm, name } = useUI();
+const { openConfirm, closeConfirm, openPlayerName } = useUI();
 
 const layoutOpen = ref(false);
 const isOpen = ref(false);
@@ -137,36 +137,33 @@ const layoutClass = computed(() => {
 	}
 });
 
-const reset = () => {
-	confirm.title = "Do you wish to reset the game? ";
-	confirm.description = h(
-		"p",
-		"The current game will be discarded and a new shuffled deck will be used.",
-	);
-	confirm.cancelLabel = "Cancel";
-	confirm.actionLabel = "Reset Game";
-	confirm.onCancel = () => {
-		confirm.open = false;
-	};
-	confirm.onAction = () => {
-		store.reset();
-		confirm.open = false;
-	};
-	confirm.open = true;
-};
-const close = () => {
-	confirm.title = `Do you wish to ${store.net ? "leave" : "close"} the game?`;
-	confirm.description = undefined;
-	confirm.cancelLabel = "Cancel";
-	confirm.actionLabel = `${store.net ? "Leave" : "Close"} Game`;
-	confirm.onCancel = () => {
-		confirm.open = false;
-	};
-	confirm.onAction = async () => {
-		await router.push("/");
-		store.leave();
-		confirm.open = false;
-	};
-	confirm.open = true;
-};
+const reset = () =>
+	openConfirm({
+		title: "Do you wish to reset the game?",
+		description: h(
+			"p",
+			"The current game will be discarded and a new shuffled deck will be used.",
+		),
+		cancelLabel: "Cancel",
+		actionLabel: "Reset Game",
+		onCancel: closeConfirm,
+		onAction: () => {
+			store.reset();
+			closeConfirm();
+		},
+	});
+
+const close = () =>
+	openConfirm({
+		title: `Do you wish to ${store.net ? "leave" : "close"} the game?`,
+		description: undefined,
+		cancelLabel: "Cancel",
+		actionLabel: `${store.net ? "Leave" : "Close"} Game`,
+		onCancel: closeConfirm,
+		onAction: async () => {
+			await router.push("/");
+			store.leave();
+			closeConfirm();
+		},
+	});
 </script>

@@ -107,7 +107,7 @@ export class TrysteroNet implements NetInterface {
 
 		joinReceiver((_, peerId) => {
 			this.ready && initSender(this.store.initPayload, peerId);
-			heySender({ name: this.store.username! }, peerId);
+			heySender({ name: this.store.playerName! }, peerId);
 		});
 
 		heyReceiver((data, peerId) => {
@@ -115,7 +115,7 @@ export class TrysteroNet implements NetInterface {
 				store.mates.set(peerId, data.name);
 			} else {
 				store.hey({ ...data, id: peerId });
-				heySender({ name: store.username! }, peerId);
+				heySender({ name: store.playerName! }, peerId);
 			}
 		});
 

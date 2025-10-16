@@ -16,8 +16,10 @@
             </Tooltip>
           </TooltipProvider>
           <div>
+							<DeckMenu :ro="true" :list="precon" />
+          </div>
+          <div>
             <Button 
-              variant="outline" 
               size="sm" 
               class="h-7"
               :disabled="!precon.useable.useable"
@@ -54,7 +56,7 @@ import {
 } from "@/components/ui/tooltip";
 import { getPrecons } from "@/services/preconProvider";
 import type { Precon } from "@/types";
-import { CardCount, CardTable } from "../controls";
+import { CardCount, CardTable, DeckMenu } from "../controls";
 import { type DeckList, isDeckListUseable, type Props } from "../utils";
 
 const emit = defineEmits(["use"]);
