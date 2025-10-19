@@ -1,16 +1,28 @@
 <template>
 	<div class="flex w-full items-center gap-1.5">
-		<Input type="text" v-model="name" placeholder="Fblthp" />
-		<Button variant="outline" size="icon" @click.prevent="randomize" title="Randomize name">
-			<Shuffle class="w-4 h-4" />
-		</Button>
+		<InputGroup>
+			<InputGroupInput type="text" v-model="name" placeholder="Fblthp" />
+			<InputGroupAddon align="inline-end">
+				<InputGroupButton 
+					size="icon-xs"
+					title="Randomize name"
+					@click.prevent="randomize"
+				>
+					<Shuffle />
+				</InputGroupButton>
+			</InputGroupAddon>
+		</InputGroup>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { Shuffle } from "lucide-vue-next";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import {
+	InputGroup,
+	InputGroupAddon,
+	InputGroupButton,
+	InputGroupInput,
+} from "@/components/ui/input-group";
 import { generateName } from "@/utils/generator";
 
 const name = defineModel<string>();

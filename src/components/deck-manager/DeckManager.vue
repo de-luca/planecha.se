@@ -25,7 +25,7 @@
 					Use a currated list of cards with a common theme.
 				</DialogDescription>
 			</DialogHeader>
-			<DialogHeader v-else-if="tab === 'precons'">
+			<DialogHeader v-else>
 				<DialogTitle>Preconstructed Decks</DialogTitle>
 				<DialogDescription>
 					Use a planar deck from an existing MTG product.

@@ -24,15 +24,19 @@
           <UserRoundPlus /> Invite players
         </DropdownMenuLabel>
         <DropdownMenuLabel class="flex w-full max-w-sm items-center gap-1.5">
-          <Input type="text" v-model="roomUrl" readonly />
-          <FeedbackButton variant="outline" size="icon" :timeout="1000" >
-            <template v-slot:idle>
-              <Clipboard />
-            </template>
-            <template v-slot:action>
-              <ClipboardCheck />
-            </template>
-          </FeedbackButton>
+			<InputGroup>
+				<InputGroupInput type="text" v-model="roomUrl" readonly />
+				<InputGroupAddon align="inline-end">
+					<InputGroupButton 
+						size="icon-xs"
+						title="Copy"
+						@click.prevent="copy"
+					>
+						<Clipboard v-if="copyBtnIdle" />
+						<ClipboardCheck v-else />
+					</InputGroupButton>
+				</InputGroupAddon>
+			</InputGroup>
         </DropdownMenuLabel>
         <DropdownMenuLabel class="text-muted-foreground text-xs">
           Give this thing to people!
@@ -63,7 +67,6 @@ import {
 } from "lucide-vue-next";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
-import { FeedbackButton } from "@/components/controls";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -72,8 +75,12 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-
+import {
+	InputGroup,
+	InputGroupAddon,
+	InputGroupButton,
+	InputGroupInput,
+} from "@/components/ui/input-group";
 import {
 	BlockedError,
 	OfflineError,
@@ -90,6 +97,7 @@ const { openPlayerName } = useUI();
 
 const issue = ref<Issue>();
 const isOpen = ref(false);
+const copyBtnIdle = ref(true);
 
 const online = computed(() => !!store.net);
 const roomUrl = computed(() => {
@@ -99,7 +107,11 @@ const roomUrl = computed(() => {
 
 const copy = async () => {
 	try {
+		copyBtnIdle.value = false;
 		await navigator.clipboard.writeText(roomUrl.value);
+		setTimeout(() => {
+			copyBtnIdle.value = true;
+		}, 1000);
 	} catch (err) {
 		console.error(err);
 	}

@@ -9,8 +9,10 @@
 			</p>
 		</CardHeader>
 		<CardContent class="space-y-5">
-			<div class="grid gap-2">
-				<Label>Deck type</Label>
+			<Field>
+				<FieldLabel>
+					Deck type
+				</FieldLabel>
 				<ToggleGroup class="w-full" type="single" variant="outline" size="lg" v-model="deckType">
 					<ToggleGroupItem value="single" aria-label="Toggle bold">
 						Single Deck
@@ -19,12 +21,14 @@
 						Dual Deck
 					</ToggleGroupItem>
 				</ToggleGroup>
-				<div class="text-muted-foreground text-sm">
+				<FieldDescription>
 					{{ deckTypeDesc }}
-				</div>
-			</div>
-			<div v-if="deckType === 'single'" class="grid gap-2">
-				<Label>Deck composition</Label>
+				</FieldDescription>
+			</Field>
+			<Field v-if="deckType === 'single'">
+				<FieldLabel>
+					Deck composition
+				</FieldLabel>
 				<ToggleGroup class="w-full" type="single" variant="outline" size="lg" v-model="deckComp">
 					<ToggleGroupItem value="planes" aria-label="Toggle bold">
 						Only Planes
@@ -33,115 +37,127 @@
 						Planes and Phenomena
 					</ToggleGroupItem>
 				</ToggleGroup>
-				<div class="text-muted-foreground text-sm">
+				<FieldDescription>
 					{{ deckCompDesc }}
-				</div>
-			</div>
+				</FieldDescription>
+			</Field>
 
-			<div v-else class="grid gap-2">
-				<Label>Phenomena encounter</Label>
+			<Field v-else>
+				<FieldLabel>
+					Phenomena encounter
+				</FieldLabel>
 
-				<div 
+				<Item 
+					variant="outline"
 					:class="{'opacity-50': !onHellriding.enabled }"
-					class="flex flex-col justify-between gap-2 rounded-lg border p-4" 
 				>
-					<Label class="text-base">
-						<Switch v-model="onHellriding.enabled" />
-						On <abbr title="When planeswalking to an empty space">Hellriding</abbr>
-					</Label>
-					<RadioGroup 
-						:disabled="!onHellriding.enabled"
-						class="flex flex-row justify-between gap-5" 
-						v-model="onHellriding.mode"
-					>
-						<div class="flex items-center space-x-2">
-							<RadioGroupItem id="option-one" value="manual" />
-							<Label for="option-one">Use your own dices</Label>
+					<ItemHeader>
+						<div>
+							<Switch v-model="onHellriding.enabled" />
+							On <abbr title="When planeswalking to an empty space">Hellriding</abbr>
 						</div>
-						<div class="flex items-center space space-x-2">
-							<RadioGroupItem id="option-two" value="auto" />
-							<Label for="option-two">Automatic encounter</Label>
-							<NumberField
-								class="w-35"
-								id="percent"
-								v-model="onHellriding.ratio"
-								:step="0.01"
-								:min="0"
-								:max="1"
-								:format-options="{ style: 'percent' }"
-							>
-								<NumberFieldContent>
-									<NumberFieldDecrement :disabled="!onHellriding.enabled && onHellriding.mode !== 'auto'" />
-									<NumberFieldInput :disabled="!onHellriding.enabled && onHellriding.mode !== 'auto'" class="h-6" />
-									<NumberFieldIncrement :disabled="!onHellriding.enabled && onHellriding.mode !== 'auto'" />
-								</NumberFieldContent>
-							</NumberField>
-						</div>
-					</RadioGroup>
-					<div class="text-muted-foreground text-sm">
+					</ItemHeader>
+					<ItemContent>
+						<RadioGroup 
+							:disabled="!onHellriding.enabled"
+							class="flex flex-row justify-between gap-5" 
+							v-model="onHellriding.mode"
+						>
+							<div class="flex items-center space-x-2">
+								<RadioGroupItem id="option-one" value="manual" />
+								<Label for="option-one">Use your own dices</Label>
+							</div>
+							<div class="flex items-center space space-x-2">
+								<RadioGroupItem id="option-two" value="auto" />
+								<Label for="option-two">Automatic encounter</Label>
+								<NumberField
+									class="w-35"
+									id="percent"
+									v-model="onHellriding.ratio"
+									:step="0.01"
+									:min="0"
+									:max="1"
+									:format-options="{ style: 'percent' }"
+								>
+									<NumberFieldContent>
+										<NumberFieldDecrement :disabled="!onHellriding.enabled && onHellriding.mode !== 'auto'" />
+										<NumberFieldInput :disabled="!onHellriding.enabled && onHellriding.mode !== 'auto'" class="h-6" />
+										<NumberFieldIncrement :disabled="!onHellriding.enabled && onHellriding.mode !== 'auto'" />
+									</NumberFieldContent>
+								</NumberField>
+							</div>
+						</RadioGroup>
+					</ItemContent>
+					<ItemFooter>
 						{{ encounterDesc(onHellriding.mode!) }}
-					</div>
-				</div>
+					</ItemFooter>
+				</Item>
 			
-				<div 
+				<Item 
+					variant="outline"
 					:class="{'opacity-50': !onPlaneswalk.enabled }"
-					class="flex flex-col justify-between gap-2 rounded-lg border p-4"
 				>
-					<Label class="text-base">
-						<Switch v-model="onPlaneswalk.enabled" />
-						On <abbr title="All planeswalking actions">Planeswalk</abbr>
-					</Label>
-					<RadioGroup 
-						:disabled="!onPlaneswalk.enabled"
-						class="flex flex-row justify-between gap-5" 
-						v-model="onPlaneswalk.mode"
-					>
-						<div class="flex items-center space-x-2">
-							<RadioGroupItem id="option-one" value="manual" />
-							<Label for="option-one">Use your own dices</Label>
+					<ItemHeader>
+						<div>
+							<Switch v-model="onPlaneswalk.enabled" />
+							On <abbr title="All planeswalking actions">Planeswalk</abbr>
 						</div>
-						<div class="flex items-center space space-x-2">
-							<RadioGroupItem id="option-two" value="auto" />
-							<Label for="option-two">Automatic encounter</Label>
-							<NumberField
-								class="w-35"
-								id="percent"
-								v-model="onPlaneswalk.ratio"
-								:step="0.01"
-								:min="0"
-								:max="1"
-								:format-options="{ style: 'percent' }"
-							>
-								<NumberFieldContent>
-									<NumberFieldDecrement :disabled="!onPlaneswalk.enabled && onPlaneswalk.mode !== 'auto'" />
-									<NumberFieldInput :disabled="!onPlaneswalk.enabled && onPlaneswalk.mode !== 'auto'" class="h-6" />
-									<NumberFieldIncrement :disabled="!onPlaneswalk.enabled && onPlaneswalk.mode !== 'auto'" />
-								</NumberFieldContent>
-							</NumberField>
-						</div>
-					</RadioGroup>
-					<div class="text-muted-foreground text-sm">
-						{{ encounterDesc(onPlaneswalk.mode!) }}
-					</div>
-				</div>
+					</ItemHeader>
+					<ItemContent>
+						<RadioGroup 
+							:disabled="!onPlaneswalk.enabled"
+							class="flex flex-row justify-between gap-5" 
+							v-model="onPlaneswalk.mode"
+						>
+							<div class="flex items-center space-x-2">
+								<RadioGroupItem id="option-one" value="manual" />
+								<Label for="option-one">Use your own dices</Label>
+							</div>
+							<div class="flex items-center space space-x-2">
+								<RadioGroupItem id="option-two" value="auto" />
+								<Label for="option-two">Automatic encounter</Label>
+								<NumberField
+									class="w-35"
+									id="percent"
+									v-model="onPlaneswalk.ratio"
+									:step="0.01"
+									:min="0"
+									:max="1"
+									:format-options="{ style: 'percent' }"
+								>
+									<NumberFieldContent>
+										<NumberFieldDecrement :disabled="!onPlaneswalk.enabled && onPlaneswalk.mode !== 'auto'" />
+										<NumberFieldInput :disabled="!onPlaneswalk.enabled && onPlaneswalk.mode !== 'auto'" class="h-6" />
+										<NumberFieldIncrement :disabled="!onPlaneswalk.enabled && onPlaneswalk.mode !== 'auto'" />
+									</NumberFieldContent>
+								</NumberField>
+							</div>
+						</RadioGroup>
+					</ItemContent>
+					<ItemFooter>
+						{{ encounterDesc(onHellriding.mode!) }}
+					</ItemFooter>
+				</Item>
 
-				<div class="text-muted-foreground text-sm">
+				<FieldDescription>
 					Set how you'll encounter phenomena.
-				</div>
-			</div>
+				</FieldDescription>
+			</Field>
 
-			<div class="grid gap-2">
-				<Label>Planar Deck</Label>
+			<Field>
+				<FieldLabel>
+					Planar Deck
+				</FieldLabel>
 				<DeckManager
 					@use="deck = $event" 
 					:min-cards="25"
 					:min-planes="25"
 					:phenomena="usePhenomena"
 				/>
-				<div class="text-muted-foreground text-sm">
+				<FieldDescription>
 					Pick the planar deck you want to use.
-				</div>
-			</div>
+				</FieldDescription>
+			</Field>
 
 		</CardContent>
 		<CardFooter>
@@ -170,6 +186,16 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
+import {
+	Item,
+	ItemContent,
+	ItemDescription,
+	ItemFooter,
+	ItemHeader,
+	ItemMedia,
+	ItemTitle,
+} from "@/components/ui/item";
 import { Label } from "@/components/ui/label";
 import {
 	NumberField,

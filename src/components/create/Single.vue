@@ -7,18 +7,20 @@
             </CardDescription>
         </CardHeader>
         <CardContent class="space-y-5">
-            <div class="grid gap-2">
-                <Label>Planar Deck</Label>
+            <Field>
+                <FieldLabel>
+                    Planar Deck
+                </FieldLabel>
                 <DeckManager 
                     @use="deck = $event"
                     :min-cards="10"
                     :min-planes="5"
                     :phenomena="true"
                 />
-                <div class="text-muted-foreground text-sm">
+                <FieldDescription>
                     Pick the planar deck you want to use.
-                </div>
-            </div>
+                </FieldDescription>
+            </Field>
         </CardContent>
         <CardFooter>
             <Button 
@@ -46,9 +48,9 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
+import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 
-import { useMain } from "@/store/main";
+import { useMain } from "@/store";
 import type { BaseList } from "@/types";
 
 const router = useRouter();

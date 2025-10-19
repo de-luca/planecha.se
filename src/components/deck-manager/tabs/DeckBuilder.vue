@@ -232,32 +232,34 @@
           </Tooltip>
         </TooltipProvider>
 
-        <Button 
-          size="sm" 
-          :disabled="action.onlyValid && !isUseable.useable"
-          @click="onAction"
-        >
-           {{ action.name }}
-        </Button>
-        
-        <DropdownMenu v-if="Object.keys(deckBuilder.actions).length > 1">
-          <DropdownMenuTrigger as-child>
-            <Button size="sm">
-              <ChevronUp class="w-4 h-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent class="w-56 bg-primary text-primary-foreground" align="end">
-          <DropdownMenuRadioGroup v-model="actionIndex">
-            <DropdownMenuRadioItem 
-              v-for="(a, i) in deckBuilder.actions" 
-              :value="i.toString()" 
-              :disabled="a.onlyValid && !isUseable.useable"
-            >
-              {{ a.name }}
-            </DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <ButtonGroup>
+          <Button 
+            size="sm" 
+            :disabled="action.onlyValid && !isUseable.useable"
+            @click="onAction"
+          >
+            {{ action.name }}
+          </Button>
+          
+          <DropdownMenu v-if="Object.keys(deckBuilder.actions).length > 1">
+            <DropdownMenuTrigger as-child>
+              <Button size="sm">
+                <ChevronUp class="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent class="w-56 bg-primary text-primary-foreground" align="end">
+            <DropdownMenuRadioGroup v-model="actionIndex">
+              <DropdownMenuRadioItem 
+                v-for="(a, i) in deckBuilder.actions" 
+                :value="i.toString()" 
+                :disabled="a.onlyValid && !isUseable.useable"
+              >
+                {{ a.name }}
+              </DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </ButtonGroup>
       </div>
 
     </DialogContent>
@@ -280,6 +282,7 @@ import { ChevronUp, CirclePlus, Eye, TriangleAlert, X } from "lucide-vue-next";
 import { computed, h, ref, toValue, type VNode, watch } from "vue";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
 	Dialog,
