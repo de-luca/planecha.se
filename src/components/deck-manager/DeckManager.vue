@@ -3,8 +3,8 @@
 		<DialogTrigger as-child>
 			<Card class="hover:bg-accent hover:text-accent-foreground hover:cursor-pointer" title="Open Deck Manager">
 				<CardHeader v-if="usedDeck" class="flex justify-between">
-					<component :is="usedDeck.component" />
-					<CardCount class="text-muted-foreground text-sm" :phenomena="phenomena" :counts="usedDeck.list.counts" />
+					<component :is="toDeckList(usedDeck).component" />
+					<CardCount class="text-muted-foreground text-sm" :phenomena="phenomena" :counts="usedDeck.counts" />
 				</CardHeader>
 				<CardHeader v-else class="text-center text-muted-foreground">
 					Pick a 10 cards deck
@@ -43,9 +43,6 @@
 						<TabsTrigger class="dark:data-[state=active]:bg-unset" value="precons">
 							Preconstructed Decks
 						</TabsTrigger>
-						<!-- <TabsTrigger class="dark:data-[state=active]:bg-unset" value="builder">
-							New Deck
-						</TabsTrigger> -->
 					</TabsList>
 					<Button variant="outline" class="h-10" @click="openBuilder">New Deck</Button>
 				</div>
@@ -93,7 +90,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, h, KeepAlive, ref } from "vue";
+import { computed, KeepAlive, ref } from "vue";
 import { toast } from "vue-sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
@@ -115,31 +112,32 @@ import {
 } from "@/store";
 import type { BaseList } from "@/types";
 import { CardCount, DeckName } from "./controls";
+import { CustomList, DeckBuilder, ListList, PreconList } from "./tabs";
 import {
-	CustomList,
-	DEFAULT_LIST,
-	DeckBuilder,
-	ListList,
-	PreconList,
-} from "./tabs";
-import type { DeckList, Props } from "./utils";
+	type AnyDeck,
+	type DeckList,
+	isDeckListUseable,
+	type Props,
+	toDeckList,
+} from "./utils";
 
-const { openDeckBuilder, openDeckName, closeDeckName } = useUI();
+const { openDeckBuilder, openDeckName, closeDeckBuilder, closeDeckName } =
+	useUI();
 const decks = useDecks();
 
 const DEFAULT_TAB = "custom";
 
-const { minCards, maxCards, minPlanes, phenomena } = defineProps<Props>();
+const specs = defineProps<Props>();
 const emit = defineEmits(["use"]);
 
 const isOpen = ref(false);
 const tab = ref(DEFAULT_TAB);
-const deck = ref<DeckList>();
+const deck = ref<BaseList>();
 
 const cleanList = (list?: BaseList): BaseList | undefined =>
 	!list
 		? list
-		: phenomena
+		: specs.phenomena
 			? list
 			: {
 					...list,
@@ -147,26 +145,25 @@ const cleanList = (list?: BaseList): BaseList | undefined =>
 				};
 
 const usedDeck = computed(() => {
-	const value =
-		deck.value ?? (minCards === 10 && maxCards === 10 ? null : DEFAULT_LIST);
-	emit("use", cleanList(value?.list));
+	const value = deck.value ?? prefilledDeck.value;
+	emit("use", cleanList(value));
 	return value;
 });
 
-const toDeckList = ({
-	name,
-	desc,
-	cards,
-	counts,
-}: DeckNameActionOutput & DeckBuilderActionOutput): DeckList => ({
-	list: { id: "", name, cards, counts },
-	component: h("div", { class: "basis-1 grow" }, [
-		h("div", { class: "flex" }, h("strong", name)),
-		h("div", { class: "text-muted-foreground" }, desc),
-	]),
+const prefilledDeck = computed(() => {
+	const favorites = [...decks.favorites.values()];
+
+	const found = [
+		...favorites.map((id) => decks.decks.get(id)),
+		...favorites.map((id) => decks.lists.get(id)),
+		...favorites.map((id) => decks.precons.get(id)),
+		decks.defaultList,
+	].filter(Boolean);
+
+	return found.find((deck) => isDeckListUseable(deck!, specs).useable);
 });
 
-const useDeckList = (list: DeckList) => {
+const useDeckList = (list: AnyDeck) => {
 	deck.value = list;
 	isOpen.value = false;
 	tab.value = DEFAULT_TAB;
@@ -174,33 +171,31 @@ const useDeckList = (list: DeckList) => {
 
 const saveDeck = (
 	actionLabel: string,
-	{ cards, counts }: DeckBuilderActionOutput,
-	fn: (input: DeckNameActionOutput) => void = () => {},
-) =>
+	builderOutput: DeckBuilderActionOutput,
+	fn: (input: DeckNameActionOutput & { id: string }) => void = () => {},
+) => {
+	const id = crypto.randomUUID();
+
 	openDeckName({
 		title: "Save Deck",
 		description: "Give your deck a distintive name.",
 		deckName: undefined,
 		deckDesc: undefined,
 		actionLabel: actionLabel,
-		onAction: ({ name, desc }) => {
-			decks.addDeck({
-				id: crypto.randomUUID(),
-				cards: cards.map((c) => c.id),
-				name,
-				desc,
-				counts,
-			});
+		onAction: (nameOutput) => {
+			decks.addDeck({ id, ...nameOutput, ...builderOutput });
 			closeDeckName();
+			closeDeckBuilder();
 			toast("Deck saved");
-			fn({ name, desc });
+			fn({ id, ...nameOutput });
 		},
 	});
+};
 
 const openBuilder = () =>
 	openDeckBuilder({
+		specs,
 		description: "Create your own planar decks.",
-		specs: { minCards, maxCards, minPlanes, phenomena },
 		actions: [
 			{
 				name: "Save deck",
@@ -212,18 +207,21 @@ const openBuilder = () =>
 				onlyValid: true,
 				action: (deckBuilderOutput) =>
 					saveDeck("Save and use deck", deckBuilderOutput, (deckNameOutput) =>
-						useDeckList(
-							toDeckList({ ...deckNameOutput, ...deckBuilderOutput }),
-						),
+						useDeckList({
+							...deckNameOutput,
+							...deckBuilderOutput,
+						}),
 					),
 			},
 			{
 				name: "Use deck without saving",
 				onlyValid: true,
 				action: (deckBuilderOutput) =>
-					useDeckList(
-						toDeckList({ ...deckBuilderOutput, name: "Custom deck" }),
-					),
+					useDeckList({
+						id: "",
+						name: "Custom deck",
+						...deckBuilderOutput,
+					}),
 			},
 		],
 	});

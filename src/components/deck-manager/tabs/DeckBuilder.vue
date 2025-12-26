@@ -332,7 +332,7 @@ import { isDeckListUseable } from "../utils";
 
 const SETS = getSets();
 
-const { deckBuilder, closeDeckBuilder } = useUI();
+const { deckBuilder } = useUI();
 
 const actionIndex = ref<string>("0");
 const action = computed(
@@ -352,7 +352,7 @@ watch(
 	() => deckBuilder.cards,
 	() =>
 		(deckBuilder.cards ?? []).forEach((c) => {
-			table.getRow(c).toggleSelected();
+			table.getRow(c.id).toggleSelected();
 		}),
 );
 
@@ -377,7 +377,7 @@ const columns: Array<ColumnDef<Card>> = [
 				{ class: "h-full flex items-center justify-center" },
 				h(Checkbox, {
 					modelValue: table.getIsAllPageRowsSelected(),
-					"onUpdate:modelValue": (value: boolean) =>
+					"onUpdate:modelValue": (value: boolean | "indeterminate") =>
 						table.toggleAllPageRowsSelected(!!value),
 					ariaLabel: "Select all",
 				}),
@@ -388,7 +388,7 @@ const columns: Array<ColumnDef<Card>> = [
 				{ class: "h-full flex items-center justify-center" },
 				h(Checkbox, {
 					modelValue: row.getIsSelected(),
-					"onUpdate:modelValue": (value: boolean) =>
+					"onUpdate:modelValue": (value: boolean | "indeterminate") =>
 						row.toggleSelected(!!value),
 					ariaLabel: "Select row",
 				}),
@@ -533,8 +533,6 @@ const isUseable = computed(() => {
 	);
 });
 
-const isValid = computed(() => table.getSelectedRowModel().rows.length >= 10);
-
 const deckCounts = computed(() =>
 	table.getSelectedRowModel().rows.reduce(
 		(acc, row) => {
@@ -551,7 +549,6 @@ const deckCounts = computed(() =>
 );
 
 const clean = () => {
-	closeDeckBuilder();
 	table.toggleAllRowsSelected(false);
 	table.resetColumnFilters();
 };
@@ -561,7 +558,6 @@ const onAction = () => {
 		cards: table.getSelectedRowModel().rows.map((row) => row.original),
 		counts: toValue(deckCounts),
 	});
-	clean();
 };
 </script>
 

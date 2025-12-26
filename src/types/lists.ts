@@ -13,6 +13,10 @@ export type BaseList = {
 	counts: Counts;
 };
 
+export type Custom = BaseList & {
+	desc?: string;
+};
+
 export type Precon = BaseList & {
 	identity?: Array<string>;
 	face?: Array<string>;
@@ -24,16 +28,9 @@ export type Precon = BaseList & {
 };
 
 export type List = BaseList & {
+	default?: boolean;
 	desc: string;
 	filters: {
 		sets: Array<string>;
 	};
-};
-
-export type SavedDeck = {
-	id: string;
-	name: string;
-	desc?: string;
-	cards: Array<string>;
-	counts: Counts;
 };

@@ -6,13 +6,13 @@ import { useColorMode } from "@vueuse/core";
 import { createPinia } from "pinia";
 import { createApp } from "vue";
 import { router } from "@/router";
-import { feeder, notifier, versionizer } from "@/store/plugins";
+import { feeder, notifier, persister, versionizer } from "@/store/plugins";
 
 useColorMode();
 registerSW({ immediate: true });
 
 createApp(App)
 	.component("l", Link)
-	.use(createPinia().use(feeder).use(notifier).use(versionizer))
+	.use(createPinia().use(feeder).use(notifier).use(persister).use(versionizer))
 	.use(router)
 	.mount("#app");

@@ -46,7 +46,7 @@ type DeckBuilderState = {
 	description?: string;
 	specs?: Props;
 
-	cards?: Array<string>;
+	cards?: Array<Card>;
 
 	actions: Array<DeckBuilderAction>;
 };
