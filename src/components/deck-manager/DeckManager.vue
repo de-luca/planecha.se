@@ -115,7 +115,6 @@ import { CardCount, DeckName } from "./controls";
 import { CustomList, DeckBuilder, ListList, PreconList } from "./tabs";
 import {
 	type AnyDeck,
-	type DeckList,
 	isDeckListUseable,
 	type Props,
 	toDeckList,

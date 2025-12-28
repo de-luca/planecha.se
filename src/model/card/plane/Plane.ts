@@ -7,7 +7,7 @@ export class Plane extends Card {
 
 	public constructor(props: Props) {
 		super(props);
-		this._counter = props.counter ?? undefined;
+		this._counter = props.counter;
 	}
 
 	public get type(): Type {

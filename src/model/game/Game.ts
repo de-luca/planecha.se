@@ -1,4 +1,4 @@
-import { getCardList, restoreDeck } from "@/services/cardProvider";
+import { getList, restoreDeck } from "@/services/deckProvider";
 import { type Patch, patch } from "@/utils/delta";
 import type { Card, Plane } from "../card";
 import type { Deck } from "../deck/Deck";
@@ -141,13 +141,13 @@ export abstract class Game implements GameInterface {
 		this._hasStarted = state.hasStarted;
 		this._wallStates = new WallManager(state.wallStates);
 		this._deck = restoreDeck(state.deck);
-		this._active = getCardList(state.active);
+		this._active = getList(state.active);
 		this._revealed =
 			state.revealed === undefined
 				? undefined
 				: {
-						relevant: getCardList(state.revealed.relevant),
-						others: getCardList(state.revealed.others),
+						relevant: getList(state.revealed.relevant),
+						others: getList(state.revealed.others),
 					};
 	}
 }

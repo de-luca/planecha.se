@@ -478,7 +478,7 @@ const columns: Array<ColumnDef<Card>> = [
 ];
 
 const table = useVueTable({
-	data: getAllCards(),
+	data: getAllCards().toArray(),
 	columns: columns,
 	getRowId: (row) => row.id,
 	getCoreRowModel: getCoreRowModel(),

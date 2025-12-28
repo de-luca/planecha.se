@@ -1,7 +1,7 @@
 import type { Phenomenon } from "@/model/card";
 import type { Deck, DeckDump } from "@/model/deck/Deck";
 import { StateKey } from "@/model/wall";
-import { restoreDeck } from "@/services/cardProvider";
+import { restoreDeck } from "@/services/deckProvider";
 import type { Coordinates } from "@/types";
 import type { Initable, ResolveInput } from "../GameInterface";
 import type { EternitiesMapDump, EternitiesMapSpecs } from "./EternitiesMap";

@@ -1,74 +1,17 @@
-import cards from "#assets/cards.json";
-import {
-	build,
-	type Card,
-	type CardDump,
-	type Phenomenon,
-	Plane,
-	type Props,
-} from "@/model/card";
-import { Deck, type DeckDump } from "@/model/deck/Deck";
-import { shuffle } from "@/utils/shuffle";
+import raw from "#assets/cards.json";
+import { build, type Card, type Props } from "@/model/card";
 
-type ListInput = CardDump | string;
-
-const raw: Map<string, Props> = (cards as Array<Props>).reduce(
-	(acc, p) => acc.set(p.id, p),
-	new Map<string, Props>(),
+const cards: Map<string, Card> = (raw as Array<Props>).reduce(
+	(acc, p) => acc.set(p.id, build(p)),
+	new Map<string, Card>(),
 );
 
-export const getCard = <T extends Card>(id: string): T =>
-	build(raw.get(id) as Props) as T;
+export const getCard = <T extends Card>(id: string): T => cards.get(id) as T;
 
-export const getAllCards = (): Array<Card> =>
-	[...raw.values()].map((r) => build(r));
+export const getAllCards = () => cards.values();
 
-export const getCardList = <T extends Card>(list: Array<ListInput>): Array<T> =>
-	list.map((item) => {
-		if (typeof item === "string") {
-			return getCard<T>(item);
-		}
-
-		const card = getCard<T>(item.id);
-		if (item.counters && card instanceof Plane && card.counter) {
-			card.counter.value = item.counters;
-		}
-
-		return card;
-	});
+export const getCardList = <T extends Card>(list: Array<string>): Array<T> =>
+	list.map((item) => getCard<T>(item));
 
 export const getCardByFilter = (filters: { sets: Array<string> }) =>
-	[...raw.values()]
-		.filter((r) => filters.sets.some((s) => r.sets.includes(s)))
-		.map((r) => build(r));
-
-export const getDeckFromList = (list: Array<ListInput>): Deck<Card> =>
-	new Deck<Card>(shuffle(getCardList<Card>(list)));
-
-export const getDecksFromList = (
-	list: Array<ListInput>,
-): {
-	plane: Deck<Plane>;
-	phenomenon: Deck<Phenomenon>;
-} => {
-	const { planes, phenomena } = getCardList(list).reduce<{
-		planes: Array<Plane>;
-		phenomena: Array<Phenomenon>;
-	}>(
-		(acc, card) => {
-			card instanceof Plane
-				? acc.planes.push(card)
-				: acc.phenomena.push(card as Phenomenon);
-			return acc;
-		},
-		{ planes: [], phenomena: [] },
-	);
-
-	return {
-		plane: new Deck<Plane>(shuffle(getCardList(planes))),
-		phenomenon: new Deck<Phenomenon>(shuffle(getCardList(phenomena))),
-	};
-};
-
-export const restoreDeck = <T extends Card>(state: DeckDump): Deck<T> =>
-	new Deck<T>(getCardList(state.cards), getCardList(state.played));
+	cards.values().filter((r) => filters.sets.some((s) => r.sets.includes(s)));

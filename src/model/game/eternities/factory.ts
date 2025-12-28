@@ -1,11 +1,11 @@
 import type { Card, Plane } from "@/model/card";
 import { WallManager } from "@/model/wall";
 import {
-	getCardList,
 	getDeckFromList,
-	getDecksFromList,
+	getList,
+	getSplitDeckFromList,
 	restoreDeck,
-} from "@/services/cardProvider";
+} from "@/services/deckProvider";
 import type { GameInterface } from "../GameInterface";
 import {
 	DualDeck,
@@ -35,7 +35,7 @@ export const build = (
 		});
 	}
 
-	const decks = getDecksFromList(cards);
+	const decks = getSplitDeckFromList(cards);
 	return new DualDeck({
 		deck: decks.plane,
 		wallStates: state,
@@ -52,11 +52,11 @@ export const restore = (dump: EternitiesMapDump): GameInterface => {
 		hasStarted: dump.hasStarted,
 		deckType: specs.deckType,
 		deck: restoreDeck<Plane>(dump.deck),
-		active: getCardList<Plane>(dump.active),
+		active: getList<Plane>(dump.active),
 		revealed: dump.revealed
 			? {
-					relevant: getCardList<Card>(dump.revealed.relevant),
-					others: getCardList<Card>(dump.revealed.others),
+					relevant: getList<Card>(dump.revealed.relevant),
+					others: getList<Card>(dump.revealed.others),
 				}
 			: undefined,
 		tiles: dump.tiles?.map(Tile.fromDump),

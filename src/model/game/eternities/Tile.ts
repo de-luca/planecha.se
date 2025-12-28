@@ -1,4 +1,4 @@
-import { getCardList } from "@/services/cardProvider";
+import { getList } from "@/services/deckProvider";
 import type { Coordinates } from "@/types";
 import type { CardDump, Plane } from "../../card";
 
@@ -49,7 +49,7 @@ export class Tile {
 	}
 
 	public static fromDump(tile: TileDump): Tile {
-		return new Tile(tile.coords, tile.state, getCardList(tile.plane));
+		return new Tile(tile.coords, tile.state, getList(tile.plane));
 	}
 
 	public dump(): TileDump {

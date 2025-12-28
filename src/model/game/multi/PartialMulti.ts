@@ -1,5 +1,5 @@
 import { WallManager } from "@/model/wall";
-import { getCardList } from "@/services/cardProvider";
+import { getList } from "@/services/deckProvider";
 import { Game } from "../Game";
 import type { GameDump, GameSpecs } from "../GameInterface";
 
@@ -40,13 +40,13 @@ export class PartialMulti extends Game {
 	public restore(state: GameDump): void {
 		this._hasStarted = state.hasStarted;
 		this._wallStates = new WallManager(state.wallStates);
-		this._active = getCardList(state.active);
+		this._active = getList(state.active);
 		this._revealed =
 			state.revealed === undefined
 				? undefined
 				: {
-						relevant: getCardList(state.revealed.relevant),
-						others: getCardList(state.revealed.others),
+						relevant: getList(state.revealed.relevant),
+						others: getList(state.revealed.others),
 					};
 	}
 }

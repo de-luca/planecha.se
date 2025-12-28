@@ -73,25 +73,30 @@ export const useDecks = defineStore("decks", () => {
 	const lists = ref<ListsState>(new Map());
 	const defaultList = ref<List>();
 	(async () => {
-		for (const list of (await import("#assets/lists.json")).default) {
-			const counts = {
-				cards: 0,
-				planes: 0,
-				phenomena: 0,
-			};
+		for (const rawList of (await import("#assets/lists.json")).default) {
+			const cards = getCardByFilter(rawList.filters).toArray();
 
-			lists.value.set(list.id, {
-				...list,
-				cards: getCardByFilter(list.filters).map((c) => {
-					counts.cards++;
-					c.type === "Plane" ? counts.planes++ : counts.phenomena++;
-					return c;
-				}),
-				counts: counts,
+			lists.value.set(rawList.id, {
+				...rawList,
+				cards,
+				counts: cards.reduce(
+					(acc, c) => {
+						acc.cards++;
+						c.type === "Plane" ? acc.planes++ : acc.phenomena++;
+						return acc;
+					},
+					{
+						cards: 0,
+						planes: 0,
+						phenomena: 0,
+					},
+				),
 			});
-		}
 
-		defaultList.value = [...lists.value.values()].find((l) => l.default);
+			if (rawList.default) {
+				defaultList.value = lists.value.get(rawList.id);
+			}
+		}
 	})();
 	// #endregion
 

@@ -1,8 +1,4 @@
-import {
-	getCardList,
-	getDeckFromList,
-	restoreDeck,
-} from "@/services/cardProvider";
+import { getDeckFromList, getList, restoreDeck } from "@/services/deckProvider";
 import type { Card } from "../card";
 import { WallManager } from "../wall";
 import {
@@ -54,11 +50,11 @@ export const restore = (dump: GameDump): GameInterface => {
 				deck: restoreDeck<Card>(dump.deck),
 				wallStates: new WallManager(dump.wallStates),
 				hasStarted: dump.hasStarted,
-				active: getCardList<Card>(dump.active),
+				active: getList<Card>(dump.active),
 				revealed: dump.revealed
 					? {
-							relevant: getCardList<Card>(dump.revealed.relevant),
-							others: getCardList<Card>(dump.revealed.others),
+							relevant: getList<Card>(dump.revealed.relevant),
+							others: getList<Card>(dump.revealed.others),
 						}
 					: undefined,
 			});
