@@ -56,6 +56,39 @@ const counter: Map<string, Counter> = new Map([
 			reset: false,
 		},
 	],
+	// Pompeii
+	[
+		"5dc1deab-ce04-45c0-a4ff-c526a948e500",
+		{
+			name: "Eruption",
+			value: 0,
+			start: 1,
+			max: null,
+			reset: false,
+		},
+	],
+	// Aplan Mortarium
+	[
+		"7c9d6193-1d50-4035-8c85-98c384f461be",
+		{
+			name: "Exposure",
+			value: 0,
+			start: 1,
+			max: null,
+			reset: false,
+		},
+	],
+	// No Way Out (Playtest)
+	[
+		"995eede5-d3aa-42f8-9883-6e47a7c041bc",
+		{
+			name: "Dread",
+			value: 3,
+			start: 3,
+			max: null,
+			reset: true,
+		},
+	],
 ]);
 
 export const build = (props: Props): Plane =>

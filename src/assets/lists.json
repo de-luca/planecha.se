@@ -37,7 +37,7 @@
 		"name": "Convention simulator",
 		"desc": "All gold bordered and playtest cards from conventions",
 		"filters": {
-			"sets": ["pssc", "unk"]
+			"sets": ["pssc", "punk"]
 		}
 	}
 ]
